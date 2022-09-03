@@ -16,6 +16,7 @@
 
 # SHOUTOUTS
 - Everyone who provided variant ideas (HIFU, FMRadio11, Jaysian, HeyImNoob). Having existing content to work with is significantly easier even if it's just basic color ideas
+- SSM24 and Moffein for figuring out the networking ! !
 
 # 0.5.0 Patch Notes
 - Networked the mod
