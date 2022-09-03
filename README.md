@@ -7,7 +7,6 @@
 # TODO
 - Add more variants
 - Add Risk of Options support
-- MAAAYBE network the variants
 
 # KNOWN BUGS
 - Light effects on the crystals in Night Distant Roost do not have shadows. This is vanilla behavior, and I've decided to leave it in to aid visibility
@@ -17,6 +16,12 @@
 
 # SHOUTOUTS
 - Everyone who provided variant ideas (HIFU, FMRadio11, Jaysian, HeyImNoob). Having existing content to work with is significantly easier even if it's just basic color ideas
+
+# 0.5.0 Patch Notes
+- Networked the mod
+- - Everyone must have the same config in order for this to work properly!
+- Small bugfixes
+- Small optimizations
 
 # 0.4.0 Patch Notes
 - Tweaked Commencement lighting
