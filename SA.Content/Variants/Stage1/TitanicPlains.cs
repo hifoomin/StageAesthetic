@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 
 namespace StageAesthetic.Variants
@@ -117,6 +118,71 @@ namespace StageAesthetic.Variants
             Debug.Log("NOSTALGIA PLAINS W");
             Debug.Log("NOSTALGIA PLAINS W");
             Debug.Log("NOSTALGIA PLAINS W");
+        }
+
+        public static void SandyPlains(RampFog fog)
+        {
+            var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            sun.color = new Color32(211, 151, 105, 255);
+            sun.intensity = 1.05f;
+            fog.fogColorStart.value = new Color32(137, 122, 83, 9);
+            fog.fogColorMid.value = new Color32(150, 119, 82, 20);
+            fog.fogColorEnd.value = new Color32(173, 138, 95, 170);
+            fog.fogZero.value = -0.035f;
+            fog.skyboxStrength.value = 0.25f;
+            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeTerrain.mat").WaitForCompletion());
+            terrainMat.color = new Color32(230, 223, 174, 219);
+            var detail = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimSandy.mat").WaitForCompletion();
+            var detail2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion();
+            var detail3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
+            var tar = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolake.mat").WaitForCompletion();
+            GameObject.Find("FOLIAGE: Grass").SetActive(false);
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                if (meshBase != null)
+                {
+                    if (meshBase.name.Contains("Terrain"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = terrainMat;
+                        }
+                    }
+                    if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("mdlGeyser"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detail;
+                        }
+                    }
+                    if (meshBase.name.Contains("Ring"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detail2;
+                        }
+                    }
+                    if (meshBase.name.Contains("Block") || meshBase.name.Contains("MiniBridge") || meshBase.name.Contains("Circle"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detail3;
+                        }
+                    }
+                    if (meshBase.name.Contains("Plane1x1x100x100"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = tar;
+                        }
+                    }
+                }
+            }
+            var water = GameObject.Find("HOLDER: Water").transform.GetChild(0);
+            water.localPosition = new Vector3(-564.78f, -170f, 133.4f);
+            water.localScale = new Vector3(200f, 200f, 200f);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using RoR2;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 
 namespace StageAesthetic.Variants
@@ -69,25 +71,30 @@ namespace StageAesthetic.Variants
 
         public static void LightChange(string variant)
         {
-            if (variant == "meadow")
+            switch (variant)
             {
-                coral = new Color(0.64f, 0.343f, 0.924f, 1);
-                chain = new Color(0.981f, 0.521f, 0.065f);
-                crystal = new Color(0.598f, 0.117f, 0.355f);
+                case "meadow":
+                    coral = new Color(0.64f, 0.343f, 0.924f, 1);
+                    chain = new Color(0.981f, 0.521f, 0.065f);
+                    crystal = new Color(0.598f, 0.117f, 0.355f);
+                    break;
+
+                case "azure":
+                    coral = new Color(0.188f, 0.444f, 0, 1);
+                    chain = new Color(0.181f, 0.921f, 0.945f);
+                    crystal = new Color(0f, 0.837f, 0.14f);
+                    break;
+
+                case "hive":
+                    coral = new Color32(30, 209, 27, 255);
+                    chain = new Color(0.981f, 0.521f, 0.065f);
+                    crystal = new Color(0.718f, 0, 0.515f);
+                    break;
+
+                default:
+                    break;
             }
-            else if (variant == "azure")
-            {
-                coral = new Color(0.188f, 0.444f, 0, 1);
-                chain = new Color(0.181f, 0.921f, 0.945f);
-                crystal = new Color(0f, 0.837f, 0.14f);
-            }
-            else if (variant == "hive")
-            {
-                coral = new Color32(30, 209, 27, 255);
-                chain = new Color(0.981f, 0.521f, 0.065f);
-                crystal = new Color(0.718f, 0, 0.515f);
-            }
-            var lightList = UnityEngine.Object.FindObjectsOfType(typeof(Light)) as Light[];
+            var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (Light light in lightList)
             {
                 var lightBase = light.gameObject;
@@ -107,6 +114,106 @@ namespace StageAesthetic.Variants
                     if (light.gameObject.name.Equals("CrystalLight")) light.color = chain;
                 }
             }
+        }
+
+        public static void CoralCave(RampFog fog, ColorGrading cgrade)
+        {
+            Debug.Log("CORAL CAVE");
+            fog.fogColorStart.value = new Color32(127, 70, 206, 20);
+            fog.fogColorMid.value = new Color32(206, 70, 127, 33);
+            fog.fogColorEnd.value = new Color32(190, 99, 136, 130);
+            cgrade.colorFilter.value = new Color32(255, 255, 255, 22);
+            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            sunLight.color = new Color32(204, 173, 186, 255);
+            sunLight.intensity = 3f;
+            sunLight.shadowStrength = 0.7f;
+            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTerrain2.mat").WaitForCompletion());
+            terrainMat.color = new Color32(128, 125, 216, 234);
+            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTerrain.mat").WaitForCompletion());
+            terrainMat2.color = new Color32(109, 125, 216, 177);
+            var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJRock.mat").WaitForCompletion());
+            detailMat.color = new Color32(49, 0, 255, 255);
+            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGoldArcaneFlare.mat").WaitForCompletion();
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                var meshParent = meshBase.transform.parent;
+                if (meshBase != null)
+                {
+                    if (meshParent != null)
+                    {
+                        if (meshBase.name.Contains("Mesh") && meshParent.name.Contains("Ruin"))
+                        {
+                            if (mr.sharedMaterial != null)
+                            {
+                                mr.sharedMaterial = detailMat;
+                            }
+                        }
+                        if (meshBase.name.Contains("RuinBowl") && meshParent.name.Contains("RuinMarker"))
+                        {
+                            if (mr.sharedMaterial != null)
+                            {
+                                mr.sharedMaterial = detailMat;
+                            }
+                        }
+                    }
+                    if (meshBase.name.Contains("Hero") || meshBase.name.Contains("Wall") || meshBase.name.Contains("Ceiling"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = terrainMat;
+                        }
+                    }
+                    if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("Ruin") || meshBase.name.Contains("Column") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Coral") || meshBase.name.Contains("Heatvent") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("GiantRock") || meshBase.name.Contains("Stalagmite"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detailMat;
+                        }
+                    }
+                    if (meshBase.name.Contains("Crystal"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detailMat3;
+                        }
+                    }
+                    if (meshBase.name.Contains("LightMesh"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detailMat3;
+                            if (meshBase.transform.childCount >= 1 && meshBase.transform.GetChild(0).name.Contains("Crystal"))
+                            {
+                                meshBase.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = detailMat3;
+                            }
+                        }
+                    }
+                    if (meshBase.name.Contains("GiantStoneSlab") || meshBase.name.Contains("TerrainBackwall") || meshBase.name.Contains("Chain"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = terrainMat2;
+                        }
+                    }
+                }
+            }
+            foreach (Light l in lightList)
+            {
+                if (l != null && !l.name.Contains("Light (SUN)"))
+                {
+                    l.color = new Color32(255, 221, 0, 255);
+                    l.intensity = 50f;
+                    l.range = 30f;
+                }
+                if (l.gameObject.GetComponent<FlickerLight>() != null)
+                {
+                    l.gameObject.GetComponent<FlickerLight>().enabled = false;
+                }
+            }
+            GameObject.Find("DCPPInTunnels").SetActive(false);
         }
 
         private static Color coral;

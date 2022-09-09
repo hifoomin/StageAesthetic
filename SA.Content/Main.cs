@@ -3,7 +3,7 @@ using BepInEx;
 
 namespace StageAesthetic
 {
-    [BepInPlugin("com.HIFU.StageAesthetic", "StageAesthetic", "0.5.0")]
+    [BepInPlugin("com.HIFU.StageAesthetic", "StageAesthetic", "0.6.0")]
     [R2APISubmoduleDependency(new string[]
     {
         "DirectorAPI",

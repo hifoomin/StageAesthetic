@@ -7,17 +7,17 @@ namespace StageAesthetic.Variants
     {
         public static void GreenJungle(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(33, 35, 26, 18);
-            fog.fogColorMid.value = new Color32(30, 33, 24, 147);
-            fog.fogColorEnd.value = new Color32(27, 29, 20, 255);
+            fog.fogColorStart.value = new Color32(91, 99, 66, 20);
+            fog.fogColorMid.value = new Color32(107, 105, 68, 67);
+            fog.fogColorEnd.value = new Color32(119, 116, 74, 150);
             fog.skyboxStrength.value = 0.126f;
-            cgrade.colorFilter.value = new Color32(198, 251, 125, 255);
+            cgrade.colorFilter.value = new Color32(139, 196, 171, 20);
             cgrade.colorFilter.overrideState = true;
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(242, 239, 202, 255);
-            sunLight.intensity = 3f;
+            sunLight.intensity = 3.1f;
             sunTransform.localEulerAngles = new Vector3(30, 175, 180);
         }
 
@@ -68,7 +68,7 @@ namespace StageAesthetic.Variants
                 epic4.scalingMode = ParticleSystemScalingMode.Shape;
                 rain.transform.eulerAngles = new Vector3(75, 210, 0);
                 rain.transform.localScale = new Vector3(16, 16, 1);
-                UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
+                Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
             }
         }
     }

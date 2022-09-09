@@ -72,8 +72,8 @@ namespace StageAesthetic.Variants
         public static void CrimsonForest(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(180, 50, 50, 35);
-            fog.fogColorMid.value = new Color32(50, 30, 30, 130);
-            fog.fogColorEnd.value = new Color32(90, 30, 30, 255);
+            fog.fogColorMid.value = new Color32(50, 30, 30, 120);
+            fog.fogColorEnd.value = new Color32(90, 30, 30, 225);
             fog.skyboxStrength.value = 0.08f;
             fog.fogPower.value = 0.35f;
             fog.fogOne.value = 0.108f;
@@ -85,8 +85,27 @@ namespace StageAesthetic.Variants
             sunLight.color = new Color32(180, 110, 110, 255);
             sunLight.intensity = 1.5f;
             sunLight.shadowStrength = 0.5f;
-            cgrade.colorFilter.value = new Color32(255, 255, 255, 30);
+            cgrade.colorFilter.value = new Color32(255, 255, 255, 23);
             cgrade.colorFilter.overrideState = true;
+        }
+
+        public static void MorningForest(RampFog fog, ColorGrading cgrade)
+        {
+            fog.fogColorStart.value = new Color32(117, 154, 255, 7);
+            fog.fogColorMid.value = new Color32(111, 196, 248, 45);
+            fog.fogColorEnd.value = new Color32(117, 154, 255, 255);
+            fog.skyboxStrength.value = 0.1f;
+            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            var aurora = GameObject.Find("mdlSnowyForestAurora");
+            var snow = GameObject.Find("CAMERA PARTICLES: SnowParticles");
+            snow.SetActive(false);
+            aurora.SetActive(false);
+            sunLight.color = new Color32(205, 158, 90, 255);
+            sunLight.intensity = 6f;
+            sunLight.shadowStrength = 0.88f;
+            cgrade.colorFilter.value = new Color32(111, 196, 248, 17);
+            cgrade.colorFilter.overrideState = true;
+            sunLight.transform.localEulerAngles = new Vector3(40, 153.0076f, 50f);
         }
     }
 }

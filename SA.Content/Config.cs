@@ -18,6 +18,7 @@ namespace StageAesthetic
             SunsetPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Sunset Plains?", true, "");
             RainyPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Rainy Plains?", true, "");
             NightPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Night Plains?", true, "");
+            SandyPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Sandy Plains?", true, "");
             PlainsBridge = AesConfig.Bind<int>("Stages : Titanic Plains", "Bridge % Chance", 40, "How often the unused bridge in Titanic Plains should appear.");
 
             VanillaRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
@@ -25,17 +26,20 @@ namespace StageAesthetic
             SunnyRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Sunny Roost?", true, "");
             FoggyRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Storm Roost?", true, "");
             VoidRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Void Roost?", true, "");
+            GoldRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Gold Roost?", true, "");
             RoostChanges = AesConfig.Bind("Stages : Distant Roost", "Add rain in alt version?", true, "");
 
             NightForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Night Forest?", true, "");
             ExtraSnowyForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Extra Snowy Forest?", true, "");
             CrimsonForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Crimson Forest?", true, "");
+            MorningForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Morning Forest?", true, "");
             VanillaForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
 
             VanillaAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NearRainAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Twilight Sanctuary?", true, "");
             SunsetterAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Sunrise Sanctuary?", true, "");
             NightAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Singularity Sanctuary?", true, "");
+            AbyssalAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Abyssal Sanctuary?", true, "");
 
             VanillaWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             SunsetWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Sunset Aspect?", true, "");
@@ -47,27 +51,34 @@ namespace StageAesthetic
             NightAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Dark Aqueduct?", true, "");
             RainyAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Rainy Aqueduct?", true, "");
             MistyAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Night Aqueduct?", true, "");
+            SunderedAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Sundered Aqueduct?", true, "");
             AqueductChanges = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Alter vanilla Abandoned Aqueduct?", true, "Makes the sun a slightly more intense yellow-orange, and changes its angle.");
 
             VanillaDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NightDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Night Delta?", true, "");
             FoggyDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Foggy Delta?", true, "");
             PurpleDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Emerald Delta?", true, "");
+            TitanicDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Titanic Delta?", true, "");
 
             VanillaAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             SunsetAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Sunset Acres?", true, "");
             NightAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Night Acres?", true, "");
             BlueAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Emerald Acres?", true, "");
+            BetaAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Sunny Beta Acres?", true, "");
+            BetaAcres2 = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Crimson Beta Acres?", true, "");
+            TwilightAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Twilight Acres?", true, "");
             AcresChanges = AesConfig.Bind("Stages ::: Scorched Acres", "Alter vanilla Scorched Acres?", true, "Greatly increases the sunlight intensity, and alters the light angle and sun position towards a different corner of the map.");
 
             VanillaSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             CoralBlueSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Coral Blue Pools?", true, "");
             HellSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Hell Pools?", true, "");
+            VoidSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Void Pools?", true, "");
 
             VanillaDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             DarkDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Azure Depths?", true, "");
             BlueDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Hive Cluster Depths?", true, "");
             SkyDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Sky Meadow Depths?", true, "");
+            CoralDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Coral Depths?", true, "");
             DepthsChanges = AesConfig.Bind("Stages :::: Abyssal Depths", "Alter vanilla Abyssal Depths?", true, "Greatly increases the sunlight intensity, and alters the light angle.");
 
             VanillaGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
@@ -79,6 +90,7 @@ namespace StageAesthetic
             NightSiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Night Call?", true, "");
             SunnySiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Sirens Sun?", true, "");
             MistySiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Sirens Storm?", true, "");
+            AphelianSiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Sirens Sanctuary?", true, "");
 
             VanillaMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NightMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Night Meadow?", true, "");
@@ -126,6 +138,7 @@ namespace StageAesthetic
             if (RainyPlains.Value) plainsList.Add("rain");
             if (NightPlains.Value) plainsList.Add("night");
             if (NostalgiaPlains.Value) plainsList.Add("nostalgia");
+            if (SandyPlains.Value) plainsList.Add("sandy");
             if (plainsList.Count == 0)
             {
                 AesLog.LogWarning("Titanic Plains list empty - adding vanilla...");
@@ -137,6 +150,7 @@ namespace StageAesthetic
             if (SunnyRoost.Value) roostList.Add("sunny");
             if (FoggyRoost.Value) roostList.Add("foggy");
             if (VoidRoost.Value) roostList.Add("void");
+            if (GoldRoost.Value) roostList.Add("gold");
             if (roostList.Count == 0)
             {
                 AesLog.LogWarning("Distant Roost list empty - adding vanilla...");
@@ -146,6 +160,7 @@ namespace StageAesthetic
             if (NightForest.Value) forestList.Add("night");
             if (ExtraSnowyForest.Value) forestList.Add("extrasnowy");
             if (CrimsonForest.Value) forestList.Add("crimson");
+            if (MorningForest.Value) forestList.Add("morning");
             if (VanillaForest.Value) forestList.Add("vanilla");
             if (forestList.Count == 0)
             {
@@ -170,6 +185,7 @@ namespace StageAesthetic
             if (NightAqueduct.Value) aqueductList.Add("night");
             if (RainyAqueduct.Value) aqueductList.Add("rain");
             if (MistyAqueduct.Value) aqueductList.Add("nightrain");
+            if (SunderedAqueduct.Value) aqueductList.Add("sundered");
             if (aqueductList.Count == 0)
             {
                 AesLog.LogWarning("Abandoned Aqueduct list empty - adding vanilla...");
@@ -180,6 +196,7 @@ namespace StageAesthetic
             if (SunsetterAphelian.Value) aphelianList.Add("sunrise");
             if (NightAphelian.Value) aphelianList.Add("night");
             if (VanillaAphelian.Value) aphelianList.Add("vanilla");
+            if (AbyssalAphelian.Value) aphelianList.Add("abyss");
             if (aphelianList.Count == 0)
             {
                 AesLog.LogWarning("Aphelian Sanctuary list empty - adding vanilla...");
@@ -192,6 +209,7 @@ namespace StageAesthetic
             if (NightDelta.Value) deltaList.Add("night");
             if (FoggyDelta.Value) deltaList.Add("foggy");
             if (PurpleDelta.Value) deltaList.Add("green");
+            if (TitanicDelta.Value) deltaList.Add("titanic");
             if (deltaList.Count == 0)
             {
                 AesLog.LogWarning("Rallypoint Delta list empty - adding vanilla...");
@@ -202,6 +220,9 @@ namespace StageAesthetic
             if (SunsetAcres.Value) acresList.Add("sunset");
             if (NightAcres.Value) acresList.Add("night");
             if (BlueAcres.Value) acresList.Add("nothing");
+            if (BetaAcres.Value) acresList.Add("beta");
+            if (BetaAcres2.Value) acresList.Add("beta2");
+            if (TwilightAcres.Value) acresList.Add("twilight");
             if (acresList.Count == 0)
             {
                 AesLog.LogWarning("Scorched Acres list empty - adding vanilla...");
@@ -211,6 +232,7 @@ namespace StageAesthetic
             if (VanillaSulfur.Value) sulfurList.Add("vanilla");
             if (CoralBlueSulfur.Value) sulfurList.Add("coralblue");
             if (HellSulfur.Value) sulfurList.Add("hell");
+            if (VoidSulfur.Value) sulfurList.Add("void");
             if (sulfurList.Count == 0)
             {
                 AesLog.LogWarning("Sulfur Pools list empty - adding vanilla...");
@@ -223,6 +245,7 @@ namespace StageAesthetic
             if (DarkDepths.Value) depthsList.Add("gold");
             if (BlueDepths.Value) depthsList.Add("hive");
             if (SkyDepths.Value) depthsList.Add("sky");
+            if (CoralDepths.Value) depthsList.Add("coral");
             if (depthsList.Count == 0)
             {
                 AesLog.LogWarning("Abyssal Depths list empty - adding vanilla...");
@@ -243,6 +266,7 @@ namespace StageAesthetic
             if (NightSiren.Value) sirenList.Add("night");
             if (SunnySiren.Value) sirenList.Add("sunny");
             if (MistySiren.Value) sirenList.Add("storm");
+            if (AphelianSiren.Value) sirenList.Add("aphelian");
             if (sirenList.Count == 0)
             {
                 AesLog.LogWarning("Siren's Call list empty - adding vanilla...");

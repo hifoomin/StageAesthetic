@@ -7,15 +7,50 @@ using UnityEngine.SceneManagement;
 using BepInEx.Configuration;
 using System.Collections.Generic;
 using StageAesthetic.Variants;
+using UnityEngine.AddressableAssets;
+using Object = UnityEngine.Object;
 
 namespace StageAesthetic
 {
     public class SwapVariants
     {
+        // materials sometimes break due to timing i believe, caching them here to prevent that sorta stuff
+
+        public static Material VoidBeachTerrain;
+        public static Material VoidBeachTerrain2;
+        public static Material VoidBeachDetail;
+        public static Material VoidBeachDetail2;
+        public static Material GoldBeachTerrain;
+        public static Material GoldBeachTerrain2;
+        public static Material GoldBeachDetail;
+        public static Material GoldBeachDetail2;
+
         public static void Initialize()
         {
             // Setting up config and hooks before the game is actually loaded
             Config.SetConfig();
+            // material setup
+
+            VoidBeachTerrain = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion());
+            VoidBeachTerrain.color = new Color32(188, 162, 162, 255);
+
+            VoidBeachTerrain2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
+            VoidBeachTerrain2.color = new Color32(188, 162, 162, 255);
+
+            VoidBeachDetail = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
+            VoidBeachDetail2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
+
+            GoldBeachTerrain = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
+            GoldBeachTerrain.color = new Color32(0, 0, 0, 204);
+
+            GoldBeachTerrain2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainWalls.mat").WaitForCompletion());
+            GoldBeachTerrain2.color = new Color32(0, 0, 0, 135);
+
+            GoldBeachDetail = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
+            GoldBeachDetail2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuins.mat").WaitForCompletion());
+            GoldBeachDetail2.color = new Color32(181, 66, 34, 255);
+
+            //
             On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
             SceneManager.sceneLoaded += TitlePicker;
             SceneCamera.onSceneCameraPreRender += RainCamera;
@@ -100,6 +135,20 @@ namespace StageAesthetic
             orig(self);
         }
 
+        // TODO:
+        /*
+         * sky aphelian
+         *
+         * aphelian aqueduct
+         *
+         * titanic rallypoint
+         * snowy acres
+         * two new sulfur pools
+         *
+         * roost abyssal, simulacrum abyssal
+         * distant grove, void grove
+        */
+
         private static void ChangeProfile(string scenename)
         {
             ulong seed = (ulong)(Run.instance.GetStartTimeUtc().Ticks ^ (Run.instance.stageClearCount << 16));
@@ -181,6 +230,10 @@ namespace StageAesthetic
                                     TitanicPlains.SunrisePlains();
                                     break;
 
+                                case "sandy":
+                                    TitanicPlains.SandyPlains(fog);
+                                    break;
+
                                 default:
                                     AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                                     break;
@@ -242,7 +295,7 @@ namespace StageAesthetic
 
                                 case "void":
                                     rainCheck = true;
-                                    DistantRoost.VoidBeach(fog, cgrade);
+                                    DistantRoost.VoidBeach(fog, cgrade, VoidBeachTerrain, VoidBeachTerrain2, VoidBeachDetail, VoidBeachDetail2);
                                     break;
 
                                 default:
@@ -287,6 +340,11 @@ namespace StageAesthetic
                                     DistantRoost.FoggyBeach(fog, scenename, rain);
                                     break;
 
+                                case "gold":
+                                    rainCheck = true;
+                                    DistantRoost.GoldBeach(fog, cgrade, GoldBeachTerrain, GoldBeachTerrain2, GoldBeachDetail, GoldBeachDetail2);
+                                    break;
+
                                 default:
                                     AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                                     break;
@@ -326,6 +384,11 @@ namespace StageAesthetic
                                 case "crimson":
                                     purpleCheck = true;
                                     SiphonedForest.CrimsonForest(fog, cgrade);
+                                    break;
+
+                                case "morning":
+                                    purpleCheck = true;
+                                    SiphonedForest.MorningForest(fog, cgrade);
                                     break;
 
                                 default:
@@ -415,6 +478,11 @@ namespace StageAesthetic
                                     AbandonedAqueduct.NightAqueduct(fog, rain, cgrade);
                                     break;
 
+                                case "sundered":
+                                    rainCheck = true;
+                                    AbandonedAqueduct.SunderedAqueduct(fog, rain);
+                                    break;
+
                                 default:
                                     AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                                     break;
@@ -456,6 +524,11 @@ namespace StageAesthetic
                                     AphelianSanctuary.NightSanctuary(fog, cgrade);
                                     break;
 
+                                case "abyss":
+                                    purpleCheck = true;
+                                    AphelianSanctuary.AbyssalSanctuary(fog);
+                                    break;
+
                                 default:
                                     AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                                     break;
@@ -494,6 +567,10 @@ namespace StageAesthetic
                                     RallypointDelta.GreenWall(fog, cgrade);
                                     break;
 
+                                case "titanic":
+                                    RallypointDelta.TitanicWall(fog, cgrade);
+                                    break;
+
                                 default:
                                     AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                                     break;
@@ -524,7 +601,7 @@ namespace StageAesthetic
 
                                 case "sunset":
                                     purpleCheck = true;
-                                    ScorchedAcres.SunsetAcres(fog);
+                                    ScorchedAcres.SunsetAcres(fog, cgrade);
                                     break;
 
                                 case "night":
@@ -533,6 +610,18 @@ namespace StageAesthetic
 
                                 case "nothing":
                                     ScorchedAcres.OddAcres(fog);
+                                    break;
+
+                                case "beta":
+                                    ScorchedAcres.BetaAcres(fog);
+                                    break;
+
+                                case "beta2":
+                                    ScorchedAcres.BetaAcres2(fog);
+                                    break;
+
+                                case "twilight":
+                                    ScorchedAcres.TwilightAcres(fog);
                                     break;
 
                                 default:
@@ -559,6 +648,7 @@ namespace StageAesthetic
                             switch (sulfurArray[sulfurCounter])
                             {
                                 case "vanilla":
+                                    SulfurPools.VanillaPools();
                                     break;
 
                                 case "coralblue":
@@ -569,6 +659,11 @@ namespace StageAesthetic
                                 case "hell":
                                     purpleCheck = true;
                                     SulfurPools.HellOnEarthPools(fog);
+                                    break;
+
+                                case "void":
+                                    purpleCheck = true;
+                                    SulfurPools.VoidPools(fog, cgrade);
                                     break;
 
                                 default:
@@ -611,6 +706,11 @@ namespace StageAesthetic
                                     AbyssalDepths.MeadowCave(fog);
                                     break;
 
+                                case "coral":
+                                    purpleCheck = true;
+                                    AbyssalDepths.CoralCave(fog, cgrade);
+                                    break;
+
                                 default:
                                     AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                                     break;
@@ -648,6 +748,11 @@ namespace StageAesthetic
                                 case "storm":
                                     rainCheck = true;
                                     SirensCall.ShipDeluge(fog, rain);
+                                    break;
+
+                                case "aphelian":
+                                    rainCheck = true;
+                                    SirensCall.ShipAphelian(fog, cgrade);
                                     break;
 
                                 default:
@@ -914,6 +1019,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> RainyPlains { get; set; }
         public static ConfigEntry<bool> NightPlains { get; set; }
         public static ConfigEntry<bool> NostalgiaPlains { get; set; }
+        public static ConfigEntry<bool> SandyPlains { get; set; }
         public static ConfigEntry<int> PlainsBridge { get; set; }
 
         // Roost
@@ -924,12 +1030,14 @@ namespace StageAesthetic
         public static ConfigEntry<bool> NightRoost { get; set; }
         public static ConfigEntry<bool> FoggyRoost { get; set; }
         public static ConfigEntry<bool> VoidRoost { get; set; }
+        public static ConfigEntry<bool> GoldRoost { get; set; }
 
         // Siphoned
         public static ConfigEntry<bool> NightForest { get; set; }
 
         public static ConfigEntry<bool> ExtraSnowyForest { get; set; }
         public static ConfigEntry<bool> CrimsonForest { get; set; }
+        public static ConfigEntry<bool> MorningForest { get; set; }
         public static ConfigEntry<bool> VanillaForest { get; set; }
 
         // Wetland
@@ -947,6 +1055,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> NightAqueduct { get; set; }
         public static ConfigEntry<bool> RainyAqueduct { get; set; }
         public static ConfigEntry<bool> MistyAqueduct { get; set; }
+        public static ConfigEntry<bool> SunderedAqueduct { get; set; }
 
         // Aphelian
 
@@ -954,6 +1063,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> NearRainAphelian { get; set; }
         public static ConfigEntry<bool> SunsetterAphelian { get; set; }
         public static ConfigEntry<bool> NightAphelian { get; set; }
+        public static ConfigEntry<bool> AbyssalAphelian { get; set; }
 
         // Delta
         public static ConfigEntry<bool> VanillaDelta { get; set; }
@@ -961,6 +1071,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> NightDelta { get; set; }
         public static ConfigEntry<bool> FoggyDelta { get; set; }
         public static ConfigEntry<bool> PurpleDelta { get; set; }
+        public static ConfigEntry<bool> TitanicDelta { get; set; }
 
         // Acres
         public static ConfigEntry<bool> VanillaAcres { get; set; }
@@ -969,12 +1080,16 @@ namespace StageAesthetic
         public static ConfigEntry<bool> SunsetAcres { get; set; }
         public static ConfigEntry<bool> NightAcres { get; set; }
         public static ConfigEntry<bool> BlueAcres { get; set; }
+        public static ConfigEntry<bool> BetaAcres { get; set; }
+        public static ConfigEntry<bool> BetaAcres2 { get; set; }
+        public static ConfigEntry<bool> TwilightAcres { get; set; }
 
         // Sulfur
 
         public static ConfigEntry<bool> VanillaSulfur { get; set; }
         public static ConfigEntry<bool> CoralBlueSulfur { get; set; }
         public static ConfigEntry<bool> HellSulfur { get; set; }
+        public static ConfigEntry<bool> VoidSulfur { get; set; }
 
         // Depths
         public static ConfigEntry<bool> VanillaDepths { get; set; }
@@ -983,6 +1098,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> DarkDepths { get; set; }
         public static ConfigEntry<bool> SkyDepths { get; set; }
         public static ConfigEntry<bool> BlueDepths { get; set; }
+        public static ConfigEntry<bool> CoralDepths { get; set; }
 
         // Grove
         public static ConfigEntry<bool> VanillaGrove { get; set; }
@@ -997,6 +1113,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> NightSiren { get; set; }
         public static ConfigEntry<bool> SunnySiren { get; set; }
         public static ConfigEntry<bool> MistySiren { get; set; }
+        public static ConfigEntry<bool> AphelianSiren { get; set; }
 
         // Meadow
         public static ConfigEntry<bool> VanillaMeadow { get; set; }
