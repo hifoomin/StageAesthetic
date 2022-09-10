@@ -61,8 +61,9 @@ namespace StageAesthetic.Variants
 
         public static void AbyssalSanctuary(RampFog fog)
         {
-            Debug.Log("fog zero is " + fog.fogZero.value);
-            Debug.Log("fog one is " + fog.fogOne.value);
+            try { ApplyAbyssalMaterials(); } catch { SwapVariants.AesLog.LogError("Abyssal Sanctuary: Failed to change materials, trying again..."); } finally { ApplyAbyssalMaterials(); }
+            var cloud = GameObject.Find("Cloud3");
+            cloud.transform.localPosition = new Vector3(-22.8f, -70f, 46.7f);
             fog.fogColorStart.value = new Color32(102, 40, 64, 50);
             fog.fogColorMid.value = new Color32(89, 56, 65, 115);
             fog.fogColorEnd.value = new Color32(104, 32, 23, 255);
@@ -78,14 +79,53 @@ namespace StageAesthetic.Variants
             sun.SetActive(false);
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             var stupidList = Object.FindObjectsOfType(typeof(SkinnedMeshRenderer)) as SkinnedMeshRenderer[];
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                var meshParent = meshBase.transform.parent;
+                if (meshBase != null)
+                {
+                    if (meshParent != null)
+                    {
+                        bool biggerProps = meshBase.name.Contains("CirclePot") || meshBase.name.Contains("BrokenPot") || meshBase.name.Contains("Planter") || meshBase.name.Contains("AW_Cube") || meshBase.name.Contains("Mesh, Cube") || meshBase.name.Contains("AncientLoft_WaterFenceType") || meshBase.name.Contains("Tile") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Pillar") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Step") || meshBase.name.Equals("LightStatue") || meshBase.name.Equals("LightStatue_Stone") || meshBase.name.Equals("FountainLG") || meshBase.name.Equals("Shrine") || meshBase.name.Equals("Sculpture");
+                        if (biggerProps)
+                        {
+                            var light = meshBase.AddComponent<Light>();
+                            light.color = new Color32(249, 212, 96, 255);
+                            light.intensity = 10f;
+                            light.range = 30f;
+                        }
+                    }
+                }
+            }
+            foreach (SkinnedMeshRenderer smr in stupidList)
+            {
+                var meshBase = smr.gameObject;
+                if (meshBase != null)
+                {
+                    bool biggerProps = meshBase.name.Contains("CirclePot") || meshBase.name.Contains("Planter") || meshBase.name.Contains("AW_Cube") || meshBase.name.Contains("Mesh, Cube") || meshBase.name.Contains("AncientLoft_WaterFenceType") || meshBase.name.Contains("Tile") || meshBase.name.Contains("RuinBlock") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Pillar") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Step") || meshBase.name.Equals("LightStatue") || meshBase.name.Equals("LightStatue_Stone") || meshBase.name.Equals("FountainLG") || meshBase.name.Equals("Shrine") || meshBase.name.Equals("Sculpture");
+                    if (biggerProps)
+                    {
+                        var light = meshBase.AddComponent<Light>();
+                        light.color = new Color32(249, 212, 96, 255);
+                        light.intensity = 10f;
+                        light.range = 30f;
+                    }
+                }
+            }
+        }
+
+        public static void ApplyAbyssalMaterials()
+        {
+            var cloud = GameObject.Find("Cloud3");
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            var stupidList = Object.FindObjectsOfType(typeof(SkinnedMeshRenderer)) as SkinnedMeshRenderer[];
             var terrainMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainWalls.mat").WaitForCompletion();
             var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcavesimple/matDCBoulder.mat").WaitForCompletion());
             terrainMat2.color = new Color32(134, 134, 134, 255);
             var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGold.mat").WaitForCompletion();
             var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion();
-            var cloud = GameObject.Find("Cloud3");
             cloud.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            cloud.transform.localPosition = new Vector3(-22.8f, -70f, 46.7f);
             foreach (MeshRenderer mr in meshList)
             {
                 var meshBase = mr.gameObject;
@@ -139,13 +179,6 @@ namespace StageAesthetic.Variants
                         }
                         mr.sharedMaterials = sharedMaterials;
                     }
-                    if (biggerProps)
-                    {
-                        var light = meshBase.AddComponent<Light>();
-                        light.color = new Color32(249, 212, 96, 255);
-                        light.intensity = 10f;
-                        light.range = 30f;
-                    }
                     if (meshBase.name.Contains("SunCloud"))
                     {
                         meshBase.SetActive(false);
@@ -161,13 +194,6 @@ namespace StageAesthetic.Variants
                     if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rubble") || biggerProps)
                     {
                         smr.sharedMaterial = detailMat;
-                    }
-                    if (biggerProps)
-                    {
-                        var light = meshBase.AddComponent<Light>();
-                        light.color = new Color32(249, 212, 96, 255);
-                        light.intensity = 10f;
-                        light.range = 30f;
                     }
                 }
             }

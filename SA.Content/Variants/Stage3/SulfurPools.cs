@@ -49,6 +49,7 @@ namespace StageAesthetic.Variants
 
         public static void HellOnEarthPools(RampFog fog)
         {
+            try { ApplyHellMaterials(); } catch { SwapVariants.AesLog.LogError("Hell Pools: Failed to change materials, trying again..."); } finally { ApplyHellMaterials(); }
             fog.skyboxStrength.value = 0f;
 
             fog.fogColorStart.value = new Color32(45, 0, 0, 45);
@@ -77,31 +78,9 @@ namespace StageAesthetic.Variants
             fuckYou.transform.GetChild(12).gameObject.SetActive(false);
             fuckYou.transform.GetChild(13).gameObject.SetActive(false);
             GameObject.Find("SPCavePP").SetActive(false);
-            var terrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion();
-            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_DimondPattern.mat").WaitForCompletion();
-            var water = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Water.mat").WaitForCompletion();
             var terrain = GameObject.Find("mdlSPTerrain").transform;
-            var sphere = GameObject.Find("mdlSPSphere").transform;
             terrain.GetChild(0).localPosition = new Vector3(0f, 0f, -20f);
-            terrain.GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = water;
-            terrain.GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-            terrain.GetChild(4).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-            terrain.GetChild(7).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
-            terrain.GetChild(8).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
             terrain.GetChild(9).gameObject.SetActive(false);
-            terrain.GetChild(10).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
-            terrain.GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-            terrain.GetChild(13).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-            sphere.GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
-            sphere.GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
-            sphere.GetChild(4).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
-            sphere.GetChild(5).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
-            sphere.GetChild(6).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
-            sphere.GetChild(7).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-            sphere.GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-            sphere.GetChild(12).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
-            sphere.GetChild(13).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
-            sphere.GetChild(14).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
             GameObject.Find("HOLDER: SulfurPods").SetActive(false);
             string[] targets = { "SulfurPodBody(Clone)" };
             foreach (string name in targets)
@@ -212,6 +191,33 @@ namespace StageAesthetic.Variants
             waterRed.color = new Color32(178, 38, 171, 200);
             var waterYellow = GameObject.Find("meshSPWaterYellow").GetComponent<MeshRenderer>().sharedMaterial;
             waterYellow.color = new Color32(0, 184, 255, 212);
+        }
+
+        public static void ApplyHellMaterials()
+        {
+            var terrain = GameObject.Find("mdlSPTerrain").transform;
+            var sphere = GameObject.Find("mdlSPSphere").transform;
+            var terrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion();
+            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_DimondPattern.mat").WaitForCompletion();
+            var water = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Water.mat").WaitForCompletion();
+            terrain.GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = water;
+            terrain.GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            terrain.GetChild(4).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            terrain.GetChild(7).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
+            terrain.GetChild(8).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            terrain.GetChild(10).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
+            terrain.GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            terrain.GetChild(13).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            sphere.GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
+            sphere.GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
+            sphere.GetChild(4).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
+            sphere.GetChild(5).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
+            sphere.GetChild(6).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
+            sphere.GetChild(7).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            sphere.GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            sphere.GetChild(12).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
+            sphere.GetChild(13).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
+            sphere.GetChild(14).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat;
         }
     }
 }

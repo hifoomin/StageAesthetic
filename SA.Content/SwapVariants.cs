@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 using BepInEx.Configuration;
 using System.Collections.Generic;
 using StageAesthetic.Variants;
-using UnityEngine.AddressableAssets;
-using Object = UnityEngine.Object;
 
 namespace StageAesthetic
 {
@@ -16,41 +14,10 @@ namespace StageAesthetic
     {
         // materials sometimes break due to timing i believe, caching them here to prevent that sorta stuff
 
-        public static Material VoidBeachTerrain;
-        public static Material VoidBeachTerrain2;
-        public static Material VoidBeachDetail;
-        public static Material VoidBeachDetail2;
-        public static Material GoldBeachTerrain;
-        public static Material GoldBeachTerrain2;
-        public static Material GoldBeachDetail;
-        public static Material GoldBeachDetail2;
-
         public static void Initialize()
         {
             // Setting up config and hooks before the game is actually loaded
             Config.SetConfig();
-            // material setup
-
-            VoidBeachTerrain = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion());
-            VoidBeachTerrain.color = new Color32(188, 162, 162, 255);
-
-            VoidBeachTerrain2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
-            VoidBeachTerrain2.color = new Color32(188, 162, 162, 255);
-
-            VoidBeachDetail = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
-            VoidBeachDetail2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
-
-            GoldBeachTerrain = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
-            GoldBeachTerrain.color = new Color32(0, 0, 0, 204);
-
-            GoldBeachTerrain2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainWalls.mat").WaitForCompletion());
-            GoldBeachTerrain2.color = new Color32(0, 0, 0, 135);
-
-            GoldBeachDetail = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
-            GoldBeachDetail2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuins.mat").WaitForCompletion());
-            GoldBeachDetail2.color = new Color32(181, 66, 34, 255);
-
-            //
             On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
             SceneManager.sceneLoaded += TitlePicker;
             SceneCamera.onSceneCameraPreRender += RainCamera;
@@ -277,6 +244,7 @@ namespace StageAesthetic
                                 case "vanilla":
                                     if (scenename == "blackbeach2" && RoostChanges.Value) rainCheck = true;
                                     if (RoostChanges.Value) DistantRoost.VanillaBeach(rain, scenename);
+                                    DistantRoost.VanillaFoliage();
                                     break;
 
                                 case "night":
@@ -295,7 +263,7 @@ namespace StageAesthetic
 
                                 case "void":
                                     rainCheck = true;
-                                    DistantRoost.VoidBeach(fog, cgrade, VoidBeachTerrain, VoidBeachTerrain2, VoidBeachDetail, VoidBeachDetail2);
+                                    DistantRoost.VoidBeach(fog, cgrade);
                                     break;
 
                                 default:
@@ -324,6 +292,7 @@ namespace StageAesthetic
                                 case "vanilla":
                                     if (RoostChanges.Value) rainCheck = true;
                                     if (RoostChanges.Value) DistantRoost.VanillaBeach(rain, scenename);
+                                    DistantRoost.VanillaFoliage();
                                     break;
 
                                 case "night":
@@ -342,7 +311,7 @@ namespace StageAesthetic
 
                                 case "gold":
                                     rainCheck = true;
-                                    DistantRoost.GoldBeach(fog, cgrade, GoldBeachTerrain, GoldBeachTerrain2, GoldBeachDetail, GoldBeachDetail2);
+                                    DistantRoost.GoldBeach(fog, cgrade);
                                     break;
 
                                 default:

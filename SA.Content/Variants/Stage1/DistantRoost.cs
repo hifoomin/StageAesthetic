@@ -82,9 +82,9 @@ namespace StageAesthetic.Variants
             VanillaFoliage();
         }
 
-        public static void VoidBeach(RampFog fog, ColorGrading cgrade, Material terrainMat, Material terrainMat2, Material detailMat, Material detailMat2)
+        public static void VoidBeach(RampFog fog, ColorGrading cgrade)
         {
-            // Dark and purple, not much else to say here really
+            try { ApplyVoidMaterials(); } catch { SwapVariants.AesLog.LogError("Void Roost: Failed to change materials, trying again..."); } finally { ApplyVoidMaterials(); }
             fog.fogColorStart.value = new Color32(40, 19, 40, 32);
             fog.fogColorMid.value = new Color32(48, 25, 48, 255);
             fog.fogColorEnd.value = new Color32(61, 34, 58, 255);
@@ -100,6 +100,7 @@ namespace StageAesthetic.Variants
             sunLight.intensity = 1f;
             sunLight.shadowStrength = 0.45f;
             var lightList = UnityEngine.Object.FindObjectsOfType(typeof(Light)) as Light[];
+            var s = GameObject.Find("SKYBOX").transform;
             // Aiding visibility by increasing the lighting effect of the crystal pillars in both stages
             foreach (Light light in lightList)
             {
@@ -118,60 +119,12 @@ namespace StageAesthetic.Variants
                     }
                 }
             }
-            // var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion());
-            // terrainMat.color = new Color32(188, 162, 162, 255);
-            // var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
-            // terrainMat2.color = new Color32(188, 162, 162, 255);
-            // var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
-            // var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
-            GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-            GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            s.GetChild(19).GetChild(0).localPosition = new Vector3(0, 0, -10);
+
             GameObject.Find("HOLDER: Grass").SetActive(false);
             GameObject.Find("FOLIAGE").SetActive(false);
-            var s = GameObject.Find("SKYBOX").transform;
             s.GetChild(6).gameObject.SetActive(false);
             s.GetChild(11).gameObject.SetActive(false);
-            s.GetChild(19).GetChild(0).localPosition = new Vector3(0, 0, -10);
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
-            {
-                var meshBase = mr.gameObject;
-                if (meshBase != null)
-                {
-                    if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Step") || meshBase.name.Contains("Tile") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("Detail"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat;
-                        }
-                    }
-                    if (meshBase.name.Contains("Bowl") || meshBase.name.Contains("Marker") || meshBase.name.Contains("RuinPillar"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat2;
-                        }
-                    }
-                    if (meshBase.name.Contains("DistantPillar") || meshBase.name.Contains("Cliff") || meshBase.name.Contains("ClosePillar"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = terrainMat2;
-                        }
-                    }
-                    if (meshBase.name.Contains("Decal") || meshBase.name.Contains("spmBbFern2"))
-                    {
-                        meshBase.SetActive(false);
-                    }
-                    if (meshBase.name.Contains("GlowyBall"))
-                    {
-                        mr.sharedMaterial.color = new Color32(109, 58, 119, 140);
-                    }
-                }
-            }
-            var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
-            water.color = new Color32(0, 14, 255, 255);
-            s.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = water;
             VanillaFoliage();
         }
 
@@ -248,8 +201,9 @@ namespace StageAesthetic.Variants
             VanillaFoliage();
         }
 
-        public static void GoldBeach(RampFog fog, ColorGrading cgrade, Material terrainMat, Material terrainMat2, Material detailMat, Material detailMat2)
+        public static void GoldBeach(RampFog fog, ColorGrading cgrade)
         {
+            try { ApplyGoldMaterials(); } catch { SwapVariants.AesLog.LogError("Abyssal Roost: Failed to change materials, trying again..."); } finally { ApplyGoldMaterials(); }
             fog.fogColorStart.value = new Color32(84, 27, 27, 15);
             fog.fogColorMid.value = new Color32(91, 26, 26, 90);
             fog.fogColorEnd.value = new Color32(107, 23, 23, 225);
@@ -264,88 +218,34 @@ namespace StageAesthetic.Variants
             sunLight.color = new Color32(154, 46, 49, 255);
             sunLight.intensity = 1.6f;
             sunLight.shadowStrength = 1f;
-            // var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
-            // terrainMat.color = new Color32(0, 0, 0, 204);
-            // var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainWalls.mat").WaitForCompletion());
-            // terrainMat2.color = new Color32(0, 0, 0, 135);
-            // var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
-            // var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuins.mat").WaitForCompletion());
-            // detailMat2.color = new Color32(181, 66, 34, 255);
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
             {
                 var meshBase = mr.gameObject;
-                var meshParent = meshBase.transform.parent;
                 if (meshBase != null)
                 {
-                    if (meshParent != null)
-                    {
-                        if (meshParent.name.Contains("Pillar") && meshParent.transform.Find("Foam") != null)
-                        {
-                            meshParent.transform.Find("Foam").gameObject.SetActive(false);
-                        }
-                        if (meshParent.name.Contains("terrain") && meshBase.name.Contains("Pillar"))
-                        {
-                            mr.sharedMaterial = terrainMat;
-                        }
-                        if (meshParent.name.Equals("Foliage") && meshBase.name.Contains("bbSimpleGrassPrefab"))
-                        {
-                            meshBase.SetActive(false);
-                        }
-                    }
-                    if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Shelf"))
-                    {
-                        mr.sharedMaterial = terrainMat;
-                    }
                     if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("boulder") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Step") || meshBase.name.Contains("Tile") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Bowl") || meshBase.name.Contains("Marker") || meshBase.name.Contains("RuinPillar") || meshBase.name.Contains("DistantBridge"))
                     {
                         if (mr.sharedMaterial != null)
                         {
-                            mr.sharedMaterial = detailMat;
                             var light = meshBase.AddComponent<Light>();
                             light.color = new Color32(249, 212, 96, 255);
                             light.intensity = 10f;
                             light.range = 25f;
                         }
-                    }
-                    if (meshBase.name.Contains("Pebble"))
-                    {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("RuinGate") || meshBase.name.Contains("RuinArch"))
                         {
-                            mr.sharedMaterial = detailMat;
+                            if (mr.sharedMaterial != null)
+                            {
+                                var light = meshBase.AddComponent<Light>();
+                                light.color = new Color32(181, 66, 34, 255);
+                                light.intensity = 7.5f;
+                                light.range = 25f;
+                            }
                         }
-                    }
-                    if (meshBase.name.Contains("RuinGate") || meshBase.name.Contains("RuinArch"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat2;
-                            var light = meshBase.AddComponent<Light>();
-                            light.color = new Color32(181, 66, 34, 255);
-                            light.intensity = 7.5f;
-                            light.range = 25f;
-                        }
-                    }
-                    if (meshBase.name.Contains("DistantPillar") || meshBase.name.Contains("Cliff") || meshBase.name.Contains("ClosePillar"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = terrainMat2;
-                        }
-                    }
-                    if (meshBase.name.Contains("Decal") || meshBase.name.Contains("spmBbFern2"))
-                    {
-                        meshBase.SetActive(false);
-                    }
-                    if (meshBase.name.Contains("GlowyBall"))
-                    {
-                        mr.sharedMaterial.color = new Color32(109, 58, 119, 140);
                     }
                 }
             }
-            var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
-            water.color = new Color32(107, 23, 23, 255);
-            GameObject.Find("HOLDER: Water").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (Light light in lightList)
             {
@@ -550,6 +450,149 @@ namespace StageAesthetic.Variants
                     }
                 }
             }
+        }
+
+        public static void ApplyVoidMaterials()
+        {
+            var s = GameObject.Find("SKYBOX").transform;
+            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion());
+            terrainMat.color = new Color32(188, 162, 162, 255);
+            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
+            terrainMat2.color = new Color32(188, 162, 162, 255);
+            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
+            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
+            GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                if (meshBase != null)
+                {
+                    if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Step") || meshBase.name.Contains("Tile") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("Detail"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detailMat;
+                        }
+                    }
+                    if (meshBase.name.Contains("Bowl") || meshBase.name.Contains("Marker") || meshBase.name.Contains("RuinPillar"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detailMat2;
+                        }
+                    }
+                    if (meshBase.name.Contains("DistantPillar") || meshBase.name.Contains("Cliff") || meshBase.name.Contains("ClosePillar"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = terrainMat2;
+                        }
+                    }
+                    if (meshBase.name.Contains("Decal") || meshBase.name.Contains("spmBbFern2"))
+                    {
+                        meshBase.SetActive(false);
+                    }
+                    if (meshBase.name.Contains("GlowyBall"))
+                    {
+                        mr.sharedMaterial.color = new Color32(109, 58, 119, 140);
+                    }
+                }
+            }
+            var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
+            water.color = new Color32(0, 14, 255, 255);
+            s.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = water;
+        }
+
+        public static void ApplyGoldMaterials()
+        {
+            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
+            terrainMat.color = new Color32(0, 0, 0, 204);
+            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainWalls.mat").WaitForCompletion());
+            terrainMat2.color = new Color32(0, 0, 0, 135);
+            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
+            var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuins.mat").WaitForCompletion());
+            detailMat2.color = new Color32(181, 66, 34, 255);
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                var meshParent = meshBase.transform.parent;
+                if (meshBase != null)
+                {
+                    if (meshParent != null)
+                    {
+                        if (meshParent.name.Contains("Pillar") && meshParent.transform.Find("Foam") != null)
+                        {
+                            meshParent.transform.Find("Foam").gameObject.SetActive(false);
+                        }
+                        if (meshParent.name.Contains("terrain") && meshBase.name.Contains("Pillar"))
+                        {
+                            mr.sharedMaterial = terrainMat;
+                        }
+                        if (meshParent.name.Equals("Foliage") && meshBase.name.Contains("bbSimpleGrassPrefab"))
+                        {
+                            meshBase.SetActive(false);
+                        }
+                    }
+                    if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Shelf"))
+                    {
+                        mr.sharedMaterial = terrainMat;
+                    }
+                    if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("boulder") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Step") || meshBase.name.Contains("Tile") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Bowl") || meshBase.name.Contains("Marker") || meshBase.name.Contains("RuinPillar") || meshBase.name.Contains("DistantBridge"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detailMat;
+                            /*
+                            var light = meshBase.AddComponent<Light>();
+                            light.color = new Color32(249, 212, 96, 255);
+                            light.intensity = 10f;
+                            light.range = 25f;
+                            */
+                        }
+                    }
+                    if (meshBase.name.Contains("Pebble"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detailMat;
+                        }
+                    }
+                    if (meshBase.name.Contains("RuinGate") || meshBase.name.Contains("RuinArch"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = detailMat2;
+                            /*
+                            var light = meshBase.AddComponent<Light>();
+                            light.color = new Color32(181, 66, 34, 255);
+                            light.intensity = 7.5f;
+                            light.range = 25f;
+                            */
+                        }
+                    }
+                    if (meshBase.name.Contains("DistantPillar") || meshBase.name.Contains("Cliff") || meshBase.name.Contains("ClosePillar"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = terrainMat2;
+                        }
+                    }
+                    if (meshBase.name.Contains("Decal") || meshBase.name.Contains("spmBbFern2"))
+                    {
+                        meshBase.SetActive(false);
+                    }
+                    if (meshBase.name.Contains("GlowyBall"))
+                    {
+                        mr.sharedMaterial.color = new Color32(109, 58, 119, 140);
+                    }
+                }
+            }
+            var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
+            water.color = new Color32(107, 23, 23, 255);
+            GameObject.Find("HOLDER: Water").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
         }
     }
 }

@@ -118,7 +118,7 @@ namespace StageAesthetic.Variants
 
         public static void CoralCave(RampFog fog, ColorGrading cgrade)
         {
-            Debug.Log("CORAL CAVE");
+            try { ApplyCoralMaterials(); } catch { SwapVariants.AesLog.LogError("Coral Depths: Failed to change materials, trying again..."); } finally { ApplyCoralMaterials(); }
             fog.fogColorStart.value = new Color32(127, 70, 206, 20);
             fog.fogColorMid.value = new Color32(206, 70, 127, 33);
             fog.fogColorEnd.value = new Color32(190, 99, 136, 130);
@@ -127,6 +127,29 @@ namespace StageAesthetic.Variants
             sunLight.color = new Color32(204, 173, 186, 255);
             sunLight.intensity = 3f;
             sunLight.shadowStrength = 0.7f;
+            var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
+            foreach (Light l in lightList)
+            {
+                if (l != null && !l.name.Contains("Light (SUN)"))
+                {
+                    l.color = new Color32(255, 221, 0, 255);
+                    l.intensity = 50f;
+                    l.range = 30f;
+                }
+                if (l.gameObject.GetComponent<FlickerLight>() != null)
+                {
+                    l.gameObject.GetComponent<FlickerLight>().enabled = false;
+                }
+            }
+            GameObject.Find("DCPPInTunnels").SetActive(false);
+        }
+
+        private static Color coral;
+        private static Color chain;
+        private static Color crystal;
+
+        public static void ApplyCoralMaterials()
+        {
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTerrain2.mat").WaitForCompletion());
             terrainMat.color = new Color32(128, 125, 216, 234);
             var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTerrain.mat").WaitForCompletion());
@@ -135,7 +158,6 @@ namespace StageAesthetic.Variants
             detailMat.color = new Color32(49, 0, 255, 255);
             var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGoldArcaneFlare.mat").WaitForCompletion();
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (MeshRenderer mr in meshList)
             {
                 var meshBase = mr.gameObject;
@@ -200,24 +222,6 @@ namespace StageAesthetic.Variants
                     }
                 }
             }
-            foreach (Light l in lightList)
-            {
-                if (l != null && !l.name.Contains("Light (SUN)"))
-                {
-                    l.color = new Color32(255, 221, 0, 255);
-                    l.intensity = 50f;
-                    l.range = 30f;
-                }
-                if (l.gameObject.GetComponent<FlickerLight>() != null)
-                {
-                    l.gameObject.GetComponent<FlickerLight>().enabled = false;
-                }
-            }
-            GameObject.Find("DCPPInTunnels").SetActive(false);
         }
-
-        private static Color coral;
-        private static Color chain;
-        private static Color crystal;
     }
 }

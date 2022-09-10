@@ -47,6 +47,7 @@ namespace StageAesthetic.Variants
 
         public static void TitanicWall(RampFog fog, ColorGrading cgrade)
         {
+            try { ApplyTitanicMaterials(); } catch { SwapVariants.AesLog.LogError("Titanic Delta: Failed to change materials, trying again..."); } finally { ApplyTitanicMaterials(); }
             fog.fogColorStart.value = new Color32(116, 153, 173, 12);
             fog.fogColorMid.value = new Color32(88, 130, 153, 45);
             fog.fogColorEnd.value = new Color32(79, 140, 173, 255);
@@ -57,6 +58,24 @@ namespace StageAesthetic.Variants
             GameObject.Find("Directional Light (SUN)").SetActive(false);
             sunLight.color = new Color32(255, 212, 153, 255);
             sunLight.intensity = 2f;
+            var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
+            foreach (Light light in lightList)
+            {
+                var lightBase = light.gameObject;
+                if (lightBase != null && !lightBase.name.Contains("Light (SUN)"))
+                {
+                    light.color = new Color32(255, 185, 0, 255);
+                    light.intensity = 0.08f;
+                    light.range = 4f;
+                }
+            }
+            GameObject.Find("CAMERA PARTICLES: SnowParticles").SetActive(false);
+            GameObject.Find("STATIC PARTICLES: Cave Entrance System").SetActive(false);
+            GameObject.Find("HOLDER: ShippingCenter").transform.GetChild(3).gameObject.SetActive(false);
+        }
+
+        public static void ApplyTitanicMaterials()
+        {
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPTerrain.mat").WaitForCompletion());
             terrainMat.color = new Color32(0, 2, 185, 245);
             var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPBoulderMossyProjected.mat").WaitForCompletion());
@@ -107,21 +126,7 @@ namespace StageAesthetic.Variants
                     }
                 }
             }
-            var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
-            foreach (Light light in lightList)
-            {
-                var lightBase = light.gameObject;
-                if (lightBase != null && !lightBase.name.Contains("Light (SUN)"))
-                {
-                    light.color = new Color32(255, 185, 0, 255);
-                    light.intensity = 0.08f;
-                    light.range = 4f;
-                }
-            }
-            GameObject.Find("CAMERA PARTICLES: SnowParticles").SetActive(false);
-            GameObject.Find("STATIC PARTICLES: Cave Entrance System").SetActive(false);
             GameObject.Find("HOLDER: Skybox").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
-            GameObject.Find("HOLDER: ShippingCenter").transform.GetChild(3).gameObject.SetActive(false);
         }
     }
 }

@@ -152,10 +152,11 @@ namespace StageAesthetic.Variants
 
         public static void ShipAphelian(RampFog fog, ColorGrading cgrade)
         {
+            try { ApplyAphelianMaterials(); } catch { SwapVariants.AesLog.LogError("Sirens Sanctuary: Failed to change materials, trying again..."); } finally { ApplyAphelianMaterials(); }
             fog.fogColorStart.value = new Color32(122, 69, 56, 5);
             fog.fogColorMid.value = new Color32(122, 69, 56, 35);
             fog.fogColorEnd.value = new Color32(91, 52, 42, 255);
-            //  cgrade.colorFilter.value = new Color32(7, 0, 140, 10);
+            // cgrade.colorFilter.value = new Color32(7, 0, 140, 10);
             // cgrade.colorFilter.overrideState = true;
             fog.skyboxStrength.value = 0f;
             fog.fogOne.value = 0.085f;
@@ -164,6 +165,54 @@ namespace StageAesthetic.Variants
             sunLight.shadowStrength = 0.8f;
             sunLight.color = new Color32(221, 174, 167, 255);
             sunLight.transform.eulerAngles = new Vector3(20f, 79.13635f, 97.21165f);
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                if (meshBase != null)
+                {
+                    if (meshBase.name.Contains("Ship"))
+                    {
+                        var light = meshBase.AddComponent<Light>();
+                        light.color = new Color32(255, 235, 223, 255);
+                        light.range = 40f;
+                        light.intensity = 2.7f;
+                    }
+                    if (meshBase.name.Contains("Grass"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial.color = new Color32(83, 99, 103, 220);
+                            if (mr.sharedMaterials.Length >= 2)
+                            {
+                                mr.sharedMaterials[1].color = new Color32(176, 124, 59, 106);
+                            }
+                        }
+                    }
+                    if (meshBase.name.Contains("DanglingMoss"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial.color = new Color32(232, 193, 75, 139);
+                        }
+                    }
+
+                    if (meshBase.name.Contains("Hologram"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            var light = meshBase.AddComponent<Light>();
+                            light.color = new Color32(251, 181, 56, 255);
+                            light.range = 40f;
+                            light.intensity = 15f;
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void ApplyAphelianMaterials()
+        {
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion());
             terrainMat.color = new Color32(138, 176, 167, 255);
             var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Temple.mat").WaitForCompletion());
@@ -198,32 +247,10 @@ namespace StageAesthetic.Variants
                     if (meshBase.name.Contains("Ship"))
                     {
                         mr.sharedMaterial = detailMat;
-                        var light = meshBase.AddComponent<Light>();
-                        light.color = new Color32(255, 235, 223, 255);
-                        light.range = 40f;
-                        light.intensity = 2.7f;
                     }
                     if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Boulder"))
                     {
                         mr.sharedMaterial = detailMat2;
-                    }
-                    if (meshBase.name.Contains("Grass"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial.color = new Color32(83, 99, 103, 220);
-                            if (mr.sharedMaterials.Length >= 2)
-                            {
-                                mr.sharedMaterials[1].color = new Color32(176, 124, 59, 106);
-                            }
-                        }
-                    }
-                    if (meshBase.name.Contains("DanglingMoss"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial.color = new Color32(232, 193, 75, 139);
-                        }
                     }
 
                     if (meshBase.name.Contains("Hologram"))
@@ -231,10 +258,6 @@ namespace StageAesthetic.Variants
                         if (mr.sharedMaterial != null)
                         {
                             mr.sharedMaterial = detailMat3;
-                            var light = meshBase.AddComponent<Light>();
-                            light.color = new Color32(251, 181, 56, 255);
-                            light.range = 40f;
-                            light.intensity = 15f;
                         }
                     }
                 }

@@ -15,7 +15,6 @@ namespace StageAesthetic.Variants
             var sunLight = GameObject.Find("Directional Light").GetComponent<Light>();
             sunLight.color = new Color32(92, 43, 102, 255);
             sunLight.intensity = 2f;
-            Debug.Log("purple locus");
         }
 
         public static void BlueLocus(RampFog fog, ColorGrading cgrade)
@@ -28,7 +27,6 @@ namespace StageAesthetic.Variants
             var sunLight = GameObject.Find("Directional Light").GetComponent<Light>();
             sunLight.color = new Color32(30, 28, 99, 255);
             sunLight.intensity = 2.6f;
-            Debug.Log("blue locus");
         }
 
         public static void PinkLocus(RampFog fog, ColorGrading cgrade)
@@ -41,7 +39,6 @@ namespace StageAesthetic.Variants
             var sunLight = GameObject.Find("Directional Light").GetComponent<Light>();
             sunLight.color = new Color32(96, 32, 47, 255);
             sunLight.intensity = 2.1f;
-            Debug.Log("red locus");
         }
     }
 }

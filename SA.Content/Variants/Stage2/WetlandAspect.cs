@@ -89,6 +89,9 @@ namespace StageAesthetic.Variants
 
         public static void VoidSwamp(RampFog fog)
         {
+            try { ApplyVoidMaterials(); } catch { SwapVariants.AesLog.LogError("Void Aspect: Failed to change materials, trying again..."); } finally { ApplyVoidMaterials(); }
+            var s = GameObject.Find("HOLDER: Skybox").transform;
+            s.GetChild(0).localPosition = new Vector3(24.45f, -50f, -84.87f);
             fog.fogColorStart.value = new Color32(62, 12, 62, 87);
             fog.fogColorMid.value = new Color32(66, 29, 74, 173);
             fog.fogColorEnd.value = new Color32(82, 24, 89, 255);
@@ -101,13 +104,24 @@ namespace StageAesthetic.Variants
             caveOuter.fogColorStart.value = new Color32(62, 12, 120, 0);
             caveOuter.fogColorMid.value = new Color32(66, 29, 132, 89);
             caveOuter.fogColorEnd.value = new Color32(187, 145, 238, 255);
+            var terrain = GameObject.Find("HOLDER: Hero Assets").transform;
+            terrain.GetChild(4).localPosition = new Vector3(-23.9f, -149.9f, 119f);
+            GameObject.Find("HOLDER: Hidden Altar Stuff").transform.GetChild(1).gameObject.SetActive(false);
+            var r = GameObject.Find("HOLDER: Ruin Pieces").transform;
+            r.GetChild(22).gameObject.SetActive(false);
+            GameObject.Find("HOLDER: Foliage").SetActive(false);
+        }
+
+        public static void ApplyVoidMaterials()
+        {
+            var s = GameObject.Find("HOLDER: Skybox").transform;
+            var terrain = GameObject.Find("HOLDER: Hero Assets").transform;
             var vfm = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion();
             var vfme = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
             vfme.color = new Color32(171, 167, 234, 132);
             var vfmg = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
             var vfmh = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
             var vfmt = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTrim.mat").WaitForCompletion();
-            var terrain = GameObject.Find("HOLDER: Hero Assets").transform;
             terrain.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = vfme;
             terrain.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = vfme;
             terrain.GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = vfme;
@@ -116,7 +130,6 @@ namespace StageAesthetic.Variants
             water.color = new Color32(82, 24, 109, 255);
             terrain.GetChild(4).GetComponent<MeshRenderer>().sharedMaterial = water;
             terrain.GetChild(5).GetComponent<MeshRenderer>().sharedMaterial = water;
-            terrain.GetChild(4).localPosition = new Vector3(-23.9f, -149.9f, 119f);
             terrain.GetChild(6).GetComponent<MeshRenderer>().sharedMaterial = vfm;
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
@@ -166,13 +179,7 @@ namespace StageAesthetic.Variants
                     }
                 }
             }
-            var s = GameObject.Find("HOLDER: Skybox").transform;
-            s.GetChild(0).localPosition = new Vector3(24.45f, -50f, -84.87f);
             s.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
-            GameObject.Find("HOLDER: Hidden Altar Stuff").transform.GetChild(1).gameObject.SetActive(false);
-            var r = GameObject.Find("HOLDER: Ruin Pieces").transform;
-            r.GetChild(22).gameObject.SetActive(false);
-            GameObject.Find("HOLDER: Foliage").SetActive(false);
             GameObject.Find("HOLDER: Ruin Pieces").transform.GetChild(6).gameObject.GetComponent<MeshRenderer>().sharedMaterial = vfmt;
         }
     }
