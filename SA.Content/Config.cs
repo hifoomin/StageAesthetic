@@ -4,6 +4,10 @@ using System.Text;
 using BepInEx.Configuration;
 using BepInEx;
 using RoR2;
+using RiskOfOptions;
+using RiskOfOptions.Options;
+using RiskOfOptions.OptionConfigs;
+using UnityEngine;
 
 namespace StageAesthetic
 {
@@ -97,6 +101,7 @@ namespace StageAesthetic
             StormyMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Stormy Meadow?", true, "");
             CrimsonMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Abyssal Meadow?", true, "");
             TitanicMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Titanic Meadow?", true, "");
+            SandyMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Sandy Meadow?", true, "");
             MeadowChanges = AesConfig.Bind("Stages ::::: Sky Meadow", "Alter vanilla Sky Meadow?", true, "Makes the sun a slightly more intense yellow-orange.");
 
             CommencementAlt = AesConfig.Bind("Stages :::::: Commencement", "Commencement alt?", true, "");
@@ -112,6 +117,53 @@ namespace StageAesthetic
 
             TitleScene = AesConfig.Bind("Stages Title", "Alter title screen?", true, "Adds rain, patches of grass, particles and brings a Commando closer to focus.");
             WeatherEffects = AesConfig.Bind("Stages Weather", "Import weather effects?", true, "Hooks into SceneCamera to import rain and ember effects into stages that normally don't have them. Disabling this is recommended if performance is an issue or if playing Starstorm 2, as it overlaps with the latter's weather.");
+
+            var tabID = 0;
+            foreach (ConfigEntryBase ceb in AesConfig.GetConfigEntries())
+            {
+                var Name = ceb.Definition.Section;
+                string displayName;
+                if (Name.Contains("Plains") || Name.Contains("Roost") || Name.Contains("Forest"))
+                {
+                    tabID = 1;
+                    displayName = "Stage 1";
+                    ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + displayName);
+                }
+                if (Name.Contains("Aphelian") || Name.Contains("Wetland") || Name.Contains("Aqueduct"))
+                {
+                    tabID = 2;
+                    Name = "Stage 2";
+                    ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + Name);
+                }
+                if (Name.Contains("Delta") || Name.Contains("Acres") || Name.Contains("Pools"))
+                {
+                    tabID = 3;
+                    Name = "Stage 3";
+                    ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + Name);
+                }
+                if (Name.Contains("Depths") || Name.Contains("Grove") || Name.Contains("Call"))
+                {
+                    tabID = 4;
+                    Name = "Stage 4";
+                    ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + Name);
+                }
+                if (Name.Contains("Meadow"))
+                {
+                    tabID = 5;
+                    Name = "Stage 5";
+                    ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + Name);
+                }
+                if (Name.Contains("Commencement") || Name.Contains("Locus") || Name.Contains("Planetarium") || Name.Contains("Title") || Name.Contains("Weather"))
+                {
+                    tabID = 6;
+                    Name = "Special";
+                    ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + Name);
+                }
+                if (ceb.DefaultValue.GetType() == typeof(bool))
+                {
+                    ModSettingsManager.AddOption(new CheckBoxOption((ConfigEntry<bool>)ceb, new CheckBoxConfig() { restartRequired = true }), "StageAesthetic.TabID." + tabID, "SA: " + Name);
+                }
+            }
         }
 
         public static void ApplyConfig(Run obj)
@@ -280,6 +332,7 @@ namespace StageAesthetic
             if (StormyMeadow.Value) meadowList.Add("storm");
             if (CrimsonMeadow.Value) meadowList.Add("abyss");
             if (TitanicMeadow.Value) meadowList.Add("titanic");
+            if (SandyMeadow.Value) meadowList.Add("sandy");
             if (meadowList.Count == 0)
             {
                 AesLog.LogWarning("Sky Meadow list empty - adding vanilla...");

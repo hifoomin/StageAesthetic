@@ -36,7 +36,8 @@ namespace StageAesthetic.Variants
             cgrade.colorFilter.overrideState = true;
             fog.skyboxStrength.value = 0;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(209, 119, 47, 255);
+            sunLight.color = new Color32(221, 151, 104, 255);
+            sunLight.intensity = 1.3f;
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             var caveInner = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("NonBlended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(127, 124, 84, 0);

@@ -58,6 +58,14 @@ click me
 ![16](https://cdn.discordapp.com/attachments/874994540992421898/1017910196489703485/unknown.png)
 </details>
 
+# 0.7.0 Patch Notes
+- Tweaked Sunrise Plains, Sunset Aspect, Night Aqueduct, Sundered Aqueduct, Misty Aqueduct, Night Delta, Night Depths, Coral Depths, Crimson Meadow and Titanic Meadow
+- Added Risk of Options support
+- Added Sandy Meadow
+- Renamed Blue Depths to Night Depths
+- Add more aqueduct, rallypoint, grove and commencement variants
+- Add weights instead of on/offs and make vanilla rarer
+
 # 0.6.0 Patch Notes
 - Tweaked Crimson Forest, Night Sanctuary, Sunset Acres, Olive Grove and Crimson Meadow
 - Added Morning Forest

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.ComponentModel;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 
@@ -24,24 +25,23 @@ namespace StageAesthetic.Variants
 
         public static void DarkAqueduct(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(43, 23, 12, 144);
-            fog.fogColorMid.value = new Color32(56, 30, 19, 195);
-            fog.fogColorEnd.value = new Color32(66, 41, 29, 255);
-            fog.skyboxStrength.value = 0.06f;
-            fog.fogOne.value = 0.152f;
+            fog.fogColorStart.value = new Color32(51, 27, 58, 65);
+            fog.fogColorMid.value = new Color32(27, 11, 33, 165);
+            fog.fogColorEnd.value = new Color32(63, 24, 15, 255);
+            fog.skyboxStrength.value = 0f;
+            fog.fogOne.value = 0.2f;
             Transform base1 = GameObject.Find("HOLDER: Misc Props").transform;
             GameObject.Find("HOLDER: Warning Flags").SetActive(false);
             base1.Find("Warning Signs").gameObject.SetActive(true);
-            var lightBase = GameObject.Find("Weather, Goolake").transform;
-            var sunTransform = lightBase.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(190, 162, 154, 255);
-            sunLight.intensity = 0.8f;
-            sunLight.shadowStrength = 0.6f;
+            var sun = GameObject.Find("Directional Light (SUN)");
+            var newSun = Object.Instantiate(sun).GetComponent<Light>();
+            sun.SetActive(false);
+            newSun.intensity = 1.6f;
+            newSun.color = new Color32(113, 45, 21, 255);
             var CaveFog = GameObject.Find("GLUndergroundPPVolume").GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
-            CaveFog.fogColorStart.value = new Color32(53, 29, 16, 124);
-            CaveFog.fogColorMid.value = new Color32(68, 37, 25, 186);
-            CaveFog.fogColorEnd.value = new Color32(79, 51, 37, 255);
+            CaveFog.fogColorStart.value = new Color32(67, 35, 76, 65);
+            CaveFog.fogColorMid.value = new Color32(41, 17, 51, 165);
+            CaveFog.fogColorEnd.value = new Color32(84, 31, 20, 255);
             LightChanges("dark");
             VanillaFoliage();
         }
@@ -156,7 +156,7 @@ namespace StageAesthetic.Variants
 
         private static Color chain;
 
-        public static void SunderedAqueduct(RampFog fog, GameObject rain)
+        public static void SunderedAqueduct(RampFog fog, GameObject rain, ColorGrading cgrade)
         {
             try { ApplySunderedMaterials(); } catch { SwapVariants.AesLog.LogError("Sundered Aqueduct: Failed to change materials, trying again..."); } finally { ApplySunderedMaterials(); }
             fog.fogColorStart.value = new Color32(85, 49, 99, 35);
@@ -202,6 +202,7 @@ namespace StageAesthetic.Variants
             GameObject.Find("GLUndergroundPPVolume").SetActive(false);
             var caveLight = GameObject.Find("AmbientLight").GetComponent<Light>();
             caveLight.color = new Color32(150, 29, 119, 255);
+            cgrade.saturation.value = -2f;
             SunderedFoliage();
         }
 
@@ -255,7 +256,7 @@ namespace StageAesthetic.Variants
                     {
                         mr.sharedMaterial = terrainMat2;
                     }
-                    if (meshBase.name.Contains("SandstonePillar") || meshBase.name.Contains("Dam") || meshBase.name.Contains("AqueductFullLong"))
+                    if (meshBase.name.Contains("SandstonePillar") || meshBase.name.Contains("Dam") || meshBase.name.Contains("AqueductFullLong") || meshBase.name.Contains("AqueductPartial"))
                     {
                         mr.sharedMaterial = detailMat2;
                     }
@@ -266,6 +267,15 @@ namespace StageAesthetic.Variants
                     if (meshBase.name.Contains("FlagPoleMesh") || meshBase.name.Contains("RuinTile"))
                     {
                         mr.sharedMaterial = detailMat3;
+                    }
+                    if (meshBase.name.Contains("AqueductCap"))
+                    {
+                        var sharedMaterials = mr.sharedMaterials;
+                        for (int i = 0; i < sharedMaterials.Length; i++)
+                        {
+                            sharedMaterials[i] = detailMat2;
+                        }
+                        mr.sharedMaterials = sharedMaterials;
                     }
                 }
             }

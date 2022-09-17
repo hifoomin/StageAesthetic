@@ -194,7 +194,7 @@ namespace StageAesthetic
                                     break;
 
                                 case "sunrise":
-                                    TitanicPlains.SunrisePlains();
+                                    TitanicPlains.SunrisePlains(fog);
                                     break;
 
                                 case "sandy":
@@ -449,7 +449,7 @@ namespace StageAesthetic
 
                                 case "sundered":
                                     rainCheck = true;
-                                    AbandonedAqueduct.SunderedAqueduct(fog, rain);
+                                    AbandonedAqueduct.SunderedAqueduct(fog, rain, cgrade);
                                     break;
 
                                 default:
@@ -529,11 +529,12 @@ namespace StageAesthetic
                                     break;
 
                                 case "foggy":
-                                    RallypointDelta.OceanWall(fog);
+                                    rainCheck = true;
+                                    RallypointDelta.OceanWall(fog, rain);
                                     break;
 
                                 case "green":
-                                    RallypointDelta.GreenWall(fog, cgrade);
+                                    RallypointDelta.GreenWall(fog);
                                     break;
 
                                 case "titanic":
@@ -797,7 +798,8 @@ namespace StageAesthetic
                                     break;
 
                                 case "storm":
-                                    SkyMeadow.StormyMeadow(fog);
+                                    rainCheck = true;
+                                    SkyMeadow.StormyMeadow(fog, rain);
                                     break;
 
                                 case "abyss":
@@ -808,6 +810,11 @@ namespace StageAesthetic
                                 case "titanic":
                                     emberCheck = true;
                                     SkyMeadow.TitanicMeadow(fog);
+                                    break;
+
+                                case "sandy":
+                                    emberCheck = true;
+                                    SkyMeadow.SandyMeadow(fog);
                                     break;
 
                                 default:
@@ -1092,6 +1099,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> StormyMeadow { get; set; }
         public static ConfigEntry<bool> CrimsonMeadow { get; set; }
         public static ConfigEntry<bool> TitanicMeadow { get; set; }
+        public static ConfigEntry<bool> SandyMeadow { get; set; }
 
         // Void Locus
         public static ConfigEntry<bool> VanillaLocus { get; set; }

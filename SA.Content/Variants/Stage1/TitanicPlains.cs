@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using static UnityEngine.RemoteConfigSettingsHelper;
 
 namespace StageAesthetic.Variants
 {
@@ -95,14 +96,37 @@ namespace StageAesthetic.Variants
             Object.Instantiate(rain, Vector3.zero, Quaternion.identity);
         }
 
-        public static void SunrisePlains()
+        public static void SunrisePlains(RampFog fog)
         {
+            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPTerrainBlender.mat").WaitForCompletion());
+            terrainMat.color = new Color32(138, 152, 168, 255);
+            fog.fogZero.value = 0.5f;
+            fog.fogColorStart.value = new Color32(117, 186, 255, 5);
+            fog.fogColorMid.value = new Color32(124, 159, 255, 75);
+            fog.fogColorEnd.value = new Color32(101, 151, 216, 255);
+            fog.skyboxStrength.value = 0.05f;
             var lightBase = GameObject.Find("Weather, Golemplains").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(178, 218, 255, 255);
-            sunLight.intensity = 1.5f;
-            sunTransform.localEulerAngles = new Vector3(33, 267, 277);
+            sunLight.color = new Color32(175, 218, 242, 255);
+            sunLight.intensity = 1.2f;
+            sunLight.shadowStrength = 1f;
+            sunTransform.localEulerAngles = new Vector3(60, 20, 277);
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                if (meshBase != null)
+                {
+                    if (meshBase.name.Contains("Terrain"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial = terrainMat;
+                        }
+                    }
+                }
+            }
         }
 
         public static void NostalgiaPlains(RampFog fog)

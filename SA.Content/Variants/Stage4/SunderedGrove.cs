@@ -38,13 +38,18 @@ namespace StageAesthetic.Variants
 
         public static void StormJungle(RampFog fog, GameObject rain, ColorGrading cgrade)
         {
+            var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
+            var sunTransform = lightBase.Find("Directional Light (SUN)");
+            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
+            sunLight.color = new Color32(203, 221, 243, 255);
+            sunLight.intensity = 3f;
             fog.fogColorStart.value = new Color32(44, 45, 58, 17);
             fog.fogColorMid.value = new Color32(46, 50, 60, 132);
             fog.fogColorEnd.value = new Color32(76, 81, 84, 255);
             fog.fogZero.value = -0.04f;
             fog.fogOne.value = 0.095f;
             fog.skyboxStrength.value = 0.126f;
-            cgrade.colorFilter.value = new Color32(130, 156, 146, 255);
+            cgrade.colorFilter.value = new Color32(148, 206, 183, 255);
             cgrade.colorFilter.overrideState = true;
             if (Config.WeatherEffects.Value)
             {

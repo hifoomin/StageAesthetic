@@ -16,19 +16,19 @@ namespace StageAesthetic.Variants
 
         public static void HiveCave(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(63, 38, 70, 84);
-            fog.fogColorMid.value = new Color32(53, 86, 65, 205);
-            fog.fogColorEnd.value = new Color32(51, 96, 46, 255);
+            fog.fogColorStart.value = new Color32(67, 43, 68, 84);
+            fog.fogColorMid.value = new Color32(44, 28, 45, 205);
+            fog.fogColorEnd.value = new Color32(14, 9, 15, 255);
             fog.fogOne.value = 0.129f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(202, 161, 201, 255);
-            sunLight.intensity = 0.5f;
+            sunLight.color = new Color32(222, 127, 236, 255);
+            sunLight.intensity = 3f;
             sunLight.shadowStrength = 0.3f;
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveFog.fogColorStart.value = new Color32(58, 35, 60, 80);
             caveFog.fogColorMid.value = new Color32(44, 74, 55, 184);
             caveFog.fogColorEnd.value = new Color32(40, 68, 53, 255);
-            cgrade.colorFilter.value = new Color32(192, 100, 208, 255);
+            cgrade.colorFilter.value = new Color32(84, 84, 173, 255);
             cgrade.colorFilter.overrideState = true;
             // Lighting: Magenta coral, orange otherwise
             LightChange("hive");
@@ -123,6 +123,7 @@ namespace StageAesthetic.Variants
             fog.fogColorMid.value = new Color32(206, 70, 127, 33);
             fog.fogColorEnd.value = new Color32(190, 99, 136, 130);
             cgrade.colorFilter.value = new Color32(255, 255, 255, 22);
+            Debug.Log("satur is + " + cgrade.saturation.value);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(204, 173, 186, 255);
             sunLight.intensity = 3f;
@@ -132,7 +133,7 @@ namespace StageAesthetic.Variants
             {
                 if (l != null && !l.name.Contains("Light (SUN)"))
                 {
-                    l.color = new Color32(255, 221, 0, 255);
+                    l.color = new Color32(216, 192, 32, 255);
                     l.intensity = 50f;
                     l.range = 30f;
                 }
