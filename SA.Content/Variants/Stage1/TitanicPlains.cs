@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 using static UnityEngine.RemoteConfigSettingsHelper;
+using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants
 {
@@ -96,39 +98,6 @@ namespace StageAesthetic.Variants
             Object.Instantiate(rain, Vector3.zero, Quaternion.identity);
         }
 
-        public static void SunrisePlains(RampFog fog)
-        {
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPTerrainBlender.mat").WaitForCompletion());
-            terrainMat.color = new Color32(138, 152, 168, 255);
-            fog.fogZero.value = 0.5f;
-            fog.fogColorStart.value = new Color32(117, 186, 255, 5);
-            fog.fogColorMid.value = new Color32(124, 159, 255, 75);
-            fog.fogColorEnd.value = new Color32(101, 151, 216, 255);
-            fog.skyboxStrength.value = 0.05f;
-            var lightBase = GameObject.Find("Weather, Golemplains").transform;
-            var sunTransform = lightBase.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(175, 218, 242, 255);
-            sunLight.intensity = 1.2f;
-            sunLight.shadowStrength = 1f;
-            sunTransform.localEulerAngles = new Vector3(60, 20, 277);
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
-            {
-                var meshBase = mr.gameObject;
-                if (meshBase != null)
-                {
-                    if (meshBase.name.Contains("Terrain"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = terrainMat;
-                        }
-                    }
-                }
-            }
-        }
-
         public static void NostalgiaPlains(RampFog fog)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
@@ -161,52 +130,85 @@ namespace StageAesthetic.Variants
             var detail3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
             var tar = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolake.mat").WaitForCompletion();
             GameObject.Find("FOLIAGE: Grass").SetActive(false);
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
+            var water = GameObject.Find("HOLDER: Water").transform.GetChild(0);
+            water.localPosition = new Vector3(-564.78f, -170f, 133.4f);
+            water.localScale = new Vector3(200f, 200f, 200f);
+            if (terrainMat && detail && detail2 && detail3 && tar)
             {
-                var meshBase = mr.gameObject;
-                if (meshBase != null)
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshBase.name.Contains("Terrain"))
+                    var meshBase = mr.gameObject;
+                    if (meshBase != null)
                     {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("Terrain"))
                         {
-                            mr.sharedMaterial = terrainMat;
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat;
+                                    break;
+                            }
                         }
-                    }
-                    if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("mdlGeyser"))
-                    {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("mdlGeyser"))
                         {
-                            mr.sharedMaterial = detail;
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detail; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detail;
+                                    break;
+                            }
                         }
-                    }
-                    if (meshBase.name.Contains("Ring"))
-                    {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("Ring"))
                         {
-                            mr.sharedMaterial = detail2;
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detail2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detail2;
+                                    break;
+                            }
                         }
-                    }
-                    if (meshBase.name.Contains("Block") || meshBase.name.Contains("MiniBridge") || meshBase.name.Contains("Circle"))
-                    {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("Block") || meshBase.name.Contains("MiniBridge") || meshBase.name.Contains("Circle"))
                         {
-                            mr.sharedMaterial = detail3;
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detail3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detail3;
+                                    break;
+                            }
                         }
-                    }
-                    if (meshBase.name.Contains("Plane1x1x100x100"))
-                    {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("Plane1x1x100x100"))
                         {
-                            mr.sharedMaterial = tar;
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = tar; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = tar;
+                                    break;
+                            }
                         }
                     }
                 }
             }
-            var water = GameObject.Find("HOLDER: Water").transform.GetChild(0);
-            water.localPosition = new Vector3(-564.78f, -170f, 133.4f);
-            water.localScale = new Vector3(200f, 200f, 200f);
         }
     }
 }

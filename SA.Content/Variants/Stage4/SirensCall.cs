@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants
 {
@@ -222,42 +224,99 @@ namespace StageAesthetic.Variants
             var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_StoneSurface.mat").WaitForCompletion());
             detailMat2.color = new Color32(178, 127, 68, 159);
             var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/MajorAndMinorConstruct/matMajorConstructDefenseMatrixEdges.mat").WaitForCompletion();
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
+            if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3)
             {
-                var meshBase = mr.gameObject;
-                var meshParent = meshBase.transform.parent;
-                if (meshBase != null)
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshParent != null)
+                    var meshBase = mr.gameObject;
+                    var meshParent = meshBase.transform.parent;
+                    if (meshBase != null)
                     {
-                        if ((meshBase.name.Contains("Spikes") || meshBase.name.Contains("Stalactite") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Level Wall") || meshBase.name.Contains("Mesh")) && (meshParent.name.Contains("Cave") || meshParent.name.Contains("Terrain") || meshParent.name.Contains("Stalagmite")))
+                        if (meshParent != null)
                         {
-                            mr.sharedMaterial = terrainMat2;
-                        }
-                    }
-                    if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Cave") || meshBase.name.Contains("Floor"))
-                    {
-                        mr.sharedMaterial = terrainMat;
-                    }
-                    if (meshBase.name.Contains("Spikes") || meshBase.name.Contains("Stalactite") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Level Wall") || meshBase.name.Contains("mdlGeyser"))
-                    {
-                        mr.sharedMaterial = terrainMat2;
-                    }
-                    if (meshBase.name.Contains("Ship"))
-                    {
-                        mr.sharedMaterial = detailMat;
-                    }
-                    if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Boulder"))
-                    {
-                        mr.sharedMaterial = detailMat2;
-                    }
+                            if ((meshBase.name.Contains("Spikes") || meshBase.name.Contains("Stalactite") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Level Wall") || meshBase.name.Contains("Mesh")) && (meshParent.name.Contains("Cave") || meshParent.name.Contains("Terrain") || meshParent.name.Contains("Stalagmite")))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
 
-                    if (meshBase.name.Contains("Hologram"))
-                    {
-                        if (mr.sharedMaterial != null)
+                                    default:
+                                        mr.sharedMaterial = terrainMat2;
+                                        break;
+                                }
+                            }
+                        }
+                        if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Cave") || meshBase.name.Contains("Floor"))
                         {
-                            mr.sharedMaterial = detailMat3;
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("Spikes") || meshBase.name.Contains("Stalactite") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Level Wall") || meshBase.name.Contains("mdlGeyser"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat2;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("Ship"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Boulder"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat2;
+                                    break;
+                            }
+                        }
+
+                        if (meshBase.name.Contains("Hologram"))
+                        {
+                            if (mr.sharedMaterial != null)
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat3;
+                                        break;
+                                }
+                            }
                         }
                     }
                 }

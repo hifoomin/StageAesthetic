@@ -123,65 +123,68 @@ namespace StageAesthetic.Variants
             var vfmg = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
             var vfmh = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
             var vfmt = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTrim.mat").WaitForCompletion();
-            terrain.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = vfme;
-            terrain.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = vfme;
-            terrain.GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = vfme;
-            terrain.GetChild(3).GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = vfme;
             var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Water.mat").WaitForCompletion());
             water.color = new Color32(82, 24, 109, 255);
-            terrain.GetChild(4).GetComponent<MeshRenderer>().sharedMaterial = water;
-            terrain.GetChild(5).GetComponent<MeshRenderer>().sharedMaterial = water;
-            terrain.GetChild(6).GetComponent<MeshRenderer>().sharedMaterial = vfm;
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
+            if (vfm && vfme && vfmg && vfmh && vfmt && water)
             {
-                var meshBase = mr.gameObject;
-                if (meshBase != null)
+                terrain.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = vfme;
+                terrain.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = vfme;
+                terrain.GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = vfme;
+                terrain.GetChild(3).GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = vfme;
+                terrain.GetChild(4).GetComponent<MeshRenderer>().sharedMaterial = water;
+                terrain.GetChild(5).GetComponent<MeshRenderer>().sharedMaterial = water;
+                terrain.GetChild(6).GetComponent<MeshRenderer>().sharedMaterial = vfm;
+                s.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
+                GameObject.Find("HOLDER: Ruin Pieces").transform.GetChild(6).gameObject.GetComponent<MeshRenderer>().sharedMaterial = vfmt;
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("Blender") || meshBase.name.Contains("Trunk") || meshBase.name.Contains("Door") || meshBase.name.Contains("Frame"))
+                    var meshBase = mr.gameObject;
+                    if (meshBase != null)
                     {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("Blender") || meshBase.name.Contains("Trunk") || meshBase.name.Contains("Door") || meshBase.name.Contains("Frame"))
                         {
-                            mr.sharedMaterial = vfmg;
-                            if (meshBase.transform.GetComponentInChildren<MeshRenderer>() != null)
+                            if (mr.sharedMaterial != null)
                             {
-                                meshBase.transform.GetComponentInChildren<MeshRenderer>().sharedMaterial = vfmg;
+                                mr.sharedMaterial = vfmg;
+                                if (meshBase.transform.GetComponentInChildren<MeshRenderer>() != null)
+                                {
+                                    meshBase.transform.GetComponentInChildren<MeshRenderer>().sharedMaterial = vfmg;
+                                }
                             }
                         }
-                    }
 
-                    var meshParent = meshBase.transform.parent;
-                    if (meshParent != null)
-                    {
-                        if (meshBase.name.Contains("Mesh") && (meshParent.name.Contains("FSTree") || meshParent.name.Contains("FSRootBundle")))
+                        var meshParent = meshBase.transform.parent;
+                        if (meshParent != null)
                         {
-                            mr.sharedMaterial = vfmh;
+                            if (meshBase.name.Contains("Mesh") && (meshParent.name.Contains("FSTree") || meshParent.name.Contains("FSRootBundle")))
+                            {
+                                mr.sharedMaterial = vfmh;
+                            }
+                            if (meshBase.name.Contains("Mesh") && meshParent.name.Contains("FSRuinPillar"))
+                            {
+                                mr.sharedMaterial = vfmg;
+                            }
+                            if ((meshBase.name.Contains("RootBundleLargeCards") || meshBase.name.Contains("RootBundleSmallCards")) && (meshParent.name.Contains("FSRootBundleLarge") || meshParent.name.Contains("FSRootBundleSmall")))
+                            {
+                                meshBase.gameObject.SetActive(false);
+                            }
+                            if ((meshBase.name.Contains("RootBundleLarge_LOD0") || meshBase.name.Contains("RootBundleLarge_LOD1") || meshBase.name.Contains("RootBundleLarge_LOD2") || meshBase.name.Contains("RootBundleSmall_LOD0") || meshBase.name.Contains("RootBundleSmall_LOD1") || meshBase.name.Contains("RootBundleSmall_LOD2")) && (meshParent.name.Contains("FSRootBundleLarge") || meshParent.name.Contains("FSRootBundleSmall")))
+                            {
+                                mr.sharedMaterial = vfmg;
+                            }
                         }
-                        if (meshBase.name.Contains("Mesh") && meshParent.name.Contains("FSRuinPillar"))
-                        {
-                            mr.sharedMaterial = vfmg;
-                        }
-                        if ((meshBase.name.Contains("RootBundleLargeCards") || meshBase.name.Contains("RootBundleSmallCards")) && (meshParent.name.Contains("FSRootBundleLarge") || meshParent.name.Contains("FSRootBundleSmall")))
-                        {
-                            meshBase.gameObject.SetActive(false);
-                        }
-                        if ((meshBase.name.Contains("RootBundleLarge_LOD0") || meshBase.name.Contains("RootBundleLarge_LOD1") || meshBase.name.Contains("RootBundleLarge_LOD2") || meshBase.name.Contains("RootBundleSmall_LOD0") || meshBase.name.Contains("RootBundleSmall_LOD1") || meshBase.name.Contains("RootBundleSmall_LOD2")) && (meshParent.name.Contains("FSRootBundleLarge") || meshParent.name.Contains("FSRootBundleSmall")))
-                        {
-                            mr.sharedMaterial = vfmg;
-                        }
-                    }
 
-                    if (meshBase.name.Contains("Ruin") && meshBase.name != "FSGiantRuinDoorCollision")
-                    {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("Ruin") && meshBase.name != "FSGiantRuinDoorCollision")
                         {
-                            mr.sharedMaterial = vfmh;
+                            if (mr.sharedMaterial != null)
+                            {
+                                mr.sharedMaterial = vfmh;
+                            }
                         }
                     }
                 }
             }
-            s.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
-            GameObject.Find("HOLDER: Ruin Pieces").transform.GetChild(6).gameObject.GetComponent<MeshRenderer>().sharedMaterial = vfmt;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using RoR2;
+using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants
 {
@@ -158,67 +160,106 @@ namespace StageAesthetic.Variants
             var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJRock.mat").WaitForCompletion());
             detailMat.color = new Color32(49, 0, 255, 255);
             var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGoldArcaneFlare.mat").WaitForCompletion();
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
+            if (terrainMat && terrainMat2 && detailMat && detailMat3)
             {
-                var meshBase = mr.gameObject;
-                var meshParent = meshBase.transform.parent;
-                if (meshBase != null)
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshParent != null)
+                    var meshBase = mr.gameObject;
+                    var meshParent = meshBase.transform.parent;
+                    if (meshBase != null)
                     {
-                        if (meshBase.name.Contains("Mesh") && meshParent.name.Contains("Ruin"))
+                        if (meshParent != null)
+                        {
+                            if (meshBase.name.Contains("Mesh") && meshParent.name.Contains("Ruin"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("RuinBowl") && meshParent.name.Contains("RuinMarker"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat;
+                                        break;
+                                }
+                            }
+                        }
+                        if (meshBase.name.Contains("Hero") || meshBase.name.Contains("Wall") || meshBase.name.Contains("Ceiling"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("Ruin") || meshBase.name.Contains("Column") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Coral") || meshBase.name.Contains("Heatvent") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("GiantRock") || meshBase.name.Contains("Stalagmite"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("Crystal"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat3;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("LightMesh"))
                         {
                             if (mr.sharedMaterial != null)
                             {
-                                mr.sharedMaterial = detailMat;
+                                mr.sharedMaterial = detailMat3;
+                                if (meshBase.transform.childCount >= 1 && meshBase.transform.GetChild(0).name.Contains("Crystal"))
+                                {
+                                    meshBase.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = detailMat3;
+                                }
                             }
                         }
-                        if (meshBase.name.Contains("RuinBowl") && meshParent.name.Contains("RuinMarker"))
+                        if (meshBase.name.Contains("GiantStoneSlab") || meshBase.name.Contains("TerrainBackwall") || meshBase.name.Contains("Chain"))
                         {
-                            if (mr.sharedMaterial != null)
+                            switch (mr.sharedMaterial)
                             {
-                                mr.sharedMaterial = detailMat;
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat2;
+                                    break;
                             }
-                        }
-                    }
-                    if (meshBase.name.Contains("Hero") || meshBase.name.Contains("Wall") || meshBase.name.Contains("Ceiling"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = terrainMat;
-                        }
-                    }
-                    if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("Ruin") || meshBase.name.Contains("Column") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Coral") || meshBase.name.Contains("Heatvent") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("GiantRock") || meshBase.name.Contains("Stalagmite"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat;
-                        }
-                    }
-                    if (meshBase.name.Contains("Crystal"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat3;
-                        }
-                    }
-                    if (meshBase.name.Contains("LightMesh"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat3;
-                            if (meshBase.transform.childCount >= 1 && meshBase.transform.GetChild(0).name.Contains("Crystal"))
-                            {
-                                meshBase.transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = detailMat3;
-                            }
-                        }
-                    }
-                    if (meshBase.name.Contains("GiantStoneSlab") || meshBase.name.Contains("TerrainBackwall") || meshBase.name.Contains("Chain"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = terrainMat2;
                         }
                     }
                 }

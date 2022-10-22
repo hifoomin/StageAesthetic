@@ -107,5 +107,7 @@ namespace StageAesthetic.Variants
             cgrade.colorFilter.overrideState = true;
             sunLight.transform.localEulerAngles = new Vector3(40, 153.0076f, 50f);
         }
+
+
     }
 }

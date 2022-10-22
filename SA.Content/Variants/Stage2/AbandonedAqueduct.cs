@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants
 {
@@ -242,40 +244,106 @@ namespace StageAesthetic.Variants
             var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidstage/matVoidMetalTrimGrassy.mat").WaitForCompletion());
             detailMat2.color = new Color32(130, 61, 74, 150);
             var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTree.mat").WaitForCompletion();
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
+            if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3)
             {
-                var meshBase = mr.gameObject;
-                if (meshBase != null)
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshBase.name.Contains("Terrain"))
+                    var meshBase = mr.gameObject;
+                    if (meshBase != null)
                     {
-                        mr.sharedMaterial = terrainMat;
-                    }
-                    if (meshBase.name.Contains("SandDune"))
-                    {
-                        mr.sharedMaterial = terrainMat2;
-                    }
-                    if (meshBase.name.Contains("SandstonePillar") || meshBase.name.Contains("Dam") || meshBase.name.Contains("AqueductFullLong") || meshBase.name.Contains("AqueductPartial"))
-                    {
-                        mr.sharedMaterial = detailMat2;
-                    }
-                    if ((meshBase.name.Contains("Bridge") && !meshBase.name.Contains("Decal") || meshBase.name.Contains("RuinedRing") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Eel")))
-                    {
-                        mr.sharedMaterial = detailMat;
-                    }
-                    if (meshBase.name.Contains("FlagPoleMesh") || meshBase.name.Contains("RuinTile"))
-                    {
-                        mr.sharedMaterial = detailMat3;
-                    }
-                    if (meshBase.name.Contains("AqueductCap"))
-                    {
-                        var sharedMaterials = mr.sharedMaterials;
-                        for (int i = 0; i < sharedMaterials.Length; i++)
+                        if (meshBase.name.Contains("Terrain"))
                         {
-                            sharedMaterials[i] = detailMat2;
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat;
+                                    break;
+                            }
                         }
-                        mr.sharedMaterials = sharedMaterials;
+                        if (meshBase.name.Contains("SandDune"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat2;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("SandstonePillar") || meshBase.name.Contains("Dam") || meshBase.name.Contains("AqueductFullLong") || meshBase.name.Contains("AqueductPartial"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat2;
+                                    break;
+                            }
+                        }
+                        if ((meshBase.name.Contains("Bridge") && !meshBase.name.Contains("Decal") || meshBase.name.Contains("RuinedRing") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Eel")))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("FlagPoleMesh") || meshBase.name.Contains("RuinTile"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat3;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("AqueductCap"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try
+                                    {
+                                        var sharedMaterials = mr.sharedMaterials;
+                                        for (int i = 0; i < sharedMaterials.Length; i++)
+                                        {
+                                            sharedMaterials[i] = detailMat2;
+                                        }
+                                        mr.sharedMaterials = sharedMaterials; ;
+                                    }
+                                    catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    var sharedMaterials2 = mr.sharedMaterials;
+                                    for (int i = 0; i < sharedMaterials2.Length; i++)
+                                    {
+                                        sharedMaterials2[i] = detailMat2;
+                                    }
+                                    mr.sharedMaterials = sharedMaterials2;
+                                    break;
+                            }
+                        }
                     }
                 }
             }

@@ -1,7 +1,10 @@
 ﻿using IL.RoR2;
+using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Experimental.AI;
 using UnityEngine.Rendering.PostProcessing;
+using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants
 {
@@ -50,7 +53,7 @@ namespace StageAesthetic.Variants
             sunLight.color = new Color32(142, 156, 202, 255);
             sunLight.intensity = 0.6f;
             sunLight.shadowStrength = 0.3f;
-            if (Config.WeatherEffects.Value)
+            if (SwapVariants.WeatherEffects.Value)
             {
                 var rainParticle = rain.GetComponent<ParticleSystem>();
                 var epic = rainParticle.emission;
@@ -87,28 +90,252 @@ namespace StageAesthetic.Variants
             VanillaFoliage();
         }
 
-        public static void EpicMeadow(RampFog fog, ColorGrading cgrade)
+        public static void AbyssalMeadow(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(56, 8, 6, 91);
-            fog.fogColorMid.value = new Color32(32, 4, 56, 198);
-            fog.fogColorEnd.value = new Color(0.059f, 0f, 0f, 1);
-            fog.fogZero.value = -0.04f;
-            fog.fogOne.value = 0.27f;
+            cgrade.SetAllOverridesTo(true);
+            cgrade.colorFilter.value = new Color32(185, 185, 185, 255);
+            cgrade.saturation.value = -8f;
+            fog.fogColorStart.value = new Color32(255, 100, 175, 0);
+            fog.fogColorMid.value = new Color32(145, 69, 50, 13);
+            fog.fogColorEnd.value = new Color32(105, 25, 38, 228);
+            fog.fogZero.value = -0.1f;
+            fog.fogOne.value = 0.12f;
             fog.skyboxStrength.value = 0.05f;
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
-            var sunTransform = lightBase.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(255, 0, 0, 255);
-            sunLight.intensity = 2.5f;
-            sunLight.shadowStrength = 0.6f;
+            GameObject.Find("HOLDER: Terrain").transform.GetChild(1).gameObject.SetActive(false);
+            var sun = lightBase.GetChild(0).GetComponent<Light>();
+            sun.color = new Color32(195, 46, 48, 255);
+            sun.intensity = 1.7f;
+            sun.shadowStrength = 0.75f;
             lightBase.Find("CameraRelative").Find("SmallStars").gameObject.SetActive(true);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("ShatteredMoonMesh").gameObject.SetActive(false);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("MoonMesh").gameObject.SetActive(true);
-            cgrade.colorFilter.value = new Color(1, 0.632f, 0.471f);
-            cgrade.contrast.value = 18f;
-            cgrade.brightness.value = 14f;
-            GameObject.Find("Cloud Floor").SetActive(false);
-            VanillaFoliage();
+            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainFloor.mat").WaitForCompletion());
+            terrainMat.color = new Color32(255, 255, 255, 213);
+            var terrainMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion();
+            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
+            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
+            var detailMat3 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetConstructionDestroyed.mat").WaitForCompletion());
+            detailMat3.color = new Color32(255, 136, 103, 255);
+            var detailMat4 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetMetalMilitaryEmission.mat").WaitForCompletion();
+            var detailMat5 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCCoralActive.mat").WaitForCompletion());
+            detailMat5.color = new Color32(255, 10, 0, 255);
+            var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Cleanse/matWaterPack.mat").WaitForCompletion());
+            water.color = new Color32(217, 0, 255, 255);
+            var r = GameObject.Find("HOLDER: Randomization").transform;
+            var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0);
+            if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && detailMat4 && detailMat5 && water)
+            {
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
+                {
+                    var meshBase = mr.gameObject;
+                    var meshParent = meshBase.transform.parent;
+                    if (meshBase != null)
+                    {
+                        if (meshParent != null)
+                        {
+                            if (meshBase.name.Contains("Plateau") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("FORMATION"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = terrainMat;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13") || meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground") || meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent") || meshBase.name.Contains("BbRuinPillar"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks") || meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat2;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("Terrain") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("Plateau Under") && meshParent.name.Contains("Underground"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = terrainMat2;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("Base") && meshParent.name.Contains("PowerCoil") || meshBase.name.Contains("InteractableMesh") && meshParent.name.Contains("PortalDialerButton"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat4;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("Coil") && meshParent.name.Contains("PowerCoil"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat5; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat5;
+                                        break;
+                                }
+                            }
+                        }
+                        if (meshBase.name.Contains("SMPebble") || meshBase.name.Contains("mdlGeyser"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("SMSpikeBridge"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat2;
+                                    break;
+                            }
+                        }
+
+                        if (meshBase.name.Contains("PowerLine") || meshBase.name.Contains("MegaTeleporter") || meshBase.name.Contains("BbRuinGateDoor") || meshBase.name.Contains("BbRuinArch"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat3;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("HumanCrate") || meshBase.name.Contains("BbRuinPillar"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat4;
+                                    break;
+                            }
+                        }
+                    }
+                }
+                GameObject.Find("HOLDER: Terrain").transform.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+                btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                GameObject.Find("Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+                try { GameObject.Find("Plateau 13 (1)").GetComponent<MeshRenderer>().sharedMaterial = terrainMat; } catch { }
+                // Plateau Tall
+
+                r.GetChild(0).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(0).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+
+                // Plateau 6
+
+                r.GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(1).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(1).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(1).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+
+                // Plateau 9
+
+                r.GetChild(2).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(2).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(2).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+
+                // Plateau 11
+
+                r.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+
+                // Plateau 13
+
+                r.GetChild(4).GetChild(1).GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+
+                // Plateau 15
+
+                r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(5).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                var floor = lightBase.GetChild(6);
+                floor.localScale = new Vector3(4000f, 4000f, 4000f);
+                floor.gameObject.GetComponent<MeshRenderer>().sharedMaterial = water;
+            }
+
+            GameObject.Find("HOLDER: Mauling Rocks").SetActive(false);
+            btp.GetChild(3).gameObject.SetActive(false);
+            btp.GetChild(4).gameObject.SetActive(false);
+            btp.GetChild(5).gameObject.SetActive(false);
+            btp.GetChild(2).GetChild(1).gameObject.SetActive(false);
+            btp.GetChild(2).GetChild(2).gameObject.SetActive(false);
+            btp.GetChild(2).GetChild(3).gameObject.SetActive(false);
+            btp.GetChild(2).GetChild(4).gameObject.SetActive(false);
+            btp.GetChild(2).GetChild(5).gameObject.SetActive(false);
+            btp.GetChild(1).GetChild(9).gameObject.SetActive(false);
+
+            GameObject.Find("GROUP: Large Flowers").SetActive(false);
+            GameObject.Find("FORMATION (5)").transform.localPosition = new Vector3(-140f, -6.08f, 491.99f);
+
+            // can i even do a for loop here? seems really complicated lol
+
+            AbyssalFoliage();
         }
 
         public static void TitanicMeadow(RampFog fog)
@@ -125,94 +352,201 @@ namespace StageAesthetic.Variants
             var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimsheetGraveyardProps.mat").WaitForCompletion();
             var detailMat4 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetMetalMilitaryEmission.mat").WaitForCompletion();
             var detailMat5 = Addressables.LoadAssetAsync<Material>("RoR2/Junk/AncientWisp/matAncientWillowispSpiral.mat").WaitForCompletion();
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
+            var r = GameObject.Find("HOLDER: Randomization").transform;
+            var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0);
+            if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && detailMat4 && detailMat5)
             {
-                var meshBase = mr.gameObject;
-                var meshParent = meshBase.transform.parent;
-                if (meshBase != null)
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshParent != null)
+                    var meshBase = mr.gameObject;
+                    var meshParent = meshBase.transform.parent;
+                    if (meshBase != null)
                     {
-                        if ((meshBase.name.Contains("Plateau") && meshParent.name.Contains("skymeadow_terrain")) || (meshBase.name.Contains("SMRock") && meshParent.name.Contains("FORMATION")))
+                        if (meshParent != null)
                         {
-                            if (mr.sharedMaterial != null)
+                            if (meshBase.name.Contains("Plateau") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("FORMATION"))
                             {
-                                mr.sharedMaterial = terrainMat;
-                            }
-                        }
-                        if ((meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks")) || (meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13")) || (meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground")) || (meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent")))
-                        {
-                            if (mr.sharedMaterial != null)
-                            {
-                                mr.sharedMaterial = detailMat;
-                            }
-                        }
-                        if ((meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks")) || (meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground")))
-                        {
-                            if (mr.sharedMaterial != null)
-                            {
-                                mr.sharedMaterial = detailMat2;
-                            }
-                        }
-                        if ((meshBase.name.Contains("Terrain") && meshParent.name.Contains("skymeadow_terrain")) || (meshBase.name.Contains("Plateau Under") && meshParent.name.Contains("Underground")))
-                        {
-                            if (mr.sharedMaterial != null)
-                            {
-                                mr.sharedMaterial = terrainMat2;
-                            }
-                        }
-                        if ((meshBase.name.Contains("Base") && meshParent.name.Contains("PowerCoil")) || (meshBase.name.Contains("InteractableMesh") && meshParent.name.Contains("PortalDialerButton")))
-                        {
-                            if (mr.sharedMaterial != null)
-                            {
-                                mr.sharedMaterial = detailMat4;
-                            }
-                        }
-                        if (meshBase.name.Contains("Coil") && meshParent.name.Contains("PowerCoil"))
-                        {
-                            if (mr.sharedMaterial != null)
-                            {
-                                mr.sharedMaterial = detailMat5;
-                            }
-                        }
-                    }
-                    if (meshBase.name.Contains("SMPebble") || meshBase.name.Contains("mdlGeyser"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat;
-                        }
-                    }
-                    if (meshBase.name.Contains("SMSpikeBridge"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat2;
-                        }
-                    }
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
 
-                    if (meshBase.name.Contains("PowerLine") || meshBase.name.Contains("MegaTeleporter") || meshBase.name.Contains("BbRuinGateDoor") || meshBase.name.Contains("BbRuinArch"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat3;
+                                    default:
+                                        mr.sharedMaterial = terrainMat;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13") || meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground") || meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks") || meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat2;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("Terrain") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("Plateau Under") && meshParent.name.Contains("Underground"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = terrainMat2;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("Base") && meshParent.name.Contains("PowerCoil") || meshBase.name.Contains("InteractableMesh") && meshParent.name.Contains("PortalDialerButton"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat4;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("Coil") && meshParent.name.Contains("PowerCoil"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat5; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat5;
+                                        break;
+                                }
+                            }
                         }
-                    }
-                    if (meshBase.name.Contains("HumanCrate") || meshBase.name.Contains("BbRuinPillar"))
-                    {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("SMPebble") || meshBase.name.Contains("mdlGeyser"))
                         {
-                            mr.sharedMaterial = detailMat4;
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("SMSpikeBridge"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat2;
+                                    break;
+                            }
+                        }
+
+                        if (meshBase.name.Contains("PowerLine") || meshBase.name.Contains("MegaTeleporter") || meshBase.name.Contains("BbRuinGateDoor") || meshBase.name.Contains("BbRuinArch"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat3;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("HumanCrate") || meshBase.name.Contains("BbRuinPillar"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat4;
+                                    break;
+                            }
                         }
                     }
                 }
+                GameObject.Find("HOLDER: Terrain").transform.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+                btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                GameObject.Find("Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+                try { GameObject.Find("Plateau 13 (1)").GetComponent<MeshRenderer>().sharedMaterial = terrainMat; } catch { }
+                // Plateau Tall
+
+                r.GetChild(0).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(0).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+
+                // Plateau 6
+
+                r.GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(1).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(1).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(1).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+
+                // Plateau 9
+
+                r.GetChild(2).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(2).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(2).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+
+                // Plateau 11
+
+                r.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+
+                // Plateau 13
+
+                r.GetChild(4).GetChild(1).GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+
+                // Plateau 15
+
+                r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(5).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
             }
 
-            GameObject.Find("HOLDER: Terrain").transform.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
             GameObject.Find("HOLDER: Mauling Rocks").SetActive(false);
-            var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0);
-            btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
             btp.GetChild(3).gameObject.SetActive(false);
             btp.GetChild(4).gameObject.SetActive(false);
             btp.GetChild(5).gameObject.SetActive(false);
@@ -222,56 +556,11 @@ namespace StageAesthetic.Variants
             btp.GetChild(2).GetChild(4).gameObject.SetActive(false);
             btp.GetChild(2).GetChild(5).gameObject.SetActive(false);
             btp.GetChild(1).GetChild(9).gameObject.SetActive(false);
-            GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            GameObject.Find("Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-            try { GameObject.Find("Plateau 13 (1)").GetComponent<MeshRenderer>().sharedMaterial = terrainMat; } catch { }
+
             GameObject.Find("GROUP: Large Flowers").SetActive(false);
             GameObject.Find("FORMATION (5)").transform.localPosition = new Vector3(-140f, -6.08f, 491.99f);
 
-            var r = GameObject.Find("HOLDER: Randomization").transform;
-
             // can i even do a for loop here? seems really complicated lol
-
-            // Plateau Tall
-
-            r.GetChild(0).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(0).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-
-            // Plateau 6
-
-            r.GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(1).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(1).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(1).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-
-            // Plateau 9
-
-            r.GetChild(2).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(2).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(2).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-
-            // Plateau 11
-
-            r.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-
-            // Plateau 13
-
-            r.GetChild(4).GetChild(1).GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-
-            // Plateau 15
-
-            r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(5).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(5).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
 
             TitanicFoliage();
         }
@@ -286,7 +575,8 @@ namespace StageAesthetic.Variants
             // var detail3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeTerrain.mat").WaitForCompletion());
             terrainMat.color = new Color32(230, 223, 174, 219);
-            var terrainMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion();
+            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion());
+            terrainMat2.color = new Color32(255, 188, 160, 223);
             var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimSandy.mat").WaitForCompletion();
             var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion();
             var detailMat3 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetConstructionWild.mat").WaitForCompletion());
@@ -296,106 +586,228 @@ namespace StageAesthetic.Variants
             var detailMat5 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/MajorAndMinorConstruct/matMajorConstructDefenseMatrixEdges.mat").WaitForCompletion();
             var detailMat6 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetClayPots.mat").WaitForCompletion();
             var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/matClayGooDebuff.mat").WaitForCompletion();
+            var c = GameObject.Find("Cloud Floor").transform;
+            var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0);
+
+            var r = GameObject.Find("HOLDER: Randomization").transform;
             // really wanted to use matgswater here but turns out there were shader bugs
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
+            if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && detailMat4 && detailMat5 && detailMat6 && water)
             {
-                var meshBase = mr.gameObject;
-                var meshParent = meshBase.transform.parent;
-                if (meshBase != null)
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshParent != null)
+                    var meshBase = mr.gameObject;
+                    var meshParent = meshBase.transform.parent;
+                    if (meshBase != null)
                     {
-                        if ((meshBase.name.Contains("Plateau") && meshParent.name.Contains("skymeadow_terrain")) || (meshBase.name.Contains("SMRock") && meshParent.name.Contains("FORMATION")))
+                        if (meshParent != null)
                         {
-                            if (mr.sharedMaterial != null)
+                            if (meshBase.name.Contains("Plateau") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("FORMATION"))
                             {
-                                mr.sharedMaterial = terrainMat;
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = terrainMat;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13") || meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground") || meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks") || meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat2;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("Terrain") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("Plateau Under") && meshParent.name.Contains("Underground"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = terrainMat2;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("Base") && meshParent.name.Contains("PowerCoil") || meshBase.name.Contains("InteractableMesh") && meshParent.name.Contains("PortalDialerButton"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat4;
+                                        break;
+                                }
+                            }
+                            if (meshBase.name.Contains("Coil") && meshParent.name.Contains("PowerCoil"))
+                            {
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = detailMat5; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = detailMat5;
+                                        break;
+                                }
                             }
                         }
-                        if ((meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks")) || (meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13")) || (meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground")) || (meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent")))
+                        if (meshBase.name.Contains("SMPebble") || meshBase.name.Contains("mdlGeyser"))
                         {
-                            if (mr.sharedMaterial != null)
+                            switch (mr.sharedMaterial)
                             {
-                                mr.sharedMaterial = detailMat;
+                                case null:
+                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat;
+                                    break;
                             }
                         }
-                        if ((meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks")) || (meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground")))
+                        if (meshBase.name.Contains("SMSpikeBridge"))
                         {
-                            if (mr.sharedMaterial != null)
+                            switch (mr.sharedMaterial)
                             {
-                                mr.sharedMaterial = detailMat2;
+                                case null:
+                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat2;
+                                    break;
                             }
                         }
-                        if ((meshBase.name.Contains("Terrain") && meshParent.name.Contains("skymeadow_terrain")) || (meshBase.name.Contains("Plateau Under") && meshParent.name.Contains("Underground")))
+                        if (meshBase.name.Contains("PowerLine") || meshBase.name.Contains("MegaTeleporter") || meshBase.name.Contains("BbRuinGateDoor"))
                         {
-                            if (mr.sharedMaterial != null)
+                            switch (mr.sharedMaterial)
                             {
-                                mr.sharedMaterial = terrainMat2;
+                                case null:
+                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat3;
+                                    break;
                             }
                         }
-                        if ((meshBase.name.Contains("Base") && meshParent.name.Contains("PowerCoil")) || (meshBase.name.Contains("InteractableMesh") && meshParent.name.Contains("PortalDialerButton")))
+                        if (meshBase.name.Contains("HumanCrate"))
                         {
-                            if (mr.sharedMaterial != null)
+                            switch (mr.sharedMaterial)
                             {
-                                mr.sharedMaterial = detailMat4;
+                                case null:
+                                    try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat4;
+                                    break;
                             }
                         }
-                        if (meshBase.name.Contains("Coil") && meshParent.name.Contains("PowerCoil"))
+                        if (meshBase.name.Contains("BbRuinPillar"))
                         {
-                            if (mr.sharedMaterial != null)
+                            switch (mr.sharedMaterial)
                             {
-                                mr.sharedMaterial = detailMat5;
+                                case null:
+                                    try { mr.sharedMaterial = detailMat6; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat6;
+                                    break;
                             }
                         }
-                    }
-                    if (meshBase.name.Contains("SMPebble") || meshBase.name.Contains("mdlGeyser"))
-                    {
-                        if (mr.sharedMaterial != null)
+                        if (meshBase.name.Contains("BbRuinArch"))
                         {
-                            mr.sharedMaterial = detailMat;
-                        }
-                    }
-                    if (meshBase.name.Contains("SMSpikeBridge"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat2;
-                        }
-                    }
-                    if (meshBase.name.Contains("PowerLine") || meshBase.name.Contains("MegaTeleporter") || meshBase.name.Contains("BbRuinGateDoor"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat3;
-                        }
-                    }
-                    if (meshBase.name.Contains("HumanCrate"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat4;
-                        }
-                    }
-                    if (meshBase.name.Contains("BbRuinPillar"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = detailMat6;
-                        }
-                    }
-                    if (meshBase.name.Contains("BbRuinArch"))
-                    {
-                        if (mr.sharedMaterial != null)
-                        {
-                            mr.sharedMaterial = terrainMat;
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat;
+                                    break;
+                            }
                         }
                     }
                 }
+                c.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
+                btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                GameObject.Find("Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+                try { GameObject.Find("Plateau 13 (1)").GetComponent<MeshRenderer>().sharedMaterial = terrainMat; } catch { }
+                // Plateau Tall
+
+                r.GetChild(0).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(0).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+
+                // Plateau 6
+
+                r.GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(1).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(1).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(1).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+
+                // Plateau 9
+
+                r.GetChild(2).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(2).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(2).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+
+                // Plateau 11
+
+                r.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+
+                // Plateau 13
+
+                r.GetChild(4).GetChild(1).GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+
+                // Plateau 15
+
+                r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(5).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
             }
-            var c = GameObject.Find("Cloud Floor").transform;
             GameObject.Find("Hard Floor").SetActive(false);
-            c.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
             c.GetChild(0).localPosition = new Vector3(0, 30, 0);
             c.GetChild(0).localScale = new Vector3(600, 600, 600);
             c.GetChild(1).gameObject.SetActive(false);
@@ -403,8 +815,6 @@ namespace StageAesthetic.Variants
             c.GetChild(3).gameObject.SetActive(false);
             GameObject.Find("HOLDER: Terrain").transform.GetChild(1).gameObject.SetActive(false);
             GameObject.Find("HOLDER: Mauling Rocks").SetActive(false);
-            var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0);
-            btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
             btp.GetChild(3).gameObject.SetActive(false);
             btp.GetChild(4).gameObject.SetActive(false);
             btp.GetChild(5).gameObject.SetActive(false);
@@ -414,56 +824,11 @@ namespace StageAesthetic.Variants
             btp.GetChild(2).GetChild(4).gameObject.SetActive(false);
             btp.GetChild(2).GetChild(5).gameObject.SetActive(false);
             btp.GetChild(1).GetChild(9).gameObject.SetActive(false);
-            GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            GameObject.Find("Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-            try { GameObject.Find("Plateau 13 (1)").GetComponent<MeshRenderer>().sharedMaterial = terrainMat; } catch { }
+
             GameObject.Find("GROUP: Large Flowers").SetActive(false);
             GameObject.Find("FORMATION (5)").transform.localPosition = new Vector3(-140f, -6.08f, 491.99f);
 
-            var r = GameObject.Find("HOLDER: Randomization").transform;
-
             // can i even do a for loop here? seems really complicated lol
-
-            // Plateau Tall
-
-            r.GetChild(0).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(0).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-
-            // Plateau 6
-
-            r.GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(1).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(1).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(1).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-
-            // Plateau 9
-
-            r.GetChild(2).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(2).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(2).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-
-            // Plateau 11
-
-            r.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-
-            // Plateau 13
-
-            r.GetChild(4).GetChild(1).GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-
-            // Plateau 15
-
-            r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(5).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(5).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-            r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
 
             SandyFoliage();
         }
@@ -631,6 +996,61 @@ namespace StageAesthetic.Variants
                         if (mr.sharedMaterial != null)
                         {
                             mr.sharedMaterial.color = new Color32(255, 90, 0, 255);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void AbyssalFoliage()
+        {
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                if (meshBase != null)
+                {
+                    if (meshBase.name.Contains("spmSMGrass"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial.color = new Color32(255, 165, 0, 255);
+                            if (mr.sharedMaterials.Length >= 2)
+                            {
+                                mr.sharedMaterials[1].color = new Color32(255, 125, 0, 255);
+                            }
+                        }
+                    }
+                    if (meshBase.name.Contains("SMVineBody"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial.color = new Color32(166, 120, 37, 255);
+                        }
+                    }
+                    if (meshBase.name.Contains("spmSMHangingVinesCluster_LOD0"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial.color = new Color32(181, 77, 45, 255);
+                        }
+                    }
+                    if (meshBase.name.Contains("spmBbDryBush_LOD0"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial.color = new Color32(191, 163, 127, 255);
+                            if (mr.sharedMaterials.Length >= 2)
+                            {
+                                mr.sharedMaterials[1].color = new Color32(255, 209, 0, 255);
+                            }
+                        }
+                    }
+                    if (meshBase.name.Contains("SGMushroom"))
+                    {
+                        if (mr.sharedMaterial != null)
+                        {
+                            mr.sharedMaterial.color = new Color32(255, 108, 0, 255);
                         }
                     }
                 }

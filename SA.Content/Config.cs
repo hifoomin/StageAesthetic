@@ -13,12 +13,14 @@ namespace StageAesthetic
 {
     public class Config : SwapVariants
     {
+        public static ConfigEntry<bool> Important;
+
         public static void SetConfig()
         {
             AesConfig = new ConfigFile(Paths.ConfigPath + "\\StageAesthetic.cfg", true);
-            VanillaPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
+            Important = AesConfig.Bind("! Important !", "Config", true, "Make sure everyone's configs are the same for multiplayer!");
+            VanillaPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Vanilla?", false, "Disabling removes vanilla from getting picked");
             NostalgiaPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Nostalgia Plains?", true, "Brings back the look from Pre-1.0");
-            SunrisePlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Sunrise Plains?", true, "");
             SunsetPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Sunset Plains?", true, "");
             RainyPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Rainy Plains?", true, "");
             NightPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Night Plains?", true, "");
@@ -68,8 +70,8 @@ namespace StageAesthetic
             SunsetAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Sunset Acres?", true, "");
             NightAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Night Acres?", true, "");
             BlueAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Emerald Acres?", true, "");
-            BetaAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Sunny Beta Acres?", true, "");
-            BetaAcres2 = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Crimson Beta Acres?", true, "");
+            BetaAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Sunny Beta Acres?", false, "");
+            BetaAcres2 = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Crimson Beta Acres?", false, "");
             TwilightAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Twilight Acres?", true, "");
             AcresChanges = AesConfig.Bind("Stages ::: Scorched Acres", "Alter vanilla Scorched Acres?", true, "Greatly increases the sunlight intensity, and alters the light angle and sun position towards a different corner of the map.");
 
@@ -85,10 +87,11 @@ namespace StageAesthetic
             CoralDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Coral Depths?", true, "");
             DepthsChanges = AesConfig.Bind("Stages :::: Abyssal Depths", "Alter vanilla Abyssal Depths?", true, "Greatly increases the sunlight intensity, and alters the light angle.");
 
-            VanillaGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
+            VanillaGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Vanilla?", false, "Disabling removes vanilla from getting picked");
             GreenGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Olive Grove?", true, "");
             SunnyGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Sunny Grove?", true, "");
             HannibalGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Overcast Grove?", true, "");
+            SandyGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Sandy Grove?", true, "");
 
             VanillaSiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NightSiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Night Call?", true, "");
@@ -99,7 +102,7 @@ namespace StageAesthetic
             VanillaMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NightMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Night Meadow?", true, "");
             StormyMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Stormy Meadow?", true, "");
-            CrimsonMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Abyssal Meadow?", true, "");
+            AbyssalMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Abyssal Meadow?", true, "");
             TitanicMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Titanic Meadow?", true, "");
             SandyMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Sandy Meadow?", true, "");
             MeadowChanges = AesConfig.Bind("Stages ::::: Sky Meadow", "Alter vanilla Sky Meadow?", true, "Makes the sun a slightly more intense yellow-orange.");
@@ -122,12 +125,17 @@ namespace StageAesthetic
             foreach (ConfigEntryBase ceb in AesConfig.GetConfigEntries())
             {
                 var Name = ceb.Definition.Section;
-                string displayName;
+                if (Name.Contains("Important"))
+                {
+                    tabID = 0;
+                    Name = "StageAesthetic";
+                    ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, Name);
+                }
                 if (Name.Contains("Plains") || Name.Contains("Roost") || Name.Contains("Forest"))
                 {
                     tabID = 1;
-                    displayName = "Stage 1";
-                    ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + displayName);
+                    Name = "Stage 1";
+                    ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + Name);
                 }
                 if (Name.Contains("Aphelian") || Name.Contains("Wetland") || Name.Contains("Aqueduct"))
                 {
@@ -185,7 +193,6 @@ namespace StageAesthetic
             planetariumList = new List<string>();
 
             if (VanillaPlains.Value) plainsList.Add("vanilla");
-            if (SunrisePlains.Value) plainsList.Add("sunrise");
             if (SunsetPlains.Value) plainsList.Add("sunset");
             if (RainyPlains.Value) plainsList.Add("rain");
             if (NightPlains.Value) plainsList.Add("night");
@@ -211,7 +218,7 @@ namespace StageAesthetic
 
             if (NightForest.Value) forestList.Add("night");
             if (ExtraSnowyForest.Value) forestList.Add("extrasnowy");
-            if (CrimsonForest.Value) forestList.Add("crimson");
+            if (CrimsonForest.Value) forestList.Add("abyssal");
             if (MorningForest.Value) forestList.Add("morning");
             if (VanillaForest.Value) forestList.Add("vanilla");
             if (forestList.Count == 0)
@@ -308,6 +315,7 @@ namespace StageAesthetic
             if (GreenGrove.Value) groveList.Add("green");
             if (SunnyGrove.Value) groveList.Add("sunny");
             if (HannibalGrove.Value) groveList.Add("storm");
+            if (SandyGrove.Value) groveList.Add("sandy");
             if (groveList.Count == 0)
             {
                 AesLog.LogWarning("Sundered Grove list empty - adding vanilla...");
@@ -330,7 +338,7 @@ namespace StageAesthetic
             if (VanillaMeadow.Value) meadowList.Add("vanilla");
             if (NightMeadow.Value) meadowList.Add("night");
             if (StormyMeadow.Value) meadowList.Add("storm");
-            if (CrimsonMeadow.Value) meadowList.Add("abyss");
+            if (AbyssalMeadow.Value) meadowList.Add("abyss");
             if (TitanicMeadow.Value) meadowList.Add("titanic");
             if (SandyMeadow.Value) meadowList.Add("sandy");
             if (meadowList.Count == 0)

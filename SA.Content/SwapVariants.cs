@@ -193,10 +193,6 @@ namespace StageAesthetic
                                     TitanicPlains.NostalgiaPlains(fog);
                                     break;
 
-                                case "sunrise":
-                                    TitanicPlains.SunrisePlains(fog);
-                                    break;
-
                                 case "sandy":
                                     TitanicPlains.SandyPlains(fog);
                                     break;
@@ -749,6 +745,7 @@ namespace StageAesthetic
                             switch (groveArray[groveCounter])
                             {
                                 case "vanilla":
+                                    SunderedGrove.VanillaJungle();
                                     break;
 
                                 case "green":
@@ -762,6 +759,10 @@ namespace StageAesthetic
                                 case "storm":
                                     rainCheck = true;
                                     SunderedGrove.StormJungle(fog, rain, cgrade);
+                                    break;
+
+                                case "sandy":
+                                    SunderedGrove.SandyJungle(fog);
                                     break;
 
                                 default:
@@ -804,7 +805,7 @@ namespace StageAesthetic
 
                                 case "abyss":
                                     emberCheck = true;
-                                    SkyMeadow.EpicMeadow(fog, cgrade);
+                                    SkyMeadow.AbyssalMeadow(fog, cgrade);
                                     break;
 
                                 case "titanic":
@@ -990,7 +991,6 @@ namespace StageAesthetic
         // Plains
         public static ConfigEntry<bool> VanillaPlains { get; set; }
 
-        public static ConfigEntry<bool> SunrisePlains { get; set; }
         public static ConfigEntry<bool> SunsetPlains { get; set; }
         public static ConfigEntry<bool> RainyPlains { get; set; }
         public static ConfigEntry<bool> NightPlains { get; set; }
@@ -1082,6 +1082,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> GreenGrove { get; set; }
         public static ConfigEntry<bool> SunnyGrove { get; set; }
         public static ConfigEntry<bool> HannibalGrove { get; set; }
+        public static ConfigEntry<bool> SandyGrove { get; set; }
 
         // Siren
         public static ConfigEntry<bool> VanillaSiren { get; set; }
@@ -1097,7 +1098,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> MeadowChanges { get; set; }
         public static ConfigEntry<bool> NightMeadow { get; set; }
         public static ConfigEntry<bool> StormyMeadow { get; set; }
-        public static ConfigEntry<bool> CrimsonMeadow { get; set; }
+        public static ConfigEntry<bool> AbyssalMeadow { get; set; }
         public static ConfigEntry<bool> TitanicMeadow { get; set; }
         public static ConfigEntry<bool> SandyMeadow { get; set; }
 

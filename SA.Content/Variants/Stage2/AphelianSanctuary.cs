@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants
 {
@@ -34,7 +36,7 @@ namespace StageAesthetic.Variants
             sun.transform.localPosition = new Vector3(743, 500, -127);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(255, 239, 211, 255);
-            sunLight.intensity = 2f;
+            sunLight.intensity = 1.6f;
             sunLight.shadowNormalBias = 0.92f;
             var fog1 = GameObject.Find("HOLDER: Cards");
             fog1.SetActive(false);
@@ -91,9 +93,9 @@ namespace StageAesthetic.Variants
                         if (biggerProps)
                         {
                             var light = meshBase.AddComponent<Light>();
-                            light.color = new Color32(249, 212, 96, 255);
-                            light.intensity = 10f;
-                            light.range = 30f;
+                            light.color = new Color32(249, 212, 96, 225);
+                            light.intensity = 6f;
+                            light.range = 24f;
                         }
                     }
                 }
@@ -107,9 +109,9 @@ namespace StageAesthetic.Variants
                     if (biggerProps)
                     {
                         var light = meshBase.AddComponent<Light>();
-                        light.color = new Color32(249, 212, 96, 255);
-                        light.intensity = 10f;
-                        light.range = 30f;
+                        light.color = new Color32(249, 212, 96, 225);
+                        light.intensity = 6f;
+                        light.range = 24f;
                     }
                 }
             }
@@ -125,75 +127,145 @@ namespace StageAesthetic.Variants
             terrainMat2.color = new Color32(134, 134, 134, 255);
             var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGold.mat").WaitForCompletion();
             var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion();
-            cloud.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-            foreach (MeshRenderer mr in meshList)
+            if (terrainMat && terrainMat2 && detailMat && detailMat2)
             {
-                var meshBase = mr.gameObject;
-                var meshParent = meshBase.transform.parent;
-                if (meshBase != null)
+                cloud.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshParent != null)
+                    var meshBase = mr.gameObject;
+                    var meshParent = meshBase.transform.parent;
+                    if (meshBase != null)
                     {
-                        if (meshParent.name.Contains("TempleTop") && meshBase.name.Contains("RuinBlock"))
+                        if (meshParent != null)
                         {
-                            mr.sharedMaterial = terrainMat;
-                        }
-                    }
-                    if (meshBase.name.Equals("Terrain"))
-                    {
-                        var sharedMaterials = mr.sharedMaterials;
-                        for (int i = 0; i < mr.sharedMaterials.Length; i++)
-                        {
-                            sharedMaterials[i] = detailMat2;
-                        }
-                        mr.sharedMaterials = sharedMaterials;
-                    }
-                    if (meshBase.name.Contains("Platform") || (meshBase.name.Contains("Terrain") && !meshBase.name.Equals("Terrain")) || meshBase.name.Contains("Temple") || meshBase.name.Contains("Bridge") || meshBase.name.Contains("Dirt"))
-                    {
-                        var sharedMaterials = mr.sharedMaterials;
-                        for (int i = 0; i < mr.sharedMaterials.Length; i++)
-                        {
-                            sharedMaterials[i] = terrainMat;
-                            if (i == 1)
+                            if (meshParent.name.Contains("TempleTop") && meshBase.name.Contains("RuinBlock"))
                             {
-                                sharedMaterials[i] = terrainMat2;
+                                switch (mr.sharedMaterial)
+                                {
+                                    case null:
+                                        try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                        break;
+
+                                    default:
+                                        mr.sharedMaterial = terrainMat;
+                                        break;
+                                }
                             }
                         }
-                        mr.sharedMaterials = sharedMaterials;
-                    }
-                    bool biggerProps = meshBase.name.Contains("CirclePot") || meshBase.name.Contains("BrokenPot") || meshBase.name.Contains("Planter") || meshBase.name.Contains("AW_Cube") || meshBase.name.Contains("Mesh, Cube") || meshBase.name.Contains("AncientLoft_WaterFenceType") || meshBase.name.Contains("Tile") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Pillar") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Step") || meshBase.name.Equals("LightStatue") || meshBase.name.Equals("LightStatue_Stone") || meshBase.name.Equals("FountainLG") || meshBase.name.Equals("Shrine") || meshBase.name.Equals("Sculpture");
-                    if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rubble") || biggerProps)
-                    {
-                        mr.sharedMaterial = detailMat;
-                    }
-                    if (meshBase.name.Contains("CircleArchwayAnimatedMesh"))
-                    {
-                        var sharedMaterials = mr.sharedMaterials;
-                        for (int i = 0; i < mr.sharedMaterials.Length; i++)
+                        if (meshBase.name.Equals("Terrain"))
                         {
-                            sharedMaterials[i] = terrainMat;
-                            if (i == 1)
+                            switch (mr.sharedMaterial)
                             {
-                                sharedMaterials[i] = detailMat;
+                                case null:
+                                    try
+                                    {
+                                        var sharedMaterials = mr.sharedMaterials;
+                                        for (int i = 0; i < mr.sharedMaterials.Length; i++)
+                                        {
+                                            sharedMaterials[i] = detailMat2;
+                                        }
+                                        mr.sharedMaterials = sharedMaterials;
+                                    }
+                                    catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    var sharedMaterials2 = mr.sharedMaterials;
+                                    for (int i = 0; i < mr.sharedMaterials.Length; i++)
+                                    {
+                                        sharedMaterials2[i] = detailMat2;
+                                    }
+                                    mr.sharedMaterials = sharedMaterials2;
+                                    break;
                             }
                         }
-                        mr.sharedMaterials = sharedMaterials;
-                    }
-                    if (meshBase.name.Contains("SunCloud"))
-                    {
-                        meshBase.SetActive(false);
+                        if (meshBase.name.Contains("Platform") || (meshBase.name.Contains("Terrain") && !meshBase.name.Equals("Terrain")) || meshBase.name.Contains("Temple") || meshBase.name.Contains("Bridge") || meshBase.name.Contains("Dirt"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try
+                                    {
+                                        var sharedMaterials = mr.sharedMaterials;
+                                        for (int i = 0; i < mr.sharedMaterials.Length; i++)
+                                        {
+                                            sharedMaterials[i] = terrainMat;
+                                            if (i == 1)
+                                            {
+                                                sharedMaterials[i] = terrainMat2;
+                                            }
+                                        }
+                                        mr.sharedMaterials = sharedMaterials;
+                                    }
+                                    catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    var sharedMaterials2 = mr.sharedMaterials;
+                                    for (int i = 0; i < mr.sharedMaterials.Length; i++)
+                                    {
+                                        sharedMaterials2[i] = terrainMat;
+                                        if (i == 1)
+                                        {
+                                            sharedMaterials2[i] = terrainMat2;
+                                        }
+                                    }
+                                    mr.sharedMaterials = sharedMaterials2;
+                                    break;
+                            }
+                        }
+                        bool biggerProps = meshBase.name.Contains("CirclePot") || meshBase.name.Contains("BrokenPot") || meshBase.name.Contains("Planter") || meshBase.name.Contains("AW_Cube") || meshBase.name.Contains("Mesh, Cube") || meshBase.name.Contains("AncientLoft_WaterFenceType") || meshBase.name.Contains("Tile") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Pillar") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Step") || meshBase.name.Equals("LightStatue") || meshBase.name.Equals("LightStatue_Stone") || meshBase.name.Equals("FountainLG") || meshBase.name.Equals("Shrine") || meshBase.name.Equals("Sculpture");
+                        if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rubble") || biggerProps)
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("CircleArchwayAnimatedMesh"))
+                        {
+                            var sharedMaterials = mr.sharedMaterials;
+                            for (int i = 0; i < mr.sharedMaterials.Length; i++)
+                            {
+                                sharedMaterials[i] = terrainMat;
+                                if (i == 1)
+                                {
+                                    sharedMaterials[i] = detailMat;
+                                }
+                            }
+                            mr.sharedMaterials = sharedMaterials;
+                        }
+                        if (meshBase.name.Contains("SunCloud"))
+                        {
+                            meshBase.SetActive(false);
+                        }
                     }
                 }
-            }
-            foreach (SkinnedMeshRenderer smr in stupidList)
-            {
-                var meshBase = smr.gameObject;
-                if (meshBase != null)
+                foreach (SkinnedMeshRenderer smr in stupidList)
                 {
-                    bool biggerProps = meshBase.name.Contains("CirclePot") || meshBase.name.Contains("Planter") || meshBase.name.Contains("AW_Cube") || meshBase.name.Contains("Mesh, Cube") || meshBase.name.Contains("AncientLoft_WaterFenceType") || meshBase.name.Contains("Tile") || meshBase.name.Contains("RuinBlock") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Pillar") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Step") || meshBase.name.Equals("LightStatue") || meshBase.name.Equals("LightStatue_Stone") || meshBase.name.Equals("FountainLG") || meshBase.name.Equals("Shrine") || meshBase.name.Equals("Sculpture");
-                    if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rubble") || biggerProps)
+                    var meshBase = smr.gameObject;
+                    if (meshBase != null)
                     {
-                        smr.sharedMaterial = detailMat;
+                        bool biggerProps = meshBase.name.Contains("CirclePot") || meshBase.name.Contains("Planter") || meshBase.name.Contains("AW_Cube") || meshBase.name.Contains("Mesh, Cube") || meshBase.name.Contains("AncientLoft_WaterFenceType") || meshBase.name.Contains("Tile") || meshBase.name.Contains("RuinBlock") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Pillar") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Step") || meshBase.name.Equals("LightStatue") || meshBase.name.Equals("LightStatue_Stone") || meshBase.name.Equals("FountainLG") || meshBase.name.Equals("Shrine") || meshBase.name.Equals("Sculpture");
+                        if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rubble") || biggerProps)
+                        {
+                            switch (smr.sharedMaterial)
+                            {
+                                case null:
+                                    try { smr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    smr.sharedMaterial = terrainMat;
+                                    break;
+                            }
+                        }
                     }
                 }
             }

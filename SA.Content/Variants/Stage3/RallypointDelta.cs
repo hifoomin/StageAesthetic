@@ -1,8 +1,10 @@
 ﻿using RoR2;
+using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Experimental.AI;
 using UnityEngine.Rendering.PostProcessing;
+using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants
 {
@@ -69,7 +71,7 @@ namespace StageAesthetic.Variants
             cgrade.colorFilter.overrideState = true;
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
             GameObject.Find("Directional Light (SUN)").SetActive(false);
-            sunLight.color = new Color32(158, 127, 217, 255);
+            sunLight.color = new Color32(167, 165, 172, 255);
             sunLight.intensity = 0.9f;
             sunLight.shadowStrength = 0.6f;
             sunLight.transform.eulerAngles = new Vector3(70, 250, 5);
@@ -108,7 +110,6 @@ namespace StageAesthetic.Variants
             sunLight.color = new Color32(177, 205, 232, 255);
             sunLight.intensity = 0.5f;
             fog.fogOne.value = 0.7f;
-
         }
 
         public static void TitanicWall(RampFog fog, ColorGrading cgrade)
@@ -148,57 +149,72 @@ namespace StageAesthetic.Variants
             detailMat.color = new Color32(0, 52, 146, 78);
             var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuinsProjectedHuge.mat").WaitForCompletion());
             detailMat2.color = new Color32(255, 185, 0, 255);
-            var bloodShrineMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/ShrineBlood/matShrineBlood.mat").WaitForCompletion();
-            var chanceShrineMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/ShrineChance/matShrineChance.mat").WaitForCompletion();
-            var combatShrineMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/ShrineCombat/matShrineCombat.mat").WaitForCompletion();
             var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion();
-            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-            foreach (MeshRenderer mr in meshList)
+            if (terrainMat && detailMat && detailMat2 && water)
             {
-                var meshBase = mr.gameObject;
-                if (meshBase != null)
+                GameObject.Find("HOLDER: Skybox").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Snow"))
+                    var meshBase = mr.gameObject;
+                    if (meshBase != null)
                     {
-                        mr.sharedMaterial = terrainMat;
-                    }
-                    if (meshBase.name.Contains("Glacier") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("CavePillar"))
-                    {
-                        mr.sharedMaterial = detailMat;
-                    }
-                    if (meshBase.name.Contains("GroundMesh") || meshBase.name.Contains("GroundStairs") || meshBase.name.Contains("VerticalPillar") || meshBase.name.Contains("Human") || meshBase.name.Contains("Barrier"))
-                    {
-                        mr.sharedMaterial = detailMat2;
-                    }
-                    if (meshBase.name.Contains("HumanChainLink"))
-                    {
-                        meshBase.SetActive(false);
-                    }
-                    if (meshBase.name.Contains("mdlShrineHealing"))
-                    {
-                        mr.sharedMaterial = bloodShrineMat;
-                    }
-                    if (meshBase.name.Contains("mdlShrineChance"))
-                    {
-                        mr.sharedMaterial = chanceShrineMat;
-                    }
-                    if (meshBase.name.Contains("mdlShrineCombat"))
-                    {
-                        mr.sharedMaterial = combatShrineMat;
-                    }
-                    if (meshBase.name.Contains("ShrineChanceSand") || meshBase.name.Contains("ShrineBloodSand") || meshBase.name.Contains("ShrineCombatSand"))
-                    {
-                        meshBase.SetActive(false);
+                        if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Snow"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("Glacier") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("CavePillar"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("GroundMesh") || meshBase.name.Contains("GroundStairs") || meshBase.name.Contains("VerticalPillar") || meshBase.name.Contains("Human") || meshBase.name.Contains("Barrier"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat2;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("HumanChainLink"))
+                        {
+                            meshBase.SetActive(false);
+                        }
+                        // too early to change shrine/enemy skins/detail
                     }
                 }
             }
-            GameObject.Find("HOLDER: Skybox").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
         }
 
         public static void ApplyGreenMaterials()
         {
             var waterMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSPWaterYellow.mat").WaitForCompletion();
-            GameObject.Find("HOLDER: Skybox").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = waterMat;
+            if (waterMat)
+            {
+                GameObject.Find("HOLDER: Skybox").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = waterMat;
+            }
         }
 
         public static void ApplyNightMaterials()
@@ -210,22 +226,33 @@ namespace StageAesthetic.Variants
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             var water = GameObject.Find("HOLDER: Skybox").transform.GetChild(0);
             var ice = Object.Instantiate(water);
-            ice.GetComponent<MeshRenderer>().sharedMaterial = iceMat;
             ice.transform.position = new Vector3(-1260, -115, 0);
-            water.GetComponent<MeshRenderer>().sharedMaterial = waterMat;
-            foreach (MeshRenderer mr in meshList)
+            if (terrainMat && waterMat && iceMat)
             {
-                var meshBase = mr.gameObject;
-                if (meshBase != null)
+                ice.GetComponent<MeshRenderer>().sharedMaterial = iceMat;
+                water.GetComponent<MeshRenderer>().sharedMaterial = waterMat;
+                foreach (MeshRenderer mr in meshList)
                 {
-                    if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Snow"))
+                    var meshBase = mr.gameObject;
+                    if (meshBase != null)
                     {
-                        mr.sharedMaterial = terrainMat;
-                    }
-                    if (meshBase.name.Contains("Stalagmite") && meshBase.GetComponent<Light>() == null)
-                    {
-                        meshBase.AddComponent<Light>();
-                        
+                        if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Snow"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("Stalagmite") && meshBase.GetComponent<Light>() == null)
+                        {
+                            meshBase.AddComponent<Light>();
+                        }
                     }
                 }
             }
