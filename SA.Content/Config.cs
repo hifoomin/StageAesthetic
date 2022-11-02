@@ -20,106 +20,111 @@ namespace StageAesthetic
             AesConfig = new ConfigFile(Paths.ConfigPath + "\\StageAesthetic.cfg", true);
             Important = AesConfig.Bind("! Important !", "Config", true, "Make sure everyone's configs are the same for multiplayer!");
             VanillaPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Vanilla?", false, "Disabling removes vanilla from getting picked");
-            NostalgiaPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Nostalgia Plains?", true, "Brings back the look from Pre-1.0");
-            SunsetPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Sunset Plains?", true, "");
-            RainyPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Rainy Plains?", true, "");
-            NightPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Night Plains?", true, "");
-            SandyPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Sandy Plains?", true, "");
+            NostalgiaPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Nostalgia Plains?", true, "Early Access look.");
+            SunsetPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Sunset Plains?", true, "Orange sun over greenery.");
+            RainyPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Rainy Plains?", true, "Rainy with more fog.");
+            NightPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Night Plains?", true, "Blue and dark.");
+            SandyPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Abandoned Plains?", true, "Texture swap to Yellow Abandoned Aqueduct.");
             PlainsBridge = AesConfig.Bind<int>("Stages : Titanic Plains", "Bridge % Chance", 40, "How often the unused bridge in Titanic Plains should appear.");
 
             VanillaRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            NightRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Night Roost?", true, "");
-            SunnyRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Sunny Roost?", true, "");
-            FoggyRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Storm Roost?", true, "");
-            VoidRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Void Roost?", true, "");
-            GoldRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Gold Roost?", true, "");
+            NightRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Night Roost?", true, "Dark with lights.");
+            SunnyRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Sunny Roost?", true, "Yellow sun over greenery.");
+            FoggyRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Storm Roost?", true, "Rainy with more fog.");
+            VoidRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Void Roost?", true, "Texture swap to Purple Void Fields.");
+            GoldRoost = AesConfig.Bind("Stages : Distant Roost", "Enable Abyssal Roost?", true, "Texture swap to Red Abyssal Depths.");
             RoostChanges = AesConfig.Bind("Stages : Distant Roost", "Add rain in alt version?", true, "");
 
-            NightForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Night Forest?", true, "");
-            ExtraSnowyForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Extra Snowy Forest?", true, "");
-            CrimsonForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Crimson Forest?", true, "");
-            MorningForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Morning Forest?", true, "");
+            NightForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Night Forest?", true, "Blue and dark.");
+            ExtraSnowyForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Extra Snowy Forest?", true, "Extra snowy with purple hints.");
+            CrimsonForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Crimson Forest?", true, "Red fog with Doom vibes.");
+            MorningForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Morning Forest?", true, "Yellow sun with blue shadows.");
             VanillaForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
 
             VanillaAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            NearRainAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Twilight Sanctuary?", true, "");
-            SunsetterAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Sunrise Sanctuary?", true, "");
-            NightAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Singularity Sanctuary?", true, "");
-            AbyssalAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Abyssal Sanctuary?", true, "");
+            NearRainAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Twilight Sanctuary?", true, "Strong purple and orange fog.");
+            SunsetterAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Sunrise Sanctuary?", true, "Very strong orange sun.");
+            NightAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Singularity Sanctuary?", true, "Very blue and dark.");
+            AbyssalAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Abyssal Sanctuary?", true, "Texture swap to Red Abyssal Depths.");
 
             VanillaWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            SunsetWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Sunset Aspect?", true, "");
-            SkyWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Sky Aspect?", true, "");
-            EveningWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Dark Aspect?", true, "");
-            VoidWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Void Aspect?", true, "");
+            SunsetWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Sunset Aspect?", true, "Orange sun and fog.");
+            SkyWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Sky Aspect?", true, "Purple.");
+            EveningWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Dark Aspect?", true, "Green and dark.");
+            VoidWetland = AesConfig.Bind("Stages :: Wetland Aspect", "Enable Void Aspect?", true, "Texture swap to Purple Void Fields.");
 
             VanillaAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            NightAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Dark Aqueduct?", true, "");
-            RainyAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Rainy Aqueduct?", true, "");
-            MistyAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Night Aqueduct?", true, "");
-            SunderedAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Sundered Aqueduct?", true, "");
+            NightAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Dark Aqueduct?", true, "Honestly no idea lol");
+            RainyAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Rainy Aqueduct?", true, "Rainy with more fog.");
+            MistyAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Night Aqueduct?", true, "Honestly no idea lol");
+            SunderedAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Sundered Aqueduct?", true, "Texture swap to Pink Sundered Grove.");
             AqueductChanges = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Alter vanilla Abandoned Aqueduct?", true, "Makes the sun a slightly more intense yellow-orange, and changes its angle.");
 
             VanillaDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            NightDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Night Delta?", true, "");
-            FoggyDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Foggy Delta?", true, "");
-            PurpleDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Emerald Delta?", true, "");
-            TitanicDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Titanic Delta?", true, "");
+            NightDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Night Delta?", true, "Blue and dark with extra snow.");
+            FoggyDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Foggy Delta?", true, "Rainy with more fog.");
+            PurpleDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Emerald Delta?", true, "Green fog.");
+            TitanicDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Titanic Delta?", true, "Texture swap to Titanic Plains.");
 
             VanillaAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            SunsetAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Sunset Acres?", true, "");
-            NightAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Night Acres?", true, "");
-            BlueAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Emerald Acres?", true, "");
-            BetaAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Sunny Beta Acres?", false, "");
-            BetaAcres2 = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Crimson Beta Acres?", false, "");
-            TwilightAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Twilight Acres?", true, "");
+            SunsetAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Sunset Acres?", true, "Orange fog.");
+            NightAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Night Acres?", true, "Dark with stars!");
+            BlueAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Emerald Acres?", true, "Green fog.");
+            BetaAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Sunny Beta Acres?", false, "Brings back the unreleased Scorched Acres' look");
+            BetaAcres2 = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Crimson Beta Acres?", false, "Brings back the unreleased Scorched Acres' look (alt ver)");
+            TwilightAcres = AesConfig.Bind("Stages ::: Scorched Acres", "Enable Twilight Acres?", true, "Purple, blue and orange fog.");
             AcresChanges = AesConfig.Bind("Stages ::: Scorched Acres", "Alter vanilla Scorched Acres?", true, "Greatly increases the sunlight intensity, and alters the light angle and sun position towards a different corner of the map.");
 
             VanillaSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            CoralBlueSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Coral Blue Pools?", true, "");
-            HellSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Hell Pools?", true, "");
-            VoidSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Void Pools?", true, "");
+            CoralBlueSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Coral Blue Pools?", true, "Blue fog.");
+            HellSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Hell Pools?", true, "Texture swap to Red Aphelian Sanctuary.");
+            VoidSulfur = AesConfig.Bind("Stages ::: Sulfur Pools", "Enable Void Pools?", true, "Texture swap to Blue Void Fields.");
+
+            VanillaLagoon = AesConfig.Bind("Stages ::: Fogbound Lagoon", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
+            ClearerLagoon = AesConfig.Bind("Stages ::: Fogbound Lagoon", "Enable Clear Lagoon?", true, "Yellow sun over greenery with less fog.");
+            TwilightLagoon = AesConfig.Bind("Stages ::: Fogbound Lagoon", "Enable Twilight Lagoon?", true, "Purple and orange fog.");
+            OvercastLagoon = AesConfig.Bind("Stages ::: Fogbound Lagoon", "Enable Overcast Lagoon?", true, "Very foggy with rain. Actually no rain yet, I'm waiting for a potential bugfix lol");
 
             VanillaDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            DarkDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Azure Depths?", true, "");
-            BlueDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Hive Cluster Depths?", true, "");
-            SkyDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Sky Meadow Depths?", true, "");
-            CoralDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Coral Depths?", true, "");
+            DarkDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Azure Depths?", true, "No idea lol");
+            BlueDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Hive Cluster Depths?", true, "No idea lol");
+            SkyDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Sky Depths?", true, "No idea lol");
+            CoralDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Coral Depths?", true, "Texture swap to Blue/Purple/Pink Sundered Grove.");
             DepthsChanges = AesConfig.Bind("Stages :::: Abyssal Depths", "Alter vanilla Abyssal Depths?", true, "Greatly increases the sunlight intensity, and alters the light angle.");
 
             VanillaGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Vanilla?", false, "Disabling removes vanilla from getting picked");
-            GreenGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Olive Grove?", true, "");
-            SunnyGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Sunny Grove?", true, "");
-            HannibalGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Overcast Grove?", true, "");
-            SandyGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Sandy Grove?", true, "");
+            GreenGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Olive Grove?", true, "GREEN.");
+            SunnyGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Sunny Grove?", true, "Yellow sun over greenery.");
+            HannibalGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Overcast Grove?", true, "Rainy with extra fog.");
+            SandyGrove = AesConfig.Bind("Stages :::: Sundered Grove", "Enable Abandoned Grove?", true, "Texture swap to Orange Abandoned Aqueduct.");
 
             VanillaSiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            NightSiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Night Call?", true, "");
-            SunnySiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Sirens Sun?", true, "");
-            MistySiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Sirens Storm?", true, "");
-            AphelianSiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Sirens Sanctuary?", true, "");
+            NightSiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Night Call?", true, "Dark and green.");
+            SunnySiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Sirens Sun?", true, "Yellow sun over greenery.");
+            MistySiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Sirens Storm?", true, "Rainy with more fog.");
+            AphelianSiren = AesConfig.Bind("Stages :::: Sirens Call", "Enable Sirens Sanctuary?", true, "Texture swap to Blue/Yellow/Orange Aphelian Sanctuary.");
 
             VanillaMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            NightMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Night Meadow?", true, "");
-            StormyMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Stormy Meadow?", true, "");
-            AbyssalMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Abyssal Meadow?", true, "");
-            TitanicMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Titanic Meadow?", true, "");
-            SandyMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Sandy Meadow?", true, "");
+            NightMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Night Meadow?", true, "Blue and dark.");
+            StormyMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Stormy Meadow?", true, "Rainy with more fog.");
+            AbyssalMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Abyssal Meadow?", true, "Texture swap to Red Abyssal Depths.");
+            TitanicMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Titanic Meadow?", true, "Texture swap to Titanic Plains.");
+            SandyMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Abandoned Meadow?", true, "Texture swap to Yellow Abandoned Aqueduct.");
             MeadowChanges = AesConfig.Bind("Stages ::::: Sky Meadow", "Alter vanilla Sky Meadow?", true, "Makes the sun a slightly more intense yellow-orange.");
 
-            CommencementAlt = AesConfig.Bind("Stages :::::: Commencement", "Commencement alt?", true, "");
+            CommencementAlt = AesConfig.Bind("Stages :::::: Commencement", "Commencement alt?", true, "Do not disable, currently bugged!");
 
             VanillaLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            BlueLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Blue Locus?", true, "");
-            RedLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Pink Locus?", true, "");
-            PurpleLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Green Locus?", true, "");
+            BlueLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Blue Locus?", true, "Blue fog. Yeah that's it.");
+            RedLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Pink Locus?", true, "Pink.");
+            PurpleLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Green Locus?", true, "Green..");
 
-            VanillaPlanetarium = AesConfig.Bind("Stages :::::::: The Planetarium", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
+            VanillaPlanetarium = AesConfig.Bind("Stages :::::::: The Planetarium", "Enable Vanilla?", true, "Do not disable, currently bugged!");
             // PurplePlanetarium = AesConfig.Bind("Stages :::::::: The Planetarium", "Enable Purple Planetarium?", true, "");
             // TwilightPlanetarium = AesConfig.Bind("Stages :::::::: The Planetarium", "Enable Twilight Planetarium?", true, "");
 
             TitleScene = AesConfig.Bind("Stages Title", "Alter title screen?", true, "Adds rain, patches of grass, particles and brings a Commando closer to focus.");
-            WeatherEffects = AesConfig.Bind("Stages Weather", "Import weather effects?", true, "Hooks into SceneCamera to import rain and ember effects into stages that normally don't have them. Disabling this is recommended if performance is an issue or if playing Starstorm 2, as it overlaps with the latter's weather.");
+            WeatherEffects = AesConfig.Bind("Stages Weather", "Import weather effects?", true, "Adds rain into stages that normally don't have them. Disabling this is recommended if performance is an issue or if playing Starstorm 2, as it overlaps with the latter's weather.");
 
             var tabID = 0;
             foreach (ConfigEntryBase ceb in AesConfig.GetConfigEntries())
@@ -143,7 +148,7 @@ namespace StageAesthetic
                     Name = "Stage 2";
                     ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + Name);
                 }
-                if (Name.Contains("Delta") || Name.Contains("Acres") || Name.Contains("Pools"))
+                if (Name.Contains("Delta") || Name.Contains("Acres") || Name.Contains("Pools") || Name.Contains("Fogbound"))
                 {
                     tabID = 3;
                     Name = "Stage 3";
@@ -182,13 +187,14 @@ namespace StageAesthetic
             aqueductList = new List<string>();
             deltaList = new List<string>();
             acresList = new List<string>();
+            sulfurList = new List<string>();
+            fogboundList = new List<string>();
             depthsList = new List<string>();
             sirenList = new List<string>();
             groveList = new List<string>();
             meadowList = new List<string>();
             forestList = new List<string>();
             aphelianList = new List<string>();
-            sulfurList = new List<string>();
             locusList = new List<string>();
             planetariumList = new List<string>();
 
@@ -296,6 +302,16 @@ namespace StageAesthetic
             {
                 AesLog.LogWarning("Sulfur Pools list empty - adding vanilla...");
                 sulfurList.Add("vanilla");
+            }
+
+            if (VanillaLagoon.Value) fogboundList.Add("vanilla");
+            if (ClearerLagoon.Value) fogboundList.Add("clearer");
+            if (TwilightLagoon.Value) fogboundList.Add("twilight");
+            if (OvercastLagoon.Value) fogboundList.Add("overcast");
+            if (fogboundList.Count == 0)
+            {
+                AesLog.LogWarning("Fogbound Lagoon list empty - adding vanilla...");
+                fogboundList.Add("vanilla");
             }
 
             //

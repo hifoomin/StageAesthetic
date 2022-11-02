@@ -5,8 +5,8 @@ using System.Reflection;
 
 namespace StageAesthetic
 {
-    [BepInPlugin("com.HIFU.StageAesthetic", "StageAesthetic", "0.7.0")]
-    [BepInDependency("com.rune580.riskofoptions")] 
+    [BepInPlugin("com.HIFU.StageAesthetic", "StageAesthetic", "0.7.3")]
+    [BepInDependency("com.rune580.riskofoptions")]
     [R2APISubmoduleDependency(new string[]
     {
         "DirectorAPI",
@@ -17,6 +17,7 @@ namespace StageAesthetic
     internal class Main : BaseUnityPlugin
     {
         public static AssetBundle stageaesthetic;
+
         public void Awake()
         {
             // increasing fogone increases the fog distance

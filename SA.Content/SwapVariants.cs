@@ -136,6 +136,7 @@ namespace StageAesthetic
                 GameObject alt = GameObject.Find("PP + Amb");
                 if (!alt) alt = GameObject.Find("PP, Global");
                 if (!alt) alt = GameObject.Find("GlobalPostProcessVolume, Base");
+                if (!alt) alt = GameObject.Find("PP+Amb");
                 if (alt) volume = alt.GetComponent<PostProcessVolume>();
                 else volume = null;
             }
@@ -643,6 +644,38 @@ namespace StageAesthetic
 
                         break;
 
+                    case "FBLScene":
+                        int fogboundCounter = rng.RangeInt(0, fogboundList.Count);
+                        if (fogboundList.Count > 1) do fogboundCounter = rng.RangeInt(0, fogboundList.Count); while (fogboundCounter == fogboundVariant);
+                        string[] fogboundArray = fogboundList.ToArray();
+                        if (fogboundCounter == fogboundList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        else
+                        {
+                            switch (fogboundArray[fogboundCounter])
+                            {
+                                case "vanilla":
+                                    break;
+
+                                case "clearer":
+                                    FogboundLagoon.ClearerLagoon(fog);
+                                    break;
+
+                                case "twilight":
+                                    FogboundLagoon.TwilightLagoon(fog);
+                                    break;
+
+                                case "overcast":
+                                    FogboundLagoon.OvercastLagoon(fog, cgrade, rain);
+                                    break;
+
+                                default:
+                                    AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
+                                    break;
+                            }
+                        }
+                        fogboundVariant = fogboundCounter;
+                        break;
+
                     case "dampcavesimple":
 
                         #region AbyssalDepths
@@ -950,6 +983,7 @@ namespace StageAesthetic
         public static int deltaVariant = -1;
         public static int acresVariant = -1;
         public static int sulfurVariant = -1;
+        public static int fogboundVariant = -1;
 
         public static int depthsVariant = -1;
         public static int sirenVariant = -1;
@@ -1067,6 +1101,13 @@ namespace StageAesthetic
         public static ConfigEntry<bool> HellSulfur { get; set; }
         public static ConfigEntry<bool> VoidSulfur { get; set; }
 
+        // Fogbound Lagoon
+
+        public static ConfigEntry<bool> VanillaLagoon { get; set; }
+        public static ConfigEntry<bool> ClearerLagoon { get; set; }
+        public static ConfigEntry<bool> TwilightLagoon { get; set; }
+        public static ConfigEntry<bool> OvercastLagoon { get; set; }
+
         // Depths
         public static ConfigEntry<bool> VanillaDepths { get; set; }
 
@@ -1137,6 +1178,7 @@ namespace StageAesthetic
         public static List<string> deltaList = new();
         public static List<string> acresList = new();
         public static List<string> sulfurList = new();
+        public static List<string> fogboundList = new();
 
         public static List<string> depthsList = new();
         public static List<string> groveList = new();
