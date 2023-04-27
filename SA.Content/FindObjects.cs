@@ -27,6 +27,7 @@ namespace StageAesthetic
                 GameObject alt = GameObject.Find("PP + Amb");
                 if (!alt) alt = GameObject.Find("PP, Global");
                 if (!alt) alt = GameObject.Find("GlobalPostProcessVolume, Base");
+                if (!alt) alt = GameObject.Find("MapZones").transform.GetChild(1).GetChild(2).gameObject;
                 if (alt) volume = alt.GetComponent<PostProcessVolume>();
                 else volume = null;
             }

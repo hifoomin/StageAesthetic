@@ -8,6 +8,7 @@ using RiskOfOptions;
 using RiskOfOptions.Options;
 using RiskOfOptions.OptionConfigs;
 using UnityEngine;
+using StageAesthetic.Variants;
 
 namespace StageAesthetic
 {
@@ -59,7 +60,11 @@ namespace StageAesthetic
             MistyAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Night Aqueduct?", true, "Honestly no idea lol");
             SunderedAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Sundered Aqueduct?", true, "Texture swap to Pink Sundered Grove.");
             AqueductChanges = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Alter vanilla Abandoned Aqueduct?", true, "Makes the sun a slightly more intense yellow-orange, and changes its angle.");
-
+            /*
+            MorningBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Morning Basin?", true, "Yellow sun with blue shadows.");
+            PurpleBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Purple Basin?", true, "Purple.");
+            RainyBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Rainy Basin?", true, "Overcast and rainy.");
+            */
             VanillaDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NightDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Night Delta?", true, "Blue and dark with extra snow.");
             FoggyDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Foggy Delta?", true, "Rainy with more fog.");
@@ -112,7 +117,8 @@ namespace StageAesthetic
             SandyMeadow = AesConfig.Bind("Stages ::::: Sky Meadow", "Enable Abandoned Meadow?", true, "Texture swap to Yellow Abandoned Aqueduct.");
             MeadowChanges = AesConfig.Bind("Stages ::::: Sky Meadow", "Alter vanilla Sky Meadow?", true, "Makes the sun a slightly more intense yellow-orange.");
 
-            CommencementAlt = AesConfig.Bind("Stages :::::: Commencement", "Commencement alt?", true, "Do not disable, currently bugged!");
+            VanillaCommencement = AesConfig.Bind("Stages :::::: Commencement", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
+            DarkCommencement = AesConfig.Bind("Stages :::::: Commencement", "Enable Dark Commencement?", true, "Very dark with a great view.");
 
             VanillaLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             BlueLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Blue Locus?", true, "Blue fog. Yeah that's it.");
@@ -142,7 +148,7 @@ namespace StageAesthetic
                     Name = "Stage 1";
                     ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + Name);
                 }
-                if (Name.Contains("Aphelian") || Name.Contains("Wetland") || Name.Contains("Aqueduct"))
+                if (Name.Contains("Aphelian") || Name.Contains("Wetland") || Name.Contains("Aqueduct") || Name.Contains("Basin"))
                 {
                     tabID = 2;
                     Name = "Stage 2";
@@ -183,18 +189,26 @@ namespace StageAesthetic
         {
             plainsList = new List<string>();
             roostList = new List<string>();
+            forestList = new List<string>();
+
             wetlandList = new List<string>();
             aqueductList = new List<string>();
+            aphelianList = new List<string>();
+            basinList = new List<string>();
+
             deltaList = new List<string>();
             acresList = new List<string>();
             sulfurList = new List<string>();
             fogboundList = new List<string>();
+
             depthsList = new List<string>();
             sirenList = new List<string>();
             groveList = new List<string>();
+
             meadowList = new List<string>();
-            forestList = new List<string>();
-            aphelianList = new List<string>();
+
+            commencementList = new List<string>();
+
             locusList = new List<string>();
             planetariumList = new List<string>();
 
@@ -256,7 +270,16 @@ namespace StageAesthetic
                 AesLog.LogWarning("Abandoned Aqueduct list empty - adding vanilla...");
                 aqueductList.Add("vanilla");
             }
-
+            /*
+            if (MorningBasin.Value) basinList.Add("morning");
+            if (RainyBasin.Value) basinList.Add("rainy");
+            if (PurpleBasin.Value) basinList.Add("purple");
+            if (basinList.Count == 0)
+            {
+                AesLog.LogWarning("Dry Basin list empty - adding vanilla...");
+                basinList.Add("vanilla");
+            }
+            */
             if (NearRainAphelian.Value) aphelianList.Add("nearrain");
             if (SunsetterAphelian.Value) aphelianList.Add("sunrise");
             if (NightAphelian.Value) aphelianList.Add("night");
@@ -361,6 +384,16 @@ namespace StageAesthetic
             {
                 AesLog.LogWarning("Sky Meadow list empty - adding vanilla...");
                 meadowList.Add("vanilla");
+            }
+
+            //
+
+            if (VanillaCommencement.Value) commencementList.Add("vanilla");
+            if (DarkCommencement.Value) commencementList.Add("dark");
+            if (commencementList.Count == 0)
+            {
+                AesLog.LogWarning("Commencement list empty - adding vanilla...");
+                commencementList.Add("vanilla");
             }
 
             //

@@ -16,7 +16,7 @@ namespace StageAesthetic.Variants
             fog.skyboxStrength.value = 0;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(198, 152, 223, 255);
-            sunLight.intensity = 0.9f;
+            sunLight.intensity = 1.1f;
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             var caveInner = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("NonBlended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(124, 86, 109, 0);
@@ -29,15 +29,17 @@ namespace StageAesthetic.Variants
 
         public static void GoldSwamp(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(129, 94, 43, 9);
-            fog.fogColorMid.value = new Color32(131, 96, 37, 135);
-            fog.fogColorEnd.value = new Color32(129, 90, 34, 255);
-            cgrade.colorFilter.value = new Color32(251, 199, 180, 255);
+            fog.fogColorStart.value = new Color32(129, 54, 43, 5);
+            fog.fogColorMid.value = new Color32(131, 84, 37, 135);
+            fog.fogColorEnd.value = new Color32(113, 73, 47, 239);
+            cgrade.colorFilter.value = new Color32(121, 90, 39, 255);
             cgrade.colorFilter.overrideState = true;
             fog.skyboxStrength.value = 0;
+            fog.fogOne.value = 0.28f;
+            fog.fogPower.value = 1.1f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(221, 151, 104, 255);
-            sunLight.intensity = 1.3f;
+            sunLight.color = new Color32(148, 90, 57, 255);
+            sunLight.intensity = 1.7f;
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             var caveInner = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("NonBlended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(127, 124, 84, 0);

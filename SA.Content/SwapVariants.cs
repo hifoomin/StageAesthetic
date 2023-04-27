@@ -1,5 +1,4 @@
 ﻿using System;
-using R2API;
 using UnityEngine;
 using RoR2;
 using UnityEngine.Rendering.PostProcessing;
@@ -7,41 +6,34 @@ using UnityEngine.SceneManagement;
 using BepInEx.Configuration;
 using System.Collections.Generic;
 using StageAesthetic.Variants;
+using R2API;
 
 namespace StageAesthetic
 {
     public class SwapVariants
     {
-        // materials sometimes break due to timing i believe, caching them here to prevent that sorta stuff
-
         public static void Initialize()
         {
-            // Setting up config and hooks before the game is actually loaded
             Config.SetConfig();
             On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
             SceneManager.sceneLoaded += TitlePicker;
             SceneCamera.onSceneCameraPreRender += RainCamera;
             Run.onRunStartGlobal += Config.ApplyConfig;
-            AesLog.LogMessage("Welcome to the latest update of StageAesthetics!");
-            AesLog.LogMessage("Note that most of the code is run during the game itself, so just because no errors popped up here doesn't mean the mod will work.");
-            AesLog.LogMessage("This has NOT been tested for cross-mod compatibility - if you're experiencing bugs that are disruptive enough to warrant a fix, sending BepInEx logs along with the bug report will make things easier. Also, note that Starstorm 2's weather and void effects will likely not mix well with this mod.");
         }
 
         private static void TitlePicker(Scene scene, LoadSceneMode mode)
         {
             if (scene.name == "title")
             {
-                // Doing this since the title sequence isn't covered by SceneDirector.Start
                 rainCheck = false;
                 var menuBase = GameObject.Find("MainMenu").transform;
-                // Pulling weather effects if they're enabled (this used to be part of the Weather Effects bool, but with InLobbyConfig being a thing now it'd NRE if this was disabled on load and then enabled in lobby without returning to the title screen)
+
                 if (!rainEffect)
                 {
-                    rainEffect = PrefabAPI.InstantiateClone(menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject, "rainT", true);
+                    rainEffect = PrefabAPI.InstantiateClone(menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject, "Stage Aesthetic Rain", false);
                     rainEffect.transform.eulerAngles = new Vector3(90, 0, 0);
                 }
 
-                // Title screen changes
                 if (TitleScene.Value)
                 {
                     var graphicBase = GameObject.Find("HOLDER: Title Background").transform;
@@ -76,7 +68,6 @@ namespace StageAesthetic
         {
             if (sceneCamera.cameraRigController && WeatherEffects.Value)
             {
-                // Grabbing the scene camera's controller
                 SetRain(sceneCamera.cameraRigController, true, false);
             }
         }
@@ -85,12 +76,11 @@ namespace StageAesthetic
         {
             if (rainCheck || emberCheck || purpleCheck)
             {
-                // Getting the two needed objects set up
                 Transform transform = cameraRigController.transform;
                 if (rainCheck)
                 {
-                    rainObj = GameObject.Find("rainT(Clone)");
-                    // Using the camera's xyz position to set the rain effect
+                    rainObj = GameObject.Find("Stage Aesthetic Rain(Clone)");
+
                     if (rainObj) rainObj.transform.SetPositionAndRotation(lockPosition ? transform.position : rain.transform.position, lockRotation ? transform.rotation : rain.transform.rotation);
                 }
             }
@@ -102,58 +92,46 @@ namespace StageAesthetic
             orig(self);
         }
 
-        // TODO:
-        /*
-         * sky aphelian
-         *
-         * aphelian aqueduct
-         *
-         * titanic rallypoint
-         * snowy acres
-         * two new sulfur pools
-         *
-         * roost abyssal, simulacrum abyssal
-         * distant grove, void grove
-        */
-
         private static void ChangeProfile(string scenename)
         {
             ulong seed = (ulong)(Run.instance.GetStartTimeUtc().Ticks ^ (Run.instance.stageClearCount << 16));
             Xoroshiro128Plus rng = new(seed);
-            // Disabling weather checks
+
             rainCheck = false;
             emberCheck = false;
             purpleCheck = false;
-            // Resetting rain object between stages
             rain = rainEffect;
-            // Loading in the current PostProcessVolume from SceneInfo
             SceneInfo currentScene = SceneInfo.instance;
             if (currentScene) volume = currentScene.GetComponent<PostProcessVolume>();
-            // Some stages keep post-processing in a dedicated "Weather" folder because ??? inconsistent code moment
-            // The following checks for three options used by various stages, which should leave Commencement as the only null value
+
             if (!volume)
             {
-                GameObject alt = GameObject.Find("PP + Amb");
+                GameObject alt = GameObject.Find("SA Volume");
+                if (!alt) alt = GameObject.Find("PP + Amb");
                 if (!alt) alt = GameObject.Find("PP, Global");
                 if (!alt) alt = GameObject.Find("GlobalPostProcessVolume, Base");
                 if (!alt) alt = GameObject.Find("PP+Amb");
                 if (alt) volume = alt.GetComponent<PostProcessVolume>();
+                if (scenename == "moon2")
+                {
+                    volume = currentScene.gameObject.AddComponent<PostProcessVolume>();
+                    volume.profile.AddSettings<RampFog>();
+
+                    volume.enabled = true;
+                    volume.isGlobal = true;
+                    volume.priority = 9999f;
+                }
                 else volume = null;
             }
-            if (volume && scenename != "moon2")
+            if (volume)
             {
-                // Pretty much every variant uses RampFog, and it always shows up in the post-processing volume so it's put into an easy variable for transferring to other files.
-                RampFog fog = volume.profile.GetSetting<RampFog>();
-                // As of 0.1.2, I'm reintroducing color grading to help make some alts look better
-                ColorGrading cgrade = volume.profile.GetSetting<ColorGrading>();
+                volume.gameObject.name = "SA Volume";
+                volume.name = "SA Volume";
+                volume.profile.name = "SA Profile";
+                var fog = volume.profile.GetSetting<RampFog>();
+
+                var cgrade = volume.profile.GetSetting<ColorGrading>();
                 if (cgrade == null) cgrade = volume.profile.AddSettings<ColorGrading>();
-                // Commencement does not natively have a profile, so I'm borrowing it from the first stage in memory.
-                if (Run.instance.stageClearCount == 0 && CommencementAlt.Value)
-                {
-                    commencementVolume = volume.profile;
-                }
-                // Moving onto the big list of stage changes. I'll comment the Titanic Plains one for context, but the rest won't be.
-                // Due to Titanic Plains and Distant Roost having two different variations, the if statement for them is an OR check for both.
 
                 switch (scenename)
                 {
@@ -161,13 +139,12 @@ namespace StageAesthetic
 
                         #region TitanicPlainsAndAlt
 
-                        // Setting up a random number between 0 and the total number of strings in the stage's list. This sets the maximum number to
                         int plainsCounter = rng.RangeInt(0, plainsList.Count);
-                        // Implementing a do-while loop to force a new variant whenever a stage is reloaded:
+
                         if (plainsList.Count > 1) do plainsCounter = rng.RangeInt(0, plainsList.Count); while (plainsCounter == plainsVariant);
                         // Converting the list to a string array so I can pull values based off of index. There's probably a better way to do this, but...
                         string[] plainsArray = plainsList.ToArray();
-                        if (plainsCounter == plainsList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (plainsCounter == plainsList.Count) { }
                         else
                         {
                             switch (plainsArray[plainsCounter])
@@ -233,7 +210,7 @@ namespace StageAesthetic
                         int roostCounter = rng.RangeInt(0, roostList.Count);
                         if (roostList.Count > 1) do roostCounter = rng.RangeInt(0, roostList.Count); while (roostCounter == roostVariant);
                         string[] roostArray = roostList.ToArray();
-                        if (roostCounter == roostList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (roostCounter == roostList.Count) { }
                         else
                         {
                             switch (roostArray[roostCounter])
@@ -281,7 +258,7 @@ namespace StageAesthetic
                         int roostAltCounter = rng.RangeInt(0, roostList.Count);
                         if (roostList.Count > 1) do roostAltCounter = rng.RangeInt(0, roostList.Count); while (roostAltCounter == roostVariant);
                         string[] roostAltArray = roostList.ToArray();
-                        if (roostAltCounter == roostList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (roostAltCounter == roostList.Count) { }
                         else
                         {
                             switch (roostAltArray[roostAltCounter])
@@ -329,7 +306,7 @@ namespace StageAesthetic
                         int forestCounter = rng.RangeInt(0, forestList.Count);
                         if (forestList.Count > 1) do forestCounter = rng.RangeInt(0, forestList.Count); while (forestCounter == forestVariant);
                         string[] forestArray = forestList.ToArray();
-                        if (forestCounter == forestList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (forestCounter == forestList.Count) { }
                         else
                         {
                             switch (forestArray[forestCounter])
@@ -375,7 +352,7 @@ namespace StageAesthetic
                         int wetlandCounter = rng.RangeInt(0, wetlandList.Count);
                         if (wetlandList.Count > 1) do wetlandCounter = rng.RangeInt(0, wetlandList.Count); while (wetlandCounter == wetlandVariant);
                         string[] wetlandArray = wetlandList.ToArray();
-                        if (wetlandCounter == wetlandList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (wetlandCounter == wetlandList.Count) { }
                         else
                         {
                             switch (wetlandArray[wetlandCounter])
@@ -421,7 +398,7 @@ namespace StageAesthetic
                         int aqueductCounter = rng.RangeInt(0, aqueductList.Count);
                         if (aqueductList.Count > 1) do aqueductCounter = rng.RangeInt(0, aqueductList.Count); while (aqueductCounter == aqueductVariant);
                         string[] aqueductArray = aqueductList.ToArray();
-                        if (aqueductCounter == aqueductList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (aqueductCounter == aqueductList.Count) { }
                         else
                         {
                             switch (aqueductArray[aqueductCounter])
@@ -459,6 +436,39 @@ namespace StageAesthetic
                         #endregion AbandonedAqueduct
 
                         break;
+                    /*
+                    case "drybasin":
+
+                        int basinCounter = rng.RangeInt(0, basinList.Count);
+                        if (basinList.Count > 1) do aqueductCounter = rng.RangeInt(0, basinList.Count); while (basinCounter == basinVariant);
+                        string[] basinArray = basinList.ToArray();
+                        if (basinCounter == basinList.Count) { }
+                        else
+                        {
+                            switch (basinArray[basinCounter])
+                            {
+                                case "rainy":
+                                    rainCheck = true;
+                                    DryBasin.RainyBasin(stupidAssFog, cgrade, rain);
+                                    break;
+
+                                case "morning":
+                                    DryBasin.MorningBasin(stupidAssFog, cgrade);
+                                    break;
+
+                                case "purple":
+                                    DryBasin.PurpleBasin(stupidAssFog, cgrade);
+                                    break;
+
+                                default:
+                                    AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
+                                    break;
+                            }
+                        }
+                        basinVariant = basinCounter;
+
+                        break;
+                    */
 
                     case "ancientloft":
 
@@ -467,7 +477,7 @@ namespace StageAesthetic
                         int aphelianCounter = rng.RangeInt(0, aphelianList.Count);
                         if (aphelianList.Count > 1) do aphelianCounter = rng.RangeInt(0, aphelianList.Count); while (aphelianCounter == aphelianVariant);
                         string[] aphelianArray = aphelianList.ToArray();
-                        if (aphelianCounter == aphelianList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (aphelianCounter == aphelianList.Count) { }
                         else
                         {
                             switch (aphelianArray[aphelianCounter])
@@ -513,7 +523,7 @@ namespace StageAesthetic
                         int deltaCounter = rng.RangeInt(0, deltaList.Count);
                         if (deltaList.Count > 1) do deltaCounter = rng.RangeInt(0, deltaList.Count); while (deltaCounter == deltaVariant);
                         string[] deltaArray = deltaList.ToArray();
-                        if (deltaCounter == deltaList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (deltaCounter == deltaList.Count) { }
                         else
                         {
                             switch (deltaArray[deltaCounter])
@@ -557,7 +567,7 @@ namespace StageAesthetic
                         int acresCounter = rng.RangeInt(0, acresList.Count);
                         if (acresList.Count > 1) do acresCounter = rng.RangeInt(0, acresList.Count); while (acresCounter == acresVariant);
                         string[] acresArray = acresList.ToArray();
-                        if (acresCounter == acresList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (acresCounter == acresList.Count) { }
                         else
                         {
                             switch (acresArray[acresCounter])
@@ -609,7 +619,7 @@ namespace StageAesthetic
                         int sulfurCounter = rng.RangeInt(0, sulfurList.Count);
                         if (sulfurList.Count > 1) do sulfurCounter = rng.RangeInt(0, sulfurList.Count); while (sulfurCounter == sulfurVariant);
                         string[] sulfurArray = sulfurList.ToArray();
-                        if (sulfurCounter == sulfurList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (sulfurCounter == sulfurList.Count) { }
                         else
                         {
                             switch (sulfurArray[sulfurCounter])
@@ -648,7 +658,7 @@ namespace StageAesthetic
                         int fogboundCounter = rng.RangeInt(0, fogboundList.Count);
                         if (fogboundList.Count > 1) do fogboundCounter = rng.RangeInt(0, fogboundList.Count); while (fogboundCounter == fogboundVariant);
                         string[] fogboundArray = fogboundList.ToArray();
-                        if (fogboundCounter == fogboundList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (fogboundCounter == fogboundList.Count) { }
                         else
                         {
                             switch (fogboundArray[fogboundCounter])
@@ -683,7 +693,7 @@ namespace StageAesthetic
                         int depthsCounter = rng.RangeInt(0, depthsList.Count);
                         if (depthsList.Count > 1) do depthsCounter = rng.RangeInt(0, depthsList.Count); while (depthsCounter == depthsVariant);
                         string[] depthsArray = depthsList.ToArray();
-                        if (depthsCounter == depthsList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (depthsCounter == depthsList.Count) { }
                         else
                         {
                             switch (depthsArray[depthsCounter])
@@ -728,7 +738,7 @@ namespace StageAesthetic
                         int sirenCounter = rng.RangeInt(0, sirenList.Count);
                         if (sirenList.Count > 1) do sirenCounter = rng.RangeInt(0, sirenList.Count); while (sirenCounter == sirenVariant);
                         string[] sirenArray = sirenList.ToArray();
-                        if (sirenCounter == sirenList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (sirenCounter == sirenList.Count) { }
                         else
                         {
                             switch (sirenArray[sirenCounter])
@@ -772,7 +782,7 @@ namespace StageAesthetic
                         int groveCounter = rng.RangeInt(0, groveList.Count);
                         if (groveList.Count > 1) do groveCounter = rng.RangeInt(0, groveList.Count); while (groveCounter == groveVariant);
                         string[] groveArray = groveList.ToArray();
-                        if (groveCounter == groveList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (groveCounter == groveList.Count) { }
                         else
                         {
                             switch (groveArray[groveCounter])
@@ -816,7 +826,7 @@ namespace StageAesthetic
                         int meadowCounter = rng.RangeInt(0, meadowList.Count);
                         if (meadowList.Count > 1) do meadowCounter = rng.RangeInt(0, meadowList.Count); while (meadowCounter == meadowVariant);
                         string[] meadowArray = meadowList.ToArray();
-                        if (meadowCounter == meadowList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (meadowCounter == meadowList.Count) { }
                         else
                         {
                             switch (meadowArray[meadowCounter])
@@ -862,6 +872,36 @@ namespace StageAesthetic
 
                         break;
 
+                    case "moon2":
+
+                        #region Commencement
+
+                        int commencementCounter = rng.RangeInt(0, commencementList.Count);
+                        if (commencementList.Count > 1) do commencementCounter = rng.RangeInt(0, commencementList.Count); while (commencementCounter == commencementVariant);
+                        string[] commencementArray = commencementList.ToArray();
+                        if (commencementCounter == commencementList.Count) { }
+                        else
+                        {
+                            switch (commencementArray[commencementCounter])
+                            {
+                                case "vanilla":
+                                    break;
+
+                                case "dark":
+                                    Commencement.DarkCommencement(fog);
+                                    break;
+
+                                default:
+                                    AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
+                                    break;
+                            }
+                        }
+                        commencementVariant = commencementCounter;
+
+                        #endregion Commencement
+
+                        break;
+
                     case "voidstage":
 
                         #region VoidLocus
@@ -869,7 +909,7 @@ namespace StageAesthetic
                         int locusCounter = rng.RangeInt(0, locusList.Count);
                         if (locusList.Count > 1) do locusCounter = rng.RangeInt(0, locusList.Count); while (locusCounter == locusVariant);
                         string[] locusArray = locusList.ToArray();
-                        if (locusCounter == locusList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (locusCounter == locusList.Count) { }
                         else
                         {
                             switch (locusArray[locusCounter])
@@ -910,7 +950,7 @@ namespace StageAesthetic
                         int planetariumCounter = rng.RangeInt(0, planetariumList.Count);
                         if (planetariumList.Count > 1) do planetariumCounter = rng.RangeInt(0, planetariumList.Count); while (planetariumCounter == planetariumVariant);
                         string[] planetariumArray = planetariumList.ToArray();
-                        if (planetariumCounter == planetariumList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
+                        if (planetariumCounter == planetariumList.Count) { }
                         else
                         {
                             switch (planetariumArray[planetariumCounter])
@@ -941,33 +981,8 @@ namespace StageAesthetic
                         break;
                 }
             }
-            else if (scenename == "moon2" && CommencementAlt.Value)
-            {
-                volume = currentScene.gameObject.AddComponent<PostProcessVolume>();
-                volume.enabled = true;
-                volume.isGlobal = true;
-                volume.priority = 9999f;
-                volume.profile = commencementVolume;
-                RampFog fog = volume.profile.GetSetting<RampFog>();
-                fog.fogColorStart.value = new Color(0.08f, 0.05f, 0.12f, 0.4f);
-                fog.fogColorMid.value = new Color(0.13f, 0.14f, 0.19f, 0.625f);
-                fog.fogColorEnd.value = new Color(0f, 0f, 0f, 1f);
-                fog.skyboxStrength.value = 0f;
-                var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-                sun.color = new Color32(178, 238, 238, 255);
-                sun.intensity = 1.9f;
-                var es = GameObject.Find("EscapeSequenceController").transform.GetChild(0);
-                es.GetChild(0).GetComponent<PostProcessVolume>().priority = 10001;
-                // es.GetChild(6).GetComponent<PostProcessDuration>().enabled = false;
-                es.GetChild(6).GetComponent<PostProcessVolume>().weight = 0.47f;
-                es.GetChild(6).GetComponent<PostProcessVolume>().sharedProfile.settings[0].active = false;
-            }
-            else AesLog.LogWarning("Post process volume could not be found.");
-
-            // lemme know if there's a better way of doing this
         }
 
-        // Used for uh everything
         public static PostProcessVolume volume;
 
         #region Jank
@@ -977,6 +992,7 @@ namespace StageAesthetic
         public static int plainsVariant = -1;
 
         public static int aqueductVariant = -1;
+        public static int basinVariant = -1;
         public static int aphelianVariant = -1;
         public static int wetlandVariant = -1;
 
@@ -1001,23 +1017,16 @@ namespace StageAesthetic
 
         #endregion Jank
 
-        // Used to store a dummy volume to use in Commencement
-        public static PostProcessProfile commencementVolume;
-
-        // Used for rain effect
         public static GameObject rainEffect;
 
         public static GameObject rain;
         public static GameObject rainObj;
         public static GameObject quad;
-
-        // Used during SceneCamera hook
         public static bool rainCheck;
 
         public static bool emberCheck;
         public static bool purpleCheck;
 
-        // Custom log
         internal static BepInEx.Logging.ManualLogSource AesLog;
 
         #region Enable/Disable Config
@@ -1066,6 +1075,12 @@ namespace StageAesthetic
         public static ConfigEntry<bool> RainyAqueduct { get; set; }
         public static ConfigEntry<bool> MistyAqueduct { get; set; }
         public static ConfigEntry<bool> SunderedAqueduct { get; set; }
+
+        // Dry Basin
+
+        public static ConfigEntry<bool> RainyBasin { get; set; }
+        public static ConfigEntry<bool> PurpleBasin { get; set; }
+        public static ConfigEntry<bool> MorningBasin { get; set; }
 
         // Aphelian
 
@@ -1143,6 +1158,11 @@ namespace StageAesthetic
         public static ConfigEntry<bool> TitanicMeadow { get; set; }
         public static ConfigEntry<bool> SandyMeadow { get; set; }
 
+        // Commencement
+
+        public static ConfigEntry<bool> DarkCommencement { get; set; }
+        public static ConfigEntry<bool> VanillaCommencement { get; set; }
+
         // Void Locus
         public static ConfigEntry<bool> VanillaLocus { get; set; }
 
@@ -1158,10 +1178,8 @@ namespace StageAesthetic
 
         #endregion Enable/Disable Config
 
-        // Base Config
         public static ConfigFile AesConfig { get; set; }
 
-        public static ConfigEntry<bool> CommencementAlt { get; set; }
         public static ConfigEntry<bool> TitleScene { get; set; }
         public static ConfigEntry<bool> WeatherEffects { get; set; }
 
@@ -1174,6 +1192,7 @@ namespace StageAesthetic
         public static List<string> wetlandList = new();
         public static List<string> aqueductList = new();
         public static List<string> aphelianList = new();
+        public static List<string> basinList = new();
 
         public static List<string> deltaList = new();
         public static List<string> acresList = new();

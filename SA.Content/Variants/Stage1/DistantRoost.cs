@@ -366,7 +366,7 @@ namespace StageAesthetic.Variants
                     if (meshBase.name.Contains("bbSimpleGrassPrefab"))
                     {
                         mr.sharedMaterial.color = new Color32(95, 42, 45, 255);
-                        meshBase.transform.localScale = new Vector3(8f, 5.7548744f, 8f);
+                        meshBase.transform.localScale = new Vector3(5.28f, 3.798217104f, 5.28f);
                     }
                     if (meshBase.name.Contains("spmBbFern"))
                     {

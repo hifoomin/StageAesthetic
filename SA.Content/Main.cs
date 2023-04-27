@@ -1,19 +1,13 @@
-﻿using R2API.Utils;
-using BepInEx;
+﻿using BepInEx;
 using UnityEngine;
 using System.Reflection;
+using R2API;
 
 namespace StageAesthetic
 {
     [BepInPlugin("com.HIFU.StageAesthetic", "StageAesthetic", "0.7.3")]
     [BepInDependency("com.rune580.riskofoptions")]
-    [R2APISubmoduleDependency(new string[]
-    {
-        "DirectorAPI",
-        "ArtifactAPI",
-        "NetworkingAPI",
-        "PrefabAPI"
-    })]
+    [BepInDependency(PrefabAPI.PluginGUID)]
     internal class Main : BaseUnityPlugin
     {
         public static AssetBundle stageaesthetic;
