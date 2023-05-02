@@ -106,14 +106,30 @@ namespace StageAesthetic
 
             if (!volume)
             {
-                GameObject alt = GameObject.Find("SA Volume");
-                if (!alt) alt = GameObject.Find("PP + Amb");
-                if (!alt) alt = GameObject.Find("PP, Global");
-                if (!alt) alt = GameObject.Find("GlobalPostProcessVolume, Base");
-                if (!alt) alt = GameObject.Find("PP+Amb");
-                if (alt) volume = alt.GetComponent<PostProcessVolume>();
+                GameObject alt = GameObject.Find("PP + Amb");
+                if (!alt)
+                {
+                    alt = GameObject.Find("PP, Global");
+                    // AesLog.LogError("alt is " + alt.name);
+                }
+                if (!alt)
+                {
+                    alt = GameObject.Find("GlobalPostProcessVolume, Base");
+                    // AesLog.LogError("alt is " + alt.name);
+                }
+                if (!alt)
+                {
+                    alt = GameObject.Find("PP+Amb");
+                    // AesLog.LogError("alt is " + alt.name);
+                }
+                if (alt)
+                {
+                    volume = alt.GetComponent<PostProcessVolume>();
+                    // AesLog.LogError("setting volume to alt");
+                }
                 if (scenename == "moon2")
                 {
+                    // AesLog.LogError("scenename is moon2");
                     volume = currentScene.gameObject.AddComponent<PostProcessVolume>();
                     volume.profile.AddSettings<RampFog>();
 
@@ -121,12 +137,10 @@ namespace StageAesthetic
                     volume.isGlobal = true;
                     volume.priority = 9999f;
                 }
-                else volume = null;
             }
             if (volume)
             {
-                volume.gameObject.name = "SA Volume";
-                volume.name = "SA Volume";
+                // AesLog.LogError("found volume");
                 volume.profile.name = "SA Profile";
                 var fog = volume.profile.GetSetting<RampFog>();
 
@@ -334,6 +348,11 @@ namespace StageAesthetic
                                     SiphonedForest.MorningForest(fog, cgrade);
                                     break;
 
+                                case "desolate":
+                                    purpleCheck = true;
+                                    SiphonedForest.DesolateForest(fog, cgrade);
+                                    break;
+
                                 default:
                                     AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                                     break;
@@ -502,7 +521,7 @@ namespace StageAesthetic
 
                                 case "abyss":
                                     purpleCheck = true;
-                                    AphelianSanctuary.AbyssalSanctuary(fog);
+                                    AphelianSanctuary.AbyssalSanctuary(fog, cgrade);
                                     break;
 
                                 default:
@@ -706,13 +725,13 @@ namespace StageAesthetic
                                     AbyssalDepths.HiveCave(fog, cgrade);
                                     break;
 
-                                case "gold":
+                                case "dark":
                                     AbyssalDepths.DarkCave(fog, cgrade);
                                     break;
 
-                                case "sky":
+                                case "orange":
                                     purpleCheck = true;
-                                    AbyssalDepths.MeadowCave(fog);
+                                    AbyssalDepths.OrangeCave(fog);
                                     break;
 
                                 case "coral":
@@ -891,6 +910,18 @@ namespace StageAesthetic
                                     Commencement.DarkCommencement(fog);
                                     break;
 
+                                case "crimson":
+                                    Commencement.CrimsonCommencement(fog);
+                                    break;
+
+                                case "corruption":
+                                    Commencement.CorruptionCommencement(fog);
+                                    break;
+
+                                case "gray":
+                                    Commencement.GrayCommencement(fog);
+                                    break;
+
                                 default:
                                     AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                                     break;
@@ -1058,6 +1089,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> CrimsonForest { get; set; }
         public static ConfigEntry<bool> MorningForest { get; set; }
         public static ConfigEntry<bool> VanillaForest { get; set; }
+        public static ConfigEntry<bool> DesolateForest { get; set; }
 
         // Wetland
         public static ConfigEntry<bool> VanillaWetland { get; set; }
@@ -1162,6 +1194,9 @@ namespace StageAesthetic
 
         public static ConfigEntry<bool> DarkCommencement { get; set; }
         public static ConfigEntry<bool> VanillaCommencement { get; set; }
+        public static ConfigEntry<bool> CrimsonCommencement { get; set; }
+        public static ConfigEntry<bool> CorruptionCommencement { get; set; }
+        public static ConfigEntry<bool> GrayCommencement { get; set; }
 
         // Void Locus
         public static ConfigEntry<bool> VanillaLocus { get; set; }

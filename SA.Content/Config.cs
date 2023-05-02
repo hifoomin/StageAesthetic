@@ -41,6 +41,7 @@ namespace StageAesthetic
             CrimsonForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Crimson Forest?", true, "Red fog with Doom vibes.");
             MorningForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Morning Forest?", true, "Yellow sun with blue shadows.");
             VanillaForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
+            // DesolateForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Desolate Forest?", true, "Green ground with a purple contrast.");
 
             VanillaAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NearRainAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Twilight Sanctuary?", true, "Strong purple and orange fog.");
@@ -91,9 +92,9 @@ namespace StageAesthetic
             OvercastLagoon = AesConfig.Bind("Stages ::: Fogbound Lagoon", "Enable Overcast Lagoon?", true, "Very foggy with rain. Actually no rain yet, I'm waiting for a potential bugfix lol");
 
             VanillaDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            DarkDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Azure Depths?", true, "No idea lol");
-            BlueDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Hive Cluster Depths?", true, "No idea lol");
-            SkyDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Sky Depths?", true, "No idea lol");
+            DarkDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Indigo Depths?", true, "Dark blue with light fog.");
+            BlueDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Hive Depths?", true, "Orange-ish and pink-ish");
+            SkyDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Pink Depths?", true, "Pink with some orange and blue.");
             CoralDepths = AesConfig.Bind("Stages :::: Abyssal Depths", "Enable Coral Depths?", true, "Texture swap to Blue/Purple/Pink Sundered Grove.");
             DepthsChanges = AesConfig.Bind("Stages :::: Abyssal Depths", "Alter vanilla Abyssal Depths?", true, "Greatly increases the sunlight intensity, and alters the light angle.");
 
@@ -119,6 +120,9 @@ namespace StageAesthetic
 
             VanillaCommencement = AesConfig.Bind("Stages :::::: Commencement", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             DarkCommencement = AesConfig.Bind("Stages :::::: Commencement", "Enable Dark Commencement?", true, "Very dark with a great view.");
+            CrimsonCommencement = AesConfig.Bind("Stages :::::: Commencement", "Enable Crimson Commencement?", true, "Bloody and threatening.");
+            CorruptionCommencement = AesConfig.Bind("Stages :::::: Commencement", "Enable Corruption Commencement?", true, "Purple.");
+            GrayCommencement = AesConfig.Bind("Stages :::::: Commencement", "Enable Gray Commencement?", true, "Gray!");
 
             VanillaLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             BlueLocus = AesConfig.Bind("Stages ::::::: Void Locus", "Enable Blue Locus?", true, "Blue fog. Yeah that's it.");
@@ -241,6 +245,7 @@ namespace StageAesthetic
             if (CrimsonForest.Value) forestList.Add("abyssal");
             if (MorningForest.Value) forestList.Add("morning");
             if (VanillaForest.Value) forestList.Add("vanilla");
+            // if (DesolateForest.Value) forestList.Add("desolate");
             if (forestList.Count == 0)
             {
                 AesLog.LogWarning("Siphoned Forest list empty - adding vanilla...");
@@ -340,9 +345,9 @@ namespace StageAesthetic
             //
 
             if (VanillaDepths.Value) depthsList.Add("vanilla");
-            if (DarkDepths.Value) depthsList.Add("gold");
+            if (DarkDepths.Value) depthsList.Add("dark");
             if (BlueDepths.Value) depthsList.Add("hive");
-            if (SkyDepths.Value) depthsList.Add("sky");
+            if (SkyDepths.Value) depthsList.Add("orange");
             if (CoralDepths.Value) depthsList.Add("coral");
             if (depthsList.Count == 0)
             {
@@ -390,6 +395,9 @@ namespace StageAesthetic
 
             if (VanillaCommencement.Value) commencementList.Add("vanilla");
             if (DarkCommencement.Value) commencementList.Add("dark");
+            if (CrimsonCommencement.Value) commencementList.Add("crimson");
+            if (CorruptionCommencement.Value) commencementList.Add("corruption");
+            if (GrayCommencement.Value) commencementList.Add("gray");
             if (commencementList.Count == 0)
             {
                 AesLog.LogWarning("Commencement list empty - adding vanilla...");

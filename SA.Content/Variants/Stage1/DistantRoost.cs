@@ -55,7 +55,7 @@ namespace StageAesthetic.Variants
             cgrade.colorFilter.overrideState = true;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(106, 69, 160, 255);
-            sunLight.intensity = 1f;
+            sunLight.intensity = 7f;
             sunLight.shadowStrength = 0.45f;
             if (scenename == "blackbeach")
             {
@@ -206,20 +206,22 @@ namespace StageAesthetic.Variants
         public static void GoldBeach(RampFog fog, ColorGrading cgrade)
         {
             try { ApplyGoldMaterials(); } catch { SwapVariants.AesLog.LogError("Abyssal Roost: Failed to change materials, trying again..."); } finally { ApplyGoldMaterials(); }
-            fog.fogColorStart.value = new Color32(84, 27, 27, 15);
-            fog.fogColorMid.value = new Color32(91, 26, 26, 90);
-            fog.fogColorEnd.value = new Color32(107, 23, 23, 225);
+            fog.fogColorStart.value = new Color32(99, 27, 63, 72);
+            fog.fogColorMid.value = new Color32(91, 26, 62, 70);
+            fog.fogColorEnd.value = new Color32(87, 20, 20, 255);
+            fog.SetAllOverridesTo(true);
             fog.skyboxStrength.value = 0f;
-            fog.fogPower.value = 0.35f;
-            fog.fogIntensity.value = 0.99f;
-            fog.fogZero.value = -0.02f;
-            fog.fogOne.value = 0.25f;
-            cgrade.colorFilter.value = new Color32(213, 183, 128, 255);
+            fog.fogPower.value = 0.45f;
+            fog.fogIntensity.value = 1f;
+            fog.fogZero.value = -0.05f;
+            fog.fogOne.value = 0.27f;
+            cgrade.colorFilter.value = new Color32(201, 201, 166, 255);
             cgrade.colorFilter.overrideState = true;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(154, 46, 49, 255);
-            sunLight.intensity = 1.6f;
+            sunLight.color = new Color32(195, 127, 129, 255);
+            sunLight.intensity = 1.25f;
             sunLight.shadowStrength = 1f;
+            sunLight.transform.eulerAngles = new Vector3(70f, 220f, -9.985f);
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
             {
@@ -245,6 +247,10 @@ namespace StageAesthetic.Variants
                                 light.range = 15f;
                             }
                         }
+                    }
+                    if (meshBase.name == ("spmBbConif_LOD2"))
+                    {
+                        meshBase.gameObject.SetActive(false);
                     }
                 }
             }
@@ -279,7 +285,7 @@ namespace StageAesthetic.Variants
                 {
                     if (meshBase.name.Contains("bbSimpleGrassPrefab"))
                     {
-                        mr.sharedMaterial.color = new Color32(11, 58, 28, 255);
+                        mr.sharedMaterial.color = new Color32(89, 23, 37, 211);
                     }
                     if (meshBase.name.Contains("spmBbFern2"))
                     {
@@ -422,7 +428,7 @@ namespace StageAesthetic.Variants
                         var sharedMaterials = mr.sharedMaterials;
                         // mr.sharedMaterial.color = new Color32(164, 35, 47, 255);
                         var color1 = new Color32(191, 60, 40, 255);
-                        var color2 = new Color32(255, 175, 119, 255);
+                        var color2 = new Color32(160, 84, 31, 255);
                         for (int i = 0; i < sharedMaterials.Length; i++)
                         {
                             sharedMaterials[i].color = color1;
@@ -433,13 +439,13 @@ namespace StageAesthetic.Variants
                         }
                         mr.sharedMaterials = sharedMaterials;
                     }
-                    if (meshBase.name.Contains("spmBbConifYoung"))
+                    if (meshBase.name.Contains("spmBbConifYoung_L"))
                     {
                         meshBase.SetActive(true);
                         var sharedMaterials = mr.sharedMaterials;
                         // mr.sharedMaterial.color = new Color32(164, 35, 47, 255);
                         var color1 = new Color32(191, 60, 40, 255);
-                        var color2 = new Color32(255, 175, 119, 255);
+                        var color2 = new Color32(115, 68, 65, 255);
                         for (int i = 0; i < sharedMaterials.Length; i++)
                         {
                             sharedMaterials[i].color = color1;
@@ -538,6 +544,7 @@ namespace StageAesthetic.Variants
             var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuins.mat").WaitForCompletion());
             detailMat2.color = new Color32(181, 66, 34, 255);
             var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
+            water.shaderKeywords = new string[] { "_BUMPLARGE_ON", "_DISPLACEMENTMODE_OFF", "_DISPLACEMENT_ON", "_DISTORTIONQUALITY_HIGH", "_EMISSION", "_FOAM_ON", "_NORMALMAP" };
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && water)
             {
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];

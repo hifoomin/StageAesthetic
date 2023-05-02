@@ -18,9 +18,9 @@ namespace StageAesthetic.Variants
         {
             fog.skyboxStrength.value = 0.08f;
 
-            fog.fogColorStart.value = new Color32(0, 140, 145, 40);
+            fog.fogColorStart.value = new Color32(0, 87, 145, 58);
             fog.fogColorMid.value = new Color32(0, 106, 145, 90);
-            fog.fogColorEnd.value = new Color32(0, 140, 145, 190);
+            fog.fogColorEnd.value = new Color32(0, 115, 119, 194);
             //fog.fogZero.value = -0.019f;
             //fog.fogOne.value = 0.211f;
 
@@ -54,9 +54,9 @@ namespace StageAesthetic.Variants
             try { ApplyHellMaterials(); } catch { SwapVariants.AesLog.LogError("Hell Pools: Failed to change materials, trying again..."); } finally { ApplyHellMaterials(); }
             fog.skyboxStrength.value = 0f;
 
-            fog.fogColorStart.value = new Color32(45, 0, 0, 45);
-            fog.fogColorMid.value = new Color32(55, 10, 0, 45);
-            fog.fogColorEnd.value = new Color32(65, 0, 15, 190);
+            fog.fogColorStart.value = new Color32(138, 56, 57, 100);
+            fog.fogColorMid.value = new Color32(128, 41, 59, 60);
+            fog.fogColorEnd.value = new Color32(164, 0, 0, 51);
             //fog.fogZero.value = -0.019f;
             //fog.fogOne.value = 0.211f;
 

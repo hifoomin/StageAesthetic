@@ -21,8 +21,8 @@ namespace StageAesthetic.Variants
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(155, 163, 227, 255);
-            sunLight.intensity = 0.8f;
-            sunLight.shadowStrength = 0.4f;
+            sunLight.intensity = 2f;
+            sunLight.shadowStrength = 0.5f;
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
             {

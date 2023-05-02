@@ -1,5 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
+using UnityEngine.XR;
+using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants
 {
@@ -108,6 +113,106 @@ namespace StageAesthetic.Variants
             sunLight.transform.localEulerAngles = new Vector3(40, 153.0076f, 50f);
         }
 
+        public static void DesolateForest(RampFog fog, ColorGrading cgrade)
+        {
+            try { ApplyRoostMaterials(); } catch { SwapVariants.AesLog.LogError("Abyssal Roost: Failed to change materials, trying again..."); } finally { ApplyRoostMaterials(); }
+            fog.fogColorStart.value = new Color32(237, 117, 255, 7);
+            fog.fogColorMid.value = new Color32(230, 111, 248, 45);
+            fog.fogColorEnd.value = new Color32(136, 62, 174, 255);
+            fog.skyboxStrength.value = 0.1f;
+            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            var aurora = GameObject.Find("mdlSnowyForestAurora");
+            var snow = GameObject.Find("CAMERA PARTICLES: SnowParticles");
+            snow.SetActive(false);
+            aurora.SetActive(false);
+            sunLight.color = new Color32(255, 185, 250, 255);
+            sunLight.intensity = 12f;
+            sunLight.shadowStrength = 0.55f;
+            cgrade.colorFilter.value = new Color32(111, 196, 248, 17);
+            cgrade.colorFilter.overrideState = true;
+            sunLight.transform.localEulerAngles = new Vector3(40, 153.0076f, 50f);
 
+            var foliage = GameObject.Find("HOLDER: Foliage").scene.GetRootGameObjects()[3];
+            var iciles = foliage.transform.GetChild(5);
+            iciles.gameObject.SetActive(false);
+        }
+
+        public static void ApplyRoostMaterials()
+        {
+            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/blackbeach/matBbTerrain.mat").WaitForCompletion());
+            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/blackbeach/matBbTerrainLight.mat").WaitForCompletion());
+            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/blackbeach/matBbBoulder.mat").WaitForCompletion();
+            var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Temple.mat").WaitForCompletion());
+            detailMat2.color = new Color32(18, 79, 40, 255);
+            var detailMat3 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/TreasureCacheVoid/matLockboxVoidRocks.mat").WaitForCompletion());
+            detailMat3.color = new Color32(103, 172, 130, 255);
+            if (terrainMat && terrainMat2 && detailMat && detailMat2)
+            {
+                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer mr in meshList)
+                {
+                    var meshBase = mr.gameObject;
+                    if (meshBase != null)
+                    {
+                        if (meshBase.name.Contains("Terrain"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = terrainMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name == "meshSnowyForestGiantTreesTops")
+                        {
+                            meshBase.gameObject.SetActive(false);
+                        }
+                        if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rock"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("RuinGate") || meshBase.name.Contains("meshSnowyForestAqueduct"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat2;
+                                    break;
+                            }
+                        }
+                        if (meshBase.name.Contains("SnowPile"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat3;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

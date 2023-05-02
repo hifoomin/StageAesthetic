@@ -22,9 +22,9 @@ namespace StageAesthetic.Variants
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(255, 128, 246, 255);
-            sunLight.intensity = 3f;
-            sunLight.shadowStrength = 0.4f;
-            sunTransform.localEulerAngles = new Vector3(30, 198.5f, 218.841f);
+            sunLight.intensity = 4f;
+            sunLight.shadowStrength = 0.5f;
+            sunTransform.localEulerAngles = new Vector3(35f, 198.5f, 218.841f);
             var sunBase = lightBase.Find("CameraRelative").Find("SunHolder").Find("Sphere");
             Vector3 sunPosition = sunBase.parent.localPosition;
             sunPosition.y = -67;
@@ -46,7 +46,7 @@ namespace StageAesthetic.Variants
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(173, 175, 245, 255);
-            sunLight.intensity = 0.9f;
+            sunLight.intensity = 2f;
             sunLight.shadowStrength = 0.4f;
             sunLight.shadowBias = 0.05f;
             lightBase.Find("CameraRelative").Find("SunHolder").gameObject.SetActive(false);
@@ -63,22 +63,6 @@ namespace StageAesthetic.Variants
                 moonPosition.y = 263;
                 eclipse.transform.GetChild(3).GetChild(2).localScale = new Vector3(8, 8, 8);
             }
-            /*
-            var dummylist = UnityEngine.Object.FindObjectsOfType(typeof(WeatherParticles)) as WeatherParticles[];
-            for (var i = 0; i < dummylist.Length; i++)
-            {
-                Debug.Log(dummylist[i].name);
-                Debug.Log(dummylist[i].gameObject.name);
-                if (dummylist[i].gameObject.name.Equals("Skybox Assets"))
-                {
-                    Debug.Log("test");
-                    Transform eclipseBase = dummylist[i].gameObject.transform.parent;
-                    eclipseBase.gameObject.SetActive(true);
-                    eclipseBase.Find("PP + Amb").gameObject.SetActive(false);
-                    eclipseBase.Find("Directional Light (SUN)").gameObject.SetActive(false);
-                }
-            }
-            dummylist = null;*/
         }
 
         public static void OddAcres(RampFog fog)

@@ -36,7 +36,7 @@ namespace StageAesthetic.Variants
             sun.transform.localPosition = new Vector3(743, 500, -127);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(255, 239, 211, 255);
-            sunLight.intensity = 1.6f;
+            sunLight.intensity = 1f;
             sunLight.shadowNormalBias = 0.92f;
             var fog1 = GameObject.Find("HOLDER: Cards");
             fog1.SetActive(false);
@@ -49,25 +49,29 @@ namespace StageAesthetic.Variants
             fog.fogColorStart.value = new Color32(36, 89, 146, 45);
             fog.fogColorMid.value = new Color32(21, 58, 131, 125);
             fog.fogColorEnd.value = new Color32(0, 0, 71, 255);
-            cgrade.colorFilter.value = new Color32(20, 20, 160, 13);
+            cgrade.colorFilter.value = new Color32(27, 27, 166, 13);
             cgrade.colorFilter.overrideState = true;
             fog.skyboxStrength.value = 0f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(255, 255, 255, 255);
             sunLight.intensity = 3.5f;
+            sunLight.shadowStrength = 0.6f;
             var fog1 = GameObject.Find("HOLDER: Cards");
             fog1.SetActive(false);
             var fog2 = GameObject.Find("DeepFog");
             fog2.SetActive(false);
         }
 
-        public static void AbyssalSanctuary(RampFog fog)
+        public static void AbyssalSanctuary(RampFog fog, ColorGrading cgrade)
         {
             try { ApplyAbyssalMaterials(); } catch { SwapVariants.AesLog.LogError("Abyssal Sanctuary: Failed to change materials, trying again..."); } finally { ApplyAbyssalMaterials(); }
             var cloud = GameObject.Find("Cloud3");
+            cgrade.SetAllOverridesTo(true);
+            cgrade.colorFilter.value = new Color32(181, 178, 219, 255);
+            cgrade.saturation.value = -5f;
             cloud.transform.localPosition = new Vector3(-22.8f, -70f, 46.7f);
-            fog.fogColorStart.value = new Color32(102, 40, 64, 50);
-            fog.fogColorMid.value = new Color32(89, 56, 65, 115);
+            fog.fogColorStart.value = new Color32(102, 40, 73, 81);
+            fog.fogColorMid.value = new Color32(89, 56, 78, 115);
             fog.fogColorEnd.value = new Color32(104, 32, 23, 255);
             fog.skyboxStrength.value = 0f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
@@ -81,6 +85,7 @@ namespace StageAesthetic.Variants
             sun.SetActive(false);
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             var stupidList = Object.FindObjectsOfType(typeof(SkinnedMeshRenderer)) as SkinnedMeshRenderer[];
+
             foreach (MeshRenderer mr in meshList)
             {
                 var meshBase = mr.gameObject;
@@ -127,6 +132,9 @@ namespace StageAesthetic.Variants
             terrainMat2.color = new Color32(134, 134, 134, 255);
             var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGold.mat").WaitForCompletion();
             var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion();
+            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/snowyforest/matSFSap.mat").WaitForCompletion();
+            detailMat3.color = new Color32(128, 27, 27, 255);
+            detailMat3.shaderKeywords = new string[] { "IGNORE_BIAS", "MICROFACET_SNOW", "TRIPLANAR" };
             if (terrainMat && terrainMat2 && detailMat && detailMat2)
             {
                 cloud.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
@@ -214,7 +222,7 @@ namespace StageAesthetic.Variants
                                     break;
                             }
                         }
-                        bool biggerProps = meshBase.name.Contains("CirclePot") || meshBase.name.Contains("BrokenPot") || meshBase.name.Contains("Planter") || meshBase.name.Contains("AW_Cube") || meshBase.name.Contains("Mesh, Cube") || meshBase.name.Contains("AncientLoft_WaterFenceType") || meshBase.name.Contains("Tile") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Pillar") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Step") || meshBase.name.Equals("LightStatue") || meshBase.name.Equals("LightStatue_Stone") || meshBase.name.Equals("FountainLG") || meshBase.name.Equals("Shrine") || meshBase.name.Equals("Sculpture");
+                        bool biggerProps = meshBase.name.Contains("CirclePot") || meshBase.name.Contains("BrokenPot") || meshBase.name.Contains("Planter") || meshBase.name.Contains("AW_Cube") || meshBase.name.Contains("Mesh, Cube") || meshBase.name.Contains("AncientLoft_WaterFenceType") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Pillar") || meshBase.name.Contains("Boulder") || meshBase.name.Equals("LightStatue") || meshBase.name.Equals("LightStatue_Stone") || meshBase.name.Equals("FountainLG") || meshBase.name.Equals("Shrine") || meshBase.name.Equals("Sculpture");
                         if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rubble") || biggerProps)
                         {
                             switch (mr.sharedMaterial)
@@ -241,9 +249,22 @@ namespace StageAesthetic.Variants
                             }
                             mr.sharedMaterials = sharedMaterials;
                         }
-                        if (meshBase.name.Contains("SunCloud"))
+                        if (meshBase.name.Contains("SunCloud") || meshBase.name.Contains("spmGlGrass"))
                         {
                             meshBase.SetActive(false);
+                        }
+                        if (meshBase.name.Contains("Tile") || meshBase.name.Contains("Step"))
+                        {
+                            switch (mr.sharedMaterial)
+                            {
+                                case null:
+                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    break;
+
+                                default:
+                                    mr.sharedMaterial = detailMat3;
+                                    break;
+                            }
                         }
                     }
                 }

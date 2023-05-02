@@ -93,28 +93,33 @@ namespace StageAesthetic.Variants
         public static void AbyssalMeadow(RampFog fog, ColorGrading cgrade)
         {
             cgrade.SetAllOverridesTo(true);
-            cgrade.colorFilter.value = new Color32(185, 185, 185, 255);
+            cgrade.colorFilter.value = new Color32(79, 79, 103, 255);
             cgrade.saturation.value = -8f;
-            fog.fogColorStart.value = new Color32(255, 100, 175, 0);
-            fog.fogColorMid.value = new Color32(145, 69, 50, 13);
-            fog.fogColorEnd.value = new Color32(105, 25, 38, 228);
-            fog.fogZero.value = -0.1f;
-            fog.fogOne.value = 0.12f;
-            fog.skyboxStrength.value = 0.05f;
+            fog.fogColorStart.value = new Color32(106, 22, 107, 59);
+            fog.fogColorMid.value = new Color32(85, 58, 178, 0);
+            fog.fogColorEnd.value = new Color32(115, 0, 0, 255);
+            fog.fogZero.value = -0.45f;
+            fog.fogOne.value = 1f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.6f;
+            fog.skyboxStrength.value = 0f;
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
+            var hardFloor = lightBase.GetChild(6);
+            hardFloor.gameObject.SetActive(false);
             GameObject.Find("HOLDER: Terrain").transform.GetChild(1).gameObject.SetActive(false);
             var sun = lightBase.GetChild(0).GetComponent<Light>();
-            sun.color = new Color32(195, 46, 48, 255);
-            sun.intensity = 1.7f;
+            sun.color = new Color32(225, 118, 120, 255);
+            sun.intensity = 2f;
             sun.shadowStrength = 0.75f;
             lightBase.Find("CameraRelative").Find("SmallStars").gameObject.SetActive(true);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("ShatteredMoonMesh").gameObject.SetActive(false);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("MoonMesh").gameObject.SetActive(true);
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainFloor.mat").WaitForCompletion());
-            terrainMat.color = new Color32(255, 255, 255, 213);
-            var terrainMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion();
-            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
-            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
+            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
+            terrainMat.color = new Color32(57, 0, 255, 42);
+            var terrainMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainFloor.mat").WaitForCompletion();
+            terrainMat2.color = new Color32(255, 0, 0, 255);
+            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcavesimple/matDCBoulder.mat").WaitForCompletion();
+            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainWalls.mat").WaitForCompletion();
             var detailMat3 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetConstructionDestroyed.mat").WaitForCompletion());
             detailMat3.color = new Color32(255, 136, 103, 255);
             var detailMat4 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetMetalMilitaryEmission.mat").WaitForCompletion();
@@ -148,7 +153,7 @@ namespace StageAesthetic.Variants
                                         break;
                                 }
                             }
-                            if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13") || meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground") || meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent") || meshBase.name.Contains("BbRuinPillar"))
+                            if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13") || meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground") || meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent") || meshBase.name.Contains("BbRuinPillar") || (meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks")))
                             {
                                 switch (mr.sharedMaterial)
                                 {
@@ -161,7 +166,7 @@ namespace StageAesthetic.Variants
                                         break;
                                 }
                             }
-                            if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks") || meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground"))
+                            if (meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground"))
                             {
                                 switch (mr.sharedMaterial)
                                 {

@@ -18,32 +18,46 @@ namespace StageAesthetic.Variants
 
         public static void HiveCave(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(67, 43, 68, 84);
-            fog.fogColorMid.value = new Color32(44, 28, 45, 205);
-            fog.fogColorEnd.value = new Color32(14, 9, 15, 255);
-            fog.fogOne.value = 0.129f;
+            fog.fogColorStart.value = new Color32(17, 63, 72, 167);
+            fog.fogColorMid.value = new Color32(43, 125, 114, 74);
+            fog.fogColorEnd.value = new Color32(16, 74, 72, 255);
+            fog.fogOne.value = 0.3f;
+            fog.fogIntensity.value = 1f;
+            fog.fogZero.value = -0.02f;
+
+            fog.skyboxStrength.value = 0f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(222, 127, 236, 255);
-            sunLight.intensity = 3f;
-            sunLight.shadowStrength = 0.3f;
+            sunLight.color = new Color32(254, 214, 229, 255);
+            sunLight.intensity = 2.5f;
+            sunLight.shadowStrength = 0.6f;
+            sunLight.transform.eulerAngles = new Vector3(65f, 222.6395f, 202.9964f);
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveFog.fogColorStart.value = new Color32(58, 35, 60, 80);
             caveFog.fogColorMid.value = new Color32(44, 74, 55, 184);
             caveFog.fogColorEnd.value = new Color32(40, 68, 53, 255);
             cgrade.colorFilter.value = new Color32(84, 84, 173, 255);
             cgrade.colorFilter.overrideState = true;
+            cgrade.postExposure.value = 1.1f;
+            cgrade.postExposure.overrideState = true;
             // Lighting: Magenta coral, orange otherwise
             LightChange("hive");
         }
 
         public static void DarkCave(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(76, 71, 119, 76);
-            fog.fogColorMid.value = new Color32(73, 90, 104, 175);
-            fog.fogColorEnd.value = new Color32(78, 94, 103, 255);
+            fog.fogColorStart.value = new Color32(49, 41, 111, 91);
+            fog.fogColorMid.value = new Color32(96, 73, 104, 160);
+            fog.fogColorEnd.value = new Color32(103, 78, 81, 255);
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.8f;
+            fog.fogZero.value = 0f;
+            fog.fogOne.value = 1.4f;
+            fog.skyboxStrength.value = 0f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(69, 201, 215, 255);
-            sunLight.intensity = 1.2f;
+            sunLight.intensity = 4f;
+            sunLight.transform.eulerAngles = new Vector3(60f, 78f, 351f);
+            sunLight.shadowStrength = 0.6f;
             GameObject.Find("Directional Light (SUN)").transform.localEulerAngles = new Vector3(43, 78, 351);
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveFog.fogColorStart.value = new Color32(67, 65, 109, 76);
@@ -55,14 +69,19 @@ namespace StageAesthetic.Variants
             LightChange("azure");
         }
 
-        public static void MeadowCave(RampFog fog)
+        public static void OrangeCave(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(96, 67, 103, 33);
-            fog.fogColorMid.value = new Color32(102, 66, 109, 148);
-            fog.fogColorEnd.value = new Color32(148, 85, 166, 255);
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.26f;
+            fog.fogZero.value = 0f;
+            fog.fogOne.value = 0.3f;
+            fog.fogColorStart.value = new Color32(35, 46, 140, 11);
+            fog.fogColorMid.value = new Color32(44, 32, 99, 110);
+            fog.fogColorEnd.value = new Color32(132, 76, 44, 255);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(205, 129, 255, 255);
-            sunLight.intensity = 1f;
+            sunLight.color = new Color32(191, 148, 74, 255);
+            sunLight.intensity = 1.2f;
+            sunLight.transform.eulerAngles = new Vector3(70f, 19.64314f, 9.985f);
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveFog.fogColorStart.value = new Color32(85, 57, 91, 33);
             caveFog.fogColorMid.value = new Color32(90, 55, 97, 148);
@@ -122,8 +141,8 @@ namespace StageAesthetic.Variants
         {
             try { ApplyCoralMaterials(); } catch { SwapVariants.AesLog.LogError("Coral Depths: Failed to change materials, trying again..."); } finally { ApplyCoralMaterials(); }
             fog.fogColorStart.value = new Color32(127, 70, 206, 20);
-            fog.fogColorMid.value = new Color32(206, 70, 127, 33);
-            fog.fogColorEnd.value = new Color32(190, 99, 136, 130);
+            fog.fogColorMid.value = new Color32(185, 72, 119, 33);
+            fog.fogColorEnd.value = new Color32(183, 93, 129, 130);
             cgrade.colorFilter.value = new Color32(255, 255, 255, 22);
             Debug.Log("satur is + " + cgrade.saturation.value);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();

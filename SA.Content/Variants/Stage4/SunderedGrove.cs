@@ -36,8 +36,8 @@ namespace StageAesthetic.Variants
         public static void SunJungle(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(46, 85, 98, 0);
-            fog.fogColorMid.value = new Color32(51, 70, 84, 143);
-            fog.fogColorEnd.value = new Color32(92, 127, 131, 255);
+            fog.fogColorMid.value = new Color32(51, 70, 84, 64);
+            fog.fogColorEnd.value = new Color32(92, 127, 131, 180);
             cgrade.colorFilter.value = new Color32(251, 186, 170, 255);
             cgrade.colorFilter.overrideState = true;
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
