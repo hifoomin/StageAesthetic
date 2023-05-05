@@ -61,11 +61,11 @@ namespace StageAesthetic
             MistyAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Night Aqueduct?", true, "Honestly no idea lol");
             SunderedAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Sundered Aqueduct?", true, "Texture swap to Pink Sundered Grove.");
             AqueductChanges = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Alter vanilla Abandoned Aqueduct?", true, "Makes the sun a slightly more intense yellow-orange, and changes its angle.");
-            /*
+            
             MorningBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Morning Basin?", true, "Yellow sun with blue shadows.");
             PurpleBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Purple Basin?", true, "Purple.");
             RainyBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Rainy Basin?", true, "Overcast and rainy.");
-            */
+            
             VanillaDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NightDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Night Delta?", true, "Blue and dark with extra snow.");
             FoggyDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Foggy Delta?", true, "Rainy with more fog.");
@@ -275,7 +275,6 @@ namespace StageAesthetic
                 AesLog.LogWarning("Abandoned Aqueduct list empty - adding vanilla...");
                 aqueductList.Add("vanilla");
             }
-            /*
             if (MorningBasin.Value) basinList.Add("morning");
             if (RainyBasin.Value) basinList.Add("rainy");
             if (PurpleBasin.Value) basinList.Add("purple");
@@ -284,7 +283,6 @@ namespace StageAesthetic
                 AesLog.LogWarning("Dry Basin list empty - adding vanilla...");
                 basinList.Add("vanilla");
             }
-            */
             if (NearRainAphelian.Value) aphelianList.Add("nearrain");
             if (SunsetterAphelian.Value) aphelianList.Add("sunrise");
             if (NightAphelian.Value) aphelianList.Add("night");
