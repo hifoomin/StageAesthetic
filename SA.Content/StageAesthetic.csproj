@@ -31,10 +31,6 @@
     </PropertyGroup>
 	
   <ItemGroup>
-    <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="BepInEx.Core" Version="5.4.21" />
     <PackageReference Include="RiskOfRain2.GameLibs" Version="1.2.4-r.0" />
     <PackageReference Include="UnityEngine.Modules" Version="2019.4.26" />
@@ -46,6 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="FHCSharp">
+      <HintPath>..\..\libs\FHCSharp-nstrip.dll</HintPath>
+    </Reference>
     <Reference Include="KinematicCharacterController">
       <HintPath>libs\KinematicCharacterController.dll</HintPath>
     </Reference>
@@ -53,13 +52,13 @@
       <HintPath>libs\MMHOOK_RoR2.dll</HintPath>
     </Reference>
     <Reference Include="RiskOfOptions">
-      <HintPath>..\..\..\..\..\RiskOfOptions.dll</HintPath>
+      <HintPath>..\..\libs\RiskOfOptions-nstrip.dll</HintPath>
     </Reference>
     <Reference Include="RoR2">
-      <HintPath>..\..\..\..\..\..\.nuget\packages\riskofrain2.gamelibs\1.2.3.1-r.0\lib\netstandard2.0\RoR2.dll</HintPath>
+      <HintPath>..\..\libs\RoR2-nstrip.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>P:\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Unity.Postprocessing.Runtime.dll</HintPath>
+	  <HintPath>..\..\libs\Unity.Postprocessing.Runtime-nstrip.dll</HintPath>
     </Reference>
     <Reference Include="Wwise">
       <HintPath>libs\Wwise.dll</HintPath>

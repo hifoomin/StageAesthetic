@@ -103,23 +103,27 @@ namespace StageAesthetic
             rain = rainEffect;
             SceneInfo currentScene = SceneInfo.instance;
             if (currentScene) volume = currentScene.GetComponent<PostProcessVolume>();
-
-            if (!volume)
+            if (!volume || !volume.isActiveAndEnabled)
             {
                 GameObject alt = GameObject.Find("PP + Amb");
-                if (!alt)
+                if (!alt || (!alt?.GetComponent<PostProcessVolume>()?.isActiveAndEnabled ?? true))
                 {
                     alt = GameObject.Find("PP, Global");
                     // AesLog.LogError("alt is " + alt.name);
                 }
-                if (!alt)
+                if (!alt || (!alt?.GetComponent<PostProcessVolume>()?.isActiveAndEnabled ?? true))
                 {
                     alt = GameObject.Find("GlobalPostProcessVolume, Base");
                     // AesLog.LogError("alt is " + alt.name);
                 }
-                if (!alt)
+                if (!alt || (!alt?.GetComponent<PostProcessVolume>()?.isActiveAndEnabled ?? true))
                 {
                     alt = GameObject.Find("PP+Amb");
+                    // AesLog.LogError("alt is " + alt.name);
+                }
+                if (!alt || (!alt?.GetComponent<PostProcessVolume>()?.isActiveAndEnabled ?? true))
+                {
+                    alt = GameObject.Find("MapZones")?.transform?.Find("PostProcess Zones")?.Find("Sandstorm")?.gameObject;
                     // AesLog.LogError("alt is " + alt.name);
                 }
                 if (alt)
@@ -455,39 +459,46 @@ namespace StageAesthetic
                         #endregion AbandonedAqueduct
 
                         break;
-                    /*
+
                     case "drybasin":
 
+                        #region DryBasin
+
                         int basinCounter = rng.RangeInt(0, basinList.Count);
-                        if (basinList.Count > 1) do aqueductCounter = rng.RangeInt(0, basinList.Count); while (basinCounter == basinVariant);
+                        if (basinList.Count > 1) do basinCounter = rng.RangeInt(0, basinList.Count); while (basinCounter == basinVariant);
                         string[] basinArray = basinList.ToArray();
                         if (basinCounter == basinList.Count) { }
                         else
                         {
-                            switch (basinArray[basinCounter])
+                            basin();
+                            void basin()
                             {
-                                case "rainy":
-                                    rainCheck = true;
-                                    DryBasin.RainyBasin(stupidAssFog, cgrade, rain);
-                                    break;
+                                FRCSharp.TheCoolerRampFog stupidAssFog = volume.GetComponent<FRCSharp.TheCoolerRampFog>();
+                                switch (basinArray[basinCounter])
+                                {
+                                    case "rainy":
+                                        rainCheck = true;
+                                        DryBasin.RainyBasin(stupidAssFog, cgrade, rain);
+                                        break;
 
-                                case "morning":
-                                    DryBasin.MorningBasin(stupidAssFog, cgrade);
-                                    break;
+                                    case "morning":
+                                        DryBasin.MorningBasin(stupidAssFog, cgrade);
+                                        break;
 
-                                case "purple":
-                                    DryBasin.PurpleBasin(stupidAssFog, cgrade);
-                                    break;
+                                    case "purple":
+                                        DryBasin.PurpleBasin(stupidAssFog, cgrade);
+                                        break;
 
-                                default:
-                                    AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
-                                    break;
+                                    default:
+                                        AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
+                                        break;
+                                }
                             }
                         }
                         basinVariant = basinCounter;
+                        #endregion
 
                         break;
-                    */
 
                     case "ancientloft":
 
