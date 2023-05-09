@@ -18,7 +18,7 @@ namespace StageAesthetic
 
         public static void SetConfig()
         {
-            AesConfig = new ConfigFile(Paths.ConfigPath + "\\StageAesthetic.cfg", true);
+            AesConfig = new ConfigFile(Paths.ConfigPath + "\\HIFU.StageAesthetic.cfg", true);
             Important = AesConfig.Bind("! Important !", "Config", true, "Make sure everyone's configs are the same for multiplayer!");
             VanillaPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Vanilla?", false, "Disabling removes vanilla from getting picked");
             NostalgiaPlains = AesConfig.Bind("Stages : Titanic Plains", "Enable Nostalgia Plains?", true, "Early Access look.");
@@ -170,7 +170,7 @@ namespace StageAesthetic
                     Name = "Stage 4";
                     ModSettingsManager.SetModIcon(Main.stageaesthetic.LoadAsset<Sprite>("texModIcon.png"), "StageAesthetic.TabID." + tabID, "SA: " + Name);
                 }
-                if (Name.Contains("Meadow"))
+                if (Name.Contains("Meadow") || Name.Contains("Slumbering"))
                 {
                     tabID = 5;
                     Name = "Stage 5";

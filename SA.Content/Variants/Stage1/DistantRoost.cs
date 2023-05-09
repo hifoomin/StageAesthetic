@@ -285,7 +285,7 @@ namespace StageAesthetic.Variants
                 {
                     if (meshBase.name.Contains("bbSimpleGrassPrefab"))
                     {
-                        mr.sharedMaterial.color = new Color32(89, 23, 37, 211);
+                        mr.sharedMaterial.color = new Color32(11, 58, 28, 255);
                     }
                     if (meshBase.name.Contains("spmBbFern2"))
                     {
@@ -371,7 +371,7 @@ namespace StageAesthetic.Variants
                 {
                     if (meshBase.name.Contains("bbSimpleGrassPrefab"))
                     {
-                        mr.sharedMaterial.color = new Color32(95, 42, 45, 255);
+                        mr.sharedMaterial.color = new Color32(89, 23, 37, 211);
                         meshBase.transform.localScale = new Vector3(5.28f, 3.798217104f, 5.28f);
                     }
                     if (meshBase.name.Contains("spmBbFern"))
