@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using FRCSharp;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 
@@ -6,19 +7,19 @@ namespace StageAesthetic.Variants
 {
     internal class DryBasin
     {
-        public static void RainyBasin(RampFog fog, ColorGrading cgrade, GameObject rain)
+        public static void RainyBasin(TheCoolerRampFog fog, ColorGrading cgrade, GameObject rain)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             var sun2 = Object.Instantiate(sun);
             sun.gameObject.SetActive(false);
             sun2.color = new Color32(142, 161, 159, 255);
-            fog.skyboxStrength.value = 0f;
-            fog.fogColorStart.value = new Color32(115, 152, 181, 0);
-            fog.fogColorMid.value = new Color32(82, 96, 130, 255);
-            fog.fogColorEnd.value = new Color32(134, 137, 219, 255);
-            fog.fogZero.value = -0.005f;
-            fog.fogOne.value = 0.11f;
-            fog.fogPower.value = 0.9f;
+            fog.skyboxPower = 0f;
+            fog.startColor = new Color32(115, 152, 181, 0);
+            fog.middleColor = new Color32(82, 96, 130, 255);
+            fog.endColor = new Color32(134, 137, 219, 255);
+            fog.fogZero = -0.005f;
+            fog.fogOne = 0.11f;
+            fog.power = 0.9f;
             if (Config.WeatherEffects.Value)
             {
                 var rainParticle = rain.GetComponent<ParticleSystem>();
@@ -47,34 +48,34 @@ namespace StageAesthetic.Variants
             cgrade.colorFilter.value = new Color32(100, 109, 121, 255);
         }
 
-        public static void PurpleBasin(RampFog fog, ColorGrading cgrade)
+        public static void PurpleBasin(TheCoolerRampFog fog, ColorGrading cgrade)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             var sun2 = Object.Instantiate(sun);
             sun.gameObject.SetActive(false);
             sun2.color = new Color32(142, 161, 159, 255);
-            fog.fogColorStart.value = new Color32(115, 152, 181, 39);
-            fog.fogColorMid.value = new Color32(106, 67, 154, 255);
-            fog.fogColorEnd.value = new Color32(134, 137, 219, 163);
-            fog.fogZero.value = -0.005f;
-            fog.fogOne.value = 0.09f;
-            fog.fogPower.value = 1f;
+            fog.startColor = new Color32(115, 152, 181, 39);
+            fog.middleColor = new Color32(106, 67, 154, 255);
+            fog.endColor = new Color32(134, 137, 219, 163);
+            fog.fogZero = -0.005f;
+            fog.fogOne = 0.09f;
+            fog.power = 1f;
             cgrade.SetAllOverridesTo(true);
             cgrade.colorFilter.value = new Color32(176, 94, 152, 255);
         }
 
-        public static void MorningBasin(RampFog fog, ColorGrading cgrade)
+        public static void MorningBasin(TheCoolerRampFog fog, ColorGrading cgrade)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             var sun2 = Object.Instantiate(sun);
             sun.gameObject.SetActive(false);
             sun2.color = new Color32(142, 161, 159, 255);
-            fog.fogColorStart.value = new Color32(115, 152, 181, 39);
-            fog.fogColorMid.value = new Color32(106, 67, 154, 255);
-            fog.fogColorEnd.value = new Color32(134, 137, 219, 163);
-            fog.fogZero.value = 0f;
-            fog.fogOne.value = 0.2f;
-            fog.fogPower.value = 1f;
+            fog.startColor = new Color32(115, 152, 181, 39);
+            fog.middleColor = new Color32(106, 67, 154, 255);
+            fog.endColor = new Color32(134, 137, 219, 163);
+            fog.fogZero = 0f;
+            fog.fogOne = 0.2f;
+            fog.power = 1f;
             cgrade.SetAllOverridesTo(true);
             cgrade.colorFilter.value = new Color32(232, 203, 164, 255);
         }
