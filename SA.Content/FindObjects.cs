@@ -1,4 +1,5 @@
-﻿using UnityEngine.Rendering.PostProcessing;
+﻿/*
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using RoR2;
@@ -69,3 +70,4 @@ namespace StageAesthetic
         private PostProcessProfile commencementVolume;
     }
 }
+*/

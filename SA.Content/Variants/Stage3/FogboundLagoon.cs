@@ -3,7 +3,7 @@ using System.Text;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage3
 {
     internal class FogboundLagoon
     {
@@ -48,7 +48,7 @@ namespace StageAesthetic.Variants
             fog2.fogColorEnd.value = new Color32(91, 65, 86, 255);
         }
 
-        public static void OvercastLagoon(RampFog fog, ColorGrading cg, GameObject rain)
+        public static void OvercastLagoon(RampFog fog, ColorGrading cg)
         {
             fog.fogColorStart.value = new Color32(140, 117, 150, 37);
             fog.fogColorMid.value = new Color32(84, 89, 117, 91);
@@ -74,40 +74,17 @@ namespace StageAesthetic.Variants
             fog2.fogColorMid.value = new Color32(67, 89, 89, 13);
             fog2.fogColorEnd.value = new Color32(53, 62, 51, 255);
             fog2.fogOne.value = 0.06f;
+            AddRain(RainType.Typhoon);
 
-            if (Config.WeatherEffects.Value)
-            {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 3000,
-                    constantMax = 3000,
-                    constantMin = 600,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(300, 0, 0);
-                rain.transform.localScale = new Vector3(12, 12, 1);
-                Object.Instantiate(rain);
-                GameObject wind = GameObject.Find("WindZone");
-                wind.transform.eulerAngles = new Vector3(30, 20, 0);
-                var windZone = wind.GetComponent<WindZone>();
-                windZone.windMain = 1;
-                windZone.windTurbulence = 1;
-                windZone.windPulseFrequency = 0.5f;
-                windZone.windPulseMagnitude = 5f;
-                windZone.mode = WindZoneMode.Directional;
-                windZone.radius = 100;
-            }
+            var wind = GameObject.Find("WindZone");
+            wind.transform.eulerAngles = new Vector3(30, 20, 0);
+            var windZone = wind.GetComponent<WindZone>();
+            windZone.windMain = 1;
+            windZone.windTurbulence = 1;
+            windZone.windPulseFrequency = 0.5f;
+            windZone.windPulseMagnitude = 5f;
+            windZone.mode = WindZoneMode.Directional;
+            windZone.radius = 100;
         }
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using R2API.Utils;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Special
 {
     internal class Commencement
     {
@@ -88,8 +88,10 @@ namespace StageAesthetic.Variants
             fog.fogColorEnd.value = new Color32(44, 45, 52, 255);
             fog.skyboxStrength.value = 0f;
             var sun = GameObject.Find("Directional Light (SUN)");
-            var newSun = Object.Instantiate(sun).GetComponent<Light>();
             sun.SetActive(false);
+            sun.name = "Shitty Not Working Sun";
+            var newSun = Object.Instantiate(sun).GetComponent<Light>();
+            newSun.name = "Directional Light (SUN)";
             //newSun.color = new Color32(53, 94, 225, 255);
             //newSun.intensity = 0.5f;
             //newSun.shadowStrength = 1f;

@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage4
 {
     internal class AbyssalDepths
     {
@@ -192,68 +192,38 @@ namespace StageAesthetic.Variants
                         {
                             if (meshBase.name.Contains("Mesh") && meshParent.name.Contains("Ruin"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat;
-                                        break;
+                                    mr.sharedMaterial = detailMat;
                                 }
                             }
                             if (meshBase.name.Contains("RuinBowl") && meshParent.name.Contains("RuinMarker"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat;
-                                        break;
+                                    mr.sharedMaterial = detailMat;
                                 }
                             }
                         }
                         if (meshBase.name.Contains("Hero") || meshBase.name.Contains("Wall") || meshBase.name.Contains("Ceiling"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
                         if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("Ruin") || meshBase.name.Contains("Column") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Coral") || meshBase.name.Contains("Heatvent") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("GiantRock") || meshBase.name.Contains("Stalagmite"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("Crystal"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat3;
-                                    break;
+                                mr.sharedMaterial = detailMat3;
                             }
                         }
                         if (meshBase.name.Contains("LightMesh"))
@@ -269,15 +239,9 @@ namespace StageAesthetic.Variants
                         }
                         if (meshBase.name.Contains("GiantStoneSlab") || meshBase.name.Contains("TerrainBackwall") || meshBase.name.Contains("Chain"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat2;
-                                    break;
+                                mr.sharedMaterial = terrainMat2;
                             }
                         }
                     }

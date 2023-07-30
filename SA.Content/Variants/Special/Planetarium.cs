@@ -2,7 +2,7 @@
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Special
 {
     internal class Planetarium
     {

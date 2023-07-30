@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage2
 {
     internal class AbandonedAqueduct
     {
@@ -48,7 +48,7 @@ namespace StageAesthetic.Variants
             VanillaFoliage();
         }
 
-        public static void BlueAqueduct(RampFog fog, GameObject rain)
+        public static void BlueAqueduct(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(57, 63, 76, 73);
             fog.fogColorMid.value = new Color32(62, 71, 83, 179);
@@ -67,30 +67,7 @@ namespace StageAesthetic.Variants
             sunLight.intensity = 1.2f;
             sunLight.shadowStrength = 0.1f;
             sunTransform.localEulerAngles = new Vector3(42, 12, 180);
-            if (Config.WeatherEffects.Value)
-            {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 900,
-                    constantMax = 900,
-                    constantMin = 240,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(85, 145, 0);
-                rain.transform.localScale = new Vector3(14, 14, 1);
-                Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
-            }
+            AddRain(RainType.Rainstorm);
             LightChanges("rain");
             VanillaFoliage();
         }
@@ -106,7 +83,7 @@ namespace StageAesthetic.Variants
             VanillaFoliage();
         }
 
-        public static void NightAqueduct(RampFog fog, GameObject rain, ColorGrading cgrade)
+        public static void NightAqueduct(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(28, 36, 56, 125);
             fog.fogColorMid.value = new Color32(28, 35, 47, 179);
@@ -128,37 +105,14 @@ namespace StageAesthetic.Variants
             sunLight.intensity = 0.45f;
             sunLight.shadowStrength = 0.1f;
             sunTransform.localEulerAngles = new Vector3(42, 12, 180);
-            if (Config.WeatherEffects.Value)
-            {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 2000,
-                    constantMax = 2000,
-                    constantMin = 800,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(85, 145, 0);
-                rain.transform.localScale = new Vector3(14, 14, 1);
-                Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
-            }
+            AddRain(RainType.Monsoon);
             LightChanges("night");
             VanillaFoliage();
         }
 
         private static Color chain;
 
-        public static void SunderedAqueduct(RampFog fog, GameObject rain, ColorGrading cgrade)
+        public static void SunderedAqueduct(RampFog fog, ColorGrading cgrade)
         {
             try { ApplySunderedMaterials(); } catch { SwapVariants.AesLog.LogError("Sundered Aqueduct: Failed to change materials, trying again..."); } finally { ApplySunderedMaterials(); }
             fog.fogColorStart.value = new Color32(85, 49, 99, 35);
@@ -166,30 +120,7 @@ namespace StageAesthetic.Variants
             fog.fogColorEnd.value = new Color32(112, 66, 117, 255);
             fog.skyboxStrength.value = 0.055f;
             fog.fogOne.value = 0.082f;
-            if (Config.WeatherEffects.Value)
-            {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 3000,
-                    constantMax = 4000,
-                    constantMin = 1000,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(85, 165, 0);
-                rain.transform.localScale = new Vector3(11, 11, 1);
-                Object.Instantiate(rain, Vector3.zero, Quaternion.identity);
-            }
+            AddRain(RainType.Drizzle);
             var sun = GameObject.Find("Directional Light (SUN)");
             var newSun = Object.Instantiate(sun).GetComponent<Light>();
             sun.SetActive(false);
@@ -254,67 +185,37 @@ namespace StageAesthetic.Variants
                     {
                         if (meshBase.name.Contains("Terrain"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
                         if (meshBase.name.Contains("SandDune"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat2;
-                                    break;
+                                mr.sharedMaterial = terrainMat2;
                             }
                         }
                         if (meshBase.name.Contains("SandstonePillar") || meshBase.name.Contains("Dam") || meshBase.name.Contains("AqueductFullLong") || meshBase.name.Contains("AqueductPartial"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat2;
-                                    break;
+                                mr.sharedMaterial = detailMat2;
                             }
                         }
                         if ((meshBase.name.Contains("Bridge") && !meshBase.name.Contains("Decal") || meshBase.name.Contains("RuinedRing") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Eel")))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("FlagPoleMesh") || meshBase.name.Contains("RuinTile"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat3;
-                                    break;
+                                mr.sharedMaterial = detailMat3;
                             }
                         }
                         if (meshBase.name.Contains("AqueductCap"))
@@ -329,7 +230,7 @@ namespace StageAesthetic.Variants
                                         {
                                             sharedMaterials[i] = detailMat2;
                                         }
-                                        mr.sharedMaterials = sharedMaterials; ;
+                                        mr.sharedMaterials = sharedMaterials;
                                     }
                                     catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
                                     break;

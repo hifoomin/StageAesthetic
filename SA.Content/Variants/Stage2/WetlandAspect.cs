@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using StageAesthetic.Variants;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage2
 {
     internal class WetlandAspect
     {
@@ -54,7 +55,7 @@ namespace StageAesthetic.Variants
             caveInner.fogColorEnd.value = new Color32(217, 201, 11, 255);
         }
 
-        public static void MoreSwamp(RampFog fog, GameObject rain)
+        public static void MoreSwamp(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(33, 43, 41, 87);
             fog.fogColorMid.value = new Color32(45, 60, 51, 173);
@@ -64,6 +65,8 @@ namespace StageAesthetic.Variants
             sunLight.color = new Color32(128, 205, 170, 255);
             sunLight.intensity = 0.32f;
             sunLight.shadowStrength = 0.477f;
+            Utils.AddRain(Utils.RainType.Rainstorm);
+            /*
             if (Config.WeatherEffects.Value)
             {
                 var rainParticle = rain.GetComponent<ParticleSystem>();
@@ -86,8 +89,10 @@ namespace StageAesthetic.Variants
                 epic4.scalingMode = ParticleSystemScalingMode.Shape;
                 rain.transform.eulerAngles = new Vector3(87, 110, 0);
                 rain.transform.localScale = new Vector3(14, 14, 1);
+
                 UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
             }
+            */
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(14, 111, 160, 0);
             caveOuter.fogColorMid.value = new Color32(66, 76, 43, 89);

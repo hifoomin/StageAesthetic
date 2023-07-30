@@ -4,7 +4,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage4
 {
     internal class SirensCall
     {
@@ -89,63 +89,39 @@ namespace StageAesthetic.Variants
                     }
                 }
             }
-            // Remove rain
         }
 
-        public static void ShipDeluge(RampFog fog, GameObject rain)
+        public static void ShipDeluge(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(58, 62, 68, 0);
             fog.fogColorMid.value = new Color32(46, 67, 76, 130);
             fog.fogColorEnd.value = new Color32(78, 94, 87, 255);
             fog.fogZero.value = -0.02f;
             fog.fogOne.value = 0.057f;
-            // Remove rain
-            if (Config.WeatherEffects.Value)
+
+            AddRain(RainType.Typhoon);
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            foreach (MeshRenderer mr in meshList)
             {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
+                var meshBase = mr.gameObject;
+                if (meshBase != null)
                 {
-                    constant = 2500,
-                    constantMax = 2500,
-                    constantMin = 1000,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(78, 25, 0);
-                rain.transform.localScale = new Vector3(14, 14, 1);
-                Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
-                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-                foreach (MeshRenderer mr in meshList)
-                {
-                    var meshBase = mr.gameObject;
-                    if (meshBase != null)
+                    if (meshBase.name.Contains("Grass"))
                     {
-                        if (meshBase.name.Contains("Grass"))
+                        if (mr.sharedMaterial != null)
                         {
-                            if (mr.sharedMaterial != null)
+                            mr.sharedMaterial.color = new Color32(99, 97, 63, 255);
+                            if (mr.sharedMaterials.Length >= 2)
                             {
-                                mr.sharedMaterial.color = new Color32(99, 97, 63, 255);
-                                if (mr.sharedMaterials.Length >= 2)
-                                {
-                                    mr.sharedMaterials[1].color = new Color32(99, 97, 63, 255);
-                                }
+                                mr.sharedMaterials[1].color = new Color32(99, 97, 63, 255);
                             }
                         }
-                        if (meshBase.name.Contains("DanglingMoss"))
+                    }
+                    if (meshBase.name.Contains("DanglingMoss"))
+                    {
+                        if (mr.sharedMaterial != null)
                         {
-                            if (mr.sharedMaterial != null)
-                            {
-                                mr.sharedMaterial.color = new Color32(255, 255, 255, 255);
-                            }
+                            mr.sharedMaterial.color = new Color32(255, 255, 255, 255);
                         }
                     }
                 }
@@ -237,85 +213,46 @@ namespace StageAesthetic.Variants
                         {
                             if ((meshBase.name.Contains("Spikes") || meshBase.name.Contains("Stalactite") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Level Wall") || meshBase.name.Contains("Mesh")) && (meshParent.name.Contains("Cave") || meshParent.name.Contains("Terrain") || meshParent.name.Contains("Stalagmite")))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = terrainMat2;
-                                        break;
+                                    mr.sharedMaterial = terrainMat2;
                                 }
                             }
                         }
                         if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Cave") || meshBase.name.Contains("Floor"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
                         if (meshBase.name.Contains("Spikes") || meshBase.name.Contains("Stalactite") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Level Wall") || meshBase.name.Contains("mdlGeyser"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat2;
-                                    break;
+                                mr.sharedMaterial = terrainMat2;
                             }
                         }
                         if (meshBase.name.Contains("Ship"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Boulder"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat2;
-                                    break;
+                                mr.sharedMaterial = detailMat2;
                             }
                         }
 
                         if (meshBase.name.Contains("Hologram"))
                         {
-                            if (mr.sharedMaterial != null)
+                            if (mr.sharedMaterial)
                             {
-                                switch (mr.sharedMaterial)
-                                {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat3;
-                                        break;
-                                }
+                                mr.sharedMaterial = detailMat3;
                             }
                         }
                     }

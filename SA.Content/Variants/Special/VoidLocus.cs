@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Special
 {
     internal class VoidLocus
     {

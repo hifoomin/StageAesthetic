@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage3
 {
     internal class SulfurPools
     {
@@ -140,33 +140,20 @@ namespace StageAesthetic.Variants
                 foreach (MeshRenderer mr in meshList)
                 {
                     var meshBase = mr.gameObject;
-                    var meshParent = meshBase.transform.parent;
                     if (meshBase != null)
                     {
                         if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Mountain"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
                         if (meshBase.name.Contains("meshSPSphere") || meshBase.name.Contains("SPHeatVent") || meshBase.name.Contains("Crystal") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("Spikes") || meshBase.name.Contains("Dome") || meshBase.name.Contains("Cave") || meshBase.name.Contains("Eel"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("Moss") || meshBase.name.Contains("SPCoral") || meshBase.name.Contains("HeatGas") || meshBase.name.Contains("Stinky") || meshBase.name.Contains("Grass") || meshBase.name.Contains("Vine"))

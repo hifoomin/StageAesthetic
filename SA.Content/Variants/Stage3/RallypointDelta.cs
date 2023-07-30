@@ -2,15 +2,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Experimental.AI;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage3
 {
     internal class RallypointDelta
     {
-        public static void OceanWall(RampFog fog, GameObject rain)
+        public static void OceanWall(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(47, 52, 62, 50);
             fog.fogColorMid.value = new Color32(72, 80, 98, 165);
@@ -18,46 +17,26 @@ namespace StageAesthetic.Variants
             fog.skyboxStrength.value = 0.15f;
             fog.fogZero.value = -0.05f;
             fog.fogOne.value = 0.4f;
+            var sun = GameObject.Find("Directional Light (SUN)");
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
-            GameObject.Find("Directional Light (SUN)").SetActive(false);
+            sun.SetActive(false);
+            sun.name = "Shitty Not Working Sun";
             sunLight.color = new Color32(177, 205, 232, 255);
             sunLight.intensity = 0.5f;
             GameObject.Find("HOLDER: Skybox").transform.Find("Water").localPosition = new Vector3(-1260, -66, 0);
             sunLight.color = new Color32(155, 174, 200, 255);
             sunLight.intensity = 1.3f;
-            if (Config.WeatherEffects.Value)
-            {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 3000,
-                    constantMax = 3000,
-                    constantMin = 600,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(300, 0, 0);
-                rain.transform.localScale = new Vector3(12, 12, 1);
-                Object.Instantiate(rain);
-                GameObject wind = GameObject.Find("WindZone");
-                wind.transform.eulerAngles = new Vector3(30, 20, 0);
-                var windZone = wind.GetComponent<WindZone>();
-                windZone.windMain = 1;
-                windZone.windTurbulence = 1;
-                windZone.windPulseFrequency = 0.5f;
-                windZone.windPulseMagnitude = 5f;
-                windZone.mode = WindZoneMode.Directional;
-                windZone.radius = 100;
-            }
+            sunLight.name = "Directional Light (SUN)";
+            AddRain(RainType.Monsoon);
+            var wind = GameObject.Find("WindZone");
+            wind.transform.eulerAngles = new Vector3(30, 20, 0);
+            var windZone = wind.GetComponent<WindZone>();
+            windZone.windMain = 1;
+            windZone.windTurbulence = 1;
+            windZone.windPulseFrequency = 0.5f;
+            windZone.windPulseMagnitude = 5f;
+            windZone.mode = WindZoneMode.Directional;
+            windZone.radius = 100;
         }
 
         public static void NightWall(RampFog fog, ColorGrading cgrade)
@@ -69,12 +48,15 @@ namespace StageAesthetic.Variants
             fog.skyboxStrength.value = 0.7f;
             cgrade.colorFilter.value = new Color32(130, 123, 255, 255);
             cgrade.colorFilter.overrideState = true;
+            var sun = GameObject.Find("Directional Light (SUN)");
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
-            GameObject.Find("Directional Light (SUN)").SetActive(false);
+            sun.name = "Shitty Not Working Sun";
+            sun.SetActive(false);
             sunLight.color = new Color32(167, 165, 172, 255);
             sunLight.intensity = 0.9f;
             sunLight.shadowStrength = 0.6f;
             sunLight.transform.eulerAngles = new Vector3(70, 250, 5);
+            sunLight.name = "Directional Light (SUN)";
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (Light light in lightList)
             {
@@ -105,8 +87,11 @@ namespace StageAesthetic.Variants
             fog.fogColorMid.value = new Color32(49, 127, 79, 95);
             fog.fogColorEnd.value = new Color32(47, 153, 105, 255);
             fog.skyboxStrength.value = 0.35f;
+            var sun = GameObject.Find("Directional Light (SUN)");
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
-            GameObject.Find("Directional Light (SUN)").SetActive(false);
+            sunLight.gameObject.name = "Directional Light (SUN)";
+            sun.SetActive(false);
+            sun.name = "Shitty Not Working Sun";
             sunLight.color = new Color32(177, 205, 232, 255);
             sunLight.intensity = 0.5f;
             fog.fogOne.value = 0.7f;
@@ -121,8 +106,11 @@ namespace StageAesthetic.Variants
             fog.skyboxStrength.value = 0f;
             // cgrade.colorFilter.value = new Color32(178, 255, 230, 255);
             // cgrade.colorFilter.overrideState = true;
+            var sun = GameObject.Find("Directional Light (SUN)");
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
-            GameObject.Find("Directional Light (SUN)").SetActive(false);
+            sun.SetActive(false);
+            sun.name = "Shitty Not Working Sun";
+            sunLight.name = "Directional Light (SUN)";
             sunLight.color = new Color32(255, 212, 153, 255);
             sunLight.intensity = 2f;
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
@@ -161,41 +149,23 @@ namespace StageAesthetic.Variants
                     {
                         if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Snow"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
                         if (meshBase.name.Contains("Glacier") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("CavePillar"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("GroundMesh") || meshBase.name.Contains("GroundStairs") || meshBase.name.Contains("VerticalPillar") || meshBase.name.Contains("Human") || meshBase.name.Contains("Barrier"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat2;
-                                    break;
+                                mr.sharedMaterial = detailMat2;
                             }
                         }
                         if (meshBase.name.Contains("HumanChainLink"))
@@ -238,15 +208,9 @@ namespace StageAesthetic.Variants
                     {
                         if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Snow"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
                         if (meshBase.name.Contains("Stalagmite") && meshBase.GetComponent<Light>() == null)

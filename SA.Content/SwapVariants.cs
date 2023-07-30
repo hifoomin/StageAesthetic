@@ -5,8 +5,12 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using BepInEx.Configuration;
 using System.Collections.Generic;
-using StageAesthetic.Variants;
-using R2API;
+using StageAesthetic.Variants.Stage1;
+using StageAesthetic.Variants.Stage2;
+using StageAesthetic.Variants.Stage3;
+using StageAesthetic.Variants.Stage4;
+using StageAesthetic.Variants.Stage5;
+using StageAesthetic.Variants.Special;
 
 namespace StageAesthetic
 {
@@ -15,93 +19,31 @@ namespace StageAesthetic
         public static void Initialize()
         {
             Config.SetConfig();
-            On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
+            // On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
             SceneManager.sceneLoaded += TitlePicker;
-            SceneCamera.onSceneCameraPreRender += RainCamera;
             Run.onRunStartGlobal += Config.ApplyConfig;
         }
 
         private static void TitlePicker(Scene scene, LoadSceneMode mode)
         {
-            if (scene.name == "title")
+            if (!rain)
             {
-                rainCheck = false;
-                var menuBase = GameObject.Find("MainMenu").transform;
-
-                if (!rainEffect)
-                {
-                    rainEffect = PrefabAPI.InstantiateClone(menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject, "Stage Aesthetic Rain", false);
-                    rainEffect.transform.eulerAngles = new Vector3(90, 0, 0);
-                }
-
-                if (TitleScene.Value)
-                {
-                    var graphicBase = GameObject.Find("HOLDER: Title Background").transform;
-                    graphicBase.Find("Terrain").gameObject.SetActive(true);
-                    graphicBase.Find("CamDust").gameObject.SetActive(true);
-                    graphicBase.Find("Misc Props").Find("DeadCommando").localPosition = new Vector3(16, -2f, 27);
-                    ParticleSystem menuRain = menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject.GetComponent<ParticleSystem>();
-                    var epic = menuRain.emission;
-                    var epic2 = epic.rateOverTime; // 30 constant, 30 constantmax, 0 constantmin, 0 curvemultiplier
-                    epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                    {
-                        constant = 100,
-                        constantMax = 100,
-                        constantMin = 60,
-                        curve = epic2.curve,
-                        curveMax = epic2.curveMax,
-                        curveMin = epic2.curveMax,
-                        curveMultiplier = epic2.curveMultiplier,
-                        mode = epic2.mode
-                    };
-                    var epic3 = menuRain.colorOverLifetime;
-                    epic3.enabled = false;
-                    menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").eulerAngles = new Vector3(80, 90, 0);
-                    WindZone menuWind = GameObject.Find("HOLDER: Title Background").transform.Find("FX").Find("WindZone").gameObject.GetComponent<WindZone>();
-                    menuWind.windMain = 0.5f;
-                    menuWind.windTurbulence = 1;
-                }
+                rain = Main.stageaesthetic.LoadAsset<GameObject>("Assets/StageAesthetic/Stage Aesthetic Rain.prefab");
+                rain.transform.eulerAngles = new Vector3(90, 0, 0);
             }
-        }
 
-        private static void RainCamera(SceneCamera sceneCamera)
-        {
-            if (sceneCamera.cameraRigController && WeatherEffects.Value)
+            if (!snow)
             {
-                SetRain(sceneCamera.cameraRigController, true, false);
+                snow = Main.stageaesthetic.LoadAsset<GameObject>("Assets/StageAesthetic/Stage Aesthetic Snow.prefab");
+                snow.transform.eulerAngles = new Vector3(90, 0, 0);
             }
-        }
 
-        private static void SetRain(CameraRigController cameraRigController, bool lockPosition, bool lockRotation)
-        {
-            if (rainCheck || emberCheck || purpleCheck)
-            {
-                Transform transform = cameraRigController.transform;
-                if (rainCheck)
-                {
-                    rainObj = GameObject.Find("Stage Aesthetic Rain(Clone)");
-
-                    if (rainObj) rainObj.transform.SetPositionAndRotation(lockPosition ? transform.position : rain.transform.position, lockRotation ? transform.rotation : rain.transform.rotation);
-                }
-            }
-        }
-
-        private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
-        {
-            ChangeProfile(SceneManager.GetActiveScene().name);
-            orig(self);
-        }
-
-        private static void ChangeProfile(string scenename)
-        {
-            ulong seed = (ulong)(Run.instance.GetStartTimeUtc().Ticks ^ (Run.instance.stageClearCount << 16));
+            ulong seed = Run.instance ? (ulong)(Run.instance.GetStartTimeUtc().Ticks ^ (Run.instance.stageClearCount << 16)) : 0;
             Xoroshiro128Plus rng = new(seed);
 
-            rainCheck = false;
-            emberCheck = false;
-            purpleCheck = false;
-            rain = rainEffect;
-            SceneInfo currentScene = SceneInfo.instance;
+            var scenename = scene.name;
+
+            var currentScene = SceneInfo.instance;
             if (currentScene) volume = currentScene.GetComponent<PostProcessVolume>();
             if (!volume || !volume.isActiveAndEnabled)
             {
@@ -175,17 +117,17 @@ namespace StageAesthetic
                                     break;
 
                                 case "rain":
-                                    rainCheck = true;
-                                    TitanicPlains.RainyPlains(fog, rain, scenename);
+
+                                    TitanicPlains.RainyPlains(fog, scenename);
                                     break;
 
                                 case "night":
-                                    rainCheck = true;
-                                    TitanicPlains.NightPlains(fog, rain, cgrade);
+
+                                    TitanicPlains.NightPlains(fog, cgrade);
                                     break;
 
                                 case "nostalgia":
-                                    rainCheck = true;
+
                                     TitanicPlains.NostalgiaPlains(fog);
                                     break;
 
@@ -234,14 +176,14 @@ namespace StageAesthetic
                             switch (roostArray[roostCounter])
                             {
                                 case "vanilla":
-                                    if (scenename == "blackbeach2" && RoostChanges.Value) rainCheck = true;
-                                    if (RoostChanges.Value) DistantRoost.VanillaBeach(rain, scenename);
+                                    if (scenename == "blackbeach2" && RoostChanges.Value)
+                                        if (RoostChanges.Value) DistantRoost.VanillaBeach();
                                     DistantRoost.VanillaFoliage();
                                     break;
 
                                 case "night":
-                                    if (scenename == "blackbeach2" && RoostChanges.Value) rainCheck = true;
-                                    DistantRoost.DarkBeach(fog, scenename, cgrade);
+                                    if (scenename == "blackbeach2" && RoostChanges.Value)
+                                        DistantRoost.DarkBeach(fog, scenename, cgrade);
                                     break;
 
                                 case "sunny":
@@ -249,12 +191,12 @@ namespace StageAesthetic
                                     break;
 
                                 case "foggy":
-                                    rainCheck = true;
-                                    DistantRoost.FoggyBeach(fog, scenename, rain);
+
+                                    DistantRoost.FoggyBeach(fog, scenename);
                                     break;
 
                                 case "void":
-                                    rainCheck = true;
+
                                     DistantRoost.VoidBeach(fog, cgrade);
                                     break;
 
@@ -282,14 +224,14 @@ namespace StageAesthetic
                             switch (roostAltArray[roostAltCounter])
                             {
                                 case "vanilla":
-                                    if (RoostChanges.Value) rainCheck = true;
-                                    if (RoostChanges.Value) DistantRoost.VanillaBeach(rain, scenename);
+                                    if (RoostChanges.Value)
+                                        if (RoostChanges.Value) DistantRoost.VanillaBeach();
                                     DistantRoost.VanillaFoliage();
                                     break;
 
                                 case "night":
-                                    if (RoostChanges.Value) rainCheck = true;
-                                    DistantRoost.DarkBeach(fog, scenename, cgrade);
+                                    if (RoostChanges.Value)
+                                        DistantRoost.DarkBeach(fog, scenename, cgrade);
                                     break;
 
                                 case "sunny":
@@ -297,12 +239,12 @@ namespace StageAesthetic
                                     break;
 
                                 case "foggy":
-                                    rainCheck = true;
-                                    DistantRoost.FoggyBeach(fog, scenename, rain);
+
+                                    DistantRoost.FoggyBeach(fog, scenename);
                                     break;
 
                                 case "gold":
-                                    rainCheck = true;
+
                                     DistantRoost.GoldBeach(fog, cgrade);
                                     break;
 
@@ -330,30 +272,31 @@ namespace StageAesthetic
                             switch (forestArray[forestCounter])
                             {
                                 case "vanilla":
+                                    SiphonedForest.VanillaForest();
                                     break;
 
                                 case "night":
-                                    purpleCheck = true;
+
                                     SiphonedForest.NightForest(fog, cgrade);
                                     break;
 
                                 case "extrasnowy":
-                                    purpleCheck = true;
+
                                     SiphonedForest.ExtraSnowyForest(fog, cgrade);
                                     break;
 
                                 case "crimson":
-                                    purpleCheck = true;
+
                                     SiphonedForest.CrimsonForest(fog, cgrade);
                                     break;
 
                                 case "morning":
-                                    purpleCheck = true;
+
                                     SiphonedForest.MorningForest(fog, cgrade);
                                     break;
 
                                 case "desolate":
-                                    purpleCheck = true;
+
                                     SiphonedForest.DesolateForest(fog, cgrade);
                                     break;
 
@@ -384,22 +327,22 @@ namespace StageAesthetic
                                     break;
 
                                 case "sunset":
-                                    emberCheck = true;
+
                                     WetlandAspect.GoldSwamp(fog, cgrade);
                                     break;
 
                                 case "sky":
-                                    purpleCheck = true;
+
                                     WetlandAspect.PinkSwamp(fog, cgrade);
                                     break;
 
                                 case "dark":
-                                    rainCheck = true;
-                                    WetlandAspect.MoreSwamp(fog, rain);
+
+                                    WetlandAspect.MoreSwamp(fog);
                                     break;
 
                                 case "void":
-                                    rainCheck = true;
+
                                     WetlandAspect.VoidSwamp(fog);
                                     break;
 
@@ -435,18 +378,18 @@ namespace StageAesthetic
                                     break;
 
                                 case "rain":
-                                    rainCheck = true;
-                                    AbandonedAqueduct.BlueAqueduct(fog, rain);
+
+                                    AbandonedAqueduct.BlueAqueduct(fog);
                                     break;
 
                                 case "nightrain":
-                                    rainCheck = true;
-                                    AbandonedAqueduct.NightAqueduct(fog, rain, cgrade);
+
+                                    AbandonedAqueduct.NightAqueduct(fog, cgrade);
                                     break;
 
                                 case "sundered":
-                                    rainCheck = true;
-                                    AbandonedAqueduct.SunderedAqueduct(fog, rain, cgrade);
+
+                                    AbandonedAqueduct.SunderedAqueduct(fog, cgrade);
                                     break;
 
                                 default:
@@ -476,9 +419,13 @@ namespace StageAesthetic
                                 FRCSharp.TheCoolerRampFog stupidAssFog = volume.GetComponent<FRCSharp.TheCoolerRampFog>();
                                 switch (basinArray[basinCounter])
                                 {
+                                    case "vanilla":
+                                        DryBasin.VanillaTweaks();
+                                        break;
+
                                     case "rainy":
-                                        rainCheck = true;
-                                        DryBasin.RainyBasin(stupidAssFog, cgrade, rain);
+
+                                        DryBasin.RainyBasin(stupidAssFog, cgrade);
                                         break;
 
                                     case "morning":
@@ -496,7 +443,8 @@ namespace StageAesthetic
                             }
                         }
                         basinVariant = basinCounter;
-                        #endregion
+
+                        #endregion DryBasin
 
                         break;
 
@@ -516,22 +464,22 @@ namespace StageAesthetic
                                     break;
 
                                 case "nearrain":
-                                    purpleCheck = true;
+
                                     AphelianSanctuary.NearRainSanctuary(fog, cgrade);
                                     break;
 
                                 case "sunrise":
-                                    purpleCheck = true;
+
                                     AphelianSanctuary.SunriseSanctuary(fog, cgrade);
                                     break;
 
                                 case "night":
-                                    purpleCheck = true;
+
                                     AphelianSanctuary.NightSanctuary(fog, cgrade);
                                     break;
 
                                 case "abyss":
-                                    purpleCheck = true;
+
                                     AphelianSanctuary.AbyssalSanctuary(fog, cgrade);
                                     break;
 
@@ -566,8 +514,8 @@ namespace StageAesthetic
                                     break;
 
                                 case "foggy":
-                                    rainCheck = true;
-                                    RallypointDelta.OceanWall(fog, rain);
+
+                                    RallypointDelta.OceanWall(fog);
                                     break;
 
                                 case "green":
@@ -607,7 +555,7 @@ namespace StageAesthetic
                                     break;
 
                                 case "sunset":
-                                    purpleCheck = true;
+
                                     ScorchedAcres.SunsetAcres(fog, cgrade);
                                     break;
 
@@ -659,17 +607,17 @@ namespace StageAesthetic
                                     break;
 
                                 case "coralblue":
-                                    purpleCheck = true;
+
                                     SulfurPools.CoralBluePools(fog);
                                     break;
 
                                 case "hell":
-                                    purpleCheck = true;
+
                                     SulfurPools.HellOnEarthPools(fog);
                                     break;
 
                                 case "void":
-                                    purpleCheck = true;
+
                                     SulfurPools.VoidPools(fog, cgrade);
                                     break;
 
@@ -705,7 +653,7 @@ namespace StageAesthetic
                                     break;
 
                                 case "overcast":
-                                    FogboundLagoon.OvercastLagoon(fog, cgrade, rain);
+                                    FogboundLagoon.OvercastLagoon(fog, cgrade);
                                     break;
 
                                 default:
@@ -741,12 +689,12 @@ namespace StageAesthetic
                                     break;
 
                                 case "orange":
-                                    purpleCheck = true;
+
                                     AbyssalDepths.OrangeCave(fog);
                                     break;
 
                                 case "coral":
-                                    purpleCheck = true;
+
                                     AbyssalDepths.CoralCave(fog, cgrade);
                                     break;
 
@@ -785,12 +733,12 @@ namespace StageAesthetic
                                     break;
 
                                 case "storm":
-                                    rainCheck = true;
-                                    SirensCall.ShipDeluge(fog, rain);
+
+                                    SirensCall.ShipDeluge(fog);
                                     break;
 
                                 case "aphelian":
-                                    rainCheck = true;
+
                                     SirensCall.ShipAphelian(fog, cgrade);
                                     break;
 
@@ -830,8 +778,8 @@ namespace StageAesthetic
                                     break;
 
                                 case "storm":
-                                    rainCheck = true;
-                                    SunderedGrove.StormJungle(fog, rain, cgrade);
+
+                                    SunderedGrove.StormJungle(fog, cgrade);
                                     break;
 
                                 case "sandy":
@@ -862,32 +810,32 @@ namespace StageAesthetic
                             switch (meadowArray[meadowCounter])
                             {
                                 case "vanilla":
-                                    purpleCheck = true;
+
                                     if (MeadowChanges.Value) SkyMeadow.VanillaChanges();
                                     break;
 
                                 case "night":
-                                    purpleCheck = true;
+
                                     SkyMeadow.NightMeadow(fog);
                                     break;
 
                                 case "storm":
-                                    rainCheck = true;
-                                    SkyMeadow.StormyMeadow(fog, rain);
+
+                                    SkyMeadow.StormyMeadow(fog);
                                     break;
 
                                 case "abyss":
-                                    emberCheck = true;
+
                                     SkyMeadow.AbyssalMeadow(fog, cgrade);
                                     break;
 
                                 case "titanic":
-                                    emberCheck = true;
+
                                     SkyMeadow.TitanicMeadow(fog);
                                     break;
 
                                 case "sandy":
-                                    emberCheck = true;
+
                                     SkyMeadow.SandyMeadow(fog);
                                     break;
 
@@ -960,17 +908,17 @@ namespace StageAesthetic
                                     break;
 
                                 case "blue":
-                                    purpleCheck = true;
+
                                     VoidLocus.BlueLocus(fog, cgrade);
                                     break;
 
                                 case "pink":
-                                    purpleCheck = true;
+
                                     VoidLocus.PinkLocus(fog, cgrade);
                                     break;
 
                                 case "green":
-                                    purpleCheck = true;
+
                                     VoidLocus.GreenLocus(fog, cgrade);
                                     break;
 
@@ -1001,12 +949,12 @@ namespace StageAesthetic
                                     break;
                                 /*
                             case "purple":
-                                purpleCheck = true;
+
                                 Planetarium.PurplePlanetarium(fog, cgrade);
                                 break;
 
                             case "twilight":
-                                purpleCheck = true;
+
                                 Planetarium.TwilightPlanetarium();
                                 break;
 
@@ -1022,7 +970,50 @@ namespace StageAesthetic
 
                         break;
                 }
+
+                if (scene.name == "title")
+                {
+                    var menuBase = GameObject.Find("MainMenu").transform;
+
+                    if (TitleScene.Value)
+                    {
+                        var graphicBase = GameObject.Find("HOLDER: Title Background").transform;
+                        graphicBase.Find("Terrain").gameObject.SetActive(true);
+                        graphicBase.Find("CamDust").gameObject.SetActive(true);
+                        graphicBase.Find("Misc Props").Find("DeadCommando").localPosition = new Vector3(16, -2f, 27);
+                        ParticleSystem menuRain = menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject.GetComponent<ParticleSystem>();
+                        var epic = menuRain.emission;
+                        var epic2 = epic.rateOverTime; // 30 constant, 30 constantmax, 0 constantmin, 0 curvemultiplier
+                        epic.rateOverTime = new ParticleSystem.MinMaxCurve()
+                        {
+                            constant = 100,
+                            constantMax = 100,
+                            constantMin = 60,
+                            curve = epic2.curve,
+                            curveMax = epic2.curveMax,
+                            curveMin = epic2.curveMax,
+                            curveMultiplier = epic2.curveMultiplier,
+                            mode = epic2.mode
+                        };
+                        var epic3 = menuRain.colorOverLifetime;
+                        epic3.enabled = false;
+                        menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").eulerAngles = new Vector3(80, 90, 0);
+                        WindZone menuWind = GameObject.Find("HOLDER: Title Background").transform.Find("FX").Find("WindZone").gameObject.GetComponent<WindZone>();
+                        menuWind.windMain = 0.5f;
+                        menuWind.windTurbulence = 1;
+                    }
+                }
             }
+        }
+
+        private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
+        {
+            ChangeProfile(SceneManager.GetActiveScene().name);
+            orig(self);
+        }
+
+        private static void ChangeProfile(string scenename)
+        {
         }
 
         public static PostProcessVolume volume;
@@ -1059,15 +1050,8 @@ namespace StageAesthetic
 
         #endregion Jank
 
-        public static GameObject rainEffect;
-
         public static GameObject rain;
-        public static GameObject rainObj;
-        public static GameObject quad;
-        public static bool rainCheck;
-
-        public static bool emberCheck;
-        public static bool purpleCheck;
+        public static GameObject snow;
 
         internal static BepInEx.Logging.ManualLogSource AesLog;
 
@@ -1124,6 +1108,7 @@ namespace StageAesthetic
         public static ConfigEntry<bool> RainyBasin { get; set; }
         public static ConfigEntry<bool> PurpleBasin { get; set; }
         public static ConfigEntry<bool> MorningBasin { get; set; }
+        public static ConfigEntry<bool> VanillaBasin { get; set; }
 
         // Aphelian
 

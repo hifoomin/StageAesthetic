@@ -7,7 +7,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.XR;
 using Object = UnityEngine.Object;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage4
 {
     internal class SunderedGrove
     {
@@ -49,7 +49,7 @@ namespace StageAesthetic.Variants
             VanillaFoliage();
         }
 
-        public static void StormJungle(RampFog fog, GameObject rain, ColorGrading cgrade)
+        public static void StormJungle(RampFog fog, ColorGrading cgrade)
         {
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
@@ -64,30 +64,11 @@ namespace StageAesthetic.Variants
             fog.skyboxStrength.value = 0.126f;
             cgrade.colorFilter.value = new Color32(148, 206, 183, 255);
             cgrade.colorFilter.overrideState = true;
-            if (Config.WeatherEffects.Value)
-            {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 1500,
-                    constantMax = 1500,
-                    constantMin = 600,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(75, 210, 0);
-                rain.transform.localScale = new Vector3(16, 16, 1);
-                Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
-            }
+
+            var rain = lightBase.Find("CameraRelative").gameObject;
+            rain.SetActive(false);
+
+            AddRain(RainType.Typhoon);
             VanillaFoliage();
         }
 
@@ -141,55 +122,31 @@ namespace StageAesthetic.Variants
                     {
                         if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Gianticus") || meshBase.name.Contains("Tree Big Bottom") || meshBase.name.Contains("Tree D") || meshBase.name.Contains("Wall") || meshBase.name.Contains("RJRoot") || meshBase.name.Contains("RJShroomShelf"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
                         if (meshBase.name.Contains("RJTriangle") || meshBase.name.Contains("BbRuinArch") || meshBase.name.Contains("RJShroomBig"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat2;
-                                    break;
+                                mr.sharedMaterial = terrainMat2;
                             }
                         }
                         if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("Root Bridge") || meshBase.name.Contains("Vine Tree"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
 
                         if (meshBase.name.Contains("Moss Cover") || meshBase.name.Contains("RJShroomShelf") || meshBase.name.Contains("RJShroomBig") || meshBase.name.Contains("RJShroomSmall") || meshBase.name.Contains("RJMossPatch"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = shroomMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = shroomMat;
-                                    break;
+                                mr.sharedMaterial = shroomMat;
                             }
                         }
 

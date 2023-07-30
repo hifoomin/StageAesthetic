@@ -41,7 +41,7 @@ namespace StageAesthetic
             CrimsonForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Crimson Forest?", true, "Red fog with Doom vibes.");
             MorningForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Morning Forest?", true, "Yellow sun with blue shadows.");
             VanillaForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
-            // DesolateForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Desolate Forest?", true, "Green ground with a purple contrast.");
+            DesolateForest = AesConfig.Bind("Stages : Siphoned Forest", "Enable Desolate Forest?", true, "Green ground with a purple contrast.");
 
             VanillaAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NearRainAphelian = AesConfig.Bind("Stages :: Aphelian Sanctuary", "Enable Twilight Sanctuary?", true, "Strong purple and orange fog.");
@@ -61,11 +61,12 @@ namespace StageAesthetic
             MistyAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Night Aqueduct?", true, "Honestly no idea lol");
             SunderedAqueduct = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Sundered Aqueduct?", true, "Texture swap to Pink Sundered Grove.");
             AqueductChanges = AesConfig.Bind("Stages :: Abandoned Aqueduct", "Alter vanilla Abandoned Aqueduct?", true, "Makes the sun a slightly more intense yellow-orange, and changes its angle.");
-            
+
+            VanillaBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             MorningBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Morning Basin?", true, "Yellow sun with blue shadows.");
             PurpleBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Purple Basin?", true, "Purple.");
             RainyBasin = AesConfig.Bind("Stages :: Dry Basin", "Enable Rainy Basin?", true, "Overcast and rainy.");
-            
+
             VanillaDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Vanilla?", true, "Disabling removes vanilla from getting picked");
             NightDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Night Delta?", true, "Blue and dark with extra snow.");
             FoggyDelta = AesConfig.Bind("Stages ::: Rallypoint Delta", "Enable Foggy Delta?", true, "Rainy with more fog.");
@@ -134,7 +135,7 @@ namespace StageAesthetic
             // TwilightPlanetarium = AesConfig.Bind("Stages :::::::: The Planetarium", "Enable Twilight Planetarium?", true, "");
 
             TitleScene = AesConfig.Bind("Stages Title", "Alter title screen?", true, "Adds rain, patches of grass, particles and brings a Commando closer to focus.");
-            WeatherEffects = AesConfig.Bind("Stages Weather", "Import weather effects?", true, "Adds rain into stages that normally don't have them. Disabling this is recommended if performance is an issue or if playing Starstorm 2, as it overlaps with the latter's weather.");
+            WeatherEffects = AesConfig.Bind("Stages Weather", "Import weather effects?", true, "Adds/swaps rain/snow for stages. Disabling this is recommended if performance is an issue. Starstorm 2 compatibility coming soon.");
 
             var tabID = 0;
             foreach (ConfigEntryBase ceb in AesConfig.GetConfigEntries())
@@ -242,10 +243,10 @@ namespace StageAesthetic
 
             if (NightForest.Value) forestList.Add("night");
             if (ExtraSnowyForest.Value) forestList.Add("extrasnowy");
-            if (CrimsonForest.Value) forestList.Add("abyssal");
+            if (CrimsonForest.Value) forestList.Add("crimson");
             if (MorningForest.Value) forestList.Add("morning");
             if (VanillaForest.Value) forestList.Add("vanilla");
-            // if (DesolateForest.Value) forestList.Add("desolate");
+            if (DesolateForest.Value) forestList.Add("desolate");
             if (forestList.Count == 0)
             {
                 AesLog.LogWarning("Siphoned Forest list empty - adding vanilla...");
@@ -278,6 +279,7 @@ namespace StageAesthetic
             if (MorningBasin.Value) basinList.Add("morning");
             if (RainyBasin.Value) basinList.Add("rainy");
             if (PurpleBasin.Value) basinList.Add("purple");
+            if (VanillaBasin.Value) basinList.Add("vanilla");
             if (basinList.Count == 0)
             {
                 AesLog.LogWarning("Dry Basin list empty - adding vanilla...");

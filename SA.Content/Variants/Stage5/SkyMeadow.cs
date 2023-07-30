@@ -1,12 +1,9 @@
-﻿using IL.RoR2;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Experimental.AI;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage5
 {
     internal class SkyMeadow
     {
@@ -40,7 +37,7 @@ namespace StageAesthetic.Variants
             VanillaFoliage();
         }
 
-        public static void StormyMeadow(RampFog fog, GameObject rain)
+        public static void StormyMeadow(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(76, 86, 98, 0);
             fog.fogColorMid.value = new Color32(67, 62, 88, 159);
@@ -49,43 +46,20 @@ namespace StageAesthetic.Variants
             fog.skyboxStrength.value = 0.1f;
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
+            var sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(142, 156, 202, 255);
             sunLight.intensity = 0.6f;
             sunLight.shadowStrength = 0.3f;
-            if (SwapVariants.WeatherEffects.Value)
-            {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 3000,
-                    constantMax = 3000,
-                    constantMin = 600,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(300, 0, 0);
-                rain.transform.localScale = new Vector3(12, 12, 1);
-                Object.Instantiate(rain);
-                GameObject wind = GameObject.Find("WindZone");
-                wind.transform.eulerAngles = new Vector3(30, 20, 0);
-                var windZone = wind.GetComponent<WindZone>();
-                windZone.windMain = 1;
-                windZone.windTurbulence = 1;
-                windZone.windPulseFrequency = 0.5f;
-                windZone.windPulseMagnitude = 5f;
-                windZone.mode = WindZoneMode.Directional;
-                windZone.radius = 100;
-            }
+            AddRain(RainType.Monsoon);
+            var wind = GameObject.Find("WindZone");
+            wind.transform.eulerAngles = new Vector3(30, 20, 0);
+            var windZone = wind.GetComponent<WindZone>();
+            windZone.windMain = 1;
+            windZone.windTurbulence = 1;
+            windZone.windPulseFrequency = 0.5f;
+            windZone.windPulseMagnitude = 5f;
+            windZone.mode = WindZoneMode.Directional;
+            windZone.radius = 100;
             GameObject.Find("SMSkyboxPrefab").transform.Find("SmallStars").gameObject.SetActive(false);
             VanillaFoliage();
         }
@@ -142,134 +116,74 @@ namespace StageAesthetic.Variants
                         {
                             if (meshBase.name.Contains("Plateau") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("FORMATION"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = terrainMat;
-                                        break;
+                                    mr.sharedMaterial = terrainMat;
                                 }
                             }
                             if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13") || meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground") || meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent") || meshBase.name.Contains("BbRuinPillar") || (meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks")))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat;
-                                        break;
+                                    mr.sharedMaterial = detailMat;
                                 }
                             }
                             if (meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat2;
-                                        break;
+                                    mr.sharedMaterial = detailMat2;
                                 }
                             }
                             if (meshBase.name.Contains("Terrain") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("Plateau Under") && meshParent.name.Contains("Underground"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = terrainMat2;
-                                        break;
+                                    mr.sharedMaterial = terrainMat2;
                                 }
                             }
                             if (meshBase.name.Contains("Base") && meshParent.name.Contains("PowerCoil") || meshBase.name.Contains("InteractableMesh") && meshParent.name.Contains("PortalDialerButton"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat4;
-                                        break;
+                                    mr.sharedMaterial = detailMat4;
                                 }
                             }
                             if (meshBase.name.Contains("Coil") && meshParent.name.Contains("PowerCoil"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat5; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat5;
-                                        break;
+                                    mr.sharedMaterial = detailMat5;
                                 }
                             }
                         }
                         if (meshBase.name.Contains("SMPebble") || meshBase.name.Contains("mdlGeyser"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("SMSpikeBridge"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat2;
-                                    break;
+                                mr.sharedMaterial = detailMat2;
                             }
                         }
 
                         if (meshBase.name.Contains("PowerLine") || meshBase.name.Contains("MegaTeleporter") || meshBase.name.Contains("BbRuinGateDoor") || meshBase.name.Contains("BbRuinArch"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat3;
-                                    break;
+                                mr.sharedMaterial = detailMat3;
                             }
                         }
                         if (meshBase.name.Contains("HumanCrate") || meshBase.name.Contains("BbRuinPillar"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat4;
-                                    break;
+                                mr.sharedMaterial = detailMat4;
                             }
                         }
                     }
@@ -372,134 +286,74 @@ namespace StageAesthetic.Variants
                         {
                             if (meshBase.name.Contains("Plateau") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("FORMATION"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = terrainMat;
-                                        break;
+                                    mr.sharedMaterial = terrainMat;
                                 }
                             }
                             if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13") || meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground") || meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat;
-                                        break;
+                                    mr.sharedMaterial = detailMat;
                                 }
                             }
                             if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks") || meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat2;
-                                        break;
+                                    mr.sharedMaterial = detailMat2;
                                 }
                             }
                             if (meshBase.name.Contains("Terrain") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("Plateau Under") && meshParent.name.Contains("Underground"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = terrainMat2;
-                                        break;
+                                    mr.sharedMaterial = terrainMat2;
                                 }
                             }
                             if (meshBase.name.Contains("Base") && meshParent.name.Contains("PowerCoil") || meshBase.name.Contains("InteractableMesh") && meshParent.name.Contains("PortalDialerButton"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat4;
-                                        break;
+                                    mr.sharedMaterial = detailMat4;
                                 }
                             }
                             if (meshBase.name.Contains("Coil") && meshParent.name.Contains("PowerCoil"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat5; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat5;
-                                        break;
+                                    mr.sharedMaterial = detailMat5;
                                 }
                             }
                         }
                         if (meshBase.name.Contains("SMPebble") || meshBase.name.Contains("mdlGeyser"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("SMSpikeBridge"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat2;
-                                    break;
+                                mr.sharedMaterial = detailMat2;
                             }
                         }
 
                         if (meshBase.name.Contains("PowerLine") || meshBase.name.Contains("MegaTeleporter") || meshBase.name.Contains("BbRuinGateDoor") || meshBase.name.Contains("BbRuinArch"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat3;
-                                    break;
+                                mr.sharedMaterial = detailMat3;
                             }
                         }
                         if (meshBase.name.Contains("HumanCrate") || meshBase.name.Contains("BbRuinPillar"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat4;
-                                    break;
+                                mr.sharedMaterial = detailMat4;
                             }
                         }
                     }
@@ -609,159 +463,87 @@ namespace StageAesthetic.Variants
                         {
                             if (meshBase.name.Contains("Plateau") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("FORMATION"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = terrainMat;
-                                        break;
+                                    mr.sharedMaterial = terrainMat;
                                 }
                             }
                             if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("HOLDER: Spinning Rocks") || meshBase.name.Contains("SMRock") && meshParent.name.Contains("P13") || meshBase.name.Contains("SMPebble") && meshParent.name.Contains("Underground") || meshBase.name.Contains("Boulder") && meshParent.name.Contains("PortalDialerEvent"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat;
-                                        break;
+                                    mr.sharedMaterial = detailMat;
                                 }
                             }
                             if (meshBase.name.Contains("SMRock") && meshParent.name.Contains("GROUP: Rocks") || meshBase.name.Contains("SMSpikeBridge") && meshParent.name.Contains("Underground"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat2;
-                                        break;
+                                    mr.sharedMaterial = detailMat2;
                                 }
                             }
                             if (meshBase.name.Contains("Terrain") && meshParent.name.Contains("skymeadow_terrain") || meshBase.name.Contains("Plateau Under") && meshParent.name.Contains("Underground"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = terrainMat2;
-                                        break;
+                                    mr.sharedMaterial = terrainMat2;
                                 }
                             }
                             if (meshBase.name.Contains("Base") && meshParent.name.Contains("PowerCoil") || meshBase.name.Contains("InteractableMesh") && meshParent.name.Contains("PortalDialerButton"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat4;
-                                        break;
+                                    mr.sharedMaterial = detailMat4;
                                 }
                             }
                             if (meshBase.name.Contains("Coil") && meshParent.name.Contains("PowerCoil"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = detailMat5; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = detailMat5;
-                                        break;
+                                    mr.sharedMaterial = detailMat5;
                                 }
                             }
                         }
                         if (meshBase.name.Contains("SMPebble") || meshBase.name.Contains("mdlGeyser"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("SMSpikeBridge"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat2;
-                                    break;
+                                mr.sharedMaterial = detailMat2;
                             }
                         }
                         if (meshBase.name.Contains("PowerLine") || meshBase.name.Contains("MegaTeleporter") || meshBase.name.Contains("BbRuinGateDoor"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat3;
-                                    break;
+                                mr.sharedMaterial = detailMat3;
                             }
                         }
                         if (meshBase.name.Contains("HumanCrate"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat4; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat4;
-                                    break;
+                                mr.sharedMaterial = detailMat4;
                             }
                         }
                         if (meshBase.name.Contains("BbRuinPillar"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat6; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat6;
-                                    break;
+                                mr.sharedMaterial = detailMat6;
                             }
                         }
                         if (meshBase.name.Contains("BbRuinArch"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
                     }

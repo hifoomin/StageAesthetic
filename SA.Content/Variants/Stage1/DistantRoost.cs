@@ -7,19 +7,18 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage1
 {
     internal class DistantRoost
     {
-        public static void VanillaBeach(GameObject rain, string scenename)
+        public static void VanillaBeach()
         {
             VanillaFoliage();
-            if (Config.WeatherEffects.Value && scenename == "blackbeach2") Object.Instantiate(rain, Vector3.zero, Quaternion.identity);
+            Utils.AddRain(Utils.RainType.Drizzle);
         }
 
         public static void LightBeach(RampFog fog, string scenename, ColorGrading cgrade)
         {
-            // Much more sun than vanilla roost - almost enough to give it a cel-shaded look on lower texture settings. The whiter lighting allows the green/brown elements to stand out more.
             fog.fogColorStart.value = new Color32(107, 125, 123, 25);
             fog.fogColorMid.value = new Color32(129, 154, 152, 69);
             fog.fogColorEnd.value = new Color32(156, 194, 189, 114);
@@ -34,10 +33,8 @@ namespace StageAesthetic.Variants
             cgrade.colorFilter.overrideState = true;
             if (scenename == "blackbeach")
             {
-                // There's unused fog assets here too, enabling those
                 GameObject.Find("SKYBOX").transform.GetChild(3).gameObject.SetActive(true);
                 GameObject.Find("SKYBOX").transform.GetChild(4).gameObject.SetActive(true);
-                // Removing rain
                 GameObject.Find("HOLDER: Weather Particles").transform.Find("BBSkybox").Find("CameraRelative").Find("Rain").gameObject.SetActive(false);
             }
             VanillaFoliage();
@@ -45,7 +42,6 @@ namespace StageAesthetic.Variants
 
         public static void DarkBeach(RampFog fog, string scenename, ColorGrading cgrade)
         {
-            // Dark and purple, not much else to say here really
             fog.fogColorStart.value = new Color32(24, 20, 43, 32);
             fog.fogColorMid.value = new Color32(33, 25, 49, 130);
             fog.fogColorEnd.value = new Color32(43, 35, 62, 255);
@@ -64,7 +60,6 @@ namespace StageAesthetic.Variants
                 GameObject.Find("SKYBOX").transform.GetChild(4).gameObject.SetActive(true);
             }
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
-            // Aiding visibility by increasing the lighting effect of the crystal pillars in both stages
             foreach (Light light in lightList)
             {
                 var lightBase = light.gameObject;
@@ -103,7 +98,6 @@ namespace StageAesthetic.Variants
             sunLight.shadowStrength = 0.45f;
             var lightList = UnityEngine.Object.FindObjectsOfType(typeof(Light)) as Light[];
             var s = GameObject.Find("SKYBOX").transform;
-            // Aiding visibility by increasing the lighting effect of the crystal pillars in both stages
             foreach (Light light in lightList)
             {
                 var lightBase = light.gameObject;
@@ -130,9 +124,8 @@ namespace StageAesthetic.Variants
             VanillaFoliage();
         }
 
-        public static void FoggyBeach(RampFog fog, string scenename, GameObject rain)
+        public static void FoggyBeach(RampFog fog, string scenename)
         {
-            // Stormy weather. Might be a bit too murky
             fog.fogColorStart.value = new Color32(31, 46, 63, 50);
             fog.fogColorMid.value = new Color(0.205f, 0.269f, 0.288f, 0.76f);
             fog.fogColorEnd.value = new Color32(71, 82, 88, 255);
@@ -145,48 +138,26 @@ namespace StageAesthetic.Variants
             sunLight.color = new Color32(77, 188, 175, 255);
             sunLight.intensity = 1.7f;
             sunLight.shadowStrength = 0.6f;
-            // Strong rain
-            if (Config.WeatherEffects.Value)
-            {
-                if (scenename == "blackbeach") GameObject.Find("HOLDER: Weather Particles").transform.Find("BBSkybox").Find("CameraRelative").Find("Rain").gameObject.SetActive(false);
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 3000,
-                    constantMax = 3000,
-                    constantMin = 600,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(75, 20, 0);
-                rain.transform.localScale = new Vector3(14, 14, 1);
-                UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
-                GameObject wind = GameObject.Find("WindZone");
-                wind.transform.eulerAngles = new Vector3(30, 20, 0);
-                var windZone = wind.GetComponent<WindZone>();
-                windZone.windMain = 1;
-                windZone.windTurbulence = 1;
-                windZone.windPulseFrequency = 0.5f;
-                windZone.windPulseMagnitude = 0.5f;
-                windZone.mode = WindZoneMode.Directional;
-                windZone.radius = 100;
-            }
-            // Enabling some unused fog
-            if (scenename == "blackbeach") GameObject.Find("SKYBOX").transform.GetChild(3).gameObject.SetActive(true);
-            // Aiding visibility by increasing the lighting effect of the crystal pillars in both stages
+            Utils.AddRain(Utils.RainType.Monsoon);
+            GameObject wind = GameObject.Find("WindZone");
+            wind.transform.eulerAngles = new Vector3(30, 20, 0);
+            var windZone = wind.GetComponent<WindZone>();
+            windZone.windMain = 1;
+            windZone.windTurbulence = 1;
+            windZone.windPulseFrequency = 0.5f;
+            windZone.windPulseMagnitude = 0.5f;
+            windZone.mode = WindZoneMode.Directional;
+            windZone.radius = 100;
+
+            if (scenename == "blackbeach")
+                GameObject.Find("SKYBOX").transform.GetChild(3).gameObject.SetActive(true);
+
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
+
             foreach (Light light in lightList)
             {
                 var lightBase = light.gameObject;
+
                 if (lightBase != null)
                 {
                     var lightParent = lightBase.transform.parent;
@@ -252,27 +223,27 @@ namespace StageAesthetic.Variants
                     {
                         meshBase.gameObject.SetActive(false);
                     }
-                }
-            }
-            var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
-            foreach (Light light in lightList)
-            {
-                var lightBase = light.gameObject;
-                if (lightBase != null)
-                {
-                    var lightParent = lightBase.transform.parent;
-                    if (lightParent != null)
+                    var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
+                    foreach (Light light in lightList)
                     {
-                        if (lightParent.gameObject.name.Equals("BbRuinBowl") || lightParent.gameObject.name.Equals("BbRuinBowl (1)") || lightParent.gameObject.name.Equals("BbRuinBowl (2)"))
+                        var lightBase = light.gameObject;
+                        if (lightBase != null)
                         {
-                            light.color = new Color32(249, 212, 96, 225);
-                            light.intensity = 16f;
-                            light.range = 35f;
+                            var lightParent = lightBase.transform.parent;
+                            if (lightParent != null)
+                            {
+                                if (lightParent.gameObject.name.Equals("BbRuinBowl") || lightParent.gameObject.name.Equals("BbRuinBowl (1)") || lightParent.gameObject.name.Equals("BbRuinBowl (2)"))
+                                {
+                                    light.color = new Color32(249, 212, 96, 225);
+                                    light.intensity = 16f;
+                                    light.range = 35f;
+                                }
+                            }
                         }
                     }
+                    AbyssalFoliage();
                 }
             }
-            AbyssalFoliage();
         }
 
         public static void VanillaFoliage()
@@ -482,56 +453,38 @@ namespace StageAesthetic.Variants
                     {
                         if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Step") || meshBase.name.Contains("Tile") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Pebble") || meshBase.name.Contains("Detail"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("Bowl") || meshBase.name.Contains("Marker") || meshBase.name.Contains("RuinPillar"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat2;
-                                    break;
+                                mr.sharedMaterial = detailMat2;
                             }
-                        }
-                        if (meshBase.name.Contains("DistantPillar") || meshBase.name.Contains("Cliff") || meshBase.name.Contains("ClosePillar"))
-                        {
-                            switch (mr.sharedMaterial)
-                            {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat2;
-                                    break;
-                            }
-                        }
-                        if (meshBase.name.Contains("Decal") || meshBase.name.Contains("spmBbFern2"))
-                        {
-                            meshBase.SetActive(false);
-                        }
-                        if (meshBase.name.Contains("GlowyBall"))
-                        {
-                            mr.sharedMaterial.color = new Color32(109, 58, 119, 140);
                         }
                     }
+                    if (meshBase.name.Contains("DistantPillar") || meshBase.name.Contains("Cliff") || meshBase.name.Contains("ClosePillar"))
+                    {
+                        if (mr.sharedMaterial)
+                        {
+                            mr.sharedMaterial = terrainMat2;
+                        }
+                    }
+                    if (meshBase.name.Contains("Decal") || meshBase.name.Contains("spmBbFern2"))
+                    {
+                        meshBase.SetActive(false);
+                    }
+                    if (meshBase.name.Contains("GlowyBall"))
+                    {
+                        mr.sharedMaterial.color = new Color32(109, 58, 119, 140);
+                    }
                 }
-                water.color = new Color32(0, 14, 255, 255);
-                s.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = water;
             }
+            water.color = new Color32(0, 14, 255, 255);
+            s.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = water;
         }
 
         public static void ApplyGoldMaterials()
@@ -562,15 +515,9 @@ namespace StageAesthetic.Variants
                             }
                             if (meshParent.name.Contains("terrain") && meshBase.name.Contains("Pillar"))
                             {
-                                switch (mr.sharedMaterial)
+                                if (mr.sharedMaterial)
                                 {
-                                    case null:
-                                        try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                        break;
-
-                                    default:
-                                        mr.sharedMaterial = terrainMat;
-                                        break;
+                                    mr.sharedMaterial = terrainMat;
                                 }
                             }
                             if (meshParent.name.Equals("Foliage") && meshBase.name.Contains("bbSimpleGrassPrefab"))
@@ -580,67 +527,30 @@ namespace StageAesthetic.Variants
                         }
                         if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Shelf"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
-                        if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("boulder") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Step") || meshBase.name.Contains("Tile") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Bowl") || meshBase.name.Contains("Marker") || meshBase.name.Contains("RuinPillar") || meshBase.name.Contains("DistantBridge"))
+                        if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("boulder") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Step") || meshBase.name.Contains("Tile") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Bowl") || meshBase.name.Contains("Marker") || meshBase.name.Contains("RuinPillar") || meshBase.name.Contains("DistantBridge") || meshBase.name.Contains("Pebble"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
-                            }
-                        }
-                        if (meshBase.name.Contains("Pebble"))
-                        {
-                            switch (mr.sharedMaterial)
-                            {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat;
-                                    break;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("RuinGate") || meshBase.name.Contains("RuinArch"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detailMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detailMat2;
-                                    break;
+                                mr.sharedMaterial = detailMat2;
                             }
                         }
                         if (meshBase.name.Contains("DistantPillar") || meshBase.name.Contains("Cliff") || meshBase.name.Contains("ClosePillar"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat2;
-                                    break;
+                                mr.sharedMaterial = terrainMat2;
                             }
                         }
                         if (meshBase.name.Contains("Decal") || meshBase.name.Contains("spmBbFern2"))

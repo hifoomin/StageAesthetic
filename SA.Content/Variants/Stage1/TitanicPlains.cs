@@ -5,7 +5,7 @@ using UnityEngine.Rendering.PostProcessing;
 using static UnityEngine.RemoteConfigSettingsHelper;
 using Object = UnityEngine.Object;
 
-namespace StageAesthetic.Variants
+namespace StageAesthetic.Variants.Stage1
 {
     internal class TitanicPlains
     {
@@ -28,7 +28,7 @@ namespace StageAesthetic.Variants
             sunTransform.localEulerAngles = new Vector3(27, 268, 88);
         }
 
-        public static void RainyPlains(RampFog fog, GameObject rain, string scenename)
+        public static void RainyPlains(RampFog fog, string scenename)
         {
             fog.fogColorStart.value = new Color32(34, 45, 62, 18);
             fog.fogColorMid.value = new Color32(72, 84, 103, 165);
@@ -43,41 +43,18 @@ namespace StageAesthetic.Variants
             sunLight.intensity = 0.9f;
             sunLight.shadowStrength = 0.7f;
             sunTransform.localEulerAngles = new Vector3(50, 17, 270);
-            if (Config.WeatherEffects.Value)
+            AddRain(RainType.Rainstorm);
+            if (scenename == "golemplains")
             {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 900,
-                    constantMax = 900,
-                    constantMin = 240,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(85, 145, 0);
-                rain.transform.localScale = new Vector3(14, 14, 1);
-                UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
-                if (scenename == "golemplains")
-                {
-                    GameObject wind = GameObject.Find("WindZone");
-                    wind.transform.eulerAngles = new Vector3(30, 145, 0);
-                    var windZone = wind.GetComponent<WindZone>();
-                    windZone.windMain = 0.4f;
-                    windZone.windTurbulence = 0.8f;
-                }
+                GameObject wind = GameObject.Find("WindZone");
+                wind.transform.eulerAngles = new Vector3(30, 145, 0);
+                var windZone = wind.GetComponent<WindZone>();
+                windZone.windMain = 0.4f;
+                windZone.windTurbulence = 0.8f;
             }
         }
 
-        public static void NightPlains(RampFog fog, GameObject rain, ColorGrading cgrade)
+        public static void NightPlains(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(0, 166, 255, 255);
             fog.fogColorMid.value = new Color32(51, 79, 94, 34);
@@ -141,69 +118,39 @@ namespace StageAesthetic.Variants
                     var meshBase = mr.gameObject;
                     if (meshBase != null)
                     {
-                        if (meshBase.name.Contains("Terrain"))
+                        if (meshBase.name.Contains("Terrain") || meshBase.name == ("Wall North"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = terrainMat;
-                                    break;
+                                mr.sharedMaterial = terrainMat;
                             }
                         }
                         if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("mdlGeyser"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detail; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detail;
-                                    break;
+                                mr.sharedMaterial = detail;
                             }
                         }
                         if (meshBase.name.Contains("Ring"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detail2; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detail2;
-                                    break;
+                                mr.sharedMaterial = detail2;
                             }
                         }
                         if (meshBase.name.Contains("Block") || meshBase.name.Contains("MiniBridge") || meshBase.name.Contains("Circle"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = detail3; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = detail3;
-                                    break;
+                                mr.sharedMaterial = detail3;
                             }
                         }
                         if (meshBase.name.Contains("Plane1x1x100x100"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try { mr.sharedMaterial = tar; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    mr.sharedMaterial = tar;
-                                    break;
+                                mr.sharedMaterial = tar;
                             }
                         }
                     }
