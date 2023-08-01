@@ -101,7 +101,7 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void VoidSwamp(RampFog fog)
         {
-            try { ApplyVoidMaterials(); } catch { SwapVariants.AesLog.LogError("Void Aspect: Failed to change materials, trying again..."); } finally { ApplyVoidMaterials(); }
+            try { ApplyVoidMaterials(); } catch { SwapVariants.SALogger.LogError("Void Aspect: Failed to change materials, trying again..."); } finally { ApplyVoidMaterials(); }
             var s = GameObject.Find("HOLDER: Skybox").transform;
             s.GetChild(0).localPosition = new Vector3(24.45f, -50f, -84.87f);
             fog.fogColorStart.value = new Color32(62, 12, 62, 87);
@@ -122,6 +122,7 @@ namespace StageAesthetic.Variants.Stage2
             var r = GameObject.Find("HOLDER: Ruin Pieces").transform;
             r.GetChild(22).gameObject.SetActive(false);
             GameObject.Find("HOLDER: Foliage").SetActive(false);
+            AddSnow(SnowType.Light);
         }
 
         public static void ApplyVoidMaterials()

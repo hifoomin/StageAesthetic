@@ -1,15 +1,13 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
-using static UnityEngine.RemoteConfigSettingsHelper;
 using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants.Stage1
 {
     internal class TitanicPlains
     {
-        public static void SunsetPlains(RampFog fog)
+        public static void Sunset(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(45, 49, 75, 0);
             fog.fogColorMid.value = new Color32(113, 75, 58, 130);
@@ -28,7 +26,7 @@ namespace StageAesthetic.Variants.Stage1
             sunTransform.localEulerAngles = new Vector3(27, 268, 88);
         }
 
-        public static void RainyPlains(RampFog fog, string scenename)
+        public static void Overcast(RampFog fog, string scenename)
         {
             fog.fogColorStart.value = new Color32(34, 45, 62, 18);
             fog.fogColorMid.value = new Color32(72, 84, 103, 165);
@@ -54,10 +52,10 @@ namespace StageAesthetic.Variants.Stage1
             }
         }
 
-        public static void NightPlains(RampFog fog, ColorGrading cgrade)
+        public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(0, 166, 255, 255);
-            fog.fogColorMid.value = new Color32(51, 79, 94, 34);
+            fog.fogColorStart.value = new Color32(0, 0, 0, 0);
+            fog.fogColorMid.value = new Color32(52, 73, 85, 34);
             fog.fogColorEnd.value = new Color32(12, 18, 54, 255);
             fog.skyboxStrength.value = 0.08f;
             fog.fogZero.value = 0f;
@@ -68,14 +66,14 @@ namespace StageAesthetic.Variants.Stage1
             var lightBase = GameObject.Find("Weather, Golemplains").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(0, 132, 255, 255);
-            sunLight.intensity = 2f;
+            sunLight.color = new Color32(113, 132, 255, 255);
+            sunLight.intensity = 1.6f;
             sunLight.shadowStrength = 0.7f;
             sunTransform.localEulerAngles = new Vector3(38, 270, 97);
             Object.Instantiate(rain, Vector3.zero, Quaternion.identity);
         }
 
-        public static void NostalgiaPlains(RampFog fog)
+        public static void Nostalgic(RampFog fog)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sun.color = new Color(0.7450981f, 0.8999812f, 0.9137255f);
@@ -90,16 +88,17 @@ namespace StageAesthetic.Variants.Stage1
             Debug.Log("NOSTALGIA PLAINS W");
         }
 
-        public static void SandyPlains(RampFog fog)
+        public static void Abandoned(RampFog fog)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sun.color = new Color32(211, 151, 105, 255);
-            sun.intensity = 1.05f;
+            sun.intensity = 1.3f;
             fog.fogColorStart.value = new Color32(137, 122, 83, 9);
-            fog.fogColorMid.value = new Color32(150, 119, 82, 20);
-            fog.fogColorEnd.value = new Color32(173, 138, 95, 170);
+            fog.fogColorMid.value = new Color32(150, 119, 82, 45);
+            fog.fogColorEnd.value = new Color32(164, 106, 68, 255);
             fog.fogZero.value = -0.035f;
-            fog.skyboxStrength.value = 0.25f;
+            fog.skyboxStrength.value = 0.15f;
+            fog.fogPower.value = 0.3f;
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeTerrain.mat").WaitForCompletion());
             terrainMat.color = new Color32(230, 223, 174, 219);
             var detail = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimSandy.mat").WaitForCompletion();
@@ -110,6 +109,7 @@ namespace StageAesthetic.Variants.Stage1
             var water = GameObject.Find("HOLDER: Water").transform.GetChild(0);
             water.localPosition = new Vector3(-564.78f, -170f, 133.4f);
             water.localScale = new Vector3(200f, 200f, 200f);
+            AddSand(SandType.Gigachad);
             if (terrainMat && detail && detail2 && detail3 && tar)
             {
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];

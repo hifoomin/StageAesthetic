@@ -10,22 +10,23 @@ namespace StageAesthetic.Variants.Stage1
 {
     internal class SiphonedForest
     {
-        public static void VanillaForest()
+        public static void Vanilla()
         {
             DisableSiphonedSnow();
             AddSnow(SnowType.Moderate);
             VanillaFoliage();
         }
 
-        public static void ExtraSnowyForest(RampFog fog, ColorGrading cgrade)
+        public static void Purple(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(140, 140, 215, 25);
-            fog.fogColorMid.value = new Color32(185, 185, 235, 200);
-            fog.fogColorEnd.value = new Color32(255, 255, 255, 255);
+            fog.fogColorStart.value = new Color32(159, 140, 215, 25);
+            fog.fogColorMid.value = new Color32(152, 152, 236, 70);
+            fog.fogColorEnd.value = new Color32(255, 181, 208, 255);
+            fog.skyboxStrength.value = 0f;
             // fog.fogZero.value = 0;
             // fog.fogOne.value = 0.142f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(255, 255, 255, 255);
+            sunLight.color = new Color32(255, 207, 234, 255);
             sunLight.intensity = 1.3f;
             sunLight.shadowStrength = 0.7f;
             cgrade.colorFilter.value = new Color32(245, 245, 255, 30);
@@ -36,7 +37,7 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void NightForest(RampFog fog, ColorGrading cgrade)
+        public static void Night(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(110, 110, 140, 45);
             fog.fogColorMid.value = new Color32(80, 80, 110, 85);
@@ -60,7 +61,7 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void CrimsonForest(RampFog fog, ColorGrading cgrade)
+        public static void Crimson(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(180, 50, 50, 0);
             fog.fogColorMid.value = new Color32(50, 30, 30, 120);
@@ -94,7 +95,7 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void MorningForest(RampFog fog, ColorGrading cgrade)
+        public static void Morning(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(117, 154, 255, 7);
             fog.fogColorMid.value = new Color32(111, 196, 248, 45);
@@ -116,9 +117,8 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void DesolateForest(RampFog fog, ColorGrading cgrade)
+        public static void Desolate(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplyRoostMaterials(); } catch { SwapVariants.AesLog.LogError("Desolate Forest: Failed to change materials, trying again..."); } finally { ApplyRoostMaterials(); }
             fog.fogColorStart.value = new Color32(206, 117, 255, 5);
             fog.fogColorMid.value = new Color32(228, 144, 255, 40);
             fog.fogColorEnd.value = new Color32(178, 209, 255, 255);
@@ -145,14 +145,15 @@ namespace StageAesthetic.Variants.Stage1
 
             DisableSiphonedSnow();
             AddRain(RainType.Rainstorm);
-            RoostFoliage();
+            DesolateMaterials();
+            DesolateFoliage();
         }
 
-        public static void ApplyRoostMaterials()
+        public static void DesolateMaterials()
         {
             var normal = Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/texNormalBumpyRock.jpg").WaitForCompletion();
-            var side = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/texRockSide.png");
-            var top = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/texRockTop.png");
+            var side = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texRockSide.png");
+            var top = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texRockTop.png");
 
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/blackbeach/matBbTerrain.mat").WaitForCompletion());
             terrainMat.color = new Color32(174, 153, 129, 255);
@@ -323,7 +324,7 @@ namespace StageAesthetic.Variants.Stage1
             }
         }
 
-        public static void RoostFoliage()
+        public static void DesolateFoliage()
         {
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)

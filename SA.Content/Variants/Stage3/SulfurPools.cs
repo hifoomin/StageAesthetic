@@ -47,11 +47,12 @@ namespace StageAesthetic.Variants.Stage3
             fuckYou.transform.GetChild(13).gameObject.SetActive(false);
             GameObject.Find("SPCavePP").SetActive(false);
             VanillaWater();
+            AddRain(RainType.Drizzle);
         }
 
         public static void HellOnEarthPools(RampFog fog)
         {
-            try { ApplyHellMaterials(); } catch { SwapVariants.AesLog.LogError("Hell Pools: Failed to change materials, trying again..."); } finally { ApplyHellMaterials(); }
+            try { ApplyHellMaterials(); } catch { SwapVariants.SALogger.LogError("Hell Pools: Failed to change materials, trying again..."); } finally { ApplyHellMaterials(); }
             fog.skyboxStrength.value = 0f;
 
             fog.fogColorStart.value = new Color32(138, 56, 57, 100);
@@ -239,7 +240,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (zero.sharedMaterial)
                 {
                     case null:
-                        try { zero.sharedMaterial = water; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { zero.sharedMaterial = water; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -249,7 +250,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (one.sharedMaterial)
                 {
                     case null:
-                        try { one.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { one.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -259,7 +260,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (two.sharedMaterial)
                 {
                     case null:
-                        try { two.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { two.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -269,7 +270,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (three.sharedMaterial)
                 {
                     case null:
-                        try { three.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { three.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -279,7 +280,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (four.sharedMaterial)
                 {
                     case null:
-                        try { four.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { four.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -289,7 +290,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (five.sharedMaterial)
                 {
                     case null:
-                        try { five.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { five.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -299,7 +300,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (six.sharedMaterial)
                 {
                     case null:
-                        try { six.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { six.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -309,7 +310,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (seven.sharedMaterial)
                 {
                     case null:
-                        try { seven.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { seven.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -319,7 +320,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (eight.sharedMaterial)
                 {
                     case null:
-                        try { eight.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { eight.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -329,7 +330,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (nine.sharedMaterial)
                 {
                     case null:
-                        try { nine.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { nine.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -339,7 +340,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (ten.sharedMaterial)
                 {
                     case null:
-                        try { ten.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { ten.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -349,7 +350,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (eleven.sharedMaterial)
                 {
                     case null:
-                        try { eleven.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { eleven.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -359,7 +360,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (twelve.sharedMaterial)
                 {
                     case null:
-                        try { twelve.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { twelve.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -369,7 +370,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (thirteen.sharedMaterial)
                 {
                     case null:
-                        try { thirteen.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { thirteen.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -379,7 +380,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (fourteen.sharedMaterial)
                 {
                     case null:
-                        try { fourteen.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { fourteen.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -389,7 +390,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (fifteen.sharedMaterial)
                 {
                     case null:
-                        try { fifteen.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { fifteen.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -399,7 +400,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (sixteen.sharedMaterial)
                 {
                     case null:
-                        try { sixteen.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { sixteen.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:
@@ -409,7 +410,7 @@ namespace StageAesthetic.Variants.Stage3
                 switch (seventeen.sharedMaterial)
                 {
                     case null:
-                        try { seventeen.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                        try { seventeen.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                         break;
 
                     default:

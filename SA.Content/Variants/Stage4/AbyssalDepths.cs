@@ -139,7 +139,7 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void CoralCave(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplyCoralMaterials(); } catch { SwapVariants.AesLog.LogError("Coral Depths: Failed to change materials, trying again..."); } finally { ApplyCoralMaterials(); }
+            ApplyCoralMaterials();
             fog.fogColorStart.value = new Color32(127, 70, 206, 20);
             fog.fogColorMid.value = new Color32(185, 72, 119, 33);
             fog.fogColorEnd.value = new Color32(183, 93, 129, 130);
@@ -164,6 +164,7 @@ namespace StageAesthetic.Variants.Stage4
                 }
             }
             GameObject.Find("DCPPInTunnels").SetActive(false);
+            AddRain(RainType.Drizzle);
         }
 
         private static Color coral;

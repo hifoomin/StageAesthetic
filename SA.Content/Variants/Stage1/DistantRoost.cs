@@ -1,23 +1,19 @@
-﻿using RoR2;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants.Stage1
 {
     internal class DistantRoost
     {
-        public static void VanillaBeach()
+        public static void Vanilla()
         {
             VanillaFoliage();
             Utils.AddRain(Utils.RainType.Drizzle);
         }
 
-        public static void LightBeach(RampFog fog, string scenename, ColorGrading cgrade)
+        public static void Sunny(RampFog fog, string scenename, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(107, 125, 123, 25);
             fog.fogColorMid.value = new Color32(129, 154, 152, 69);
@@ -29,6 +25,8 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.color = new Color32(255, 246, 229, 255);
             sunLight.intensity = 1.8f;
             sunLight.shadowStrength = 1;
+            var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
+            shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
             cgrade.colorFilter.value = new Color32(255, 234, 194, 255);
             cgrade.colorFilter.overrideState = true;
             if (scenename == "blackbeach")
@@ -40,7 +38,7 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void DarkBeach(RampFog fog, string scenename, ColorGrading cgrade)
+        public static void Night(RampFog fog, string scenename, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(24, 20, 43, 32);
             fog.fogColorMid.value = new Color32(33, 25, 49, 130);
@@ -53,6 +51,8 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.color = new Color32(106, 69, 160, 255);
             sunLight.intensity = 7f;
             sunLight.shadowStrength = 0.45f;
+            var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
+            shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
             if (scenename == "blackbeach")
             {
                 // Enabling some unused fog
@@ -79,9 +79,8 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void VoidBeach(RampFog fog, ColorGrading cgrade)
+        public static void Void(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplyVoidMaterials(); } catch { SwapVariants.AesLog.LogError("Void Roost: Failed to change materials, trying again..."); } finally { ApplyVoidMaterials(); }
             fog.fogColorStart.value = new Color32(40, 19, 40, 32);
             fog.fogColorMid.value = new Color32(48, 25, 48, 255);
             fog.fogColorEnd.value = new Color32(61, 34, 58, 255);
@@ -96,6 +95,8 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.color = new Color32(152, 69, 158, 255);
             sunLight.intensity = 1f;
             sunLight.shadowStrength = 0.45f;
+            var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
+            shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
             var lightList = UnityEngine.Object.FindObjectsOfType(typeof(Light)) as Light[];
             var s = GameObject.Find("SKYBOX").transform;
             foreach (Light light in lightList)
@@ -115,6 +116,7 @@ namespace StageAesthetic.Variants.Stage1
                     }
                 }
             }
+            AddSnow(SnowType.Light, 40f);
             s.GetChild(19).GetChild(0).localPosition = new Vector3(0, 0, -10);
 
             GameObject.Find("HOLDER: Grass").SetActive(false);
@@ -122,9 +124,10 @@ namespace StageAesthetic.Variants.Stage1
             s.GetChild(6).gameObject.SetActive(false);
             s.GetChild(11).gameObject.SetActive(false);
             VanillaFoliage();
+            VoidMaterials();
         }
 
-        public static void FoggyBeach(RampFog fog, string scenename)
+        public static void Storm(RampFog fog, string scenename)
         {
             fog.fogColorStart.value = new Color32(31, 46, 63, 50);
             fog.fogColorMid.value = new Color(0.205f, 0.269f, 0.288f, 0.76f);
@@ -138,6 +141,8 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.color = new Color32(77, 188, 175, 255);
             sunLight.intensity = 1.7f;
             sunLight.shadowStrength = 0.6f;
+            var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
+            shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
             Utils.AddRain(Utils.RainType.Monsoon);
             GameObject wind = GameObject.Find("WindZone");
             wind.transform.eulerAngles = new Vector3(30, 20, 0);
@@ -174,9 +179,8 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void GoldBeach(RampFog fog, ColorGrading cgrade)
+        public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplyGoldMaterials(); } catch { SwapVariants.AesLog.LogError("Abyssal Roost: Failed to change materials, trying again..."); } finally { ApplyGoldMaterials(); }
             fog.fogColorStart.value = new Color32(99, 27, 63, 72);
             fog.fogColorMid.value = new Color32(91, 26, 62, 70);
             fog.fogColorEnd.value = new Color32(87, 20, 20, 255);
@@ -193,6 +197,9 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.intensity = 1.25f;
             sunLight.shadowStrength = 1f;
             sunLight.transform.eulerAngles = new Vector3(70f, 220f, -9.985f);
+            var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
+            shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
+            AbyssalMaterials();
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
             {
@@ -431,7 +438,7 @@ namespace StageAesthetic.Variants.Stage1
             }
         }
 
-        public static void ApplyVoidMaterials()
+        public static void VoidMaterials()
         {
             var s = GameObject.Find("SKYBOX").transform;
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion());
@@ -487,7 +494,7 @@ namespace StageAesthetic.Variants.Stage1
             s.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = water;
         }
 
-        public static void ApplyGoldMaterials()
+        public static void AbyssalMaterials()
         {
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
             terrainMat.color = new Color32(0, 0, 0, 204);

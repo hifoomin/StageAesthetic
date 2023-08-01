@@ -426,6 +426,7 @@ namespace StageAesthetic.Variants.Stage5
 
         public static void SandyMeadow(RampFog fog)
         {
+            AddSand(SandType.Gigachad);
             fog.fogColorStart.value = new Color32(125, 141, 160, 0);
             fog.fogColorMid.value = new Color32(183, 139, 62, 60);
             fog.fogColorEnd.value = new Color32(196, 152, 70, 110);

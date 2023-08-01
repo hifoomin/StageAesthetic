@@ -130,7 +130,7 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void ShipAphelian(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplyAphelianMaterials(); } catch { SwapVariants.AesLog.LogError("Sirens Sanctuary: Failed to change materials, trying again..."); } finally { ApplyAphelianMaterials(); }
+            try { ApplyAphelianMaterials(); } catch { SwapVariants.SALogger.LogError("Sirens Sanctuary: Failed to change materials, trying again..."); } finally { ApplyAphelianMaterials(); }
             fog.fogColorStart.value = new Color32(122, 69, 56, 5);
             fog.fogColorMid.value = new Color32(122, 69, 56, 35);
             fog.fogColorEnd.value = new Color32(91, 52, 42, 255);

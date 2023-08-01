@@ -9,6 +9,12 @@ namespace StageAesthetic.Variants.Stage3
 {
     internal class RallypointDelta
     {
+        public static void VanillaChanges()
+        {
+            DisableRallypointSnow();
+            AddSnow(SnowType.Moderate);
+        }
+
         public static void OceanWall(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(47, 52, 62, 50);
@@ -28,6 +34,8 @@ namespace StageAesthetic.Variants.Stage3
             sunLight.intensity = 1.3f;
             sunLight.name = "Directional Light (SUN)";
             AddRain(RainType.Monsoon);
+            DisableRallypointSnow();
+            AddSnow(SnowType.Light);
             var wind = GameObject.Find("WindZone");
             wind.transform.eulerAngles = new Vector3(30, 20, 0);
             var windZone = wind.GetComponent<WindZone>();
@@ -41,7 +49,7 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void NightWall(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplyNightMaterials(); } catch { SwapVariants.AesLog.LogError("Night Delta: Failed to change materials, trying again..."); } finally { ApplyNightMaterials(); }
+            NightMaterials();
             fog.fogColorStart.value = new Color32(33, 33, 56, 76);
             fog.fogColorMid.value = new Color32(38, 38, 55, 165);
             fog.fogColorEnd.value = new Color32(25, 24, 46, 255);
@@ -78,11 +86,13 @@ namespace StageAesthetic.Variants.Stage3
                     }
                 }
             }
+            DisableRallypointSnow();
+            AddSnow(SnowType.Gigachad);
         }
 
         public static void GreenWall(RampFog fog)
         {
-            try { ApplyGreenMaterials(); } catch { SwapVariants.AesLog.LogError("Green Delta: Failed to change materials, trying again..."); } finally { ApplyGreenMaterials(); }
+            GreenMaterials();
             fog.fogColorStart.value = new Color32(42, 93, 68, 30);
             fog.fogColorMid.value = new Color32(49, 127, 79, 95);
             fog.fogColorEnd.value = new Color32(47, 153, 105, 255);
@@ -95,11 +105,12 @@ namespace StageAesthetic.Variants.Stage3
             sunLight.color = new Color32(177, 205, 232, 255);
             sunLight.intensity = 0.5f;
             fog.fogOne.value = 0.7f;
+            AddSnow(SnowType.Light);
         }
 
         public static void TitanicWall(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplyTitanicMaterials(); } catch { SwapVariants.AesLog.LogError("Titanic Delta: Failed to change materials, trying again..."); } finally { ApplyTitanicMaterials(); }
+            ApplyTitanicMaterials();
             fog.fogColorStart.value = new Color32(116, 153, 173, 12);
             fog.fogColorMid.value = new Color32(88, 130, 153, 45);
             fog.fogColorEnd.value = new Color32(79, 140, 173, 255);
@@ -178,7 +189,17 @@ namespace StageAesthetic.Variants.Stage3
             }
         }
 
-        public static void ApplyGreenMaterials()
+        public static void DisableRallypointSnow()
+        {
+            if (!SwapVariants.WeatherEffects.Value)
+            {
+                return;
+            }
+            var snowParticles = GameObject.Find("CAMERA PARTICLES: SnowParticles").gameObject;
+            snowParticles.SetActive(false);
+        }
+
+        public static void GreenMaterials()
         {
             var waterMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSPWaterYellow.mat").WaitForCompletion();
             if (waterMat)
@@ -187,7 +208,7 @@ namespace StageAesthetic.Variants.Stage3
             }
         }
 
-        public static void ApplyNightMaterials()
+        public static void NightMaterials()
         {
             var terrainMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion();
             var waterMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion();

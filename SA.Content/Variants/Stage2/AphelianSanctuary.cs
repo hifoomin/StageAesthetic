@@ -8,10 +8,10 @@ namespace StageAesthetic.Variants.Stage2
 {
     internal class AphelianSanctuary
     {
-        public static void NearRainSanctuary(RampFog fog, ColorGrading cgrade)
+        public static void Twilight(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(94, 105, 178, 45);
-            fog.fogColorMid.value = new Color32(116, 98, 178, 95);
+            fog.fogColorStart.value = new Color32(94, 144, 178, 20);
+            fog.fogColorMid.value = new Color32(94, 113, 140, 97);
             fog.fogColorEnd.value = new Color32(149, 92, 179, 170);
             cgrade.colorFilter.value = new Color32(133, 148, 178, 40);
             cgrade.colorFilter.overrideState = true;
@@ -26,38 +26,49 @@ namespace StageAesthetic.Variants.Stage2
             VanillaFoliage();
         }
 
-        public static void SunriseSanctuary(RampFog fog, ColorGrading cgrade)
+        public static void Sunset(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(165, 109, 18, 65);
-            fog.fogColorMid.value = new Color32(163, 76, 17, 145);
-            fog.fogColorEnd.value = new Color32(163, 96, 115, 235);
-            cgrade.colorFilter.value = new Color32(255, 255, 255, 65);
+            fog.fogColorStart.value = new Color32(144, 102, 42, 0);
+            fog.fogColorMid.value = new Color32(109, 53, 10, 141);
+            fog.fogColorEnd.value = new Color32(158, 78, 40, 235);
+            fog.fogOne.value = 0.12f;
+            fog.fogZero.value = -0.015f;
+            fog.fogPower.value = 0.8f;
+            fog.fogIntensity.value = 0.63f;
+            cgrade.colorFilter.value = new Color32(255, 255, 255, 255);
+            fog.skyboxStrength.value = 0f;
             cgrade.colorFilter.overrideState = true;
-            var sun = GameObject.Find("Sun");
-            sun.transform.localPosition = new Vector3(743, 500, -127);
+            var terrain = GameObject.Find("HOLDER: Terrain").transform;
+            var terrain2 = terrain.Find("mdlAncientLoft_Terrain");
+            var sun = terrain2.Find("Sun");
+            sun.transform.localPosition = new Vector3(400f, -300f, -127.3f);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(255, 239, 211, 255);
+            sunLight.color = new Color32(226, 185, 144, 255);
             sunLight.intensity = 1f;
-            sunLight.shadowNormalBias = 0.92f;
-            var fog1 = GameObject.Find("HOLDER: Cards");
-            fog1.SetActive(false);
+            sunLight.shadowNormalBias = 0.61f;
+            sunLight.shadowStrength = 0.877f;
             var fog2 = GameObject.Find("DeepFog");
             fog2.SetActive(false);
             VanillaFoliage();
+            AddSand(SandType.Light);
         }
 
-        public static void NightSanctuary(RampFog fog, ColorGrading cgrade)
+        public static void Singularity(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(36, 89, 146, 45);
-            fog.fogColorMid.value = new Color32(21, 58, 131, 125);
+            fog.fogColorMid.value = new Color32(21, 58, 131, 98);
             fog.fogColorEnd.value = new Color32(0, 0, 71, 255);
-            cgrade.colorFilter.value = new Color32(27, 27, 166, 13);
+            fog.fogIntensity.value = 0.63f;
+            fog.fogPower.value = 0.8f;
+            fog.fogZero.value = -0.015f;
+            fog.fogOne.value = 0.1f;
+            cgrade.colorFilter.value = new Color32(36, 36, 166, 255);
             cgrade.colorFilter.overrideState = true;
             fog.skyboxStrength.value = 0f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(255, 255, 255, 255);
-            sunLight.intensity = 3.5f;
-            sunLight.shadowStrength = 0.6f;
+            sunLight.intensity = 2.1f;
+            sunLight.shadowStrength = 0.5f;
             var fog1 = GameObject.Find("HOLDER: Cards");
             fog1.SetActive(false);
             var fog2 = GameObject.Find("DeepFog");
@@ -65,9 +76,8 @@ namespace StageAesthetic.Variants.Stage2
             VanillaFoliage();
         }
 
-        public static void AbyssalSanctuary(RampFog fog, ColorGrading cgrade)
+        public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplyAbyssalMaterials(); } catch { SwapVariants.AesLog.LogError("Abyssal Sanctuary: Failed to change materials, trying again..."); } finally { ApplyAbyssalMaterials(); }
             var cloud = GameObject.Find("Cloud3");
             cgrade.SetAllOverridesTo(true);
             cgrade.colorFilter.value = new Color32(181, 178, 219, 255);
@@ -123,15 +133,15 @@ namespace StageAesthetic.Variants.Stage2
                     }
                 }
             }
-
+            AbyssalMaterials();
             AbyssalFoliage();
         }
 
-        public static void ApplyAbyssalMaterials()
+        public static void AbyssalMaterials()
         {
-            var lichen = Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC1/HalfSpeedDoubleHealth/texDirtLunarShoulder.png").WaitForCompletion();
-            var notThatReb = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/texRedGrass.png");
-            var notThatWhite = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/texLavenderGravel.png");
+            var dirt = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texDirt.png");
+            var notThatReb = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texRedGrass.png");
+            var notThatWhite = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texLavenderGravel.png");
 
             var cloud = GameObject.Find("Cloud3");
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
@@ -141,20 +151,25 @@ namespace StageAesthetic.Variants.Stage2
             terrainMat.SetFloat("_BlueChannelBias", -0.257f);
             terrainMat.SetTexture("_GreenChannelTex", notThatReb);
             terrainMat.SetTexture("_BlueChannelTex", notThatWhite);
+            /*
             var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcavesimple/matDCBoulder.mat").WaitForCompletion());
-            terrainMat2.color = new Color32(162, 0, 0, 93);
+            terrainMat2.color = new Color32(162, 0, 0, 194);
             terrainMat2.SetFloat("_NormalStrength", 0.16f);
             terrainMat2.SetFloat("_SpecularStrength", 0.03f);
             terrainMat2.SetFloat("_SpecularExponent", 8f);
             terrainMat2.SetFloat("_Smoothness", 0.6477f);
-            terrainMat2.SetFloat("_SnowSpecularStrength", 0.03666f);
-            terrainMat2.SetFloat("_SnowSpecularExponent", 2.013f);
-            terrainMat2.SetFloat("_SnowSmoothness", 0.45f);
-            terrainMat2.SetFloat("_Depth", 0.14f);
-            terrainMat2.SetTexture("_SnowTex", lichen);
+            terrainMat2.SetFloat("_SnowSpecularStrength", 0.015f);
+            terrainMat2.SetFloat("_SnowSpecularExponent", 8f);
+            terrainMat2.SetFloat("_SnowSmoothness", 0.5f);
+            terrainMat2.SetFloat("_Depth", 0.29f);
+            terrainMat2.SetFloat("_TriplanarTextureFactor", 0.19f);
+            terrainMat2.SetTexture("_SnowTex", dirt);
             terrainMat2.SetTextureScale("_SnowTex", new Vector2(1f, 1f));
             terrainMat2.SetTextureScale("_NormalTex", new Vector2(3f, 1.5f));
+            */
+            var terrainMat2 = Main.stageaesthetic.LoadAsset<Material>("Assets/StageAesthetic/Materials/matAbyssalPlatform.mat");
             var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGold.mat").WaitForCompletion());
+            detailMat.color = new Color32(144, 130, 82, 255);
             var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
             detailMat2.SetFloat("_BlueChannelBias", 0.1f);
             detailMat2.SetFloat("_BlueChannelSpecularStrength", 0.2545f);
@@ -204,7 +219,7 @@ namespace StageAesthetic.Variants.Stage2
                                         }
                                         mr.sharedMaterials = sharedMaterials;
                                     }
-                                    catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                                     break;
 
                                 default:
@@ -235,7 +250,7 @@ namespace StageAesthetic.Variants.Stage2
                                         }
                                         mr.sharedMaterials = sharedMaterials;
                                     }
-                                    catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                                     break;
 
                                 default:

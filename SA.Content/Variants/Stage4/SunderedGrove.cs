@@ -74,6 +74,7 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void SandyJungle(RampFog fog)
         {
+            AddSand(SandType.Moderate);
             fog.fogColorStart.value = new Color32(255, 108, 0, 32);
             fog.fogColorMid.value = new Color32(183, 139, 62, 28);
             fog.fogColorEnd.value = new Color32(196, 152, 70, 255);
@@ -105,7 +106,7 @@ namespace StageAesthetic.Variants.Stage4
                             switch (smr.sharedMaterial)
                             {
                                 case null:
-                                    try { smr.sharedMaterial = water; } catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    try { smr.sharedMaterial = water; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                                     break;
 
                                 default:

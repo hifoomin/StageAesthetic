@@ -7,17 +7,12 @@ namespace StageAesthetic.Variants.Stage2
 {
     internal class DryBasin
     {
-        public static void VanillaTweaks()
+        public static void VanillaChanges()
         {
-            var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sun.name = "Shitty Not Working Sun";
-            var sun2 = Object.Instantiate(sun);
-            sun2.name = "Directional Light (SUN)";
-            sun.gameObject.SetActive(false);
-            sun2.shadows = LightShadows.Soft;
+            AddSand(SandType.Moderate);
         }
 
-        public static void RainyBasin(TheCoolerRampFog fog, ColorGrading cgrade)
+        public static void Overcast(TheCoolerRampFog fog, ColorGrading cgrade)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sun.name = "Shitty Not Working Sun";
@@ -33,12 +28,12 @@ namespace StageAesthetic.Variants.Stage2
             fog.fogZero = -0.01f;
             fog.fogOne = 0.4f;
             fog.power = 1f;
-            AddRain(RainType.Rainstorm);
+            AddRain(RainType.Monsoon);
             cgrade.SetAllOverridesTo(true);
             cgrade.colorFilter.value = new Color32(100, 109, 121, 255);
         }
 
-        public static void PurpleBasin(TheCoolerRampFog fog, ColorGrading cgrade)
+        public static void Blue(TheCoolerRampFog fog, ColorGrading cgrade)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sun.name = "Shitty Not Working Sun";
@@ -56,7 +51,7 @@ namespace StageAesthetic.Variants.Stage2
             cgrade.colorFilter.value = new Color32(176, 94, 152, 255);
         }
 
-        public static void MorningBasin(TheCoolerRampFog fog, ColorGrading cgrade)
+        public static void Morning(TheCoolerRampFog fog, ColorGrading cgrade)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sun.name = "Shitty Not Working Sun";

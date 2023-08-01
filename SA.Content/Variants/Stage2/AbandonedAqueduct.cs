@@ -25,20 +25,24 @@ namespace StageAesthetic.Variants.Stage2
             }
         }
 
-        public static void DarkAqueduct(RampFog fog)
+        public static void Dawn(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(51, 27, 58, 65);
-            fog.fogColorMid.value = new Color32(27, 11, 33, 165);
-            fog.fogColorEnd.value = new Color32(63, 24, 15, 255);
-            fog.skyboxStrength.value = 0f;
-            fog.fogOne.value = 0.2f;
+            fog.fogColorStart.value = new Color32(66, 66, 66, 133);
+            fog.fogColorMid.value = new Color32(62, 18, 44, 126);
+            fog.fogColorEnd.value = new Color32(123, 74, 61, 255);
+            fog.skyboxStrength.value = 0.02f;
+            fog.fogOne.value = 0.12f;
+            fog.fogIntensity.overrideState = true;
+            fog.fogIntensity.value = 1.1f;
+            fog.fogPower.value = 0.8f;
+
             Transform base1 = GameObject.Find("HOLDER: Misc Props").transform;
             GameObject.Find("HOLDER: Warning Flags").SetActive(false);
             base1.Find("Warning Signs").gameObject.SetActive(true);
             var sun = GameObject.Find("Directional Light (SUN)");
             var newSun = Object.Instantiate(sun).GetComponent<Light>();
             sun.SetActive(false);
-            newSun.intensity = 1.6f;
+            newSun.intensity = 3f;
             newSun.color = new Color32(113, 45, 21, 255);
             var CaveFog = GameObject.Find("GLUndergroundPPVolume").GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             CaveFog.fogColorStart.value = new Color32(67, 35, 76, 65);
@@ -46,9 +50,10 @@ namespace StageAesthetic.Variants.Stage2
             CaveFog.fogColorEnd.value = new Color32(84, 31, 20, 255);
             LightChanges("dark");
             VanillaFoliage();
+            AddSand(SandType.Light);
         }
 
-        public static void BlueAqueduct(RampFog fog)
+        public static void Sunrise(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(57, 63, 76, 73);
             fog.fogColorMid.value = new Color32(62, 71, 83, 179);
@@ -81,14 +86,15 @@ namespace StageAesthetic.Variants.Stage2
             sunLight.intensity = 1.4f;
             sunTransform.localEulerAngles = new Vector3(42, 12, 180);
             VanillaFoliage();
+            AddSand(SandType.Light);
         }
 
-        public static void NightAqueduct(RampFog fog, ColorGrading cgrade)
+        public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(28, 36, 56, 125);
-            fog.fogColorMid.value = new Color32(28, 35, 47, 179);
-            fog.fogColorEnd.value = new Color32(29, 33, 45, 255);
-            fog.skyboxStrength.value = 0.055f;
+            fog.fogColorStart.value = new Color32(60, 23, 72, 125);
+            fog.fogColorMid.value = new Color32(30, 45, 70, 100);
+            fog.fogColorEnd.value = new Color32(37, 41, 56, 255);
+            fog.skyboxStrength.value = 0.02f;
             fog.fogOne.value = 0.082f;
             var CaveFog = GameObject.Find("GLUndergroundPPVolume").GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             CaveFog.fogColorStart.value = new Color32(37, 46, 67, 115);
@@ -99,25 +105,27 @@ namespace StageAesthetic.Variants.Stage2
             Transform base1 = GameObject.Find("HOLDER: Misc Props").transform;
             base1.Find("Props").GetChild(4).gameObject.SetActive(true);
             var lightBase = GameObject.Find("Weather, Goolake").transform;
-            var sunTransform = lightBase.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(140, 157, 176, 255);
-            sunLight.intensity = 0.45f;
-            sunLight.shadowStrength = 0.1f;
-            sunTransform.localEulerAngles = new Vector3(42, 12, 180);
+            var shittyNotWorkingSun = lightBase.Find("Directional Light (SUN)");
+            var sun2 = Object.Instantiate(shittyNotWorkingSun);
+            shittyNotWorkingSun.gameObject.SetActive(false);
+            var sunLight = sun2.GetComponent<Light>();
+            sunLight.color = new Color32(197, 208, 207, 255);
+            sunLight.intensity = 0.82f;
+            sunLight.shadowStrength = 0.6f;
+            sun2.localEulerAngles = new Vector3(42, 12, 180);
             AddRain(RainType.Monsoon);
             LightChanges("night");
             VanillaFoliage();
+            AddSand(SandType.Gigachad);
         }
 
         private static Color chain;
 
-        public static void SunderedAqueduct(RampFog fog, ColorGrading cgrade)
+        public static void Sundered(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplySunderedMaterials(); } catch { SwapVariants.AesLog.LogError("Sundered Aqueduct: Failed to change materials, trying again..."); } finally { ApplySunderedMaterials(); }
-            fog.fogColorStart.value = new Color32(85, 49, 99, 35);
-            fog.fogColorMid.value = new Color32(99, 58, 135, 75);
-            fog.fogColorEnd.value = new Color32(112, 66, 117, 255);
+            fog.fogColorStart.value = new Color32(83, 53, 95, 35);
+            fog.fogColorMid.value = new Color32(91, 61, 117, 75);
+            fog.fogColorEnd.value = new Color32(107, 66, 111, 255);
             fog.skyboxStrength.value = 0.055f;
             fog.fogOne.value = 0.082f;
             AddRain(RainType.Drizzle);
@@ -137,6 +145,7 @@ namespace StageAesthetic.Variants.Stage2
             caveLight.color = new Color32(150, 29, 119, 255);
             cgrade.saturation.value = -2f;
             SunderedFoliage();
+            SunderedMaterials();
         }
 
         public static void SunderedFoliage()
@@ -165,7 +174,7 @@ namespace StageAesthetic.Variants.Stage2
             }
         }
 
-        public static void ApplySunderedMaterials()
+        public static void SunderedMaterials()
         {
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTerrain2.mat").WaitForCompletion());
             terrainMat.color = new Color32(255, 156, 206, 184);
@@ -232,7 +241,7 @@ namespace StageAesthetic.Variants.Stage2
                                         }
                                         mr.sharedMaterials = sharedMaterials;
                                     }
-                                    catch (Exception e) { SwapVariants.AesLog.LogWarning(e.Message + "\n" + e.StackTrace); };
+                                    catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
                                     break;
 
                                 default:
