@@ -6,7 +6,7 @@ namespace StageAesthetic.Variants.Special
 {
     internal class Commencement
     {
-        public static void DarkCommencement(RampFog fog)
+        public static void Night(RampFog fog)
         {
             fog.fogColorStart.value = new Color(0.08f, 0.05f, 0.12f, 0.4f);
             fog.fogColorMid.value = new Color(0.13f, 0.14f, 0.19f, 0.625f);
@@ -25,14 +25,14 @@ namespace StageAesthetic.Variants.Special
             bruh.weight = 0.79f;
         }
 
-        public static void CrimsonCommencement(RampFog fog)
+        public static void Crimson(RampFog fog)
         {
             fog.fogIntensity.value = 0.908f;
             fog.fogPower.value = 0.4f;
             fog.fogZero.value = -0.1f;
             fog.fogOne.value = 0.7f;
-            fog.fogColorStart.value = new Color32(174, 0, 9, 59);
-            fog.fogColorMid.value = new Color32(156, 31, 33, 69);
+            fog.fogColorStart.value = new Color32(0, 0, 0, 0);
+            fog.fogColorMid.value = new Color32(156, 31, 33, 50);
             fog.fogColorEnd.value = new Color32(93, 0, 18, 255);
             fog.skyboxStrength.value = 0f;
             var sun = GameObject.Find("Directional Light (SUN)");
@@ -50,13 +50,13 @@ namespace StageAesthetic.Variants.Special
             bruh.weight = 0.79f;
         }
 
-        public static void CorruptionCommencement(RampFog fog)
+        public static void Corruption(RampFog fog)
         {
             fog.fogIntensity.value = 0.908f;
             fog.fogPower.value = 0.4f;
             fog.fogZero.value = 0f;
-            fog.fogOne.value = 0.1f;
-            fog.fogColorStart.value = new Color32(77, 23, 107, 95);
+            fog.fogOne.value = 0.3f;
+            fog.fogColorStart.value = new Color32(77, 23, 107, 45);
             fog.fogColorMid.value = new Color32(104, 44, 107, 105);
             fog.fogColorEnd.value = new Color32(74, 0, 50, 255);
             fog.skyboxStrength.value = 0f;
@@ -77,13 +77,13 @@ namespace StageAesthetic.Variants.Special
             bruh.weight = 0.5f;
         }
 
-        public static void GrayCommencement(RampFog fog)
+        public static void Gray(RampFog fog)
         {
             fog.fogIntensity.value = 0.908f;
             fog.fogPower.value = 0.4f;
             fog.fogZero.value = 0f;
             fog.fogOne.value = 0.62f;
-            fog.fogColorStart.value = new Color32(76, 76, 76, 131);
+            fog.fogColorStart.value = new Color32(76, 76, 76, 50);
             fog.fogColorMid.value = new Color32(81, 75, 77, 159);
             fog.fogColorEnd.value = new Color32(44, 45, 52, 255);
             fog.skyboxStrength.value = 0f;

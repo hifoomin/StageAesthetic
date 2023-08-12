@@ -18,39 +18,45 @@ namespace StageAesthetic.Variants.Stage5
             VanillaFoliage();
         }
 
-        public static void NightMeadow(RampFog fog)
+        public static void Night(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(38, 59, 69, 33);
+            fog.fogColorStart.value = new Color32(85, 67, 93, 0);
             fog.fogColorMid.value = new Color32(12, 15, 59, 131);
             fog.fogColorEnd.value = new Color32(18, 3, 45, 255);
             fog.fogZero.value = -0.08f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.6f;
+            fog.fogOne.value = 0.37f;
             fog.skyboxStrength.value = 0.25f;
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(126, 138, 227, 255);
             sunLight.intensity = 3f;
-            sunLight.shadowStrength = 0.4f;
+            sunLight.shadowStrength = 0.5f;
             lightBase.Find("CameraRelative").Find("SmallStars").gameObject.SetActive(true);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("ShatteredMoonMesh").gameObject.SetActive(false);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("MoonMesh").gameObject.SetActive(true);
             VanillaFoliage();
         }
 
-        public static void StormyMeadow(RampFog fog)
+        public static void Overcast(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(76, 86, 98, 0);
-            fog.fogColorMid.value = new Color32(67, 62, 88, 159);
-            fog.fogColorEnd.value = new Color32(75, 73, 96, 255);
+            fog.fogColorStart.value = new Color32(98, 94, 76, 0);
+            fog.fogColorMid.value = new Color32(66, 65, 93, 139);
+            fog.fogColorEnd.value = new Color32(72, 79, 95, 255);
             fog.fogZero.value = -0.02f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.5f;
+            fog.fogOne.value = 0.1f;
             fog.skyboxStrength.value = 0.1f;
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             var sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(142, 156, 202, 255);
-            sunLight.intensity = 0.6f;
-            sunLight.shadowStrength = 0.3f;
-            AddRain(RainType.Monsoon);
+            sunLight.color = new Color32(202, 183, 142, 255);
+            sunLight.intensity = 1f;
+            sunLight.shadowStrength = 0.6f;
+            AddRain(RainType.Typhoon);
             var wind = GameObject.Find("WindZone");
             wind.transform.eulerAngles = new Vector3(30, 20, 0);
             var windZone = wind.GetComponent<WindZone>();
@@ -64,16 +70,16 @@ namespace StageAesthetic.Variants.Stage5
             VanillaFoliage();
         }
 
-        public static void AbyssalMeadow(RampFog fog, ColorGrading cgrade)
+        public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
             cgrade.SetAllOverridesTo(true);
             cgrade.colorFilter.value = new Color32(79, 79, 103, 255);
             cgrade.saturation.value = -8f;
-            fog.fogColorStart.value = new Color32(106, 22, 107, 59);
-            fog.fogColorMid.value = new Color32(85, 58, 178, 0);
-            fog.fogColorEnd.value = new Color32(115, 0, 0, 255);
-            fog.fogZero.value = -0.45f;
-            fog.fogOne.value = 1f;
+            fog.fogColorStart.value = new Color32(106, 22, 107, 50);
+            fog.fogColorMid.value = new Color32(39, 85, 97, 44);
+            fog.fogColorEnd.value = new Color32(35, 76, 73, 255);
+            fog.fogZero.value = -0.1f;
+            fog.fogOne.value = 0.2f;
             fog.fogIntensity.value = 1f;
             fog.fogPower.value = 0.6f;
             fog.skyboxStrength.value = 0f;
@@ -82,7 +88,7 @@ namespace StageAesthetic.Variants.Stage5
             hardFloor.gameObject.SetActive(false);
             GameObject.Find("HOLDER: Terrain").transform.GetChild(1).gameObject.SetActive(false);
             var sun = lightBase.GetChild(0).GetComponent<Light>();
-            sun.color = new Color32(225, 118, 120, 255);
+            sun.color = new Color32(118, 222, 225, 255);
             sun.intensity = 2f;
             sun.shadowStrength = 0.75f;
             lightBase.Find("CameraRelative").Find("SmallStars").gameObject.SetActive(true);
@@ -101,6 +107,16 @@ namespace StageAesthetic.Variants.Stage5
             detailMat5.color = new Color32(255, 10, 0, 255);
             var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Cleanse/matWaterPack.mat").WaitForCompletion());
             water.color = new Color32(217, 0, 255, 255);
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat4);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat5);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+
             var r = GameObject.Find("HOLDER: Randomization").transform;
             var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0);
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && detailMat4 && detailMat5 && water)
@@ -257,11 +273,11 @@ namespace StageAesthetic.Variants.Stage5
             AbyssalFoliage();
         }
 
-        public static void TitanicMeadow(RampFog fog)
+        public static void Titanic(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(125, 141, 160, 0);
             fog.fogColorMid.value = new Color32(119, 144, 175, 60);
-            fog.fogColorEnd.value = new Color32(93, 144, 213, 110);
+            fog.fogColorEnd.value = new Color32(94, 137, 195, 110);
             fog.fogZero.value = -0.02f;
             fog.skyboxStrength.value = 0.1f;
             var terrainMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPTerrain.mat").WaitForCompletion();
@@ -271,6 +287,15 @@ namespace StageAesthetic.Variants.Stage5
             var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimsheetGraveyardProps.mat").WaitForCompletion();
             var detailMat4 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetMetalMilitaryEmission.mat").WaitForCompletion();
             var detailMat5 = Addressables.LoadAssetAsync<Material>("RoR2/Junk/AncientWisp/matAncientWillowispSpiral.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat4);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat5);
+
             var r = GameObject.Find("HOLDER: Randomization").transform;
             var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0);
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && detailMat4 && detailMat5)
@@ -424,14 +449,17 @@ namespace StageAesthetic.Variants.Stage5
             TitanicFoliage();
         }
 
-        public static void SandyMeadow(RampFog fog)
+        public static void Abandoned(RampFog fog)
         {
             AddSand(SandType.Gigachad);
-            fog.fogColorStart.value = new Color32(125, 141, 160, 0);
-            fog.fogColorMid.value = new Color32(183, 139, 62, 60);
-            fog.fogColorEnd.value = new Color32(196, 152, 70, 110);
-            fog.fogZero.value = -0.07f;
-            fog.skyboxStrength.value = 0.05f;
+            fog.fogColorStart.value = new Color32(113, 42, 109, 97);
+            fog.fogColorMid.value = new Color32(174, 135, 66, 60);
+            fog.fogColorEnd.value = new Color32(128, 101, 59, 255);
+            fog.fogZero.value = -0.05f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.7f;
+            fog.fogOne.value = 0.25f;
+            fog.skyboxStrength.value = 0f;
             // var detail3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeTerrain.mat").WaitForCompletion());
             terrainMat.color = new Color32(230, 223, 174, 219);
@@ -446,6 +474,17 @@ namespace StageAesthetic.Variants.Stage5
             var detailMat5 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/MajorAndMinorConstruct/matMajorConstructDefenseMatrixEdges.mat").WaitForCompletion();
             var detailMat6 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetClayPots.mat").WaitForCompletion();
             var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/matClayGooDebuff.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat4);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat5);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat6);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+
             var c = GameObject.Find("Cloud Floor").transform;
             var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0);
 

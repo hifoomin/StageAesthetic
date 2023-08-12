@@ -27,7 +27,7 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void Dawn(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(66, 66, 66, 133);
+            fog.fogColorStart.value = new Color32(66, 66, 66, 50);
             fog.fogColorMid.value = new Color32(62, 18, 44, 126);
             fog.fogColorEnd.value = new Color32(123, 74, 61, 255);
             fog.skyboxStrength.value = 0.02f;
@@ -72,7 +72,7 @@ namespace StageAesthetic.Variants.Stage2
             sunLight.intensity = 1.2f;
             sunLight.shadowStrength = 0.1f;
             sunTransform.localEulerAngles = new Vector3(42, 12, 180);
-            AddRain(RainType.Rainstorm);
+            AddRain(RainType.RainOvercast);
             LightChanges("rain");
             VanillaFoliage();
         }
@@ -184,6 +184,13 @@ namespace StageAesthetic.Variants.Stage2
             var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidstage/matVoidMetalTrimGrassy.mat").WaitForCompletion());
             detailMat2.color = new Color32(130, 61, 74, 150);
             var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTree.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3)
             {
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];

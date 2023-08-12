@@ -3,18 +3,19 @@ using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using static UnityEngine.Experimental.TerrainAPI.TerrainUtility;
 using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants.Stage3
 {
     internal class SulfurPools
     {
-        public static void VanillaPools()
+        public static void Vanilla()
         {
             VanillaWater();
         }
 
-        public static void CoralBluePools(RampFog fog)
+        public static void Coral(RampFog fog)
         {
             fog.skyboxStrength.value = 0.08f;
 
@@ -50,22 +51,24 @@ namespace StageAesthetic.Variants.Stage3
             AddRain(RainType.Drizzle);
         }
 
-        public static void HellOnEarthPools(RampFog fog)
+        public static void Hell(RampFog fog)
         {
-            try { ApplyHellMaterials(); } catch { SwapVariants.SALogger.LogError("Hell Pools: Failed to change materials, trying again..."); } finally { ApplyHellMaterials(); }
             fog.skyboxStrength.value = 0f;
 
-            fog.fogColorStart.value = new Color32(138, 56, 57, 100);
-            fog.fogColorMid.value = new Color32(128, 41, 59, 60);
-            fog.fogColorEnd.value = new Color32(164, 0, 0, 51);
-            //fog.fogZero.value = -0.019f;
-            //fog.fogOne.value = 0.211f;
+            fog.fogColorStart.value = new Color32(89, 56, 138, 20);
+            fog.fogColorMid.value = new Color32(63, 71, 87, 60);
+            fog.fogColorEnd.value = new Color32(48, 57, 76, 189);
+            fog.skyboxStrength.value = -0.2f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 1f;
+            fog.fogZero.value = 0f;
+            fog.fogOne.value = 0.07f;
 
             var sunTransform = GameObject.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(204, 130, 139, 255);
-            sunLight.intensity = 1.9f;
-            sunLight.shadowStrength = 0.7f;
+            sunLight.intensity = 1.6f;
+            sunLight.shadowStrength = 0.6f;
             var fogg = GameObject.Find("mdlSPTerrain");
             fogg.transform.GetChild(3).gameObject.SetActive(false);
             fogg.transform.GetChild(5).gameObject.SetActive(false);
@@ -96,9 +99,10 @@ namespace StageAesthetic.Variants.Stage3
                 }
             }
             VanillaWater();
+            HellMaterials();
         }
 
-        public static void VoidPools(RampFog fog, ColorGrading cgrade)
+        public static void Void(RampFog fog, ColorGrading cgrade)
         {
             fog.skyboxStrength.value = 0f;
 
@@ -132,6 +136,11 @@ namespace StageAesthetic.Variants.Stage3
             var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion());
             // detailMat.color = new Color32(212, 214, 238, 255);
             var water = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSPWaterGreen.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+
             var terrain = GameObject.Find("mdlSPTerrain").transform;
             terrain.GetChild(0).localPosition = new Vector3(0f, 0f, -20f);
             if (terrainMat && detailMat && water)
@@ -209,13 +218,18 @@ namespace StageAesthetic.Variants.Stage3
             }
         }
 
-        public static void ApplyHellMaterials()
+        public static void HellMaterials()
         {
             var terrain = GameObject.Find("mdlSPTerrain").transform;
             var sphere = GameObject.Find("mdlSPSphere").transform;
-            var terrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion();
+            var terrainMat = GameObject.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion());
+            terrainMat.color = new Color32(138, 172, 176, 202);
             var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_DimondPattern.mat").WaitForCompletion();
             var water = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Water.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
 
             var zero = terrain.GetChild(0).gameObject.GetComponent<MeshRenderer>();
             var one = terrain.GetChild(2).gameObject.GetComponent<MeshRenderer>();
@@ -237,190 +251,44 @@ namespace StageAesthetic.Variants.Stage3
             var seventeen = sphere.GetChild(14).gameObject.GetComponent<MeshRenderer>();
             if (terrainMat && detailMat && water)
             {
-                switch (zero.sharedMaterial)
-                {
-                    case null:
-                        try { zero.sharedMaterial = water; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        zero.sharedMaterial = water;
-                        break;
-                }
-                switch (one.sharedMaterial)
-                {
-                    case null:
-                        try { one.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        one.sharedMaterial = terrainMat;
-                        break;
-                }
-                switch (two.sharedMaterial)
-                {
-                    case null:
-                        try { two.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        two.sharedMaterial = terrainMat;
-                        break;
-                }
-                switch (three.sharedMaterial)
-                {
-                    case null:
-                        try { three.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        three.sharedMaterial = detailMat;
-                        break;
-                }
-                switch (four.sharedMaterial)
-                {
-                    case null:
-                        try { four.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        four.sharedMaterial = terrainMat;
-                        break;
-                }
-                switch (five.sharedMaterial)
-                {
-                    case null:
-                        try { five.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        five.sharedMaterial = detailMat;
-                        break;
-                }
-                switch (six.sharedMaterial)
-                {
-                    case null:
-                        try { six.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        six.sharedMaterial = terrainMat;
-                        break;
-                }
-                switch (seven.sharedMaterial)
-                {
-                    case null:
-                        try { seven.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        seven.sharedMaterial = terrainMat;
-                        break;
-                }
-                switch (eight.sharedMaterial)
-                {
-                    case null:
-                        try { eight.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        eight.sharedMaterial = detailMat;
-                        break;
-                }
-                switch (nine.sharedMaterial)
-                {
-                    case null:
-                        try { nine.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        nine.sharedMaterial = detailMat;
-                        break;
-                }
-                switch (ten.sharedMaterial)
-                {
-                    case null:
-                        try { ten.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        ten.sharedMaterial = detailMat;
-                        break;
-                }
-                switch (eleven.sharedMaterial)
-                {
-                    case null:
-                        try { eleven.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        eleven.sharedMaterial = detailMat;
-                        break;
-                }
-                switch (twelve.sharedMaterial)
-                {
-                    case null:
-                        try { twelve.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        twelve.sharedMaterial = detailMat;
-                        break;
-                }
-                switch (thirteen.sharedMaterial)
-                {
-                    case null:
-                        try { thirteen.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        thirteen.sharedMaterial = terrainMat;
-                        break;
-                }
-                switch (fourteen.sharedMaterial)
-                {
-                    case null:
-                        try { fourteen.sharedMaterial = terrainMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        fourteen.sharedMaterial = terrainMat;
-                        break;
-                }
-                switch (fifteen.sharedMaterial)
-                {
-                    case null:
-                        try { fifteen.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        fifteen.sharedMaterial = detailMat;
-                        break;
-                }
-                switch (sixteen.sharedMaterial)
-                {
-                    case null:
-                        try { sixteen.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        sixteen.sharedMaterial = detailMat;
-                        break;
-                }
-                switch (seventeen.sharedMaterial)
-                {
-                    case null:
-                        try { seventeen.sharedMaterial = detailMat; } catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                        break;
-
-                    default:
-                        seventeen.sharedMaterial = detailMat;
-                        break;
-                }
+                if (zero.sharedMaterial)
+                    zero.sharedMaterial = water;
+                if (one.sharedMaterial)
+                    one.sharedMaterial = terrainMat;
+                if (two.sharedMaterial)
+                    two.sharedMaterial = terrainMat;
+                if (three.sharedMaterial)
+                    three.sharedMaterial = detailMat;
+                if (four.sharedMaterial)
+                    four.sharedMaterial = terrainMat;
+                if (five.sharedMaterial)
+                    five.sharedMaterial = detailMat;
+                if (six.sharedMaterial)
+                    six.sharedMaterial = terrainMat;
+                if (seven.sharedMaterial)
+                    seven.sharedMaterial = terrainMat;
+                if (eight.sharedMaterial)
+                    eight.sharedMaterial = detailMat;
+                if (nine.sharedMaterial)
+                    nine.sharedMaterial = detailMat;
+                if (ten.sharedMaterial)
+                    ten.sharedMaterial = detailMat;
+                if (eleven.sharedMaterial)
+                    eleven.sharedMaterial = detailMat;
+                if (twelve.sharedMaterial)
+                    twelve.sharedMaterial = detailMat;
+                if (thirteen.sharedMaterial)
+                    thirteen.sharedMaterial = terrainMat;
+                if (fourteen.sharedMaterial)
+                    fourteen.sharedMaterial = terrainMat;
+                if (fifteen.sharedMaterial)
+                    fifteen.sharedMaterial = detailMat;
+                if (sixteen.sharedMaterial)
+                    sixteen.sharedMaterial = detailMat;
+                if (seventeen.sharedMaterial)
+                    seventeen.sharedMaterial = detailMat;
+                // the shit j guh gah
             }
-            // very experimental, will revert if anything goes wrong or there's lag
-
-            // quite frankly i fucking despise the pink texture bug and i'm trying to eliminate it in any way i can possibly think of
         }
     }
 }

@@ -12,13 +12,15 @@ namespace StageAesthetic.Variants.Stage4
         public static void VanillaChanges()
         {
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.intensity = 2f;
-            GameObject.Find("Directional Light (SUN)").transform.localEulerAngles = new Vector3(35, 15, 351);
+            sunLight.intensity = 1.5f;
+            sunLight.transform.localEulerAngles = new Vector3(35, 15, 351);
+            sunLight.color = new Color32(207, 207, 142, 255);
+            sunLight.shadowStrength = 0.5f;
         }
 
-        public static void HiveCave(RampFog fog, ColorGrading cgrade)
+        public static void Blue(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(17, 63, 72, 167);
+            fog.fogColorStart.value = new Color32(17, 63, 72, 100);
             fog.fogColorMid.value = new Color32(43, 125, 114, 74);
             fog.fogColorEnd.value = new Color32(16, 74, 72, 255);
             fog.fogOne.value = 0.3f;
@@ -43,21 +45,21 @@ namespace StageAesthetic.Variants.Stage4
             LightChange("hive");
         }
 
-        public static void DarkCave(RampFog fog, ColorGrading cgrade)
+        public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(49, 41, 111, 91);
-            fog.fogColorMid.value = new Color32(96, 73, 104, 160);
-            fog.fogColorEnd.value = new Color32(103, 78, 81, 255);
+            fog.fogColorStart.value = new Color32(93, 41, 111, 28);
+            fog.fogColorMid.value = new Color32(104, 73, 91, 160);
+            fog.fogColorEnd.value = new Color32(187, 65, 80, 255);
             fog.fogIntensity.value = 1f;
-            fog.fogPower.value = 0.8f;
+            fog.fogPower.value = 1f;
             fog.fogZero.value = 0f;
-            fog.fogOne.value = 1.4f;
+            fog.fogOne.value = 0.14f;
             fog.skyboxStrength.value = 0f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(69, 201, 215, 255);
             sunLight.intensity = 4f;
             sunLight.transform.eulerAngles = new Vector3(60f, 78f, 351f);
-            sunLight.shadowStrength = 0.6f;
+            sunLight.shadowStrength = 0.5f;
             GameObject.Find("Directional Light (SUN)").transform.localEulerAngles = new Vector3(43, 78, 351);
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveFog.fogColorStart.value = new Color32(67, 65, 109, 76);
@@ -69,19 +71,21 @@ namespace StageAesthetic.Variants.Stage4
             LightChange("azure");
         }
 
-        public static void OrangeCave(RampFog fog)
+        public static void Orange(RampFog fog)
         {
             fog.fogIntensity.value = 1f;
+            fog.fogPower.overrideState = true;
             fog.fogPower.value = 0.26f;
-            fog.fogZero.value = 0f;
+            fog.fogZero.value = -0.002f;
             fog.fogOne.value = 0.3f;
-            fog.fogColorStart.value = new Color32(35, 46, 140, 11);
-            fog.fogColorMid.value = new Color32(44, 32, 99, 110);
+            fog.fogColorStart.value = new Color32(9, 4, 2, 141);
+            fog.fogColorMid.value = new Color32(99, 81, 32, 35);
             fog.fogColorEnd.value = new Color32(132, 76, 44, 255);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(191, 148, 74, 255);
             sunLight.intensity = 1.2f;
             sunLight.transform.eulerAngles = new Vector3(70f, 19.64314f, 9.985f);
+            sunLight.shadowStrength = 0.6f;
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveFog.fogColorStart.value = new Color32(85, 57, 91, 33);
             caveFog.fogColorMid.value = new Color32(90, 55, 97, 148);
@@ -137,10 +141,9 @@ namespace StageAesthetic.Variants.Stage4
             }
         }
 
-        public static void CoralCave(RampFog fog, ColorGrading cgrade)
+        public static void Coral(RampFog fog, ColorGrading cgrade)
         {
-            ApplyCoralMaterials();
-            fog.fogColorStart.value = new Color32(127, 70, 206, 20);
+            fog.fogColorStart.value = new Color32(127, 70, 206, 15);
             fog.fogColorMid.value = new Color32(185, 72, 119, 33);
             fog.fogColorEnd.value = new Color32(183, 93, 129, 130);
             cgrade.colorFilter.value = new Color32(255, 255, 255, 22);
@@ -165,13 +168,14 @@ namespace StageAesthetic.Variants.Stage4
             }
             GameObject.Find("DCPPInTunnels").SetActive(false);
             AddRain(RainType.Drizzle);
+            CoralMaterials();
         }
 
         private static Color coral;
         private static Color chain;
         private static Color crystal;
 
-        public static void ApplyCoralMaterials()
+        public static void CoralMaterials()
         {
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTerrain2.mat").WaitForCompletion());
             terrainMat.color = new Color32(128, 125, 216, 234);
@@ -180,6 +184,12 @@ namespace StageAesthetic.Variants.Stage4
             var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJRock.mat").WaitForCompletion());
             detailMat.color = new Color32(49, 0, 255, 255);
             var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGoldArcaneFlare.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+
             if (terrainMat && terrainMat2 && detailMat && detailMat3)
             {
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];

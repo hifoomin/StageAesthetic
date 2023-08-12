@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Experimental.TerrainAPI.TerrainUtility;
 using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants.Stage1
@@ -39,9 +40,9 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(110, 110, 140, 45);
-            fog.fogColorMid.value = new Color32(80, 80, 110, 85);
-            fog.fogColorEnd.value = new Color32(20, 20, 35, 225);
+            fog.fogColorStart.value = new Color32(112, 125, 166, 50);
+            fog.fogColorMid.value = new Color32(80, 80, 110, 40);
+            fog.fogColorEnd.value = new Color32(42, 42, 72, 180);
             fog.skyboxStrength.value = 0.3f;
             fog.fogPower.value = 0.35f;
             fog.fogOne.value = 0.108f;
@@ -124,12 +125,15 @@ namespace StageAesthetic.Variants.Stage1
             fog.fogColorEnd.value = new Color32(178, 209, 255, 255);
             fog.fogOne.value = 2.4f;
             fog.skyboxStrength.value = 0.1f;
-            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            var shittyNotWorkingSun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            var sunLight = GameObject.Instantiate(shittyNotWorkingSun.gameObject).GetComponent<Light>();
+            shittyNotWorkingSun.name = "Shitty Not Working Sun";
+            shittyNotWorkingSun.gameObject.SetActive(false);
             var aurora = GameObject.Find("mdlSnowyForestAurora");
 
             aurora.SetActive(false);
-            sunLight.color = new Color32(175, 146, 255, 255);
-            sunLight.intensity = 13f;
+            sunLight.color = new Color32(255, 255, 255, 255);
+            sunLight.intensity = 5f;
             sunLight.shadowStrength = 0.3f;
             cgrade.colorFilter.value = new Color32(197, 233, 255, 255);
             cgrade.colorFilter.overrideState = true;
@@ -144,9 +148,9 @@ namespace StageAesthetic.Variants.Stage1
             }
 
             DisableSiphonedSnow();
-            AddRain(RainType.Rainstorm);
-            DesolateMaterials();
+            AddRain(RainType.RainOvercast);
             DesolateFoliage();
+            DesolateMaterials();
         }
 
         public static void DesolateMaterials()
@@ -157,16 +161,25 @@ namespace StageAesthetic.Variants.Stage1
 
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/blackbeach/matBbTerrain.mat").WaitForCompletion());
             terrainMat.color = new Color32(174, 153, 129, 255);
+            terrainMat.SetFloat("_RedChannelSmoothness", 0.5063887f);
             terrainMat.SetFloat("_RedChannelBias", 1.2f);
-            terrainMat.SetFloat("_BlueChannelBias", 1.3f);
-            terrainMat.SetFloat("_GreenChannelBias", 1.87f);
-            terrainMat.SetFloat("_TextureFactor", 0.06f);
-            terrainMat.SetFloat("_NormalStrength", 0.3f);
-            terrainMat.SetFloat("_GreenChannelSpecularStrength", 0.002f);
-            terrainMat.SetFloat("_Depth", 0.1f);
-            terrainMat.SetInt("_RampInfo", 5);
+            terrainMat.SetFloat("_RedChannelSpecularExponent", 20f);
             terrainMat.SetTexture("_RedChannelSideTex", side);
             terrainMat.SetTexture("_RedChannelTopTex", top);
+
+            terrainMat.SetFloat("_GreenChannelBias", 1.87f);
+            terrainMat.SetFloat("_GreenChannelSpecularStrength", 0f);
+            terrainMat.SetFloat("_GreenChannelSpecularExponent", 20f);
+            terrainMat.SetFloat("_GreenChannelSmoothnes", 0.4169469f);
+
+            terrainMat.SetFloat("_BlueChannelBias", 1.3f);
+            terrainMat.SetFloat("_BlueChannelSmoothness", 0.3059852f);
+
+            terrainMat.SetFloat("_TextureFactor", 0.06f);
+            terrainMat.SetFloat("_NormalStrength", 0.3f);
+
+            terrainMat.SetFloat("_Depth", 0.1f);
+            terrainMat.SetInt("_RampInfo", 5);
             terrainMat.SetTexture("_NormalTex", normal);
 
             var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/blackbeach/matBbBoulder.mat").WaitForCompletion();
@@ -174,7 +187,7 @@ namespace StageAesthetic.Variants.Stage1
             detailMat2.color = new Color32(18, 79, 40, 255);
             var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/moon/matMoonWaterBridge.mat").WaitForCompletion();
             var detailMat4 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTree.mat").WaitForCompletion());
-            detailMat4.color = new Color32(205, 104, 12, 128);
+            detailMat4.color = new Color32(205, 104, 12, 255);
             detailMat4.SetFloat("_Depth", 0.714f);
             detailMat4.SetFloat("_NormalStrength", 0.25f);
             detailMat4.SetFloat("_RedChannelBias", 0.17f);
@@ -185,6 +198,14 @@ namespace StageAesthetic.Variants.Stage1
             detailMat5.color = new Color32(255, 255, 255, 255);
             var detailMat6 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Captain/matCaptainSupplyDropEquipmentRestock.mat").WaitForCompletion());
             detailMat6.color = new Color32(80, 162, 90, 255);
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat4);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat5);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat6);
 
             if (terrainMat && detailMat && detailMat2 && water && detailMat4 && detailMat5 && detailMat6)
             {
@@ -285,7 +306,7 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void DisableSiphonedSnow()
         {
-            if (!SwapVariants.WeatherEffects.Value)
+            if (!Config.Config.WeatherEffects.Value)
             {
                 return;
             }

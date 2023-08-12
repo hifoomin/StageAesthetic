@@ -7,16 +7,19 @@ namespace StageAesthetic.Variants.Stage2
 {
     internal class WetlandAspect
     {
-        public static void PinkSwamp(RampFog fog, ColorGrading cgrade)
+        public static void Morning(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(90, 69, 105, 13);
-            fog.fogColorMid.value = new Color32(130, 105, 154, 161);
-            fog.fogColorEnd.value = new Color32(169, 119, 227, 255);
-            cgrade.colorFilter.value = new Color32(233, 189, 245, 255);
+            fog.fogColorStart.value = new Color32(128, 121, 99, 13);
+            fog.fogColorMid.value = new Color32(106, 141, 154, 130);
+            fog.fogColorEnd.value = new Color32(104, 150, 199, 255);
+            fog.fogOne.value = -0.058f;
+            fog.fogPower.value = 1.2f;
+            fog.fogIntensity.value = 0.937f;
+            cgrade.colorFilter.value = new Color32(240, 213, 248, 255);
             cgrade.colorFilter.overrideState = true;
-            fog.skyboxStrength.value = 0;
+            fog.skyboxStrength.value = 0f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(198, 152, 223, 255);
+            sunLight.color = new Color32(255, 225, 181, 255);
             sunLight.intensity = 1.1f;
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             var caveInner = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("NonBlended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
@@ -28,22 +31,24 @@ namespace StageAesthetic.Variants.Stage2
             caveInner.fogColorEnd.value = new Color32(152, 8, 6, 255);
         }
 
-        public static void GoldSwamp(RampFog fog, ColorGrading cgrade)
+        public static void Sunset(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(95, 42, 170, 16);
-            fog.fogColorMid.value = new Color32(168, 104, 42, 165);
-            fog.fogColorEnd.value = new Color32(154, 116, 102, 239);
-            cgrade.colorFilter.value = new Color32(121, 90, 39, 255);
+            fog.fogColorStart.value = new Color32(95, 42, 170, 0);
+            fog.fogColorMid.value = new Color32(189, 125, 64, 130);
+            fog.fogColorEnd.value = new Color32(164, 125, 111, 220);
+
+            cgrade.colorFilter.value = new Color32(185, 144, 98, 255);
             cgrade.colorFilter.overrideState = true;
-            fog.skyboxStrength.value = 0.02f;
-            fog.fogOne.value = 0.28f;
-            fog.fogPower.value = 1.1f;
+
             fog.fogIntensity.value = 0.937f;
-            fog.fogZero.value = -0.09f;
+            fog.fogPower.value = 1.06f;
+            fog.fogZero.value = -0.06f;
+            fog.fogOne.value = 0.28f;
+
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(166, 123, 99, 255);
-            sunLight.intensity = 8f;
-            sunLight.shadowStrength = 0.55f;
+            sunLight.intensity = 3f;
+            sunLight.shadowStrength = 0.7f;
             sunLight.transform.eulerAngles = new Vector3(50.00005f, 59.99999f, 69.94977f);
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             var caveInner = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("NonBlended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
@@ -55,53 +60,31 @@ namespace StageAesthetic.Variants.Stage2
             caveInner.fogColorEnd.value = new Color32(217, 201, 11, 255);
         }
 
-        public static void MoreSwamp(RampFog fog)
+        public static void Night(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(33, 43, 41, 87);
-            fog.fogColorMid.value = new Color32(45, 60, 51, 173);
+            fog.fogColorStart.value = new Color32(64, 76, 70, 15);
+            fog.fogColorMid.value = new Color32(48, 66, 58, 173);
             fog.fogColorEnd.value = new Color32(47, 60, 48, 255);
+            fog.skyboxStrength.value = 0.001f;
+            fog.fogOne.value = 0.25f;
+            fog.fogZero.value = -0.02f;
+            fog.fogPower.value = 0.9f;
+            fog.fogIntensity.value = 0.937f;
             fog.fogOne.value = 0.355f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(128, 205, 170, 255);
-            sunLight.intensity = 0.32f;
-            sunLight.shadowStrength = 0.477f;
-            Utils.AddRain(Utils.RainType.Rainstorm);
-            /*
-            if (Config.WeatherEffects.Value)
-            {
-                var rainParticle = rain.GetComponent<ParticleSystem>();
-                var epic = rainParticle.emission;
-                var epic2 = epic.rateOverTime;
-                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                {
-                    constant = 700,
-                    constantMax = 700,
-                    constantMin = 220,
-                    curve = epic2.curve,
-                    curveMax = epic2.curveMax,
-                    curveMin = epic2.curveMax,
-                    curveMultiplier = epic2.curveMultiplier,
-                    mode = epic2.mode
-                };
-                var epic3 = rainParticle.colorOverLifetime;
-                epic3.enabled = false;
-                var epic4 = rainParticle.main;
-                epic4.scalingMode = ParticleSystemScalingMode.Shape;
-                rain.transform.eulerAngles = new Vector3(87, 110, 0);
-                rain.transform.localScale = new Vector3(14, 14, 1);
+            sunLight.color = new Color32(109, 182, 185, 255);
+            sunLight.intensity = 0.4f;
+            sunLight.shadowStrength = 0.6f;
+            AddRain(RainType.RainOvercast);
 
-                UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
-            }
-            */
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(14, 111, 160, 0);
             caveOuter.fogColorMid.value = new Color32(66, 76, 43, 89);
             caveOuter.fogColorEnd.value = new Color32(75, 84, 51, 255);
         }
 
-        public static void VoidSwamp(RampFog fog)
+        public static void Void(RampFog fog)
         {
-            try { ApplyVoidMaterials(); } catch { SwapVariants.SALogger.LogError("Void Aspect: Failed to change materials, trying again..."); } finally { ApplyVoidMaterials(); }
             var s = GameObject.Find("HOLDER: Skybox").transform;
             s.GetChild(0).localPosition = new Vector3(24.45f, -50f, -84.87f);
             fog.fogColorStart.value = new Color32(62, 12, 62, 87);
@@ -123,31 +106,40 @@ namespace StageAesthetic.Variants.Stage2
             r.GetChild(22).gameObject.SetActive(false);
             GameObject.Find("HOLDER: Foliage").SetActive(false);
             AddSnow(SnowType.Light);
+            VoidMaterials();
         }
 
-        public static void ApplyVoidMaterials()
+        public static void VoidMaterials()
         {
             var s = GameObject.Find("HOLDER: Skybox").transform;
             var terrain = GameObject.Find("HOLDER: Hero Assets").transform;
-            var vfm = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion();
-            var vfme = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
-            vfme.color = new Color32(171, 167, 234, 132);
-            var vfmg = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
-            var vfmh = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
-            var vfmt = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTrim.mat").WaitForCompletion();
+            var terrainMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion();
+            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
+            terrainMat2.color = new Color32(171, 167, 234, 132);
+            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
+            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
+            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTrim.mat").WaitForCompletion();
             var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Water.mat").WaitForCompletion());
             water.color = new Color32(82, 24, 109, 255);
-            if (vfm && vfme && vfmg && vfmh && vfmt && water)
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+
+            if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && water)
             {
-                terrain.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = vfme;
-                terrain.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = vfme;
-                terrain.GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = vfme;
-                terrain.GetChild(3).GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = vfme;
+                terrain.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                terrain.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                terrain.GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                terrain.GetChild(3).GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
                 terrain.GetChild(4).GetComponent<MeshRenderer>().sharedMaterial = water;
                 terrain.GetChild(5).GetComponent<MeshRenderer>().sharedMaterial = water;
-                terrain.GetChild(6).GetComponent<MeshRenderer>().sharedMaterial = vfm;
+                terrain.GetChild(6).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
                 s.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
-                GameObject.Find("HOLDER: Ruin Pieces").transform.GetChild(6).gameObject.GetComponent<MeshRenderer>().sharedMaterial = vfmt;
+                GameObject.Find("HOLDER: Ruin Pieces").transform.GetChild(6).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat3;
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
                 foreach (MeshRenderer mr in meshList)
                 {
@@ -158,10 +150,10 @@ namespace StageAesthetic.Variants.Stage2
                         {
                             if (mr.sharedMaterial != null)
                             {
-                                mr.sharedMaterial = vfmg;
+                                mr.sharedMaterial = detailMat;
                                 if (meshBase.transform.GetComponentInChildren<MeshRenderer>() != null)
                                 {
-                                    meshBase.transform.GetComponentInChildren<MeshRenderer>().sharedMaterial = vfmg;
+                                    meshBase.transform.GetComponentInChildren<MeshRenderer>().sharedMaterial = detailMat;
                                 }
                             }
                         }
@@ -171,11 +163,11 @@ namespace StageAesthetic.Variants.Stage2
                         {
                             if (meshBase.name.Contains("Mesh") && (meshParent.name.Contains("FSTree") || meshParent.name.Contains("FSRootBundle")))
                             {
-                                mr.sharedMaterial = vfmh;
+                                mr.sharedMaterial = detailMat2;
                             }
                             if (meshBase.name.Contains("Mesh") && meshParent.name.Contains("FSRuinPillar"))
                             {
-                                mr.sharedMaterial = vfmg;
+                                mr.sharedMaterial = detailMat;
                             }
                             if ((meshBase.name.Contains("RootBundleLargeCards") || meshBase.name.Contains("RootBundleSmallCards")) && (meshParent.name.Contains("FSRootBundleLarge") || meshParent.name.Contains("FSRootBundleSmall")))
                             {
@@ -183,7 +175,7 @@ namespace StageAesthetic.Variants.Stage2
                             }
                             if ((meshBase.name.Contains("RootBundleLarge_LOD0") || meshBase.name.Contains("RootBundleLarge_LOD1") || meshBase.name.Contains("RootBundleLarge_LOD2") || meshBase.name.Contains("RootBundleSmall_LOD0") || meshBase.name.Contains("RootBundleSmall_LOD1") || meshBase.name.Contains("RootBundleSmall_LOD2")) && (meshParent.name.Contains("FSRootBundleLarge") || meshParent.name.Contains("FSRootBundleSmall")))
                             {
-                                mr.sharedMaterial = vfmg;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
 
@@ -191,7 +183,7 @@ namespace StageAesthetic.Variants.Stage2
                         {
                             if (mr.sharedMaterial != null)
                             {
-                                mr.sharedMaterial = vfmh;
+                                mr.sharedMaterial = detailMat2;
                             }
                         }
                     }

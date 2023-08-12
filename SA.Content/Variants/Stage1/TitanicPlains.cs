@@ -41,7 +41,7 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.intensity = 0.9f;
             sunLight.shadowStrength = 0.7f;
             sunTransform.localEulerAngles = new Vector3(50, 17, 270);
-            AddRain(RainType.Rainstorm);
+            AddRain(RainType.RainOvercast);
             if (scenename == "golemplains")
             {
                 GameObject wind = GameObject.Find("WindZone");
@@ -93,24 +93,33 @@ namespace StageAesthetic.Variants.Stage1
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sun.color = new Color32(211, 151, 105, 255);
             sun.intensity = 1.3f;
+
             fog.fogColorStart.value = new Color32(137, 122, 83, 9);
             fog.fogColorMid.value = new Color32(150, 119, 82, 45);
             fog.fogColorEnd.value = new Color32(164, 106, 68, 255);
-            fog.fogZero.value = -0.035f;
+            fog.fogZero.value = -0.01f;
             fog.skyboxStrength.value = 0.15f;
             fog.fogPower.value = 0.3f;
+
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeTerrain.mat").WaitForCompletion());
             terrainMat.color = new Color32(230, 223, 174, 219);
-            var detail = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimSandy.mat").WaitForCompletion();
-            var detail2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion();
-            var detail3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
+            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimSandy.mat").WaitForCompletion();
+            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion();
+            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
             var tar = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolake.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + tar);
+
             GameObject.Find("FOLIAGE: Grass").SetActive(false);
             var water = GameObject.Find("HOLDER: Water").transform.GetChild(0);
             water.localPosition = new Vector3(-564.78f, -170f, 133.4f);
             water.localScale = new Vector3(200f, 200f, 200f);
             AddSand(SandType.Gigachad);
-            if (terrainMat && detail && detail2 && detail3 && tar)
+            if (terrainMat && detailMat && detailMat2 && detailMat3 && tar)
             {
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
                 foreach (MeshRenderer mr in meshList)
@@ -129,21 +138,21 @@ namespace StageAesthetic.Variants.Stage1
                         {
                             if (mr.sharedMaterial)
                             {
-                                mr.sharedMaterial = detail;
+                                mr.sharedMaterial = detailMat;
                             }
                         }
                         if (meshBase.name.Contains("Ring"))
                         {
                             if (mr.sharedMaterial)
                             {
-                                mr.sharedMaterial = detail2;
+                                mr.sharedMaterial = detailMat2;
                             }
                         }
                         if (meshBase.name.Contains("Block") || meshBase.name.Contains("MiniBridge") || meshBase.name.Contains("Circle"))
                         {
                             if (mr.sharedMaterial)
                             {
-                                mr.sharedMaterial = detail3;
+                                mr.sharedMaterial = detailMat3;
                             }
                         }
                         if (meshBase.name.Contains("Plane1x1x100x100"))

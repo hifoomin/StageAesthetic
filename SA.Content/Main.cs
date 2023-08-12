@@ -1,25 +1,35 @@
 ﻿using BepInEx;
 using UnityEngine;
 using System.Reflection;
-using R2API;
-using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 
 namespace StageAesthetic
 {
-    [BepInPlugin("com.HIFU.StageAesthetic", "StageAesthetic", "1.0.0")]
+    [BepInPlugin(PluginAuthor, PluginName, PluginVersion)]
     [BepInDependency("com.rune580.riskofoptions")]
     [BepInDependency("PlasmaCore.ForgottenRelics", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInDependency(PrefabAPI.PluginGUID)]
     internal class Main : BaseUnityPlugin
     {
+        public const string PluginGUID = PluginAuthor + "." + PluginName;
+
+        public const string PluginAuthor = "HIFU";
+        public const string PluginName = "StageAesthetic";
+        public const string PluginVersion = "1.0.0";
+
         public static AssetBundle stageaesthetic;
         public static Shader cloudRemap = Addressables.LoadAssetAsync<Shader>("RoR2/Base/Shaders/HGCloudRemap.shader").WaitForCompletion();
         public static Shader snowTopped = Addressables.LoadAssetAsync<Shader>("RoR2/Base/Shaders/HGSnowTopped.shader").WaitForCompletion(); // who's snow and why are they being topped
-        public static Harmony Harmony;
         public static List<RampFog> DumbfuckRampFogs = new();
         public static Material[] materials;
+
+        public static Texture2D abyssalDirt;
+        public static Texture2D abyssalGrass;
+        public static Texture2D abyssalGravel;
+
+        public static Material abyssalPlatform;
+
+        public static bool ForgottenRelicsLoaded = false;
 
         public void Awake()
         {
@@ -44,7 +54,18 @@ namespace StageAesthetic
                 }
             }
 
+            abyssalDirt = stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texDirt.png");
+            abyssalGrass = stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texRedGrass.png");
+            abyssalGravel = stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texLavenderGravel.png");
+
+            abyssalPlatform = stageaesthetic.LoadAsset<Material>("Assets/StageAesthetic/Materials/matAbyssalPlatform.mat");
+
+            if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("PlasmaCore.ForgottenRelics"))
+                ForgottenRelicsLoaded = true;
+
             SwapVariants.Initialize();
+
+            SwapVariants.SALogger.LogError("Forgotten Relics Loaded:" + ForgottenRelicsLoaded);
         }
     }
 }

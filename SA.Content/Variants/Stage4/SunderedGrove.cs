@@ -11,14 +11,14 @@ namespace StageAesthetic.Variants.Stage4
 {
     internal class SunderedGrove
     {
-        public static void VanillaJungle()
+        public static void Vanilla()
         {
             VanillaFoliage();
         }
 
-        public static void GreenJungle(RampFog fog, ColorGrading cgrade)
+        public static void Jade(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(91, 99, 66, 20);
+            fog.fogColorStart.value = new Color32(66, 82, 99, 10);
             fog.fogColorMid.value = new Color32(107, 105, 68, 67);
             fog.fogColorEnd.value = new Color32(119, 116, 74, 150);
             fog.skyboxStrength.value = 0.126f;
@@ -33,7 +33,7 @@ namespace StageAesthetic.Variants.Stage4
             VanillaFoliage();
         }
 
-        public static void SunJungle(RampFog fog, ColorGrading cgrade)
+        public static void Sunny(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(46, 85, 98, 0);
             fog.fogColorMid.value = new Color32(51, 70, 84, 64);
@@ -49,7 +49,7 @@ namespace StageAesthetic.Variants.Stage4
             VanillaFoliage();
         }
 
-        public static void StormJungle(RampFog fog, ColorGrading cgrade)
+        public static void Overcast(RampFog fog, ColorGrading cgrade)
         {
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
@@ -72,10 +72,10 @@ namespace StageAesthetic.Variants.Stage4
             VanillaFoliage();
         }
 
-        public static void SandyJungle(RampFog fog)
+        public static void Abandoned(RampFog fog)
         {
             AddSand(SandType.Moderate);
-            fog.fogColorStart.value = new Color32(255, 108, 0, 32);
+            fog.fogColorStart.value = new Color32(255, 108, 0, 0);
             fog.fogColorMid.value = new Color32(183, 139, 62, 28);
             fog.fogColorEnd.value = new Color32(196, 152, 70, 255);
             fog.fogZero.value = -0.01f;
@@ -90,6 +90,13 @@ namespace StageAesthetic.Variants.Stage4
             var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/matClayGooDebuff.mat").WaitForCompletion();
             var shroomMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolake.mat").WaitForCompletion());
             shroomMat.color = new Color32(176, 153, 57, 255);
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + shroomMat);
+
             var c = GameObject.Find("Cloud Floor").transform;
             if (terrainMat && terrainMat2 && detailMat && water && shroomMat)
             {

@@ -1,9 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using RoR2;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
-using BepInEx.Configuration;
 using System.Collections.Generic;
 using StageAesthetic.Variants.Stage1;
 using StageAesthetic.Variants.Stage2;
@@ -12,7 +10,9 @@ using StageAesthetic.Variants.Stage4;
 using StageAesthetic.Variants.Stage5;
 using StageAesthetic.Variants.Special;
 using RoR2.UI;
-using static StageAesthetic.Config;
+using System.Runtime.CompilerServices;
+using System;
+using System.Collections;
 
 namespace StageAesthetic
 {
@@ -22,11 +22,12 @@ namespace StageAesthetic
 
         public static void Initialize()
         {
-            Config.SetConfig();
-            // On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
-            SceneManager.sceneLoaded += ChangeVariant;
-            Run.onRunStartGlobal += Config.ApplyConfig;
+            SetConfig();
+            On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
+            SceneManager.sceneLoaded += TitleScreen;
+            Run.onRunStartGlobal += ApplyConfig;
             On.RoR2.UI.AssignStageToken.Start += AssignStageToken_Start;
+            // On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
         }
 
         private static void AssignStageToken_Start(On.RoR2.UI.AssignStageToken.orig_Start orig, AssignStageToken self)
@@ -35,7 +36,54 @@ namespace StageAesthetic
             self.titleText.text += " (" + currentVariantName + ")";
         }
 
-        private static void ChangeVariant(Scene scene, LoadSceneMode mode)
+        private static void TitleScreen(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name == "title")
+            {
+                var menuBase = GameObject.Find("MainMenu").transform;
+
+                if (TitleScene.Value)
+                {
+                    var graphicBase = GameObject.Find("HOLDER: Title Background").transform;
+                    graphicBase.Find("Terrain").gameObject.SetActive(true);
+                    graphicBase.Find("CamDust").gameObject.SetActive(true);
+                    graphicBase.Find("Misc Props").Find("DeadCommando").localPosition = new Vector3(16, -2f, 27);
+
+                    var menuRain = menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject.GetComponent<ParticleSystem>();
+
+                    var emission = menuRain.emission;
+                    var rateOverTime = emission.rateOverTime;
+                    emission.rateOverTime = new ParticleSystem.MinMaxCurve()
+                    {
+                        constant = 100,
+                        constantMax = 100,
+                        constantMin = 60,
+                        curve = rateOverTime.curve,
+                        curveMax = rateOverTime.curveMax,
+                        curveMin = rateOverTime.curveMax,
+                        curveMultiplier = rateOverTime.curveMultiplier,
+                        mode = rateOverTime.mode
+                    };
+
+                    var colorOverLifetime = menuRain.colorOverLifetime;
+                    colorOverLifetime.enabled = false;
+
+                    menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").eulerAngles = new Vector3(80, 90, 0);
+
+                    var menuWind = GameObject.Find("HOLDER: Title Background").transform.Find("FX").Find("WindZone").gameObject.GetComponent<WindZone>();
+                    menuWind.windMain = 0.5f;
+                    menuWind.windTurbulence = 1;
+                }
+            }
+        }
+
+        private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
+        {
+            ChangeProfile(SceneManager.GetActiveScene().name);
+            orig(self);
+        }
+
+        private static void ChangeProfile(string sceneName)
         {
             if (!rain)
             {
@@ -57,8 +105,6 @@ namespace StageAesthetic
 
             ulong seed = Run.instance ? (ulong)(Run.instance.GetStartTimeUtc().Ticks ^ (Run.instance.stageClearCount << 16)) : 0;
             Xoroshiro128Plus rng = new(seed);
-
-            var sceneName = scene.name;
 
             var currentScene = SceneInfo.instance;
             if (currentScene) volume = currentScene.GetComponent<PostProcessVolume>();
@@ -82,7 +128,7 @@ namespace StageAesthetic
                 }
                 if (!alt || (!alt?.GetComponent<PostProcessVolume>()?.isActiveAndEnabled ?? true))
                 {
-                    alt = GameObject.Find("MapZones")?.transform?.Find("PostProcess Zones")?.Find("Sandstorm")?.gameObject;
+                    alt = GameObject.Find("MapZones")?.transform?.Find("PostProcess Zones")?.Find("SandOvercast")?.gameObject;
                     // AesLog.LogError("alt is " + alt.name);
                 }
                 if (alt)
@@ -103,8 +149,6 @@ namespace StageAesthetic
             }
             if (volume)
             {
-                // AesLog.LogError("found volume");
-
                 var rampFog = volume.profile.GetSetting<RampFog>();
 
                 var colorGrading = volume.profile.GetSetting<ColorGrading>() ?? volume.profile.AddSettings<ColorGrading>();
@@ -115,25 +159,28 @@ namespace StageAesthetic
                         #region DistantRoost
 
                         int distantRoostCounter = rng.RangeInt(0, distantRoostList.Count);
-                        if (distantRoostList.Count > 1) do distantRoostCounter = rng.RangeInt(0, distantRoostList.Count); while (distantRoostCounter == distantRoostVariant);
-                        string[] distantRoostArray = distantRoostList.ToArray();
-                        if (distantRoostCounter == distantRoostList.Count) { }
-                        else
-                        {
-                            switch (distantRoostArray[distantRoostCounter])
-                            {
-                                case "Vanilla":
-                                    if (RoostChanges.Value)
-                                        DistantRoost.Vanilla();
-                                    DistantRoost.VanillaFoliage();
-                                    break;
 
+                        if (distantRoostList.Count > 1 && distantRoostCounter == distantRoostVariant)
+                            distantRoostCounter = (distantRoostCounter + 1) % distantRoostList.Count;
+
+                        string[] distantRoostArray = distantRoostList.ToArray();
+                        string selectedDistantRoostVariant = distantRoostArray[distantRoostCounter];
+                        if (selectedDistantRoostVariant == "Vanilla")
+                        {
+                            if (DistantRoostChanges.Value)
+                                DistantRoost.Vanilla();
+                            DistantRoost.VanillaFoliage();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedDistantRoostVariant)
+                            {
                                 case "Sunny":
                                     DistantRoost.Sunny(rampFog, sceneName, colorGrading);
                                     break;
 
-                                case "Storm":
-                                    DistantRoost.Storm(rampFog, sceneName);
+                                case "Overcast":
+                                    DistantRoost.Overcast(rampFog, sceneName);
                                     break;
 
                                 case "Void":
@@ -141,11 +188,10 @@ namespace StageAesthetic
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = distantRoostArray[distantRoostCounter];
-                        }
+                        currentVariantName = selectedDistantRoostVariant;
                         distantRoostVariant = distantRoostCounter;
 
                         #endregion DistantRoost
@@ -156,30 +202,33 @@ namespace StageAesthetic
 
                         #region DistantRoostAlt
 
-                        int distantRoostAltCounter = rng.RangeInt(0, distantRoostList.Count);
-                        if (distantRoostList.Count > 1) do distantRoostAltCounter = rng.RangeInt(0, distantRoostList.Count); while (distantRoostAltCounter == distantRoostVariant);
-                        string[] distantRoostAltArray = distantRoostList.ToArray();
-                        if (distantRoostAltCounter == distantRoostList.Count) { }
-                        else
+                        int distantRoostAltCounter = rng.RangeInt(0, distantRoostAltList.Count);
+
+                        if (distantRoostAltList.Count > 1 && distantRoostAltCounter == distantRoostAltVariant)
+                            distantRoostAltCounter = (distantRoostAltCounter + 1) % distantRoostAltList.Count;
+
+                        string[] distantRoostAltArray = distantRoostAltList.ToArray();
+                        string selectedDistantRoostAltVariant = distantRoostAltArray[distantRoostAltCounter];
+                        if (selectedDistantRoostAltVariant == "Vanilla")
                         {
-                            switch (distantRoostAltArray[distantRoostAltCounter])
+                            if (DistantRoostChanges.Value)
+                                DistantRoost.Vanilla();
+                            DistantRoost.VanillaFoliage();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedDistantRoostAltVariant)
                             {
-                                case "Vanilla":
-                                    if (RoostChanges.Value)
-                                        DistantRoost.Vanilla();
-                                    DistantRoost.VanillaFoliage();
-                                    break;
-
-                                case "Night":
-                                    DistantRoost.Night(rampFog, sceneName, colorGrading);
-                                    break;
-
                                 case "Sunny":
                                     DistantRoost.Sunny(rampFog, sceneName, colorGrading);
                                     break;
 
-                                case "Storm":
-                                    DistantRoost.Storm(rampFog, sceneName);
+                                case "Overcast":
+                                    DistantRoost.Overcast(rampFog, sceneName);
+                                    break;
+
+                                case "Night":
+                                    DistantRoost.Night(rampFog, sceneName, colorGrading);
                                     break;
 
                                 case "Abyssal":
@@ -187,12 +236,11 @@ namespace StageAesthetic
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = distantRoostAltArray[distantRoostAltCounter];
-                        }
-                        distantRoostVariant = distantRoostAltCounter;
+                        currentVariantName = selectedDistantRoostAltVariant;
+                        distantRoostAltVariant = distantRoostAltCounter;
 
                         #endregion DistantRoostAlt
 
@@ -203,17 +251,20 @@ namespace StageAesthetic
                         #region SiphonedForest
 
                         int siphonedForestCounter = rng.RangeInt(0, siphonedForestList.Count);
-                        if (siphonedForestList.Count > 1) do siphonedForestCounter = rng.RangeInt(0, siphonedForestList.Count); while (siphonedForestCounter == siphonedForestVariant);
-                        string[] siphonedForestArray = siphonedForestList.ToArray();
-                        if (siphonedForestCounter == siphonedForestList.Count) { }
-                        else
-                        {
-                            switch (siphonedForestArray[siphonedForestCounter])
-                            {
-                                case "Vanilla":
-                                    SiphonedForest.Vanilla();
-                                    break;
 
+                        if (siphonedForestList.Count > 1 && siphonedForestCounter == siphonedForestVariant)
+                            siphonedForestCounter = (siphonedForestCounter + 1) % siphonedForestList.Count;
+
+                        string[] siphonedForestArray = siphonedForestList.ToArray();
+                        string selectedSiphonedForestVariant = siphonedForestArray[siphonedForestCounter];
+                        if (selectedSiphonedForestVariant == "Vanilla")
+                        {
+                            SiphonedForest.Vanilla();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedSiphonedForestVariant)
+                            {
                                 case "Night":
                                     SiphonedForest.Night(rampFog, colorGrading);
                                     break;
@@ -235,11 +286,10 @@ namespace StageAesthetic
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = siphonedForestArray[siphonedForestCounter];
-                        }
+                        currentVariantName = selectedSiphonedForestVariant;
                         siphonedForestVariant = siphonedForestCounter;
 
                         #endregion SiphonedForest
@@ -252,18 +302,19 @@ namespace StageAesthetic
 
                         int titanicPlainsCounter = rng.RangeInt(0, titanicPlainsList.Count);
 
-                        if (titanicPlainsList.Count > 1) do titanicPlainsCounter = rng.RangeInt(0, titanicPlainsList.Count); while (titanicPlainsCounter == titanicPlainsVariant);
-                        // Converting the list to a string array so I can pull values based off of index. There's probably a better way to do this, but...
-                        string[] titanicPlainsArray = titanicPlainsList.ToArray();
-                        if (titanicPlainsCounter == titanicPlainsList.Count) { }
-                        else
-                        {
-                            switch (titanicPlainsArray[titanicPlainsCounter])
-                            {
-                                case "Vanilla":
-                                    break;
+                        if (titanicPlainsList.Count > 1 && titanicPlainsCounter == titanicPlainsVariant)
+                            titanicPlainsCounter = (titanicPlainsCounter + 1) % titanicPlainsList.Count;
 
-                                case "Mostalgic":
+                        string[] titanicPlainsArray = titanicPlainsList.ToArray();
+                        string selectedTitanicPlainsVariant = titanicPlainsArray[titanicPlainsCounter];
+                        if (selectedTitanicPlainsVariant == "Vanilla")
+                        {
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedTitanicPlainsVariant)
+                            {
+                                case "Nostalgic":
                                     TitanicPlains.Nostalgic(rampFog);
                                     break;
 
@@ -284,28 +335,10 @@ namespace StageAesthetic
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = titanicPlainsArray[titanicPlainsCounter];
-                        }
-                        if (PlainsBridge.Value > 0)
-                        {
-                            int bridgeValue = Math.Min(PlainsBridge.Value - 1, 99);
-                            if (rng.RangeInt(bridgeValue, 100) <= bridgeValue)
-                            {
-                                try
-                                {
-                                    Transform bridgeObject = GameObject.Find("HOLDER: Ruined Pieces").transform.Find("MiniBridge");
-                                    bridgeObject.gameObject.SetActive(true);
-                                    bridgeObject.position = new Vector3(264.8f, -117.1f, -148.6f);
-                                    bridgeObject.eulerAngles = new Vector3(270, 277, 0);
-                                    bridgeObject.localScale = new Vector3(3.64f, 3.64f, 3.64f);
-                                }
-                                catch { }
-                            }
-                        }
-                        // Finally, the active variant is stored for the next time this stage is loaded.
+                        currentVariantName = selectedTitanicPlainsVariant;
                         titanicPlainsVariant = titanicPlainsCounter;
 
                         #endregion TitanicPlainsAndAlt
@@ -317,17 +350,21 @@ namespace StageAesthetic
                         #region AbandonedAqueduct
 
                         int abandonedAqueductCounter = rng.RangeInt(0, abandonedAqueductList.Count);
-                        if (abandonedAqueductList.Count > 1) do abandonedAqueductCounter = rng.RangeInt(0, abandonedAqueductList.Count); while (abandonedAqueductCounter == abandonedAqueductVariant);
-                        string[] abandonedAqueductArray = abandonedAqueductList.ToArray();
-                        if (abandonedAqueductCounter == abandonedAqueductList.Count) { }
-                        else
-                        {
-                            switch (abandonedAqueductArray[abandonedAqueductCounter])
-                            {
-                                case "Vanilla":
-                                    if (AqueductChanges.Value) AbandonedAqueduct.VanillaChanges();
-                                    break;
 
+                        if (abandonedAqueductList.Count > 1 && abandonedAqueductCounter == abandonedAqueductVariant)
+                            abandonedAqueductCounter = (abandonedAqueductCounter + 1) % abandonedAqueductList.Count;
+
+                        string[] abandonedAqueductArray = abandonedAqueductList.ToArray();
+                        string selectedAbandonedAqueductVariant = abandonedAqueductArray[abandonedAqueductCounter];
+                        if (selectedAbandonedAqueductVariant == "Vanilla")
+                        {
+                            if (AbandonedAqueductChanges.Value)
+                                AbandonedAqueduct.VanillaChanges();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedAbandonedAqueductVariant)
+                            {
                                 case "Dawn":
                                     AbandonedAqueduct.Dawn(rampFog);
                                     break;
@@ -345,11 +382,10 @@ namespace StageAesthetic
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = abandonedAqueductArray[abandonedAqueductCounter];
-                        }
+                        currentVariantName = selectedAbandonedAqueductVariant;
                         abandonedAqueductVariant = abandonedAqueductCounter;
 
                         #endregion AbandonedAqueduct
@@ -366,10 +402,13 @@ namespace StageAesthetic
                             aphelianSanctuaryCounter = (aphelianSanctuaryCounter + 1) % aphelianSanctuaryList.Count;
 
                         string[] aphelianSanctuaryArray = aphelianSanctuaryList.ToArray();
-                        string selectedVariant = aphelianSanctuaryArray[aphelianSanctuaryCounter];
-                        if (selectedVariant == "Vanilla") currentVariantName = "Vanilla";
+                        string selectedAphelianSanctuaryVariant = aphelianSanctuaryArray[aphelianSanctuaryCounter];
+                        if (selectedAphelianSanctuaryVariant == "Vanilla")
+                        {
+                            currentVariantName = "Vanilla";
+                        }
                         else
-                            switch (selectedVariant)
+                            switch (selectedAphelianSanctuaryVariant)
                             {
                                 case "Singularity":
                                     AphelianSanctuary.Singularity(rampFog, colorGrading);
@@ -388,10 +427,10 @@ namespace StageAesthetic
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                        currentVariantName = selectedVariant;
+                        currentVariantName = selectedAphelianSanctuaryVariant;
                         aphelianSanctuaryVariant = aphelianSanctuaryCounter;
 
                         #endregion AphelianSanctuary
@@ -402,45 +441,47 @@ namespace StageAesthetic
 
                         #region DryBasin
 
-                        int dryBasinCounter = rng.RangeInt(0, dryBasinList.Count);
-                        if (dryBasinList.Count > 1) do dryBasinCounter = rng.RangeInt(0, dryBasinList.Count); while (dryBasinCounter == dryBasinVariant);
-                        string[] dryBasinArray = dryBasinList.ToArray();
-                        if (dryBasinCounter == dryBasinList.Count) { }
-                        else
+                        SALogger.LogError("Loading Dry Basin, Forgotten Relics Loaded: " + Main.ForgottenRelicsLoaded);
+                        if (Main.ForgottenRelicsLoaded)
                         {
-                            basin();
-                            void basin()
-                            {
-                                FRCSharp.TheCoolerRampFog stupidAssFog = volume.GetComponent<FRCSharp.TheCoolerRampFog>();
-                                switch (dryBasinArray[dryBasinCounter])
-                                {
-                                    case "Vanilla":
-                                        if (BasinChanges.Value) DryBasin.VanillaChanges();
-                                        break;
+                            int dryBasinCounter = rng.RangeInt(0, dryBasinList.Count);
 
+                            var garbage = volume.GetComponent<FRCSharp.TheCoolerRampFog>();
+                            if (dryBasinList.Count > 1 && dryBasinCounter == dryBasinVariant)
+                                dryBasinCounter = (dryBasinCounter + 1) % dryBasinList.Count;
+
+                            string[] dryBasinArray = dryBasinList.ToArray();
+                            string selectedDryBasinVariant = dryBasinArray[dryBasinCounter];
+                            if (selectedDryBasinVariant == "Vanilla")
+                            {
+                                if (DryBasinChanges.Value)
+                                    DryBasin.VanillaChanges();
+                                currentVariantName = "Vanilla";
+                            }
+                            else
+                                switch (selectedDryBasinVariant)
+                                {
                                     case "Morning":
-                                        DryBasin.Morning(stupidAssFog, colorGrading);
+                                        DryBasin.Morning(garbage, rampFog);
                                         break;
 
                                     case "Blue":
-                                        DryBasin.Blue(stupidAssFog, colorGrading);
+                                        DryBasin.Blue(garbage, colorGrading, rampFog);
                                         break;
 
                                     case "Overcast":
-                                        DryBasin.Overcast(stupidAssFog, colorGrading);
+                                        DryBasin.Overcast(garbage, colorGrading, rampFog);
                                         break;
 
                                     default:
-                                        SALogger.LogDebug("uwu");
+                                        SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                         break;
                                 }
-                                currentVariantName = dryBasinArray[dryBasinCounter];
-                            }
+                            currentVariantName = selectedDryBasinVariant;
+                            dryBasinVariant = dryBasinCounter;
+
+                            #endregion DryBasin
                         }
-                        dryBasinVariant = dryBasinCounter;
-
-                        #endregion DryBasin
-
                         break;
 
                     case "foggyswamp":
@@ -448,42 +489,40 @@ namespace StageAesthetic
                         #region WetlandAspect
 
                         int wetlandAspectCounter = rng.RangeInt(0, wetlandAspectList.Count);
-                        if (wetlandAspectList.Count > 1) do wetlandAspectCounter = rng.RangeInt(0, wetlandAspectList.Count); while (wetlandAspectCounter == wetlandAspectVariant);
+
+                        if (wetlandAspectList.Count > 1 && wetlandAspectCounter == wetlandAspectVariant)
+                            wetlandAspectCounter = (wetlandAspectCounter + 1) % wetlandAspectList.Count;
+
                         string[] wetlandAspectArray = wetlandAspectList.ToArray();
-                        if (wetlandAspectCounter == wetlandAspectList.Count) { }
-                        else
+                        string selectedWetlandAspectVariant = wetlandAspectArray[wetlandAspectCounter];
+                        if (selectedWetlandAspectVariant == "Vanilla")
                         {
-                            switch (wetlandAspectArray[wetlandAspectCounter])
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedWetlandAspectVariant)
                             {
-                                case "Vanilla":
-                                    break;
-
                                 case "Sunset":
-
-                                    WetlandAspect.GoldSwamp(rampFog, colorGrading);
+                                    WetlandAspect.Sunset(rampFog, colorGrading);
                                     break;
 
-                                case "Sky":
-
-                                    WetlandAspect.PinkSwamp(rampFog, colorGrading);
+                                case "Morning":
+                                    WetlandAspect.Morning(rampFog, colorGrading);
                                     break;
 
-                                case "Dark":
-
-                                    WetlandAspect.MoreSwamp(rampFog);
+                                case "Night":
+                                    WetlandAspect.Night(rampFog);
                                     break;
 
                                 case "Void":
-
-                                    WetlandAspect.VoidSwamp(rampFog);
+                                    WetlandAspect.Void(rampFog);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = wetlandAspectArray[wetlandAspectCounter];
-                        }
+                        currentVariantName = selectedWetlandAspectVariant;
                         wetlandAspectVariant = wetlandAspectCounter;
 
                         #endregion WetlandAspect
@@ -495,42 +534,42 @@ namespace StageAesthetic
                         #region RallypointDelta
 
                         int rallypointDeltaCounter = rng.RangeInt(0, rallypointDeltaList.Count);
-                        if (rallypointDeltaList.Count > 1) do rallypointDeltaCounter = rng.RangeInt(0, rallypointDeltaList.Count); while (rallypointDeltaCounter == rallypointDeltaVariant);
+
+                        if (rallypointDeltaList.Count > 1 && rallypointDeltaCounter == rallypointDeltaVariant)
+                            rallypointDeltaCounter = (rallypointDeltaCounter + 1) % rallypointDeltaList.Count;
+
                         string[] rallypointDeltaArray = rallypointDeltaList.ToArray();
-                        if (rallypointDeltaCounter == rallypointDeltaList.Count) { }
-                        else
+                        string selectedRallypointDeltaVariant = rallypointDeltaArray[rallypointDeltaCounter];
+                        if (selectedRallypointDeltaVariant == "Vanilla")
                         {
-                            switch (rallypointDeltaArray[rallypointDeltaCounter])
+                            RallypointDelta.VanillaChanges();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedRallypointDeltaVariant)
                             {
-                                case "vanilla":
-                                    RallypointDelta.VanillaChanges();
+                                case "Night":
+                                    RallypointDelta.Night(rampFog, colorGrading);
                                     break;
 
-                                case "night":
-                                    RallypointDelta.NightWall(rampFog, colorGrading);
+                                case "Overcast":
+                                    RallypointDelta.Overcast(rampFog, volume);
                                     break;
 
-                                case "foggy":
-
-                                    RallypointDelta.OceanWall(rampFog);
+                                case "Sunset":
+                                    RallypointDelta.Sunset(rampFog, volume);
                                     break;
 
-                                case "green":
-                                    RallypointDelta.GreenWall(rampFog);
-                                    break;
-
-                                case "titanic":
-                                    RallypointDelta.TitanicWall(rampFog, colorGrading);
+                                case "Titanic":
+                                    RallypointDelta.Titanic(rampFog, colorGrading, volume);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = rallypointDeltaArray[rallypointDeltaCounter];
-                        }
+                        currentVariantName = selectedRallypointDeltaVariant;
                         rallypointDeltaVariant = rallypointDeltaCounter;
-                        // obligatory covid joke
 
                         #endregion RallypointDelta
 
@@ -541,48 +580,50 @@ namespace StageAesthetic
                         #region ScorchedAcres
 
                         int scorchedAcresCounter = rng.RangeInt(0, scorchedAcresList.Count);
-                        if (scorchedAcresList.Count > 1) do scorchedAcresCounter = rng.RangeInt(0, scorchedAcresList.Count); while (scorchedAcresCounter == scorchedAcresVariant);
+
+                        if (scorchedAcresList.Count > 1 && scorchedAcresCounter == scorchedAcresVariant)
+                            scorchedAcresCounter = (scorchedAcresCounter + 1) % scorchedAcresList.Count;
+
                         string[] scorchedAcresArray = scorchedAcresList.ToArray();
-                        if (scorchedAcresCounter == scorchedAcresList.Count) { }
-                        else
+                        string selectedScorchedAcresVariant = scorchedAcresArray[scorchedAcresCounter];
+                        if (selectedScorchedAcresVariant == "Vanilla")
                         {
-                            switch (scorchedAcresArray[scorchedAcresCounter])
+                            if (ScorchedAcresChanges.Value)
+                                ScorchedAcres.VanillaChanges();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedScorchedAcresVariant)
                             {
-                                case "vanilla":
-                                    if (AcresChanges.Value) ScorchedAcres.VanillaChanges();
+                                case "Sunset":
+                                    ScorchedAcres.Sunset(rampFog, colorGrading);
                                     break;
 
-                                case "sunset":
-
-                                    ScorchedAcres.SunsetAcres(rampFog, colorGrading);
+                                case "Night":
+                                    ScorchedAcres.Night(rampFog);
                                     break;
 
-                                case "night":
-                                    ScorchedAcres.MoonAcres(rampFog);
+                                case "Jade":
+                                    ScorchedAcres.Jade(rampFog);
                                     break;
 
-                                case "nothing":
-                                    ScorchedAcres.OddAcres(rampFog);
+                                case "SunnyBeta":
+                                    ScorchedAcres.SunnyBeta(rampFog);
                                     break;
 
-                                case "beta":
-                                    ScorchedAcres.BetaAcres(rampFog);
+                                case "CrimsonBeta":
+                                    ScorchedAcres.CrimsonBeta(rampFog);
                                     break;
 
-                                case "beta2":
-                                    ScorchedAcres.BetaAcres2(rampFog);
-                                    break;
-
-                                case "twilight":
-                                    ScorchedAcres.TwilightAcres(rampFog);
+                                case "Twilight":
+                                    ScorchedAcres.Twilight(rampFog);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = scorchedAcresArray[scorchedAcresCounter];
-                        }
+                        currentVariantName = selectedScorchedAcresVariant;
                         scorchedAcresVariant = scorchedAcresCounter;
 
                         #endregion ScorchedAcres
@@ -594,38 +635,36 @@ namespace StageAesthetic
                         #region SulfurPools
 
                         int sulfurPoolsCounter = rng.RangeInt(0, sulfurPoolsList.Count);
-                        if (sulfurPoolsList.Count > 1) do sulfurPoolsCounter = rng.RangeInt(0, sulfurPoolsList.Count); while (sulfurPoolsCounter == sulfurPoolsVariant);
+                        if (sulfurPoolsList.Count > 1 && sulfurPoolsCounter == sulfurPoolsVariant)
+                            sulfurPoolsCounter = (sulfurPoolsCounter + 1) % sulfurPoolsList.Count;
+
                         string[] sulfurPoolsArray = sulfurPoolsList.ToArray();
-                        if (sulfurPoolsCounter == sulfurPoolsList.Count) { }
-                        else
+                        string selectedSulfurPoolsVariant = sulfurPoolsArray[sulfurPoolsCounter];
+                        if (selectedSulfurPoolsVariant == "Vanilla")
                         {
-                            switch (sulfurPoolsArray[sulfurPoolsCounter])
+                            SulfurPools.Vanilla();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedSulfurPoolsVariant)
                             {
-                                case "vanilla":
-                                    SulfurPools.VanillaPools();
+                                case "Coral":
+                                    SulfurPools.Coral(rampFog);
                                     break;
 
-                                case "coralblue":
-
-                                    SulfurPools.CoralBluePools(rampFog);
+                                case "Hell":
+                                    SulfurPools.Hell(rampFog);
                                     break;
 
-                                case "hell":
-
-                                    SulfurPools.HellOnEarthPools(rampFog);
-                                    break;
-
-                                case "void":
-
-                                    SulfurPools.VoidPools(rampFog, colorGrading);
+                                case "Void":
+                                    SulfurPools.Void(rampFog, colorGrading);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = sulfurPoolsArray[sulfurPoolsCounter];
-                        }
+                        currentVariantName = selectedSulfurPoolsVariant;
                         sulfurPoolsVariant = sulfurPoolsCounter;
 
                         #endregion SulfurPools
@@ -633,36 +672,44 @@ namespace StageAesthetic
                         break;
 
                     case "FBLScene":
+
+                        #region FogboundLagoon
+
                         int fogboundLagoonCounter = rng.RangeInt(0, fogboundLagoonList.Count);
-                        if (fogboundLagoonList.Count > 1) do fogboundLagoonCounter = rng.RangeInt(0, fogboundLagoonList.Count); while (fogboundLagoonCounter == fogboundLagoonVariant);
+
+                        if (fogboundLagoonList.Count > 1 && fogboundLagoonCounter == fogboundLagoonVariant)
+                            fogboundLagoonCounter = (fogboundLagoonCounter + 1) % fogboundLagoonList.Count;
+
                         string[] fogboundLagoonArray = fogboundLagoonList.ToArray();
-                        if (fogboundLagoonCounter == fogboundLagoonList.Count) { }
-                        else
+                        string selectedFogboundLagoonVariant = fogboundLagoonArray[fogboundLagoonCounter];
+                        if (selectedFogboundLagoonVariant == "Vanilla")
                         {
-                            switch (fogboundLagoonArray[fogboundLagoonCounter])
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedFogboundLagoonVariant)
                             {
-                                case "vanilla":
+                                case "Clear":
+                                    FogboundLagoon.Clear(rampFog);
                                     break;
 
-                                case "clearer":
-                                    FogboundLagoon.ClearerLagoon(rampFog);
+                                case "Twilight":
+                                    FogboundLagoon.Twilight(rampFog);
                                     break;
 
-                                case "twilight":
-                                    FogboundLagoon.TwilightLagoon(rampFog);
-                                    break;
-
-                                case "overcast":
-                                    FogboundLagoon.OvercastLagoon(rampFog, colorGrading);
+                                case "Overcast":
+                                    FogboundLagoon.Overcast(rampFog, colorGrading);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = fogboundLagoonArray[fogboundLagoonCounter];
-                        }
+                        currentVariantName = selectedFogboundLagoonVariant;
                         fogboundLagoonVariant = fogboundLagoonCounter;
+
+                        #endregion FogboundLagoon
+
                         break;
 
                     case "dampcavesimple":
@@ -670,41 +717,42 @@ namespace StageAesthetic
                         #region AbyssalDepths
 
                         int abyssalDepthsCounter = rng.RangeInt(0, abyssalDepthsList.Count);
-                        if (abyssalDepthsList.Count > 1) do abyssalDepthsCounter = rng.RangeInt(0, abyssalDepthsList.Count); while (abyssalDepthsCounter == abyssalDepthsVariant);
+
+                        if (abyssalDepthsList.Count > 1 && abyssalDepthsCounter == abyssalDepthsVariant)
+                            abyssalDepthsCounter = (abyssalDepthsCounter + 1) % abyssalDepthsList.Count;
+
                         string[] abyssalDepthsArray = abyssalDepthsList.ToArray();
-                        if (abyssalDepthsCounter == abyssalDepthsList.Count) { }
-                        else
+                        string selectedAbyssalDepthsVariant = abyssalDepthsArray[abyssalDepthsCounter];
+                        if (selectedAbyssalDepthsVariant == "Vanilla")
                         {
-                            switch (abyssalDepthsArray[abyssalDepthsCounter])
+                            if (AbyssalDepthsChanges.Value)
+                                AbyssalDepths.VanillaChanges();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedAbyssalDepthsVariant)
                             {
-                                case "vanilla":
-                                    if (DepthsChanges.Value) AbyssalDepths.VanillaChanges();
+                                case "Blue":
+                                    AbyssalDepths.Blue(rampFog, colorGrading);
                                     break;
 
-                                case "hive":
-                                    AbyssalDepths.HiveCave(rampFog, colorGrading);
+                                case "Night":
+                                    AbyssalDepths.Night(rampFog, colorGrading);
                                     break;
 
-                                case "dark":
-                                    AbyssalDepths.DarkCave(rampFog, colorGrading);
+                                case "Orange":
+                                    AbyssalDepths.Orange(rampFog);
                                     break;
 
-                                case "orange":
-
-                                    AbyssalDepths.OrangeCave(rampFog);
-                                    break;
-
-                                case "coral":
-
-                                    AbyssalDepths.CoralCave(rampFog, colorGrading);
+                                case "Coral":
+                                    AbyssalDepths.Coral(rampFog, colorGrading);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = abyssalDepthsArray[abyssalDepthsCounter];
-                        }
+                        currentVariantName = selectedAbyssalDepthsVariant;
                         abyssalDepthsVariant = abyssalDepthsCounter;
 
                         #endregion AbyssalDepths
@@ -716,40 +764,40 @@ namespace StageAesthetic
                         #region SirensCall
 
                         int sirensCallCounter = rng.RangeInt(0, sirensCallList.Count);
-                        if (sirensCallList.Count > 1) do sirensCallCounter = rng.RangeInt(0, sirensCallList.Count); while (sirensCallCounter == sirensCallVariant);
+
+                        if (sirensCallList.Count > 1 && sirensCallCounter == sirensCallVariant)
+                            sirensCallCounter = (sirensCallCounter + 1) % sirensCallList.Count;
+
                         string[] sirensCallArray = sirensCallList.ToArray();
-                        if (sirensCallCounter == sirensCallList.Count) { }
-                        else
+                        string selectedSirensCallVariant = sirensCallArray[sirensCallCounter];
+                        if (selectedSirensCallVariant == "Vanilla")
                         {
-                            switch (sirensCallArray[sirensCallCounter])
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedSirensCallVariant)
                             {
-                                case "vanilla":
+                                case "Night":
+                                    SirensCall.Night(rampFog, colorGrading);
                                     break;
 
-                                case "night":
-                                    SirensCall.ShipNight(rampFog, colorGrading);
+                                case "Sunny":
+                                    SirensCall.Sunny(rampFog);
                                     break;
 
-                                case "sunny":
-                                    SirensCall.ShipSkies(rampFog);
+                                case "Overcast":
+                                    SirensCall.Overcast(rampFog);
                                     break;
 
-                                case "storm":
-
-                                    SirensCall.ShipDeluge(rampFog);
-                                    break;
-
-                                case "aphelian":
-
-                                    SirensCall.ShipAphelian(rampFog, colorGrading);
+                                case "Aphelian":
+                                    SirensCall.Aphelian(rampFog, colorGrading);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = sirensCallArray[sirensCallCounter];
-                        }
+                        currentVariantName = selectedSirensCallVariant;
                         sirensCallVariant = sirensCallCounter;
 
                         #endregion SirensCall
@@ -761,40 +809,41 @@ namespace StageAesthetic
                         #region SunderedGrove
 
                         int sunderedGroveCounter = rng.RangeInt(0, sunderedGroveList.Count);
-                        if (sunderedGroveList.Count > 1) do sunderedGroveCounter = rng.RangeInt(0, sunderedGroveList.Count); while (sunderedGroveCounter == sunderedGroveVariant);
+
+                        if (sunderedGroveList.Count > 1 && sunderedGroveCounter == sunderedGroveVariant)
+                            sunderedGroveCounter = (sunderedGroveCounter + 1) % sunderedGroveList.Count;
+
                         string[] sunderedGroveArray = sunderedGroveList.ToArray();
-                        if (sunderedGroveCounter == sunderedGroveList.Count) { }
-                        else
+                        string selectedSunderedGroveVariant = sunderedGroveArray[sunderedGroveCounter];
+                        if (selectedSunderedGroveVariant == "Vanilla")
                         {
-                            switch (sunderedGroveArray[sunderedGroveCounter])
+                            SunderedGrove.Vanilla();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedSunderedGroveVariant)
                             {
-                                case "vanilla":
-                                    SunderedGrove.VanillaJungle();
+                                case "Jade":
+                                    SunderedGrove.Jade(rampFog, colorGrading);
                                     break;
 
-                                case "green":
-                                    SunderedGrove.GreenJungle(rampFog, colorGrading);
+                                case "Sunny":
+                                    SunderedGrove.Sunny(rampFog, colorGrading);
                                     break;
 
-                                case "sunny":
-                                    SunderedGrove.SunJungle(rampFog, colorGrading);
+                                case "Overcast":
+                                    SunderedGrove.Overcast(rampFog, colorGrading);
                                     break;
 
-                                case "storm":
-
-                                    SunderedGrove.StormJungle(rampFog, colorGrading);
-                                    break;
-
-                                case "sandy":
-                                    SunderedGrove.SandyJungle(rampFog);
+                                case "Abandoned":
+                                    SunderedGrove.Abandoned(rampFog);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = sunderedGroveArray[sunderedGroveCounter];
-                        }
+                        currentVariantName = selectedSunderedGroveVariant;
                         sunderedGroveVariant = sunderedGroveCounter;
 
                         #endregion SunderedGrove
@@ -806,49 +855,46 @@ namespace StageAesthetic
                         #region SkyMeadow
 
                         int skyMeadowCounter = rng.RangeInt(0, skyMeadowList.Count);
-                        if (skyMeadowList.Count > 1) do skyMeadowCounter = rng.RangeInt(0, skyMeadowList.Count); while (skyMeadowCounter == skyMeadowVariant);
+
+                        if (skyMeadowList.Count > 1 && skyMeadowCounter == skyMeadowVariant)
+                            skyMeadowCounter = (skyMeadowCounter + 1) % skyMeadowList.Count;
+
                         string[] skyMeadowArray = skyMeadowList.ToArray();
-                        if (skyMeadowCounter == skyMeadowList.Count) { }
-                        else
+                        string selectedSkyMeadowVariant = skyMeadowArray[skyMeadowCounter];
+                        if (selectedSkyMeadowVariant == "Vanilla")
                         {
-                            switch (skyMeadowArray[skyMeadowCounter])
+                            if (SkyMeadowChanges.Value)
+                                SkyMeadow.VanillaChanges();
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedSkyMeadowVariant)
                             {
-                                case "vanilla":
-
-                                    if (MeadowChanges.Value) SkyMeadow.VanillaChanges();
+                                case "Night":
+                                    SkyMeadow.Night(rampFog);
                                     break;
 
-                                case "night":
-
-                                    SkyMeadow.NightMeadow(rampFog);
+                                case "Overcast":
+                                    SkyMeadow.Overcast(rampFog);
                                     break;
 
-                                case "storm":
-
-                                    SkyMeadow.StormyMeadow(rampFog);
+                                case "Abyssal":
+                                    SkyMeadow.Abyssal(rampFog, colorGrading);
                                     break;
 
-                                case "abyss":
-
-                                    SkyMeadow.AbyssalMeadow(rampFog, colorGrading);
+                                case "Titanic":
+                                    SkyMeadow.Titanic(rampFog);
                                     break;
 
-                                case "titanic":
-
-                                    SkyMeadow.TitanicMeadow(rampFog);
-                                    break;
-
-                                case "sandy":
-
-                                    SkyMeadow.SandyMeadow(rampFog);
+                                case "Abandoned":
+                                    SkyMeadow.Abandoned(rampFog);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = skyMeadowArray[skyMeadowCounter];
-                        }
+                        currentVariantName = selectedSkyMeadowVariant;
                         skyMeadowVariant = skyMeadowCounter;
 
                         #endregion SkyMeadow
@@ -860,38 +906,40 @@ namespace StageAesthetic
                         #region Commencement
 
                         int commencementCounter = rng.RangeInt(0, commencementList.Count);
-                        if (commencementList.Count > 1) do commencementCounter = rng.RangeInt(0, commencementList.Count); while (commencementCounter == commencementVariant);
+
+                        if (commencementList.Count > 1 && commencementCounter == commencementVariant)
+                            commencementCounter = (commencementCounter + 1) % commencementList.Count;
+
                         string[] commencementArray = commencementList.ToArray();
-                        if (commencementCounter == commencementList.Count) { }
-                        else
+                        string selectedCommencementVariant = commencementArray[commencementCounter];
+                        if (selectedCommencementVariant == "Vanilla")
                         {
-                            switch (commencementArray[commencementCounter])
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedCommencementVariant)
                             {
-                                case "vanilla":
+                                case "Night":
+                                    Commencement.Night(rampFog);
                                     break;
 
-                                case "dark":
-                                    Commencement.DarkCommencement(rampFog);
+                                case "Crimson":
+                                    Commencement.Crimson(rampFog);
                                     break;
 
-                                case "crimson":
-                                    Commencement.CrimsonCommencement(rampFog);
+                                case "Corruption":
+                                    Commencement.Corruption(rampFog);
                                     break;
 
-                                case "corruption":
-                                    Commencement.CorruptionCommencement(rampFog);
-                                    break;
-
-                                case "gray":
-                                    Commencement.GrayCommencement(rampFog);
+                                case "Gray":
+                                    Commencement.Gray(rampFog);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = commencementArray[commencementCounter];
-                        }
+                        currentVariantName = selectedCommencementVariant;
                         commencementVariant = commencementCounter;
 
                         #endregion Commencement
@@ -903,126 +951,44 @@ namespace StageAesthetic
                         #region VoidLocus
 
                         int voidLocusCounter = rng.RangeInt(0, voidLocusList.Count);
-                        if (voidLocusList.Count > 1) do voidLocusCounter = rng.RangeInt(0, voidLocusList.Count); while (voidLocusCounter == voidLocusVariant);
+
+                        if (voidLocusList.Count > 1 && voidLocusCounter == voidLocusVariant)
+                            voidLocusCounter = (voidLocusCounter + 1) % voidLocusList.Count;
+
                         string[] voidLocusArray = voidLocusList.ToArray();
-                        if (voidLocusCounter == voidLocusList.Count) { }
-                        else
+                        string selectedVoidLocusVariant = voidLocusArray[voidLocusCounter];
+                        if (selectedVoidLocusVariant == "Vanilla")
                         {
-                            switch (voidLocusArray[voidLocusCounter])
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedVoidLocusVariant)
                             {
-                                case "vanilla":
+                                case "Twilight":
+                                    VoidLocus.Twilight(rampFog, colorGrading);
                                     break;
 
-                                case "blue":
-
-                                    VoidLocus.BlueLocus(rampFog, colorGrading);
+                                case "Pink":
+                                    VoidLocus.Pink(rampFog, colorGrading);
                                     break;
 
-                                case "pink":
-
-                                    VoidLocus.PinkLocus(rampFog, colorGrading);
-                                    break;
-
-                                case "green":
-
-                                    VoidLocus.GreenLocus(rampFog, colorGrading);
+                                case "Blue":
+                                    VoidLocus.Blue(rampFog, colorGrading);
                                     break;
 
                                 default:
-                                    SALogger.LogDebug("uwu");
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
-                            currentVariantName = voidLocusArray[voidLocusCounter];
-                        }
+                        currentVariantName = selectedVoidLocusVariant;
                         voidLocusVariant = voidLocusCounter;
 
                         #endregion VoidLocus
 
                         break;
-
-                    case "voidraid":
-
-                        #region ThePlanetarium
-
-                        int thePlanetariumCounter = rng.RangeInt(0, thePlanetariumList.Count);
-                        if (thePlanetariumList.Count > 1) do thePlanetariumCounter = rng.RangeInt(0, thePlanetariumList.Count); while (thePlanetariumCounter == thePlanetariumVariant);
-                        string[] thePlanetariumArray = thePlanetariumList.ToArray();
-                        if (thePlanetariumCounter == thePlanetariumList.Count) { }
-                        else
-                        {
-                            switch (thePlanetariumArray[thePlanetariumCounter])
-                            {
-                                case "vanilla":
-                                    break;
-                                /*
-                            case "purple":
-
-                                Planetarium.PurplePlanetarium(fog, cgrade);
-                                break;
-
-                            case "twilight":
-
-                                Planetarium.TwilightPlanetarium();
-                                break;
-
-                                */
-                                default:
-                                    SALogger.LogDebug("uwu");
-                                    break;
-                            }
-                            currentVariantName = thePlanetariumArray[thePlanetariumCounter];
-                        }
-                        thePlanetariumVariant = thePlanetariumCounter;
-
-                        #endregion ThePlanetarium
-
-                        break;
-                }
-
-                if (scene.name == "title")
-                {
-                    var menuBase = GameObject.Find("MainMenu").transform;
-
-                    if (TitleScene.Value)
-                    {
-                        var graphicBase = GameObject.Find("HOLDER: Title Background").transform;
-                        graphicBase.Find("Terrain").gameObject.SetActive(true);
-                        graphicBase.Find("CamDust").gameObject.SetActive(true);
-                        graphicBase.Find("Misc Props").Find("DeadCommando").localPosition = new Vector3(16, -2f, 27);
-                        ParticleSystem menuRain = menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject.GetComponent<ParticleSystem>();
-                        var epic = menuRain.emission;
-                        var epic2 = epic.rateOverTime; // 30 constant, 30 constantmax, 0 constantmin, 0 curvemultiplier
-                        epic.rateOverTime = new ParticleSystem.MinMaxCurve()
-                        {
-                            constant = 100,
-                            constantMax = 100,
-                            constantMin = 60,
-                            curve = epic2.curve,
-                            curveMax = epic2.curveMax,
-                            curveMin = epic2.curveMax,
-                            curveMultiplier = epic2.curveMultiplier,
-                            mode = epic2.mode
-                        };
-                        var epic3 = menuRain.colorOverLifetime;
-                        epic3.enabled = false;
-                        menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").eulerAngles = new Vector3(80, 90, 0);
-                        WindZone menuWind = GameObject.Find("HOLDER: Title Background").transform.Find("FX").Find("WindZone").gameObject.GetComponent<WindZone>();
-                        menuWind.windMain = 0.5f;
-                        menuWind.windTurbulence = 1;
-                    }
                 }
                 volume.profile.name = "SA Profile" + " (" + currentVariantName + ")";
             }
-        }
-
-        private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
-        {
-            ChangeProfile(SceneManager.GetActiveScene().name);
-            orig(self);
-        }
-
-        private static void ChangeProfile(string scenename)
-        {
         }
 
         public static PostProcessVolume volume;
@@ -1030,8 +996,10 @@ namespace StageAesthetic
         #region Jank
 
         public static int distantRoostVariant = -1;
+        public static int distantRoostAltVariant = -1;
         public static int siphonedForestVariant = -1;
         public static int titanicPlainsVariant = -1;
+        public static int titanicPlainsAltVariant = -1;
 
         public static int abandonedAqueductVariant = -1;
         public static int aphelianSanctuaryVariant = -1;
@@ -1053,8 +1021,6 @@ namespace StageAesthetic
 
         public static int voidLocusVariant = -1;
 
-        public static int thePlanetariumVariant = -1;
-
         public static int currentVariant;
 
         #endregion Jank
@@ -1065,34 +1031,31 @@ namespace StageAesthetic
 
         internal static BepInEx.Logging.ManualLogSource SALogger;
 
-        public static ConfigEntry<bool> TitleScene { get; set; }
-        public static ConfigEntry<bool> WeatherEffects { get; set; }
-
         #region VariantContainers
 
-        public static List<string> titanicPlainsList = new();
         public static List<string> distantRoostList = new();
+        public static List<string> distantRoostAltList = new();
         public static List<string> siphonedForestList = new();
+        public static List<string> titanicPlainsList = new();
 
-        public static List<string> wetlandAspectList = new();
         public static List<string> abandonedAqueductList = new();
         public static List<string> aphelianSanctuaryList = new();
         public static List<string> dryBasinList = new();
+        public static List<string> wetlandAspectList = new();
 
+        public static List<string> fogboundLagoonList = new();
         public static List<string> rallypointDeltaList = new();
         public static List<string> scorchedAcresList = new();
         public static List<string> sulfurPoolsList = new();
-        public static List<string> fogboundLagoonList = new();
 
         public static List<string> abyssalDepthsList = new();
-        public static List<string> sunderedGroveList = new();
         public static List<string> sirensCallList = new();
+        public static List<string> sunderedGroveList = new();
 
         public static List<string> skyMeadowList = new();
 
         public static List<string> commencementList = new();
         public static List<string> voidLocusList = new();
-        public static List<string> thePlanetariumList = new();
 
         #endregion VariantContainers
     }

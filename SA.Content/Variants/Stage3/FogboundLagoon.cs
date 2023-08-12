@@ -7,32 +7,43 @@ namespace StageAesthetic.Variants.Stage3
 {
     internal class FogboundLagoon
     {
-        public static void ClearerLagoon(RampFog fog)
+        public static void Clear(RampFog fog)
         {
             fog.fogPower.value = 1f;
             fog.fogColorStart.value = new Color32(130, 126, 27, 5);
             fog.fogColorMid.value = new Color32(84, 116, 117, 61);
-            fog.fogColorEnd.value = new Color32(107, 117, 85, 255);
+            fog.fogColorEnd.value = new Color32(95, 135, 181, 255);
+            fog.fogOne.value = 0.7f;
+            fog.fogZero.value = -0.04f;
             var sun = GameObject.Find("HOLDER: Lights, FX, Wind").transform.GetChild(0);
             var sun2 = Object.Instantiate(sun);
             sun.gameObject.SetActive(false);
             var newSun = sun2.GetComponent<Light>();
             newSun.intensity = 1f;
+            newSun.shadowStrength = 0.7f;
 
             var waterPP = GameObject.Find("HOLDER: Water").transform.GetChild(0).GetChild(0).GetComponent<PostProcessVolume>();
             var fog2 = waterPP.profile.GetSetting<RampFog>();
-            fog2.fogColorStart.value = new Color32(0, 255, 221, 0);
-            fog2.fogColorMid.value = new Color32(53, 36, 54, 46);
-            fog2.fogColorEnd.value = new Color32(63, 89, 77, 239);
+            fog2.fogColorStart.value = new Color32(130, 126, 27, 0);
+            fog2.fogColorMid.value = new Color32(77, 142, 136, 61);
+            fog2.fogColorEnd.value = new Color32(78, 110, 123, 230);
+            fog2.fogIntensity.value = 1f;
+            fog2.fogPower.value = 1f;
+            fog2.fogZero.value = 0f;
+            fog2.fogOne.value = 0.2f;
             var cg = waterPP.profile.GetSetting<ColorGrading>();
             cg.colorFilter.value = new Color32(191, 255, 244, 255);
         }
 
-        public static void TwilightLagoon(RampFog fog)
+        public static void Twilight(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(146, 113, 158, 36);
+            fog.fogIntensity.value = 0.8f;
+            fog.fogPower.value = 0.43f;
+            fog.fogZero.value = -0.02f;
+            fog.fogOne.value = 0.4f;
+            fog.fogColorStart.value = new Color32(120, 113, 158, 0);
             fog.fogColorMid.value = new Color32(128, 102, 72, 57);
-            fog.fogColorEnd.value = new Color32(85, 74, 91, 255);
+            fog.fogColorEnd.value = new Color32(85, 74, 91, 233);
             fog.skyboxStrength.value = 0.02f;
             var sun = GameObject.Find("HOLDER: Lights, FX, Wind").transform.GetChild(0);
             var sun2 = Object.Instantiate(sun);
@@ -48,10 +59,10 @@ namespace StageAesthetic.Variants.Stage3
             fog2.fogColorEnd.value = new Color32(91, 65, 86, 255);
         }
 
-        public static void OvercastLagoon(RampFog fog, ColorGrading cg)
+        public static void Overcast(RampFog fog, ColorGrading cg)
         {
             fog.fogColorStart.value = new Color32(140, 117, 150, 37);
-            fog.fogColorMid.value = new Color32(84, 89, 117, 91);
+            fog.fogColorMid.value = new Color32(84, 89, 117, 50);
             fog.fogColorEnd.value = new Color32(74, 87, 91, 255);
             fog.skyboxStrength.value = 0.015f;
             fog.fogZero.value = -0.12f;

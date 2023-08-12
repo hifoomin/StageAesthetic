@@ -82,17 +82,31 @@ namespace StageAesthetic.Variants.Stage2
             cgrade.SetAllOverridesTo(true);
             cgrade.colorFilter.value = new Color32(181, 178, 219, 255);
             cgrade.saturation.value = -5f;
-            cloud.transform.localPosition = new Vector3(-22.8f, -70f, 46.7f);
+            cloud.transform.localPosition = new Vector3(-22.8f, -138f, 46.7f);
             fog.fogColorStart.value = new Color32(102, 51, 40, 81);
             fog.fogColorMid.value = new Color32(56, 87, 89, 93);
             fog.fogColorEnd.value = new Color32(104, 23, 54, 255);
             fog.skyboxStrength.value = 0f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(255, 234, 209, 255);
-            sunLight.intensity = 2f;
-            sunLight.shadowStrength = 0.6f;
+            sunLight.intensity = 2.5f;
+            sunLight.shadowStrength = 0.4f;
             var fog1 = GameObject.Find("HOLDER: Cards");
-            fog1.transform.position = new Vector3(0f, 48f, 0f);
+            fog1.transform.localPosition = new Vector3(0f, 110f, 0f);
+
+            var cloud1 = fog1.transform.GetChild(1);
+            cloud1.transform.localPosition = new Vector3(87.5f, -66f, 0f);
+            cloud1.transform.localScale = new Vector3(120f, 120f, 120f);
+
+            for (int i = 0; i < 5; i++)
+            {
+                var instantiated = Object.Instantiate(cloud1.gameObject);
+                instantiated.transform.localPosition = new Vector3(87.5f + (2.5f * i), -10f + (i * 12f), 0f - (i * 5f));
+                instantiated.transform.localScale = new Vector3(120f, 120f, 120f);
+            }
+
+            var fuckYou = fog1.transform.GetChild(0);
+            fuckYou.transform.localPosition = new Vector3(-38.4f, -66f, -7.5f);
 
             var sun = GameObject.Find("Sun");
             sun.SetActive(false);
@@ -111,7 +125,7 @@ namespace StageAesthetic.Variants.Stage2
                         if (biggerProps)
                         {
                             var light = meshBase.AddComponent<Light>();
-                            light.color = new Color32(249, 212, 96, 225);
+                            light.color = new Color32(125, 43, 48, 225);
                             light.intensity = 6f;
                             light.range = 24f;
                         }
@@ -133,58 +147,59 @@ namespace StageAesthetic.Variants.Stage2
                     }
                 }
             }
-            AbyssalMaterials();
             AbyssalFoliage();
+            AbyssalMaterials();
         }
 
         public static void AbyssalMaterials()
         {
-            var dirt = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texDirt.png");
-            var notThatReb = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texRedGrass.png");
-            var notThatWhite = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texLavenderGravel.png");
-
             var cloud = GameObject.Find("Cloud3");
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             var stupidList = Object.FindObjectsOfType(typeof(SkinnedMeshRenderer)) as SkinnedMeshRenderer[];
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainWalls.mat").WaitForCompletion());
             terrainMat.SetFloat("_GreenChannelBias", 0.4312f);
             terrainMat.SetFloat("_BlueChannelBias", -0.257f);
-            terrainMat.SetTexture("_GreenChannelTex", notThatReb);
-            terrainMat.SetTexture("_BlueChannelTex", notThatWhite);
-            /*
-            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcavesimple/matDCBoulder.mat").WaitForCompletion());
-            terrainMat2.color = new Color32(162, 0, 0, 194);
-            terrainMat2.SetFloat("_NormalStrength", 0.16f);
-            terrainMat2.SetFloat("_SpecularStrength", 0.03f);
-            terrainMat2.SetFloat("_SpecularExponent", 8f);
-            terrainMat2.SetFloat("_Smoothness", 0.6477f);
-            terrainMat2.SetFloat("_SnowSpecularStrength", 0.015f);
-            terrainMat2.SetFloat("_SnowSpecularExponent", 8f);
-            terrainMat2.SetFloat("_SnowSmoothness", 0.5f);
-            terrainMat2.SetFloat("_Depth", 0.29f);
-            terrainMat2.SetFloat("_TriplanarTextureFactor", 0.19f);
-            terrainMat2.SetTexture("_SnowTex", dirt);
-            terrainMat2.SetTextureScale("_SnowTex", new Vector2(1f, 1f));
-            terrainMat2.SetTextureScale("_NormalTex", new Vector2(3f, 1.5f));
-            */
-            var terrainMat2 = Main.stageaesthetic.LoadAsset<Material>("Assets/StageAesthetic/Materials/matAbyssalPlatform.mat");
+            terrainMat.SetTexture("_GreenChannelTex", Main.abyssalGrass);
+            terrainMat.SetTexture("_BlueChannelTex", Main.abyssalGravel);
+            terrainMat.SetFloat("_GreenChannelSpecularStrength", 0.01f);
+            terrainMat.SetFloat("_GreenChannelSmoothness", 0.5f);
+            terrainMat.SetFloat("_RedChannelSmoothness", 0.3f);
+            terrainMat.SetFloat("_RedChannelSpecularExponent", 0.1f);
+            terrainMat.SetFloat("_RedChannelSpecularStrength", 0.002f);
+
+            var terrainMat2 = Main.abyssalPlatform;
+
+            var ramp = Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/ColorRamps/texRampArtifactShellSoft.png").WaitForCompletion();
+
             var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGold.mat").WaitForCompletion());
-            detailMat.color = new Color32(144, 130, 82, 255);
+            detailMat.color = new Color32(93, 23, 33, 255);
+            detailMat.SetTexture("_FresnelRamp", ramp);
+            detailMat.SetFloat("_FresnelBoost", 4f);
+            detailMat.SetFloat("_FresnelPower", 5f);
+            detailMat.SetInt("_RampInfo", 1);
+            detailMat.SetFloat("_SpecularStrength", 0.14f);
+            detailMat.SetFloat("_SpecularExponent", 6f);
             var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
-            detailMat2.SetFloat("_BlueChannelBias", 0.1f);
+            detailMat2.SetFloat("_BlueChannelBias", 0.3f);
             detailMat2.SetFloat("_BlueChannelSpecularStrength", 0.2545f);
             detailMat2.SetFloat("_BlueChannelSpecularExponent", 3.09f);
-            detailMat2.SetFloat("_BlueChannelSmoothness", 0.3f);
+            detailMat2.SetFloat("_BlueChannelSmoothness", 0.7f);
             detailMat2.SetFloat("_NormalStrength", 0.923f);
             detailMat2.SetFloat("_TextureFactor", 0.041f);
             detailMat2.SetFloat("_Depth", 0.42f);
             detailMat2.SetFloat("_RedChannelBias", 2f);
             var detailMat3 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/snowyforest/matSFSap.mat").WaitForCompletion());
-            detailMat3.color = new Color32(87, 79, 52, 255);
+            detailMat3.color = new Color32(134, 108, 148, 179);
             detailMat3.SetFloat("_SpecularStrength", 0.2041f);
             detailMat3.SetFloat("_SpecularExponent", 10.7f);
 
             detailMat3.shaderKeywords = new string[] { "IGNORE_BIAS", "MICROFACET_SNOW", "TRIPLANAR" };
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
 
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3)
             {
@@ -197,7 +212,7 @@ namespace StageAesthetic.Variants.Stage2
                     {
                         if (meshParent != null)
                         {
-                            if (meshParent.name.Contains("TempleTop") && meshBase.name.Contains("RuinBlock"))
+                            if (meshParent.name.Contains("TempleTop") && meshBase.name.Contains("RuinBlock") || meshBase.name.Contains("GPRuinBlockQuarter"))
                             {
                                 if (mr.sharedMaterial)
                                 {
@@ -207,68 +222,34 @@ namespace StageAesthetic.Variants.Stage2
                         }
                         if (meshBase.name.Equals("Terrain"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try
-                                    {
-                                        var sharedMaterials = mr.sharedMaterials;
-                                        for (int i = 0; i < mr.sharedMaterials.Length; i++)
-                                        {
-                                            sharedMaterials[i] = detailMat2;
-                                        }
-                                        mr.sharedMaterials = sharedMaterials;
-                                    }
-                                    catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    var sharedMaterials2 = mr.sharedMaterials;
-                                    for (int i = 0; i < mr.sharedMaterials.Length; i++)
-                                    {
-                                        sharedMaterials2[i] = detailMat2;
-                                    }
-                                    mr.sharedMaterials = sharedMaterials2;
-                                    break;
+                                var sharedMaterials = mr.sharedMaterials;
+                                for (int i = 0; i < mr.sharedMaterials.Length; i++)
+                                {
+                                    sharedMaterials[i] = detailMat2;
+                                }
+                                mr.sharedMaterials = sharedMaterials;
                             }
                         }
                         if (meshBase.name.Contains("Platform") || (meshBase.name.Contains("Terrain") && !meshBase.name.Equals("Terrain")) || meshBase.name.Contains("Temple") || meshBase.name.Contains("Bridge") || meshBase.name.Contains("Dirt"))
                         {
-                            switch (mr.sharedMaterial)
+                            if (mr.sharedMaterial)
                             {
-                                case null:
-                                    try
+                                var sharedMaterials = mr.sharedMaterials;
+                                for (int i = 0; i < mr.sharedMaterials.Length; i++)
+                                {
+                                    sharedMaterials[i] = terrainMat;
+                                    if (i == 1)
                                     {
-                                        var sharedMaterials = mr.sharedMaterials;
-                                        for (int i = 0; i < mr.sharedMaterials.Length; i++)
-                                        {
-                                            sharedMaterials[i] = terrainMat;
-                                            if (i == 1)
-                                            {
-                                                sharedMaterials[i] = terrainMat2;
-                                            }
-                                        }
-                                        mr.sharedMaterials = sharedMaterials;
+                                        sharedMaterials[i] = terrainMat2;
                                     }
-                                    catch (Exception e) { SwapVariants.SALogger.LogWarning(e.Message + "\n" + e.StackTrace); };
-                                    break;
-
-                                default:
-                                    var sharedMaterials2 = mr.sharedMaterials;
-                                    for (int i = 0; i < mr.sharedMaterials.Length; i++)
-                                    {
-                                        sharedMaterials2[i] = terrainMat;
-                                        if (i == 1)
-                                        {
-                                            sharedMaterials2[i] = terrainMat2;
-                                        }
-                                    }
-                                    mr.sharedMaterials = sharedMaterials2;
-                                    break;
+                                }
+                                mr.sharedMaterials = sharedMaterials;
                             }
                         }
                         bool biggerProps = meshBase.name.Contains("CirclePot") || meshBase.name.Contains("BrokenPot") || meshBase.name.Contains("Planter") || meshBase.name.Contains("AW_Cube") || meshBase.name.Contains("Mesh, Cube") || meshBase.name.Contains("AncientLoft_WaterFenceType") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Pillar") || meshBase.name.Contains("Boulder") || meshBase.name.Equals("LightStatue") || meshBase.name.Equals("LightStatue_Stone") || meshBase.name.Equals("FountainLG") || meshBase.name.Equals("Shrine") || meshBase.name.Equals("Sculpture");
-                        if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rubble") || biggerProps)
+                        if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rubble") || biggerProps || meshBase.name.Contains("AncientLoft_SculptureSM") || meshBase.name.Contains("FountainSM"))
                         {
                             if (mr.sharedMaterial)
                             {
@@ -288,7 +269,7 @@ namespace StageAesthetic.Variants.Stage2
                             }
                             mr.sharedMaterials = sharedMaterials;
                         }
-                        if (meshBase.name.Contains("SunCloud") || meshBase.name.Contains("spmGlGrass") || meshBase.name.Contains("AncientLoftGrass") || meshBase.name.Contains("mdlLilyPad"))
+                        if (meshBase.name.Contains("SunCloud") || meshBase.name.Contains("spmGlGrass") || meshBase.name.Contains("AncientLoftGrass") || meshBase.name.Contains("LilyPad"))
                         {
                             meshBase.SetActive(false);
                         }

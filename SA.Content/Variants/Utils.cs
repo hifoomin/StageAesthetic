@@ -8,7 +8,7 @@ namespace StageAesthetic.Variants
         public enum RainType
         {
             Drizzle,
-            Rainstorm,
+            RainOvercast,
             Monsoon,
             Typhoon
         }
@@ -39,7 +39,7 @@ namespace StageAesthetic.Variants
             {
                 return;
             }
-            if (!SwapVariants.WeatherEffects.Value)
+            if (!WeatherEffects.Value)
             {
                 return;
             }
@@ -48,7 +48,8 @@ namespace StageAesthetic.Variants
                 return;
             }
 
-            rain.AddComponent<StageAestheticWeatherController>();
+            if (!rain.GetComponent<StageAestheticWeatherController>())
+                rain.AddComponent<StageAestheticWeatherController>();
 
             var trans = rain.transform;
             var actualRain = trans.GetChild(0).gameObject;
@@ -64,7 +65,7 @@ namespace StageAesthetic.Variants
             rainMaterial.SetFloat("_DstBlend", 10);
             rainMaterial.SetFloat("_SrcBlend", 5);
             if (bloodRain)
-                rainMaterial.SetColor("_TintColor", new Color32(94, 16, 16, 255));
+                rainMaterial.SetColor("_TintColor", new Color32(56, 12, 12, 255));
             else
                 rainMaterial.SetColor("_TintColor", new Color32(166, 166, 166, 255));
             /*
@@ -99,7 +100,7 @@ namespace StageAesthetic.Variants
                     angleDev2 = Run.instance.treasureRng.RangeFloat(-6f, 6f);
                     break;
 
-                case RainType.Rainstorm:
+                case RainType.RainOvercast:
                     intensity = Run.instance.treasureRng.RangeFloat(310f, 340f);
 
                     speed = Run.instance.treasureRng.RangeFloat(130f, 140f);
@@ -139,7 +140,7 @@ namespace StageAesthetic.Variants
             var emission = particleSystem.emission;
             var rateOverTime = emission.rateOverTime;
             rateOverTime.mode = ParticleSystemCurveMode.Constant;
-            rateOverTime.constant = Mathf.Min(10000f, 800f + intensity);
+            rateOverTime.constant = Mathf.Min(10000f, 800f + intensity) * ParticleMultiplier.Value;
 
             var shape = particleSystem.shape;
             shape.rotation = new Vector3(angleDev, 0f, angleDev2);
@@ -155,7 +156,7 @@ namespace StageAesthetic.Variants
             {
                 return;
             }
-            if (!SwapVariants.WeatherEffects.Value)
+            if (!WeatherEffects.Value)
             {
                 return;
             }
@@ -164,7 +165,8 @@ namespace StageAesthetic.Variants
                 return;
             }
 
-            snow.AddComponent<StageAestheticWeatherController>();
+            if (!snow.GetComponent<StageAestheticWeatherController>())
+                snow.AddComponent<StageAestheticWeatherController>();
 
             var trans = snow.transform;
             var actualSnow = trans.GetChild(0).gameObject;
@@ -246,7 +248,7 @@ namespace StageAesthetic.Variants
             var emission = particleSystem.emission;
             var rateOverTime = emission.rateOverTime;
             rateOverTime.mode = ParticleSystemCurveMode.Constant;
-            rateOverTime.constant = Mathf.Min(10000f, intensity);
+            rateOverTime.constant = Mathf.Min(10000f, intensity) * ParticleMultiplier.Value;
 
             var shape = particleSystem.shape;
             shape.rotation = new Vector3(angleDev, 0f, angleDev2);
@@ -262,7 +264,7 @@ namespace StageAesthetic.Variants
             {
                 return;
             }
-            if (!SwapVariants.WeatherEffects.Value)
+            if (!WeatherEffects.Value)
             {
                 return;
             }
@@ -271,7 +273,8 @@ namespace StageAesthetic.Variants
                 return;
             }
 
-            sand.AddComponent<StageAestheticWeatherController>();
+            if (!sand.GetComponent<StageAestheticWeatherController>())
+                sand.AddComponent<StageAestheticWeatherController>();
 
             var trans = sand.transform;
             var actualSand = trans.GetChild(0).gameObject;
@@ -297,7 +300,7 @@ namespace StageAesthetic.Variants
                 case SandType.Light:
                     intensity = Run.instance.treasureRng.RangeFloat(2500f, 3000f);
 
-                    speed = Run.instance.treasureRng.RangeFloat(90f, 100f);
+                    speed = Run.instance.treasureRng.RangeFloat(25f, 30f);
 
                     angleDev = Run.instance.treasureRng.RangeFloat(-7f, 7f);
                     angleDev2 = Run.instance.treasureRng.RangeFloat(-7f, 7f);
@@ -306,7 +309,7 @@ namespace StageAesthetic.Variants
                 case SandType.Moderate:
                     intensity = Run.instance.treasureRng.RangeFloat(3000f, 3500f);
 
-                    speed = Run.instance.treasureRng.RangeFloat(100f, 110f);
+                    speed = Run.instance.treasureRng.RangeFloat(30f, 35f);
 
                     angleDev = Run.instance.treasureRng.RangeFloat(-12f, 12f);
                     angleDev2 = Run.instance.treasureRng.RangeFloat(-12f, 12f);
@@ -315,7 +318,7 @@ namespace StageAesthetic.Variants
                 case SandType.Heavy:
                     intensity = Run.instance.treasureRng.RangeFloat(3500f, 4000f);
 
-                    speed = Run.instance.treasureRng.RangeFloat(110f, 120f);
+                    speed = Run.instance.treasureRng.RangeFloat(30f, 35f);
 
                     angleDev = Run.instance.treasureRng.RangeFloat(-17f, 17f);
                     angleDev2 = Run.instance.treasureRng.RangeFloat(-17f, 17f);
@@ -324,7 +327,7 @@ namespace StageAesthetic.Variants
                 case SandType.Gigachad:
                     intensity = Run.instance.treasureRng.RangeFloat(4500f, 5000f);
 
-                    speed = Run.instance.treasureRng.RangeFloat(120f, 130f);
+                    speed = Run.instance.treasureRng.RangeFloat(30f, 35f);
 
                     angleDev = Run.instance.treasureRng.RangeFloat(-25f, 25f);
                     angleDev2 = Run.instance.treasureRng.RangeFloat(-25f, 25f);
@@ -332,7 +335,7 @@ namespace StageAesthetic.Variants
             }
 
             intensity = intensity + Mathf.Sqrt(difficultyDefScalingValue * 2500f) + Mathf.Sqrt(difficultyCoefficient * 20f);
-            speed = speed + Mathf.Sqrt(difficultyDefScalingValue * 50f) + Mathf.Sqrt(difficultyCoefficient * 2f);
+            speed = speed + Mathf.Sqrt(difficultyDefScalingValue * 5f) + Mathf.Sqrt(difficultyCoefficient / 2f);
 
             var particleSystem = actualSand.GetComponent<ParticleSystem>();
 
@@ -343,7 +346,7 @@ namespace StageAesthetic.Variants
             var emission = particleSystem.emission;
             var rateOverTime = emission.rateOverTime;
             rateOverTime.mode = ParticleSystemCurveMode.Constant;
-            rateOverTime.constant = Mathf.Min(10000f, intensity);
+            rateOverTime.constant = Mathf.Min(10000f, intensity) * ParticleMultiplier.Value;
 
             var shape = particleSystem.shape;
             shape.rotation = new Vector3(angleDev, 0f, angleDev2);

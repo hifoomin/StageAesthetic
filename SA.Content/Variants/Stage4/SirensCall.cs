@@ -8,11 +8,11 @@ namespace StageAesthetic.Variants.Stage4
 {
     internal class SirensCall
     {
-        public static void ShipNight(RampFog fog, ColorGrading cgrade)
+        public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(39, 107, 92, 0);
+            fog.fogColorStart.value = new Color32(39, 81, 107, 0);
             fog.fogColorMid.value = new Color32(15, 62, 50, 99);
-            fog.fogColorEnd.value = new Color32(4, 25, 22, 255);
+            fog.fogColorEnd.value = new Color32(10, 40, 36, 255);
             cgrade.colorFilter.value = new Color32(171, 223, 227, 255);
             cgrade.colorFilter.overrideState = true;
             fog.skyboxStrength.value = 0.8f;
@@ -51,7 +51,7 @@ namespace StageAesthetic.Variants.Stage4
             }
         }
 
-        public static void ShipSkies(RampFog fog)
+        public static void Sunny(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(53, 66, 82, 18);
             fog.fogColorMid.value = new Color32(64, 67, 103, 154);
@@ -91,7 +91,7 @@ namespace StageAesthetic.Variants.Stage4
             }
         }
 
-        public static void ShipDeluge(RampFog fog)
+        public static void Overcast(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(58, 62, 68, 0);
             fog.fogColorMid.value = new Color32(46, 67, 76, 130);
@@ -128,9 +128,8 @@ namespace StageAesthetic.Variants.Stage4
             }
         }
 
-        public static void ShipAphelian(RampFog fog, ColorGrading cgrade)
+        public static void Aphelian(RampFog fog, ColorGrading cgrade)
         {
-            try { ApplyAphelianMaterials(); } catch { SwapVariants.SALogger.LogError("Sirens Sanctuary: Failed to change materials, trying again..."); } finally { ApplyAphelianMaterials(); }
             fog.fogColorStart.value = new Color32(122, 69, 56, 5);
             fog.fogColorMid.value = new Color32(122, 69, 56, 35);
             fog.fogColorEnd.value = new Color32(91, 52, 42, 255);
@@ -187,9 +186,10 @@ namespace StageAesthetic.Variants.Stage4
                     }
                 }
             }
+            AphelianMaterials();
         }
 
-        public static void ApplyAphelianMaterials()
+        public static void AphelianMaterials()
         {
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion());
             terrainMat.color = new Color32(138, 176, 167, 255);
@@ -200,6 +200,13 @@ namespace StageAesthetic.Variants.Stage4
             var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_StoneSurface.mat").WaitForCompletion());
             detailMat2.color = new Color32(178, 127, 68, 159);
             var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/MajorAndMinorConstruct/matMajorConstructDefenseMatrixEdges.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3)
             {
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];

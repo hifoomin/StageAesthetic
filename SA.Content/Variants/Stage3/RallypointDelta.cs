@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using static UnityEngine.Experimental.TerrainAPI.TerrainUtility;
 using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants.Stage3
@@ -15,7 +16,7 @@ namespace StageAesthetic.Variants.Stage3
             AddSnow(SnowType.Moderate);
         }
 
-        public static void OceanWall(RampFog fog)
+        public static void Overcast(RampFog fog, PostProcessVolume volume)
         {
             fog.fogColorStart.value = new Color32(47, 52, 62, 50);
             fog.fogColorMid.value = new Color32(72, 80, 98, 165);
@@ -35,7 +36,7 @@ namespace StageAesthetic.Variants.Stage3
             sunLight.name = "Directional Light (SUN)";
             AddRain(RainType.Monsoon);
             DisableRallypointSnow();
-            AddSnow(SnowType.Light);
+            AddSnow(SnowType.Light, 250f);
             var wind = GameObject.Find("WindZone");
             wind.transform.eulerAngles = new Vector3(30, 20, 0);
             var windZone = wind.GetComponent<WindZone>();
@@ -45,11 +46,15 @@ namespace StageAesthetic.Variants.Stage3
             windZone.windPulseMagnitude = 5f;
             windZone.mode = WindZoneMode.Directional;
             windZone.radius = 100;
+
+            var bloom = volume.profile.GetSetting<Bloom>();
+            bloom.intensity.value = 0.7f;
+            bloom.threshold.value = 0.39f;
+            bloom.softKnee.value = 0.7f;
         }
 
-        public static void NightWall(RampFog fog, ColorGrading cgrade)
+        public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            NightMaterials();
             fog.fogColorStart.value = new Color32(33, 33, 56, 76);
             fog.fogColorMid.value = new Color32(38, 38, 55, 165);
             fog.fogColorEnd.value = new Color32(25, 24, 46, 255);
@@ -87,33 +92,40 @@ namespace StageAesthetic.Variants.Stage3
                 }
             }
             DisableRallypointSnow();
-            AddSnow(SnowType.Gigachad);
+            AddSnow(SnowType.Gigachad, 250f);
+            NightMaterials();
         }
 
-        public static void GreenWall(RampFog fog)
+        public static void Sunset(RampFog fog, PostProcessVolume volume)
         {
-            GreenMaterials();
-            fog.fogColorStart.value = new Color32(42, 93, 68, 30);
-            fog.fogColorMid.value = new Color32(49, 127, 79, 95);
-            fog.fogColorEnd.value = new Color32(47, 153, 105, 255);
-            fog.skyboxStrength.value = 0.35f;
+            fog.fogColorStart.value = new Color32(162, 89, 59, 0);
+            fog.fogColorMid.value = new Color32(132, 75, 57, 60);
+            fog.fogColorEnd.value = new Color32(153, 70, 47, 255);
+            fog.skyboxStrength.value = 0.04f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.6f;
+            fog.fogZero.value = -0.058f;
+            fog.fogOne.value = 0.15f;
             var sun = GameObject.Find("Directional Light (SUN)");
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
             sunLight.gameObject.name = "Directional Light (SUN)";
             sun.SetActive(false);
             sun.name = "Shitty Not Working Sun";
-            sunLight.color = new Color32(177, 205, 232, 255);
-            sunLight.intensity = 0.5f;
-            fog.fogOne.value = 0.7f;
-            AddSnow(SnowType.Light);
+            sunLight.color = new Color32(178, 177, 232, 255);
+            sunLight.intensity = 0.25f;
+            sunLight.shadowStrength = 1f;
+            AddSnow(SnowType.Light, 250f);
+
+            var bloom = volume.profile.GetSetting<Bloom>();
+            bloom.active = false;
+            SunsetMaterials();
         }
 
-        public static void TitanicWall(RampFog fog, ColorGrading cgrade)
+        public static void Titanic(RampFog fog, ColorGrading cgrade, PostProcessVolume volume)
         {
-            ApplyTitanicMaterials();
-            fog.fogColorStart.value = new Color32(116, 153, 173, 12);
-            fog.fogColorMid.value = new Color32(88, 130, 153, 45);
-            fog.fogColorEnd.value = new Color32(79, 140, 173, 255);
+            fog.fogColorStart.value = new Color32(116, 153, 173, 4);
+            fog.fogColorMid.value = new Color32(88, 130, 153, 40);
+            fog.fogColorEnd.value = new Color32(77, 127, 152, 255);
             fog.skyboxStrength.value = 0f;
             // cgrade.colorFilter.value = new Color32(178, 255, 230, 255);
             // cgrade.colorFilter.overrideState = true;
@@ -123,7 +135,8 @@ namespace StageAesthetic.Variants.Stage3
             sun.name = "Shitty Not Working Sun";
             sunLight.name = "Directional Light (SUN)";
             sunLight.color = new Color32(255, 212, 153, 255);
-            sunLight.intensity = 2f;
+            sunLight.intensity = 1.4f;
+            sunLight.shadowStrength = 0.7f;
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (Light light in lightList)
             {
@@ -138,17 +151,43 @@ namespace StageAesthetic.Variants.Stage3
             GameObject.Find("CAMERA PARTICLES: SnowParticles").SetActive(false);
             GameObject.Find("STATIC PARTICLES: Cave Entrance System").SetActive(false);
             GameObject.Find("HOLDER: ShippingCenter").transform.GetChild(3).gameObject.SetActive(false);
+
+            var bloom = volume.profile.GetSetting<Bloom>();
+            bloom.intensity.value = 0f;
+
+            TitanicMaterials();
         }
 
-        public static void ApplyTitanicMaterials()
+        public static void TitanicMaterials()
         {
             var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPTerrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(0, 2, 185, 245);
+            terrainMat.color = new Color32(95, 96, 132, 232);
+            terrainMat.SetFloat("_Depth", 0.1740239f);
+            terrainMat.SetFloat("_BlueChannelBias", 0.9805416f);
             var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPBoulderMossyProjected.mat").WaitForCompletion());
-            detailMat.color = new Color32(0, 52, 146, 78);
+            detailMat.color = new Color32(76, 90, 115, 78);
+            detailMat.SetFloat("_SpecularStrength", 0.009451796f);
+            detailMat.SetFloat("_Depth", 0.135765f);
             var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuinsProjectedHuge.mat").WaitForCompletion());
-            detailMat2.color = new Color32(255, 185, 0, 255);
+            detailMat2.color = new Color32(209, 171, 29, 198);
+            detailMat2.SetFloat("_NormalStrength", 0.1499685f);
+            detailMat2.SetFloat("_SpecularStrength", 0.227f);
+            detailMat2.SetFloat("_SpecularExponent", 5.497946f);
+            detailMat2.SetFloat("_Smoothness", 0.4f);
+            detailMat2.SetFloat("_SnowSpecularStrength", 0.1436673f);
+            detailMat2.SetFloat("_SnowSpecularExponent", 0.9451796f);
+            detailMat2.SetFloat("_SnowSmoothness", 1f);
+            detailMat2.SetFloat("_SnowBias", -0.7378702f);
+            detailMat2.SetFloat("_Depth", 0.07435415f);
+            detailMat2.SetFloat("_TriplanarTextureFactor", 0.4f);
+
             var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+
             if (terrainMat && detailMat && detailMat2 && water)
             {
                 GameObject.Find("HOLDER: Skybox").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
@@ -191,7 +230,7 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void DisableRallypointSnow()
         {
-            if (!SwapVariants.WeatherEffects.Value)
+            if (!Config.Config.WeatherEffects.Value)
             {
                 return;
             }
@@ -199,9 +238,12 @@ namespace StageAesthetic.Variants.Stage3
             snowParticles.SetActive(false);
         }
 
-        public static void GreenMaterials()
+        public static void SunsetMaterials()
         {
             var waterMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSPWaterYellow.mat").WaitForCompletion();
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + waterMat);
+
             if (waterMat)
             {
                 GameObject.Find("HOLDER: Skybox").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = waterMat;
@@ -214,6 +256,11 @@ namespace StageAesthetic.Variants.Stage3
             var waterMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion();
             var iceMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/snowyforest/matSFIce.mat").WaitForCompletion());
             iceMat.color = new Color32(242, 237, 254, 216);
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + waterMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + iceMat);
+
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             var water = GameObject.Find("HOLDER: Skybox").transform.GetChild(0);
             var ice = Object.Instantiate(water);

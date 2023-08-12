@@ -116,7 +116,7 @@ namespace StageAesthetic.Variants.Stage1
                     }
                 }
             }
-            AddSnow(SnowType.Light, 40f);
+            AddSnow(SnowType.Light, -10f);
             s.GetChild(19).GetChild(0).localPosition = new Vector3(0, 0, -10);
 
             GameObject.Find("HOLDER: Grass").SetActive(false);
@@ -127,7 +127,7 @@ namespace StageAesthetic.Variants.Stage1
             VoidMaterials();
         }
 
-        public static void Storm(RampFog fog, string scenename)
+        public static void Overcast(RampFog fog, string scenename)
         {
             fog.fogColorStart.value = new Color32(31, 46, 63, 50);
             fog.fogColorMid.value = new Color(0.205f, 0.269f, 0.288f, 0.76f);
@@ -199,7 +199,7 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.transform.eulerAngles = new Vector3(70f, 220f, -9.985f);
             var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
             shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
-            AbyssalMaterials();
+
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
             {
@@ -248,9 +248,10 @@ namespace StageAesthetic.Variants.Stage1
                             }
                         }
                     }
-                    AbyssalFoliage();
                 }
             }
+            AbyssalFoliage();
+            AbyssalMaterials();
         }
 
         public static void VanillaFoliage()
@@ -448,6 +449,13 @@ namespace StageAesthetic.Variants.Stage1
             var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
             var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
             var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat); // WHY DOES LOGGING SOMETHING MAKE IT LOAD 100% OF THE TIME UNITY???
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && water)
             {
                 GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
@@ -505,6 +513,13 @@ namespace StageAesthetic.Variants.Stage1
             detailMat2.color = new Color32(181, 66, 34, 255);
             var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
             water.shaderKeywords = new string[] { "_BUMPLARGE_ON", "_DISPLACEMENTMODE_OFF", "_DISPLACEMENT_ON", "_DISTORTIONQUALITY_HIGH", "_EMISSION", "_FOAM_ON", "_NORMALMAP" };
+
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
+            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && water)
             {
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
