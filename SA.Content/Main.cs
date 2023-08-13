@@ -65,7 +65,7 @@ namespace StageAesthetic
 
             SwapVariants.Initialize();
 
-            SwapVariants.SALogger.LogError("Forgotten Relics Loaded:" + ForgottenRelicsLoaded);
+            // SwapVariants.SALogger.LogError("Forgotten Relics Loaded:" + ForgottenRelicsLoaded);
         }
     }
 }

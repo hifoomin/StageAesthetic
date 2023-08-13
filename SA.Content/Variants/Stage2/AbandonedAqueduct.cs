@@ -72,7 +72,7 @@ namespace StageAesthetic.Variants.Stage2
             sunLight.intensity = 1.2f;
             sunLight.shadowStrength = 0.1f;
             sunTransform.localEulerAngles = new Vector3(42, 12, 180);
-            AddRain(RainType.RainOvercast);
+            AddRain(RainType.Rainstorm);
             LightChanges("rain");
             VanillaFoliage();
         }

@@ -10,20 +10,21 @@ namespace StageAesthetic.Variants.Stage1
         public static void Sunset(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(45, 49, 75, 0);
-            fog.fogColorMid.value = new Color32(113, 75, 58, 130);
-            fog.fogColorEnd.value = new Color32(178, 93, 82, 255);
-            fog.skyboxStrength.value = 0.156f;
-            fog.fogZero.value = -0.049f;
-            fog.fogOne.value = 0.211f;
-            fog.fogIntensity.value = 0.769f;
+            fog.fogColorMid.value = new Color32(99, 60, 42, 130);
+            fog.fogColorEnd.value = new Color32(172, 89, 79, 255);
+            fog.skyboxStrength.value = 0.04f;
+            fog.fogZero.value = -0.03f;
+            fog.fogOne.value = 0.2f;
+            fog.fogIntensity.value = 1f;
             fog.fogPower.value = 0.5f;
             var lightBase = GameObject.Find("Weather, Golemplains").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(255, 135, 0, 255);
-            sunLight.intensity = 1.14f;
+            sunLight.color = new Color32(255, 102, 0, 255);
+            sunLight.intensity = 1.6f;
             sunLight.shadowStrength = 0.877f;
-            sunTransform.localEulerAngles = new Vector3(27, 268, 88);
+            sunTransform.localEulerAngles = new Vector3(35f, 60f, 0f);
+            VanillaFoliage();
         }
 
         public static void Overcast(RampFog fog, string scenename)
@@ -41,7 +42,7 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.intensity = 0.9f;
             sunLight.shadowStrength = 0.7f;
             sunTransform.localEulerAngles = new Vector3(50, 17, 270);
-            AddRain(RainType.RainOvercast);
+            AddRain(RainType.Rainstorm);
             if (scenename == "golemplains")
             {
                 GameObject wind = GameObject.Find("WindZone");
@@ -50,6 +51,7 @@ namespace StageAesthetic.Variants.Stage1
                 windZone.windMain = 0.4f;
                 windZone.windTurbulence = 0.8f;
             }
+            VanillaFoliage();
         }
 
         public static void Night(RampFog fog, ColorGrading cgrade)
@@ -71,6 +73,7 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.shadowStrength = 0.7f;
             sunTransform.localEulerAngles = new Vector3(38, 270, 97);
             Object.Instantiate(rain, Vector3.zero, Quaternion.identity);
+            VanillaFoliage();
         }
 
         public static void Nostalgic(RampFog fog)
@@ -86,6 +89,7 @@ namespace StageAesthetic.Variants.Stage1
             Debug.Log("NOSTALGIA PLAINS W");
             Debug.Log("NOSTALGIA PLAINS W");
             Debug.Log("NOSTALGIA PLAINS W");
+            VanillaFoliage();
         }
 
         public static void Abandoned(RampFog fog)
@@ -119,6 +123,7 @@ namespace StageAesthetic.Variants.Stage1
             water.localPosition = new Vector3(-564.78f, -170f, 133.4f);
             water.localScale = new Vector3(200f, 200f, 200f);
             AddSand(SandType.Gigachad);
+            VanillaFoliage();
             if (terrainMat && detailMat && detailMat2 && detailMat3 && tar)
             {
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
@@ -160,6 +165,36 @@ namespace StageAesthetic.Variants.Stage1
                             if (mr.sharedMaterial)
                             {
                                 mr.sharedMaterial = tar;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void VanillaFoliage()
+        {
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                if (meshBase != null)
+                {
+                    if (meshBase.name.Contains("spmGPGrass_LOD0"))
+                    {
+                        if (mr.sharedMaterial)
+                        {
+                            mr.sharedMaterial.color = new Color32(96, 94, 32, 255);
+                        }
+                    }
+                    if (meshBase.name.Contains("spmBbDryBush_LOD0"))
+                    {
+                        if (mr.sharedMaterial)
+                        {
+                            mr.sharedMaterial.color = new Color32(125, 125, 128, 255);
+                            if (mr.sharedMaterials.Length >= 2)
+                            {
+                                mr.sharedMaterials[1].color = new Color32(125, 125, 128, 255);
                             }
                         }
                     }

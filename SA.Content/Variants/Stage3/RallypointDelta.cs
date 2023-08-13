@@ -100,7 +100,7 @@ namespace StageAesthetic.Variants.Stage3
         {
             fog.fogColorStart.value = new Color32(162, 89, 59, 0);
             fog.fogColorMid.value = new Color32(132, 75, 57, 60);
-            fog.fogColorEnd.value = new Color32(153, 70, 47, 255);
+            fog.fogColorEnd.value = new Color32(144, 76, 57, 255);
             fog.skyboxStrength.value = 0.04f;
             fog.fogIntensity.value = 1f;
             fog.fogPower.value = 0.6f;

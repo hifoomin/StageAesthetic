@@ -31,7 +31,6 @@ namespace StageAesthetic.Config
 
         public static ConfigEntry<bool> TitleScene { get; set; }
         public static ConfigEntry<bool> WeatherEffects { get; set; }
-        public static ConfigEntry<float> ParticleMultiplier { get; set; }
 
         // Roost
         public static ConfigEntry<bool> DistantRoostVanilla { get; set; }
@@ -80,7 +79,7 @@ namespace StageAesthetic.Config
 
         // Dry Basin
 
-        public static ConfigEntry<bool> OvercastBasin { get; set; }
+        public static ConfigEntry<bool> DryBasinOvercast { get; set; }
         public static ConfigEntry<bool> DryBasinBlue { get; set; }
         public static ConfigEntry<bool> DryBasinMorning { get; set; }
         public static ConfigEntry<bool> DryBasinVanilla { get; set; }
@@ -162,6 +161,13 @@ namespace StageAesthetic.Config
         public static ConfigEntry<bool> SkyMeadowTitanic { get; set; }
         public static ConfigEntry<bool> SkyMeadowAbandoned { get; set; }
 
+        // Satellite
+        public static ConfigEntry<bool> SlumberingSatelliteVanilla { get; set; }
+
+        public static ConfigEntry<bool> SlumberingSatelliteMorning { get; set; }
+        public static ConfigEntry<bool> SlumberingSatelliteOvercast { get; set; }
+        public static ConfigEntry<bool> SlumberingSatelliteBlue { get; set; }
+
         // Commencement
 
         public static ConfigEntry<bool> CommencementNight { get; set; }
@@ -202,7 +208,7 @@ namespace StageAesthetic.Config
             DistantRoostSunny = SAConfig.Bind("Stages : Distant Roost", "Enable Distant Roost (Sunny)?", true, "Yellow sun over greenery.");
             DistantRoostOvercast = SAConfig.Bind("Stages : Distant Roost", "Enable Distant Roost (Overcast)?", true, "Rainy with more fog.");
             DistantRoostVoid = SAConfig.Bind("Stages : Distant Roost", "Enable Distant Roost (Void)?", true, "Texture swap to Purple Void Fields.");
-            DistantRoostAbyssal = SAConfig.Bind("Stages : Distant Roost", "Enable Distant Roost (Abyssal)?", false, "Texture swap to Red Abyssal Depths. Kinda sucks right now.");
+            DistantRoostAbyssal = SAConfig.Bind("Stages : Distant Roost", "Enable Distant Roost (Abyssal)?", true, "Texture swap to Red Abyssal Depths.");
 
             DistantRoostChanges = SAConfig.Bind("Stages : Distant Roost", "Alter Distant Roost (Vanilla)?", true, "Adds rain to the alt version.");
 
@@ -237,7 +243,7 @@ namespace StageAesthetic.Config
             DryBasinVanilla = SAConfig.Bind("Stages :: Dry Basin", "Enable Dry Basin (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             DryBasinMorning = SAConfig.Bind("Stages :: Dry Basin", "Enable Dry Basin (Morning)?", true, "Yellow sun with blue shadows.");
             DryBasinBlue = SAConfig.Bind("Stages :: Dry Basin", "Enable Dry Basin (Blue)?", true, "Blue.");
-            OvercastBasin = SAConfig.Bind("Stages :: Dry Basin", "Enable Dry Basin (Overcast)?", true, "Overcast and rainy.");
+            DryBasinOvercast = SAConfig.Bind("Stages :: Dry Basin", "Enable Dry Basin (Overcast)?", true, "Overcast and rainy.");
 
             DryBasinChanges = SAConfig.Bind("Stages :: Dry Basin", "Alter Dry Basin (Vanilla)?", true, "Adds a SandStorm 2.");
 
@@ -296,11 +302,16 @@ namespace StageAesthetic.Config
             SkyMeadowVanilla = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             SkyMeadowNight = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Night)?", true, "Blue and dark.");
             SkyMeadowOvercast = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Overcast)?", true, "Rainy with more fog.");
-            SkyMeadowAbyssal = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Abyssal)?", false, "Texture swap to Red Abyssal Depths. Kinda sucks right now.");
+            SkyMeadowAbyssal = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Abyssal)?", true, "Texture swap to Red Abyssal Depths.");
             SkyMeadowTitanic = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Titanic)?", true, "Texture swap to Titanic Plains.");
             SkyMeadowAbandoned = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Abandoned)?", true, "Texture swap to Yellow Abandoned Aqueduct.");
 
             SkyMeadowChanges = SAConfig.Bind("Stages ::::: Sky Meadow", "Alter Sky Meadow (Vanilla)?", true, "Makes the sun a slightly more intense yellow-orange.");
+
+            SlumberingSatelliteVanilla = SAConfig.Bind("Stages ::::: Slumbering Satellite", "Enable Slumbering Satellite (Vanilla)?", true, "Disabling removes vanilla from getting picked");
+            SlumberingSatelliteMorning = SAConfig.Bind("Stages ::::: Slumbering Satellite", "Enable Slumbering Satellite (Morning)?", true, "Blue and yellow.");
+            SlumberingSatelliteOvercast = SAConfig.Bind("Stages ::::: Slumbering Satellite", "Enable Slumbering Satellite (Overcast)?", true, "Rainy with more fog.");
+            SlumberingSatelliteBlue = SAConfig.Bind("Stages ::::: Slumbering Satellite", "Enable Slumbering Satellite (Blue)?", true, "BLUE!");
 
             CommencementVanilla = SAConfig.Bind("Stages :::::: Commencement", "Enable Commencement (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             CommencementNight = SAConfig.Bind("Stages :::::: Commencement", "Enable Commencement (Night)?", true, "Very dark with a great view.");
@@ -315,7 +326,6 @@ namespace StageAesthetic.Config
 
             TitleScene = SAConfig.Bind("Stages Title", "Alter title screen?", true, "Adds rain, patches of grass, particles and brings a Commando closer to focus.");
             WeatherEffects = SAConfig.Bind("Stages Weather", "Import weather effects?", true, "Adds/swaps rain/snow/sand for stages. Disabling this is recommended if performance is a big issue. Starstorm 2 compatibility coming soon.");
-            ParticleMultiplier = SAConfig.Bind("Stages Weather", "Weather particle amount multiplier", 1f, "Multiplies the amount of particles spawned, can be reduced to increase performance, or increased if you're crazy :^).");
 
             var tabID = 0;
             foreach (ConfigEntryBase ceb in SAConfig.GetConfigEntries())
@@ -397,6 +407,7 @@ namespace StageAesthetic.Config
             sunderedGroveList = new();
 
             skyMeadowList = new();
+            slumberingSatelliteList = new();
 
             commencementList = new();
             voidLocusList = new();
@@ -480,7 +491,7 @@ namespace StageAesthetic.Config
             }
 
             if (DryBasinMorning.Value) dryBasinList.Add("Morning");
-            if (OvercastBasin.Value) dryBasinList.Add("Overcast");
+            if (DryBasinOvercast.Value) dryBasinList.Add("Overcast");
             if (DryBasinBlue.Value) dryBasinList.Add("Blue");
             if (DryBasinVanilla.Value) dryBasinList.Add("Vanilla");
             if (dryBasinList.Count == 0)
@@ -517,8 +528,8 @@ namespace StageAesthetic.Config
             if (ScorchedAcresSunset.Value) scorchedAcresList.Add("Sunset");
             if (ScorchedAcresNight.Value) scorchedAcresList.Add("Night");
             if (ScorchedAcresJade.Value) scorchedAcresList.Add("Jade");
-            if (ScorchedAcresSunnyBeta.Value) scorchedAcresList.Add("SunnyBeta");
-            if (ScorchedAcresCrimsonBeta.Value) scorchedAcresList.Add("CrimsonBeta");
+            if (ScorchedAcresSunnyBeta.Value) scorchedAcresList.Add("Sunny Beta");
+            if (ScorchedAcresCrimsonBeta.Value) scorchedAcresList.Add("Crimson Beta");
             if (ScorchedAcresTwilight.Value) scorchedAcresList.Add("Twilight");
             if (scorchedAcresList.Count == 0)
             {
@@ -593,6 +604,18 @@ namespace StageAesthetic.Config
             {
                 SALogger.LogWarning("Sky Meadow list empty - adding vanilla...");
                 skyMeadowList.Add("Vanilla");
+            }
+
+            //
+
+            if (SlumberingSatelliteVanilla.Value) slumberingSatelliteList.Add("Vanilla");
+            if (SlumberingSatelliteMorning.Value) slumberingSatelliteList.Add("Morning");
+            if (SlumberingSatelliteOvercast.Value) slumberingSatelliteList.Add("Overcast");
+            if (SlumberingSatelliteBlue.Value) slumberingSatelliteList.Add("Blue");
+            if (slumberingSatelliteList.Count == 0)
+            {
+                SALogger.LogWarning("Slumbering Satellite list empty - adding vanilla...");
+                slumberingSatelliteList.Add("Vanilla");
             }
 
             //

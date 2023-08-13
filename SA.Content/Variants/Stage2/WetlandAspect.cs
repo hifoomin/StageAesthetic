@@ -12,7 +12,7 @@ namespace StageAesthetic.Variants.Stage2
             fog.fogColorStart.value = new Color32(128, 121, 99, 13);
             fog.fogColorMid.value = new Color32(106, 141, 154, 130);
             fog.fogColorEnd.value = new Color32(104, 150, 199, 255);
-            fog.fogOne.value = -0.058f;
+            fog.fogZero.value = -0.058f;
             fog.fogPower.value = 1.2f;
             fog.fogIntensity.value = 0.937f;
             cgrade.colorFilter.value = new Color32(240, 213, 248, 255);
@@ -75,7 +75,7 @@ namespace StageAesthetic.Variants.Stage2
             sunLight.color = new Color32(109, 182, 185, 255);
             sunLight.intensity = 0.4f;
             sunLight.shadowStrength = 0.6f;
-            AddRain(RainType.RainOvercast);
+            AddRain(RainType.Rainstorm);
 
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(14, 111, 160, 0);

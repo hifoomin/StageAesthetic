@@ -10,8 +10,6 @@ using StageAesthetic.Variants.Stage4;
 using StageAesthetic.Variants.Stage5;
 using StageAesthetic.Variants.Special;
 using RoR2.UI;
-using System.Runtime.CompilerServices;
-using System;
 using System.Collections;
 
 namespace StageAesthetic
@@ -441,12 +439,15 @@ namespace StageAesthetic
 
                         #region DryBasin
 
-                        SALogger.LogError("Loading Dry Basin, Forgotten Relics Loaded: " + Main.ForgottenRelicsLoaded);
                         if (Main.ForgottenRelicsLoaded)
                         {
+                            var sandStorm = GameObject.Find("MapZones").transform.GetChild(1).Find("Sandstorm").GetComponent<PostProcessVolume>();
+
                             int dryBasinCounter = rng.RangeInt(0, dryBasinList.Count);
 
-                            var garbage = volume.GetComponent<FRCSharp.TheCoolerRampFog>();
+                            var garbage = sandStorm.GetComponent<FRCSharp.TheCoolerRampFog>();
+                            var rampFog2 = sandStorm.profile.GetSetting<RampFog>();
+
                             if (dryBasinList.Count > 1 && dryBasinCounter == dryBasinVariant)
                                 dryBasinCounter = (dryBasinCounter + 1) % dryBasinList.Count;
 
@@ -462,15 +463,15 @@ namespace StageAesthetic
                                 switch (selectedDryBasinVariant)
                                 {
                                     case "Morning":
-                                        DryBasin.Morning(garbage, rampFog);
+                                        DryBasin.Morning(garbage, rampFog2);
                                         break;
 
                                     case "Blue":
-                                        DryBasin.Blue(garbage, colorGrading, rampFog);
+                                        DryBasin.Blue(garbage, colorGrading, rampFog2);
                                         break;
 
                                     case "Overcast":
-                                        DryBasin.Overcast(garbage, colorGrading, rampFog);
+                                        DryBasin.Overcast(garbage, colorGrading, rampFog2);
                                         break;
 
                                     default:
@@ -479,9 +480,11 @@ namespace StageAesthetic
                                 }
                             currentVariantName = selectedDryBasinVariant;
                             dryBasinVariant = dryBasinCounter;
-
-                            #endregion DryBasin
+                            sandStorm.profile.name = "SA Profile" + " (" + currentVariantName + ")";
                         }
+
+                        #endregion DryBasin
+
                         break;
 
                     case "foggyswamp":
@@ -607,11 +610,11 @@ namespace StageAesthetic
                                     ScorchedAcres.Jade(rampFog);
                                     break;
 
-                                case "SunnyBeta":
+                                case "Sunny Beta":
                                     ScorchedAcres.SunnyBeta(rampFog);
                                     break;
 
-                                case "CrimsonBeta":
+                                case "Crimson Beta":
                                     ScorchedAcres.CrimsonBeta(rampFog);
                                     break;
 
@@ -901,6 +904,54 @@ namespace StageAesthetic
 
                         break;
 
+                    case "slumberingsatellite":
+
+                        #region SlumberingSatellite
+
+                        if (Main.ForgottenRelicsLoaded)
+                        {
+                            int slumberingSatelliteCounter = rng.RangeInt(0, slumberingSatelliteList.Count);
+
+                            var garbage = volume.GetComponent<FRCSharp.TheCoolerRampFog>();
+                            var rampFog2 = volume.profile.GetSetting<RampFog>();
+
+                            if (slumberingSatelliteList.Count > 1 && slumberingSatelliteCounter == slumberingSatelliteVariant)
+                                slumberingSatelliteCounter = (slumberingSatelliteCounter + 1) % slumberingSatelliteList.Count;
+
+                            string[] slumberingSatelliteArray = slumberingSatelliteList.ToArray();
+                            string selectedSlumberingSatelliteVariant = slumberingSatelliteArray[slumberingSatelliteCounter];
+                            if (selectedSlumberingSatelliteVariant == "Vanilla")
+                            {
+                                SlumberingSatellite.Vanilla();
+                                currentVariantName = "Vanilla";
+                            }
+                            else
+                                switch (selectedSlumberingSatelliteVariant)
+                                {
+                                    case "Morning":
+                                        SlumberingSatellite.Morning(garbage, rampFog2);
+                                        break;
+
+                                    case "Overcast":
+                                        SlumberingSatellite.Overcast(garbage, rampFog2);
+                                        break;
+
+                                    case "Blue":
+                                        SlumberingSatellite.Blue(garbage, rampFog2);
+                                        break;
+
+                                    default:
+                                        SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                        break;
+                                }
+                            currentVariantName = selectedSlumberingSatelliteVariant;
+                            dryBasinVariant = slumberingSatelliteCounter;
+                        }
+
+                        #endregion SlumberingSatellite
+
+                        break;
+
                     case "moon2":
 
                         #region Commencement
@@ -1016,6 +1067,7 @@ namespace StageAesthetic
         public static int sunderedGroveVariant = -1;
 
         public static int skyMeadowVariant = -1;
+        public static int slumberingSatelliteVariant = -1;
 
         public static int commencementVariant = -1;
 
@@ -1053,6 +1105,7 @@ namespace StageAesthetic
         public static List<string> sunderedGroveList = new();
 
         public static List<string> skyMeadowList = new();
+        public static List<string> slumberingSatelliteList = new();
 
         public static List<string> commencementList = new();
         public static List<string> voidLocusList = new();

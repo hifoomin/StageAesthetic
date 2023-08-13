@@ -182,8 +182,8 @@ namespace StageAesthetic.Variants.Stage1
         public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(99, 27, 63, 72);
-            fog.fogColorMid.value = new Color32(91, 26, 62, 70);
-            fog.fogColorEnd.value = new Color32(87, 20, 20, 255);
+            fog.fogColorMid.value = new Color32(26, 61, 91, 70);
+            fog.fogColorEnd.value = new Color32(68, 27, 27, 255);
             fog.SetAllOverridesTo(true);
             fog.skyboxStrength.value = 0f;
             fog.fogPower.value = 0.45f;

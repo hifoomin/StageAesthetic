@@ -64,10 +64,10 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Crimson(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(180, 50, 50, 0);
-            fog.fogColorMid.value = new Color32(50, 30, 30, 120);
-            fog.fogColorEnd.value = new Color32(90, 30, 30, 225);
-            fog.skyboxStrength.value = 0.08f;
+            fog.fogColorStart.value = new Color32(93, 61, 61, 0);
+            fog.fogColorMid.value = new Color32(50, 38, 30, 120);
+            fog.fogColorEnd.value = new Color32(79, 25, 36, 225);
+            fog.skyboxStrength.value = 0.01f;
             fog.fogPower.value = 0.35f;
             fog.fogOne.value = 0.108f;
             fog.fogZero.value = -0.007f;
@@ -78,7 +78,8 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.color = new Color32(180, 110, 110, 255);
             sunLight.intensity = 1.5f;
             sunLight.shadowStrength = 0.5f;
-            cgrade.colorFilter.value = new Color32(255, 255, 255, 23);
+            sunLight.transform.eulerAngles = new Vector3(55f, 0f, 0f);
+            cgrade.colorFilter.value = new Color32(255, 255, 255, 255);
             cgrade.colorFilter.overrideState = true;
 
             var skybox = GameObject.Find("HOLDER: Skybox").transform;
@@ -148,7 +149,7 @@ namespace StageAesthetic.Variants.Stage1
             }
 
             DisableSiphonedSnow();
-            AddRain(RainType.RainOvercast);
+            AddRain(RainType.Rainstorm);
             DesolateFoliage();
             DesolateMaterials();
         }
@@ -215,7 +216,7 @@ namespace StageAesthetic.Variants.Stage1
                 foreach (Light light in lightList)
                 {
                     var lightBase = light.gameObject;
-                    if (lightBase)
+                    if (lightBase && !lightBase.name.Contains("Directional Light (SUN)"))
                     {
                         light.color = new Color32(53, 56, 148, 255);
                         light.intensity = 5f;
