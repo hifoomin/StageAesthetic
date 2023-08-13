@@ -11,6 +11,7 @@ using StageAesthetic.Variants.Stage5;
 using StageAesthetic.Variants.Special;
 using RoR2.UI;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace StageAesthetic
 {
@@ -439,49 +440,7 @@ namespace StageAesthetic
 
                         #region DryBasin
 
-                        if (Main.ForgottenRelicsLoaded)
-                        {
-                            var sandStorm = GameObject.Find("MapZones").transform.GetChild(1).Find("Sandstorm").GetComponent<PostProcessVolume>();
-
-                            int dryBasinCounter = rng.RangeInt(0, dryBasinList.Count);
-
-                            var garbage = sandStorm.GetComponent<FRCSharp.TheCoolerRampFog>();
-                            var rampFog2 = sandStorm.profile.GetSetting<RampFog>();
-
-                            if (dryBasinList.Count > 1 && dryBasinCounter == dryBasinVariant)
-                                dryBasinCounter = (dryBasinCounter + 1) % dryBasinList.Count;
-
-                            string[] dryBasinArray = dryBasinList.ToArray();
-                            string selectedDryBasinVariant = dryBasinArray[dryBasinCounter];
-                            if (selectedDryBasinVariant == "Vanilla")
-                            {
-                                if (DryBasinChanges.Value)
-                                    DryBasin.VanillaChanges();
-                                currentVariantName = "Vanilla";
-                            }
-                            else
-                                switch (selectedDryBasinVariant)
-                                {
-                                    case "Morning":
-                                        DryBasin.Morning(garbage, rampFog2);
-                                        break;
-
-                                    case "Blue":
-                                        DryBasin.Blue(garbage, colorGrading, rampFog2);
-                                        break;
-
-                                    case "Overcast":
-                                        DryBasin.Overcast(garbage, colorGrading, rampFog2);
-                                        break;
-
-                                    default:
-                                        SALogger.LogDebug("uwu I messed something up forgive me >w<");
-                                        break;
-                                }
-                            currentVariantName = selectedDryBasinVariant;
-                            dryBasinVariant = dryBasinCounter;
-                            sandStorm.profile.name = "SA Profile" + " (" + currentVariantName + ")";
-                        }
+                        ForgottenRelicsJ.DryBasin(rng, colorGrading);
 
                         #endregion DryBasin
 
@@ -908,45 +867,7 @@ namespace StageAesthetic
 
                         #region SlumberingSatellite
 
-                        if (Main.ForgottenRelicsLoaded)
-                        {
-                            int slumberingSatelliteCounter = rng.RangeInt(0, slumberingSatelliteList.Count);
-
-                            var garbage = volume.GetComponent<FRCSharp.TheCoolerRampFog>();
-                            var rampFog2 = volume.profile.GetSetting<RampFog>();
-
-                            if (slumberingSatelliteList.Count > 1 && slumberingSatelliteCounter == slumberingSatelliteVariant)
-                                slumberingSatelliteCounter = (slumberingSatelliteCounter + 1) % slumberingSatelliteList.Count;
-
-                            string[] slumberingSatelliteArray = slumberingSatelliteList.ToArray();
-                            string selectedSlumberingSatelliteVariant = slumberingSatelliteArray[slumberingSatelliteCounter];
-                            if (selectedSlumberingSatelliteVariant == "Vanilla")
-                            {
-                                SlumberingSatellite.Vanilla();
-                                currentVariantName = "Vanilla";
-                            }
-                            else
-                                switch (selectedSlumberingSatelliteVariant)
-                                {
-                                    case "Morning":
-                                        SlumberingSatellite.Morning(garbage, rampFog2);
-                                        break;
-
-                                    case "Overcast":
-                                        SlumberingSatellite.Overcast(garbage, rampFog2);
-                                        break;
-
-                                    case "Blue":
-                                        SlumberingSatellite.Blue(garbage, rampFog2);
-                                        break;
-
-                                    default:
-                                        SALogger.LogDebug("uwu I messed something up forgive me >w<");
-                                        break;
-                                }
-                            currentVariantName = selectedSlumberingSatelliteVariant;
-                            dryBasinVariant = slumberingSatelliteCounter;
-                        }
+                        ForgottenRelicsJ.SlumberingSatellite(rng, volume);
 
                         #endregion SlumberingSatellite
 
@@ -1111,5 +1032,100 @@ namespace StageAesthetic
         public static List<string> voidLocusList = new();
 
         #endregion VariantContainers
+    }
+
+    public class ForgottenRelicsJ
+    {
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static void DryBasin(Xoroshiro128Plus rng, ColorGrading colorGrading)
+        {
+            if (Main.ForgottenRelicsLoaded)
+            {
+                var sandStorm = GameObject.Find("MapZones").transform.GetChild(1).Find("Sandstorm").GetComponent<PostProcessVolume>();
+
+                int dryBasinCounter = rng.RangeInt(0, SwapVariants.dryBasinList.Count);
+
+                var garbage = sandStorm.GetComponent<FRCSharp.TheCoolerRampFog>();
+                var rampFog2 = sandStorm.profile.GetSetting<RampFog>();
+
+                if (SwapVariants.dryBasinList.Count > 1 && dryBasinCounter == SwapVariants.dryBasinVariant)
+                    dryBasinCounter = (dryBasinCounter + 1) % SwapVariants.dryBasinList.Count;
+
+                string[] dryBasinArray = SwapVariants.dryBasinList.ToArray();
+                string selectedDryBasinVariant = dryBasinArray[dryBasinCounter];
+                if (selectedDryBasinVariant == "Vanilla")
+                {
+                    if (DryBasinChanges.Value)
+                        Variants.Stage2.DryBasin.VanillaChanges();
+                    SwapVariants.currentVariantName = "Vanilla";
+                }
+                else
+                    switch (selectedDryBasinVariant)
+                    {
+                        case "Morning":
+                            Variants.Stage2.DryBasin.Morning(garbage, rampFog2);
+                            break;
+
+                        case "Blue":
+                            Variants.Stage2.DryBasin.Blue(garbage, colorGrading, rampFog2);
+                            break;
+
+                        case "Overcast":
+                            Variants.Stage2.DryBasin.Overcast(garbage, colorGrading, rampFog2);
+                            break;
+
+                        default:
+                            SwapVariants.SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                            break;
+                    }
+                SwapVariants.currentVariantName = selectedDryBasinVariant;
+                SwapVariants.dryBasinVariant = dryBasinCounter;
+                sandStorm.profile.name = "SA Profile" + " (" + SwapVariants.currentVariantName + ")";
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static void SlumberingSatellite(Xoroshiro128Plus rng, PostProcessVolume volume)
+        {
+            if (Main.ForgottenRelicsLoaded)
+            {
+                int slumberingSatelliteCounter = rng.RangeInt(0, SwapVariants.slumberingSatelliteList.Count);
+
+                var garbage = volume.GetComponent<FRCSharp.TheCoolerRampFog>();
+                var rampFog2 = volume.profile.GetSetting<RampFog>();
+
+                if (SwapVariants.slumberingSatelliteList.Count > 1 && slumberingSatelliteCounter == SwapVariants.slumberingSatelliteVariant)
+                    slumberingSatelliteCounter = (slumberingSatelliteCounter + 1) % SwapVariants.slumberingSatelliteList.Count;
+
+                string[] slumberingSatelliteArray = SwapVariants.slumberingSatelliteList.ToArray();
+                string selectedSlumberingSatelliteVariant = slumberingSatelliteArray[slumberingSatelliteCounter];
+                if (selectedSlumberingSatelliteVariant == "Vanilla")
+                {
+                    Variants.Stage5.SlumberingSatellite.Vanilla();
+                    SwapVariants.currentVariantName = "Vanilla";
+                }
+                else
+                    switch (selectedSlumberingSatelliteVariant)
+                    {
+                        case "Morning":
+                            Variants.Stage5.SlumberingSatellite.Morning(garbage, rampFog2);
+                            break;
+
+                        case "Overcast":
+                            Variants.Stage5.SlumberingSatellite.Overcast(garbage, rampFog2);
+                            break;
+
+                        case "Blue":
+                            Variants.Stage5.SlumberingSatellite.Blue(garbage, rampFog2);
+                            break;
+
+                        default:
+                            SwapVariants.SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                            break;
+                    }
+                SwapVariants.currentVariantName = selectedSlumberingSatelliteVariant;
+                SwapVariants.slumberingSatelliteVariant = slumberingSatelliteCounter;
+            }
+        }
     }
 }
