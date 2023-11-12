@@ -32,7 +32,8 @@ namespace StageAesthetic
         private static void AssignStageToken_Start(On.RoR2.UI.AssignStageToken.orig_Start orig, AssignStageToken self)
         {
             orig(self);
-            self.titleText.text += " (" + currentVariantName + ")";
+            if (DisplayVariantName.Value)
+                self.titleText.text += " (" + currentVariantName + ")";
         }
 
         private static void TitleScreen(Scene scene, LoadSceneMode mode)

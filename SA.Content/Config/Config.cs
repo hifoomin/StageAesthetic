@@ -31,6 +31,7 @@ namespace StageAesthetic.Config
 
         public static ConfigEntry<bool> TitleScene { get; set; }
         public static ConfigEntry<bool> WeatherEffects { get; set; }
+        public static ConfigEntry<bool> DisplayVariantName { get; set; }
 
         // Roost
         public static ConfigEntry<bool> DistantRoostVanilla { get; set; }
@@ -203,6 +204,8 @@ namespace StageAesthetic.Config
                 SALogger.LogInfo("Config Autosync Enabled.");
             }
 
+            DisplayVariantName = SAConfig.Bind("Stages Misc", "Enable variant display name?", true, "Shows the variant name next to the map title UI");
+
             DistantRoostVanilla = SAConfig.Bind("Stages : Distant Roost", "Enable Distant Roost (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             DistantRoostNight = SAConfig.Bind("Stages : Distant Roost", "Enable Distant Roost (Night)?", true, "Dark and blue with green lights.");
             DistantRoostSunny = SAConfig.Bind("Stages : Distant Roost", "Enable Distant Roost (Sunny)?", true, "Yellow sun over greenery.");
@@ -324,8 +327,8 @@ namespace StageAesthetic.Config
             VoidLocusPink = SAConfig.Bind("Stages ::::::: Void Locus", "Enable Void Locus (Pink)?", true, "Pink..");
             VoidLocusBlue = SAConfig.Bind("Stages ::::::: Void Locus", "Enable Void Locus (Blue)?", true, "Dark Blue..");
 
-            TitleScene = SAConfig.Bind("Stages Title", "Alter title screen?", true, "Adds rain, patches of grass, particles and brings a Commando closer to focus.");
-            WeatherEffects = SAConfig.Bind("Stages Weather", "Import weather effects?", true, "Adds/swaps rain/snow/sand for stages. Disabling this is recommended if performance is a big issue. Starstorm 2 compatibility coming soon.");
+            TitleScene = SAConfig.Bind("Stages Misc", "Alter title screen?", true, "Adds rain, patches of grass, particles and brings a Commando closer to focus.");
+            WeatherEffects = SAConfig.Bind("Stages Misc", "Import weather effects?", true, "Adds/swaps rain/snow/sand for stages. Disabling this is recommended if performance is a big issue. Starstorm 2 compatibility coming soon.");
 
             var tabID = 0;
             foreach (ConfigEntryBase ceb in SAConfig.GetConfigEntries())

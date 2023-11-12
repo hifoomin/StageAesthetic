@@ -54,7 +54,7 @@ namespace StageAesthetic.Variants.Stage3
             sunLight.shadowStrength = 0.35f;
             sunLight.shadowBias = 0.05f;
             lightBase.Find("CameraRelative").Find("SunHolder").gameObject.SetActive(false);
-            var eclipse = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[6];
+            var eclipse = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[7];
             if (eclipse != null)
             {
                 eclipse.SetActive(true);
@@ -97,7 +97,7 @@ namespace StageAesthetic.Variants.Stage3
             sunTransform.eulerAngles = new Vector3(75, 115, 180);
             lightBase.Find("CameraRelative").Find("SunHolder").gameObject.SetActive(false);
             lightBase.GetChild(1).GetChild(0).GetChild(0).gameObject.SetActive(false);
-            var eclipse = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[6];
+            var eclipse = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[7];
             if (eclipse != null)
             {
                 eclipse.SetActive(true);
@@ -185,10 +185,10 @@ namespace StageAesthetic.Variants.Stage3
             sunTransform.localEulerAngles = new Vector3(65, 59, 0);
             var sunHolder = lightBase.Find("CameraRelative").Find("SunHolder");
             sunHolder.gameObject.SetActive(false);
-            var eclipse = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[6];
+            var eclipse = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[7];
             eclipse?.SetActive(true);
 
-            var sunLight2 = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[6].transform?.GetChild(1).GetComponent<Light>();
+            var sunLight2 = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[7].transform?.GetChild(1).GetComponent<Light>();
             sunLight2.color = new Color32(124, 200, 221, 255);
             sunLight2.shadowStrength = 0.8f;
         }
