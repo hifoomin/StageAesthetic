@@ -29,7 +29,7 @@ namespace StageAesthetic.Variants.Stage2
         {
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
             fog.fogColorMid.value = new Color32(62, 18, 44, 126);
-            fog.fogColorEnd.value = new Color32(123, 74, 61, 255);
+            fog.fogColorEnd.value = new Color32(123, 74, 61, 200);
             fog.skyboxStrength.value = 0.02f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
@@ -42,8 +42,8 @@ namespace StageAesthetic.Variants.Stage2
             var sun = GameObject.Find("Directional Light (SUN)");
             var newSun = Object.Instantiate(sun).GetComponent<Light>();
             sun.SetActive(false);
-            newSun.intensity = 3f;
-            newSun.color = new Color32(113, 45, 21, 255);
+            newSun.intensity = 2f;
+            newSun.color = new Color32(191, 115, 115, 255);
             var CaveFog = GameObject.Find("GLUndergroundPPVolume").GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             CaveFog.fogColorStart.value = new Color32(67, 35, 76, 65);
             CaveFog.fogColorMid.value = new Color32(41, 17, 51, 165);
@@ -67,10 +67,11 @@ namespace StageAesthetic.Variants.Stage2
             base1.Find("Props").GetChild(4).gameObject.SetActive(true);
             var lightBase = GameObject.Find("Weather, Goolake").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(166, 221, 253, 255);
-            sunLight.intensity = 1.2f;
-            sunLight.shadowStrength = 0.1f;
+            var newSun = Object.Instantiate(sunTransform).GetComponent<Light>();
+            newSun.color = new Color32(51, 51, 166, 255);
+            // 0.226 0.2148 0.6638 1
+            newSun.intensity = 1.2f;
+            newSun.shadowStrength = 0.1f;
             sunTransform.localEulerAngles = new Vector3(42, 12, 180);
             AddRain(RainType.Rainstorm);
             LightChanges("rain");
@@ -91,28 +92,15 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(60, 23, 72, 125);
-            fog.fogColorMid.value = new Color32(30, 45, 70, 100);
-            fog.fogColorEnd.value = new Color32(37, 41, 56, 255);
-            fog.skyboxStrength.value = 0.02f;
-            fog.fogOne.value = 0.082f;
+            Skybox.NightSky();
             var CaveFog = GameObject.Find("GLUndergroundPPVolume").GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             CaveFog.fogColorStart.value = new Color32(37, 46, 67, 115);
             CaveFog.fogColorMid.value = new Color32(37, 45, 57, 167);
             CaveFog.fogColorEnd.value = new Color32(38, 42, 55, 255);
-            cgrade.colorFilter.value = new Color32(140, 164, 221, 255);
-            cgrade.colorFilter.overrideState = true;
             Transform base1 = GameObject.Find("HOLDER: Misc Props").transform;
             base1.Find("Props").GetChild(4).gameObject.SetActive(true);
-            var lightBase = GameObject.Find("Weather, Goolake").transform;
-            var shittyNotWorkingSun = lightBase.Find("Directional Light (SUN)");
-            var sun2 = Object.Instantiate(shittyNotWorkingSun);
-            shittyNotWorkingSun.gameObject.SetActive(false);
-            var sunLight = sun2.GetComponent<Light>();
-            sunLight.color = new Color32(197, 208, 207, 255);
-            sunLight.intensity = 0.82f;
-            sunLight.shadowStrength = 0.6f;
-            sun2.localEulerAngles = new Vector3(42, 12, 180);
+            GameObject.Find("Weather, Goolake").SetActive(false);
+
             AddRain(RainType.Monsoon);
             LightChanges("night");
             VanillaFoliage();
@@ -123,17 +111,10 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void Sundered(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(83, 53, 95, 35);
-            fog.fogColorMid.value = new Color32(91, 61, 117, 75);
-            fog.fogColorEnd.value = new Color32(107, 66, 111, 255);
-            fog.skyboxStrength.value = 0.055f;
-            fog.fogOne.value = 0.082f;
+            Skybox.SunsetSky();
             AddRain(RainType.Drizzle);
-            var sun = GameObject.Find("Directional Light (SUN)");
-            var newSun = Object.Instantiate(sun).GetComponent<Light>();
-            sun.SetActive(false);
-            newSun.intensity = 1.6f;
-            newSun.color = new Color32(134, 193, 216, 255);
+            var weather = GameObject.Find("Weather, Goolake");
+            weather.SetActive(false);
             var waterfall = GameObject.Find("HOLDER: GameplaySpace").transform.GetChild(2);
             waterfall.gameObject.SetActive(true);
             waterfall.GetChild(0).gameObject.SetActive(false);

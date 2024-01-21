@@ -41,6 +41,21 @@ namespace StageAesthetic
         public static Material distantRoostAbyssalDetailMat2;
         public static Material distantRoostAbyssalWaterMat;
 
+        public static Material abyssalSimulacrumTerrainMat;
+        public static Material abyssalSimulacrumBoulderMat;
+        public static Material abyssalSimulacrumDetailMat;
+        public static Material abyssalSimulacrumDetailMat2;
+        public static Material abyssalSimulacrumDetailMat3;
+
+        public static Material skyMeadowAbyssalTerrainMat;
+        public static Material skyMeadowAbyssalTerrainMat2;
+        public static Material skyMeadowAbyssalDetailMat;
+        public static Material skyMeadowAbyssalDetailMat2;
+        public static Material skyMeadowAbyssalDetailMat3;
+        public static Material skyMeadowAbyssalDetailMat4;
+        public static Material skyMeadowAbyssalDetailMat5;
+        public static Material skyMeadowAbyssalWaterMat;
+
         public static bool ForgottenRelicsLoaded = false;
 
         public void Awake()
@@ -80,7 +95,7 @@ namespace StageAesthetic
             distantRoostVoidTerrainMat.color = new Color32(188, 162, 162, 255);
             distantRoostVoidTerrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
             distantRoostVoidTerrainMat2.color = new Color32(188, 162, 162, 255);
-            distantRoostVoidDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
+            distantRoostVoidDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidstage/matVoidFoam.mat").WaitForCompletion();
             distantRoostVoidDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
             distantRoostVoidWaterMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
             distantRoostVoidWaterMat.color = new Color32(0, 14, 255, 255);
@@ -91,9 +106,8 @@ namespace StageAesthetic
             distantRoostAbyssalTerrainMat.color = new Color32(0, 0, 0, 204);
             distantRoostAbyssalTerrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainWalls.mat").WaitForCompletion());
             distantRoostAbyssalTerrainMat2.color = new Color32(0, 0, 0, 135);
-            distantRoostAbyssalDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
-            distantRoostAbyssalDetailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuins.mat").WaitForCompletion());
-            distantRoostAbyssalDetailMat2.color = new Color32(181, 66, 34, 255);
+            distantRoostAbyssalDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcavesimple/matDCBoulder.mat").WaitForCompletion();
+            distantRoostAbyssalDetailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion());
             distantRoostAbyssalWaterMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
             distantRoostAbyssalWaterMat.color = new Color32(107, 23, 23, 255);
             distantRoostAbyssalWaterMat.shaderKeywords = new string[] { "_BUMPLARGE_ON", "_DISPLACEMENTMODE_OFF", "_DISPLACEMENT_ON", "_DISTORTIONQUALITY_HIGH", "_EMISSION", "_FOAM_ON", "_NORMALMAP" };
@@ -143,6 +157,30 @@ namespace StageAesthetic
             detailMat5.color = new Color32(255, 255, 255, 255);
             var detailMat6 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Captain/matCaptainSupplyDropEquipmentRestock.mat").WaitForCompletion());
             detailMat6.color = new Color32(80, 162, 90, 255);
+
+            // Abyssal (Simulacrum)
+
+            abyssalSimulacrumTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matDCTerrainFloorInfiniteTower.mat").WaitForCompletion();
+            abyssalSimulacrumBoulderMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matDCBoulderInfiniteTower.mat").WaitForCompletion();
+            abyssalSimulacrumDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGoldArcaneFlare.mat").WaitForCompletion();
+            abyssalSimulacrumDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matTrimSheetLemurianRuinsHeavyInfiniteTower.mat").WaitForCompletion();
+            abyssalSimulacrumDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matDCTerrainWallsInfiniteTower.mat").WaitForCompletion();
+
+            // Sky Meadow (Abyssal)
+
+            skyMeadowAbyssalTerrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
+            skyMeadowAbyssalTerrainMat.color = new Color32(57, 0, 255, 42);
+            skyMeadowAbyssalTerrainMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainFloor.mat").WaitForCompletion();
+            skyMeadowAbyssalTerrainMat2.color = new Color32(255, 0, 0, 255);
+            skyMeadowAbyssalDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
+            skyMeadowAbyssalDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainWalls.mat").WaitForCompletion();
+            skyMeadowAbyssalDetailMat3 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetConstructionDestroyed.mat").WaitForCompletion());
+            skyMeadowAbyssalDetailMat3.color = new Color32(255, 136, 103, 255);
+            skyMeadowAbyssalDetailMat4 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetMetalMilitaryEmission.mat").WaitForCompletion();
+            skyMeadowAbyssalDetailMat5 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCCoralActive.mat").WaitForCompletion());
+            skyMeadowAbyssalDetailMat5.color = new Color32(255, 10, 0, 255);
+            skyMeadowAbyssalWaterMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Cleanse/matWaterPack.mat").WaitForCompletion());
+            skyMeadowAbyssalWaterMat.color = new Color32(217, 0, 255, 255);
 
             if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("PlasmaCore.ForgottenRelics"))
                 ForgottenRelicsLoaded = true;

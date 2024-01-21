@@ -12,12 +12,15 @@ using StageAesthetic.Variants.Special;
 using RoR2.UI;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using UnityEngine.AddressableAssets;
 
 namespace StageAesthetic
 {
     public class SwapVariants
     {
         public static string currentVariantName;
+        private static PostProcessProfile ppNostalgia = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneGolemplains.asset").WaitForCompletion();
+        private static PostProcessProfile ppGoolake = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneGoolake.asset").WaitForCompletion();
 
         public static void Initialize()
         {
@@ -184,7 +187,13 @@ namespace StageAesthetic
                                     break;
 
                                 case "Void":
-                                    DistantRoost.Void(rampFog, colorGrading);
+                                    GameObject cliff = GameObject.Find("mdlBBCliffLarge1 (6)");
+                                    GameObject cliff2 = GameObject.Find("mdlBBCliffLarge1 (5)");
+                                    if (cliff)
+                                        GameObject.Destroy(cliff);
+                                    if (cliff2)
+                                        GameObject.Destroy(cliff2);
+                                    DistantRoost.Void();
                                     break;
 
                                 default:
@@ -315,6 +324,7 @@ namespace StageAesthetic
                             switch (selectedTitanicPlainsVariant)
                             {
                                 case "Nostalgic":
+                                    volume.profile = ppNostalgia;
                                     TitanicPlains.Nostalgic(rampFog);
                                     break;
 
@@ -327,10 +337,12 @@ namespace StageAesthetic
                                     break;
 
                                 case "Night":
+                                    GameObject.Destroy(volume);
                                     TitanicPlains.Night(rampFog, colorGrading);
                                     break;
 
                                 case "Abandoned":
+                                    volume.profile = ppGoolake;
                                     TitanicPlains.Abandoned(rampFog);
                                     break;
 
@@ -411,6 +423,7 @@ namespace StageAesthetic
                             switch (selectedAphelianSanctuaryVariant)
                             {
                                 case "Singularity":
+
                                     AphelianSanctuary.Singularity(rampFog, colorGrading);
                                     break;
 
@@ -512,6 +525,7 @@ namespace StageAesthetic
                             switch (selectedRallypointDeltaVariant)
                             {
                                 case "Night":
+
                                     RallypointDelta.Night(rampFog, colorGrading);
                                     break;
 
@@ -571,11 +585,11 @@ namespace StageAesthetic
                                     break;
 
                                 case "Sunny Beta":
-                                    ScorchedAcres.SunnyBeta(rampFog);
+                                    ScorchedAcres.SunnyBeta(rampFog, colorGrading);
                                     break;
 
                                 case "Crimson Beta":
-                                    ScorchedAcres.CrimsonBeta(rampFog);
+                                    ScorchedAcres.CrimsonBeta(rampFog, colorGrading);
                                     break;
 
                                 case "Twilight":
@@ -616,10 +630,11 @@ namespace StageAesthetic
                                     break;
 
                                 case "Hell":
-                                    SulfurPools.Hell(rampFog);
+                                    SulfurPools.Hell(rampFog, colorGrading);
                                     break;
 
                                 case "Void":
+
                                     SulfurPools.Void(rampFog, colorGrading);
                                     break;
 
@@ -799,6 +814,7 @@ namespace StageAesthetic
                                     break;
 
                                 case "Abandoned":
+                                    volume.profile = ppGoolake;
                                     SunderedGrove.Abandoned(rampFog);
                                     break;
 
@@ -850,6 +866,7 @@ namespace StageAesthetic
                                     break;
 
                                 case "Abandoned":
+                                    volume.profile = ppGoolake;
                                     SkyMeadow.Abandoned(rampFog);
                                     break;
 
