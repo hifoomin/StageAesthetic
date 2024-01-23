@@ -157,20 +157,11 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void SunderedMaterials()
         {
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTerrain2.mat").WaitForCompletion());
-            terrainMat.color = new Color32(255, 156, 206, 184);
-            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTerrain.mat").WaitForCompletion());
-            var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJSandstone.mat").WaitForCompletion());
-            detailMat.color = new Color32(221, 77, 102, 231);
-            var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidstage/matVoidMetalTrimGrassy.mat").WaitForCompletion());
-            detailMat2.color = new Color32(130, 61, 74, 150);
-            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTree.mat").WaitForCompletion();
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+            var terrainMat = Main.aqueductSunderedTerrainMat;
+            var terrainMat2 = Main.aqueductSunderedTerrainMat2;
+            var detailMat = Main.aqueductSunderedDetailMat;
+            var detailMat2 = Main.aqueductSunderedDetailMat2;
+            var detailMat3 = Main.aqueductSunderedDetailMat3;
 
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3)
             {

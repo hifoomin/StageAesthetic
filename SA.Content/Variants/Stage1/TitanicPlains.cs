@@ -76,24 +76,28 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void Abandoned(RampFog fog)
+        public static void Abandoned(RampFog fog, PostProcessProfile ppProfile)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sun.color = new Color32(255, 122, 0, 255);
+            sun.color = Color.gray;
             sun.intensity = 1f;
 
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeTerrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(230, 223, 174, 219);
-            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimSandy.mat").WaitForCompletion();
-            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion();
-            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
-            var tar = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolake.mat").WaitForCompletion();
+            RampFog rampFog = ppProfile.GetSetting<RampFog>();
 
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + tar);
+            fog.fogColorStart.value = new Color(0.49f, 0.363f, 0.374f, 0f);
+            fog.fogColorMid.value = new Color(0.58f, 0.486f, 0.331f, 0.25f);
+            fog.fogColorEnd.value = new Color(0.77f, 0.839f, 0.482f, 0.5f);
+            fog.fogZero.value = rampFog.fogZero.value;
+            fog.fogIntensity.value = rampFog.fogIntensity.value;
+            fog.fogPower.value = rampFog.fogPower.value;
+            fog.fogOne.value = rampFog.fogOne.value;
+            fog.skyboxStrength.value = 0.01f;
+
+            var terrainMat = Main.plainsAbandonedTerrainMat;
+            var detailMat = Main.plainsAbandonedDetailMat;
+            var detailMat2 = Main.plainsAbandonedDetailMat2;
+            var detailMat3 = Main.plainsAbandonedDetailMat3;
+            var tar = Main.plainsAbandonedWaterMat;
 
             GameObject.Find("FOLIAGE: Grass").SetActive(false);
             var water = GameObject.Find("HOLDER: Water").transform.GetChild(0);

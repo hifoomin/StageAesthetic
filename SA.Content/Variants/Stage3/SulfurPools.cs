@@ -63,7 +63,7 @@ namespace StageAesthetic.Variants.Stage3
             var sunTransform = GameObject.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(191, 127, 127, 255);
-            sunLight.intensity = 1.6f;
+            sunLight.intensity = 2f;
             sunLight.shadowStrength = 0.6f;
             var fogg = GameObject.Find("mdlSPTerrain");
             fogg.transform.GetChild(3).gameObject.SetActive(false);
@@ -111,15 +111,9 @@ namespace StageAesthetic.Variants.Stage3
             fuckYou.transform.GetChild(13).gameObject.SetActive(false);
             GameObject.Find("SPCavePP").SetActive(false);
 
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(255, 255, 255, 96);
-            var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidstage/matVoidFoam.mat").WaitForCompletion());
-            // detailMat.color = new Color32(212, 214, 238, 255);
-            var water = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSPWaterGreen.mat").WaitForCompletion();
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            var terrainMat = Main.spVoidTerrainMat;
+            var detailMat = Main.spVoidDetailMat;
+            var water = Main.spVoidWaterMat;
 
             var terrain = GameObject.Find("mdlSPTerrain").transform;
             terrain.GetChild(0).localPosition = new Vector3(0f, 0f, -20f);
@@ -192,14 +186,9 @@ namespace StageAesthetic.Variants.Stage3
             var terrain = GameObject.Find("mdlSPTerrain").transform;
             var sphere = GameObject.Find("mdlSPSphere").transform;
             // var terrainMat = GameObject.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion());
-            var terrainMat = Main.distantRoostAbyssalTerrainMat;
-            terrainMat.color = new Color32(138, 172, 176, 202);
-            var detailMat = Main.distantRoostAbyssalDetailMat2;
-            var water = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Water.mat").WaitForCompletion();
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            var terrainMat = Main.spHellTerrainMat;
+            var detailMat = Main.spHellDetailMat;
+            var water = Main.spHellWaterMat;
 
             var zero = terrain.GetChild(0).gameObject.GetComponent<MeshRenderer>();
             var one = terrain.GetChild(2).gameObject.GetComponent<MeshRenderer>();

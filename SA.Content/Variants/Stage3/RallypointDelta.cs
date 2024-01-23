@@ -147,33 +147,10 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void TitanicMaterials()
         {
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPTerrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(95, 96, 132, 232);
-            terrainMat.SetFloat("_Depth", 0.1740239f);
-            terrainMat.SetFloat("_BlueChannelBias", 0.9805416f);
-            var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPBoulderMossyProjected.mat").WaitForCompletion());
-            detailMat.color = new Color32(76, 90, 115, 78);
-            detailMat.SetFloat("_SpecularStrength", 0.009451796f);
-            detailMat.SetFloat("_Depth", 0.135765f);
-            var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuinsProjectedHuge.mat").WaitForCompletion());
-            detailMat2.color = new Color32(209, 171, 29, 198);
-            detailMat2.SetFloat("_NormalStrength", 0.1499685f);
-            detailMat2.SetFloat("_SpecularStrength", 0.227f);
-            detailMat2.SetFloat("_SpecularExponent", 5.497946f);
-            detailMat2.SetFloat("_Smoothness", 0.4f);
-            detailMat2.SetFloat("_SnowSpecularStrength", 0.1436673f);
-            detailMat2.SetFloat("_SnowSpecularExponent", 0.9451796f);
-            detailMat2.SetFloat("_SnowSmoothness", 1f);
-            detailMat2.SetFloat("_SnowBias", -0.7378702f);
-            detailMat2.SetFloat("_Depth", 0.07435415f);
-            detailMat2.SetFloat("_TriplanarTextureFactor", 0.4f);
-
-            var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion();
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            var terrainMat = Main.rpdTitanicTerrainMat;
+            var detailMat = Main.rpdTitanicDetailMat;
+            var detailMat2 = Main.rpdTitanicDetailMat2;
+            var water = Main.rpdTitanicWaterMat;
 
             if (terrainMat && detailMat && detailMat2 && water)
             {

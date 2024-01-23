@@ -116,8 +116,8 @@ namespace StageAesthetic.Variants.Stage1
             GameObject sunBase = GameObject.Find("Directional Light (SUN)");
             sunBase.transform.rotation = Quaternion.Euler(40, 0, 211);
             Light sunLight = sunBase.GetComponent<Light>();
-            sunLight.color = new Color(1f, 0.5f, 0.5f, 1f);
-            sunLight.intensity = 6f;
+            sunLight.color = new Color(1f, 0.75f, 0.75f, 1f);
+            sunLight.intensity = 5f;
             sunLight.shadowStrength = 0.6f;
             // Quaternion.Euler(40, 0, 211)
             GameObject surroundingTrees = GameObject.Find("Treecards");

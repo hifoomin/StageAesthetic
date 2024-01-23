@@ -37,16 +37,16 @@ namespace StageAesthetic.Variants.Stage2
             Skybox.SunsetSky();
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
             fog.fogColorMid.value = new Color32(62, 18, 44, 126);
-            fog.fogColorEnd.value = new Color32(123, 74, 61, 200);
-            fog.skyboxStrength.value = 0.1f;
+            fog.fogColorEnd.value = new Color32(123, 74, 61, 180);
+            fog.skyboxStrength.value = 0.56f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
             fog.fogIntensity.value = 1f;
             fog.fogPower.value = 0.8f;
 
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color(1f, 0.5f, 0.5f);
-            sunLight.intensity = 1.2f;
+            sunLight.color = new Color(1f, 0.75f, 0.75f, 1f);
+            sunLight.intensity = 1f;
 
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             var caveInner = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("NonBlended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
@@ -90,21 +90,12 @@ namespace StageAesthetic.Variants.Stage2
         {
             var s = GameObject.Find("HOLDER: Skybox").transform;
             var terrain = GameObject.Find("HOLDER: Hero Assets").transform;
-            var terrainMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion();
-            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
-            terrainMat2.color = new Color32(171, 167, 234, 132);
-            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
-            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
-            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTrim.mat").WaitForCompletion();
-            var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Water.mat").WaitForCompletion());
-            water.color = new Color32(82, 24, 109, 255);
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            var terrainMat = Main.wetlandVoidTerrainMat;
+            var terrainMat2 = Main.wetlandVoidTerrainMat2;
+            var detailMat = Main.wetlandVoidDetailMat;
+            var detailMat2 = Main.wetlandVoidDetailMat2;
+            var detailMat3 = Main.wetlandVoidDetailMat3;
+            var water = Main.wetlandVoidWaterMat;
 
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && water)
             {

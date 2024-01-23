@@ -342,8 +342,7 @@ namespace StageAesthetic
                                     break;
 
                                 case "Abandoned":
-                                    volume.profile = ppGoolake;
-                                    TitanicPlains.Abandoned(rampFog);
+                                    TitanicPlains.Abandoned(rampFog, ppGoolake);
                                     break;
 
                                 default:
@@ -814,8 +813,7 @@ namespace StageAesthetic
                                     break;
 
                                 case "Abandoned":
-                                    volume.profile = ppGoolake;
-                                    SunderedGrove.Abandoned(rampFog);
+                                    SunderedGrove.Abandoned(rampFog, ppGoolake);
                                     break;
 
                                 default:
@@ -866,8 +864,7 @@ namespace StageAesthetic
                                     break;
 
                                 case "Abandoned":
-                                    volume.profile = ppGoolake;
-                                    SkyMeadow.Abandoned(rampFog);
+                                    SkyMeadow.Abandoned(rampFog, ppGoolake);
                                     break;
 
                                 default:

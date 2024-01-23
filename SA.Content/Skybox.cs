@@ -61,7 +61,10 @@ namespace StageAesthetic
                 GameObject.Destroy(skybox.transform.GetChild(0).GetComponent<PostProcessVolume>());
             }
 
-            skybox.transform.GetChild(1).GetComponent<Light>().color = new Color(1f, 0.5f, 0.5f);
+            if (SceneManager.GetActiveScene().name == "ancientloft")
+                skybox.transform.GetChild(1).GetComponent<Light>().color = new Color(0.75f, 0.25f, 0.25f);
+            else
+                skybox.transform.GetChild(1).GetComponent<Light>().color = new Color(1f, 0.5f, 0.5f);
 
             string sceneName = SceneManager.GetActiveScene().name;
 

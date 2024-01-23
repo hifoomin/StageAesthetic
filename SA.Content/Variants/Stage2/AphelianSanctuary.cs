@@ -31,10 +31,10 @@ namespace StageAesthetic.Variants.Stage2
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
             fog.fogColorMid.value = new Color32(62, 18, 44, 126);
             fog.fogColorEnd.value = new Color32(123, 74, 61, 200);
-            fog.skyboxStrength.value = 0.02f;
+            fog.skyboxStrength.value = 0.56f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
-            fog.fogIntensity.value = 1.1f;
+            fog.fogIntensity.value = 1f;
             fog.fogPower.value = 0.8f;
 
             var fog2 = GameObject.Find("DeepFog");

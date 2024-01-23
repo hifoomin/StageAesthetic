@@ -14,7 +14,7 @@ namespace StageAesthetic.Variants.Stage4
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.intensity = 3f;
             sunLight.transform.localEulerAngles = new Vector3(35, 15, 351);
-            sunLight.color = Color.gray;
+            sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
             sunLight.shadowStrength = 0.6f;
         }
 
@@ -68,7 +68,7 @@ namespace StageAesthetic.Variants.Stage4
             fog.fogPower.value = 0.8f;
 
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(122, 122, 122, 255);
+            sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
             sunLight.intensity = 1.2f;
             sunLight.transform.eulerAngles = new Vector3(70f, 19.64314f, 9.985f);
             sunLight.shadowStrength = 0.6f;

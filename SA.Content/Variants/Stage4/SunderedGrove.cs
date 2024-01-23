@@ -25,7 +25,7 @@ namespace StageAesthetic.Variants.Stage4
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(122, 200, 122, 255);
+            sunLight.color = new Color32(122, 180, 122, 255);
             sunLight.intensity = 2f;
             sunTransform.localEulerAngles = new Vector3(60, 15, -4);
             VanillaFoliage();
@@ -72,24 +72,25 @@ namespace StageAesthetic.Variants.Stage4
             VanillaFoliage();
         }
 
-        public static void Abandoned(RampFog fog)
+        public static void Abandoned(RampFog fog, PostProcessProfile ppProfile)
         {
             AddSand(SandType.Moderate);
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeTerrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(255, 222, 185, 39);
-            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion());
-            terrainMat2.color = new Color32(166, 157, 27, 59);
-            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion();
-            detailMat.color = new Color32(166, 157, 27, 59);
-            var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/matClayGooDebuff.mat").WaitForCompletion();
-            var shroomMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolake.mat").WaitForCompletion());
-            shroomMat.color = new Color32(176, 153, 57, 255);
+            var terrainMat = Main.groveAbandonedTerrainMat;
+            var terrainMat2 = Main.groveAbandonedTerrainMat2;
+            var detailMat = Main.groveAbandonedDetailMat;
+            var water = Main.groveAbandonedWaterMat;
+            var shroomMat = Main.groveAbandonedDetailMat2;
 
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + shroomMat);
+            RampFog rampFog = ppProfile.GetSetting<RampFog>();
+
+            fog.fogColorStart.value = new Color(0.49f, 0.363f, 0.374f, 0f);
+            fog.fogColorMid.value = new Color(0.58f, 0.486f, 0.331f, 0.25f);
+            fog.fogColorEnd.value = new Color(0.77f, 0.839f, 0.482f, 0.5f);
+            fog.fogZero.value = rampFog.fogZero.value;
+            fog.fogIntensity.value = rampFog.fogIntensity.value;
+            fog.fogPower.value = rampFog.fogPower.value;
+            fog.fogOne.value = rampFog.fogOne.value;
+            fog.skyboxStrength.value = 0.02f;
 
             var c = GameObject.Find("Cloud Floor").transform;
             if (terrainMat && terrainMat2 && detailMat && water && shroomMat)

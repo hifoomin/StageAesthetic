@@ -161,7 +161,7 @@ namespace StageAesthetic.Variants.Stage1
             cgrade.colorFilter.value = new Color32(150, 150, 150, 255);
             cgrade.colorFilter.overrideState = true;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(150, 150, 150, 255);
+            sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
             sunLight.intensity = 1.25f;
             sunLight.shadowStrength = 1f;
             sunLight.transform.eulerAngles = new Vector3(70f, 220f, -9.985f);

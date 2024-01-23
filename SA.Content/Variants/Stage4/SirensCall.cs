@@ -189,21 +189,11 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void AphelianMaterials()
         {
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(138, 176, 167, 255);
-            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Temple.mat").WaitForCompletion());
-            terrainMat2.color = new Color32(138, 176, 167, 255);
-            var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetAlien1BossEmissionDirty.mat").WaitForCompletion());
-            detailMat.color = new Color32(252, 154, 72, 235);
-            var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_StoneSurface.mat").WaitForCompletion());
-            detailMat2.color = new Color32(178, 127, 68, 159);
-            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/MajorAndMinorConstruct/matMajorConstructDefenseMatrixEdges.mat").WaitForCompletion();
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+            var terrainMat = Main.sirensAphelianTerrainMat;
+            var terrainMat2 = Main.sirensAphelianTerrainMat2;
+            var detailMat = Main.sirensAphelianDetailMat;
+            var detailMat2 = Main.sirensAphelianDetailMat2;
+            var detailMat3 = Main.sirensAphelianDetailMat3;
 
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3)
             {
