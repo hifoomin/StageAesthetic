@@ -20,7 +20,7 @@ namespace StageAesthetic.Variants.Stage3
         {
             fog.fogColorStart.value = new Color32(47, 52, 62, 50);
             fog.fogColorMid.value = new Color32(72, 80, 98, 165);
-            fog.fogColorEnd.value = new Color32(90, 101, 119, 255);
+            fog.fogColorEnd.value = new Color32(90, 101, 119, 180);
             fog.skyboxStrength.value = 0.15f;
             fog.fogZero.value = -0.05f;
             fog.fogOne.value = 0.4f;
@@ -28,10 +28,8 @@ namespace StageAesthetic.Variants.Stage3
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
             sun.SetActive(false);
             sun.name = "Shitty Not Working Sun";
-            sunLight.color = new Color32(177, 205, 232, 255);
-            sunLight.intensity = 0.5f;
             GameObject.Find("HOLDER: Skybox").transform.Find("Water").localPosition = new Vector3(-1260, -66, 0);
-            sunLight.color = new Color32(155, 174, 200, 255);
+            sunLight.color = Color.gray;
             sunLight.intensity = 1.3f;
             sunLight.name = "Directional Light (SUN)";
             AddRain(RainType.Monsoon);
@@ -55,21 +53,11 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(33, 33, 56, 76);
-            fog.fogColorMid.value = new Color32(38, 38, 55, 165);
-            fog.fogColorEnd.value = new Color32(25, 24, 46, 255);
-            fog.skyboxStrength.value = 0.7f;
-            cgrade.colorFilter.value = new Color32(130, 123, 255, 255);
-            cgrade.colorFilter.overrideState = true;
             var sun = GameObject.Find("Directional Light (SUN)");
-            var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
             sun.name = "Shitty Not Working Sun";
             sun.SetActive(false);
-            sunLight.color = new Color32(167, 165, 172, 255);
-            sunLight.intensity = 0.9f;
-            sunLight.shadowStrength = 0.6f;
-            sunLight.transform.eulerAngles = new Vector3(70, 250, 5);
-            sunLight.name = "Directional Light (SUN)";
+            Skybox.NightSky();
+
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (Light light in lightList)
             {
@@ -98,22 +86,19 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void Sunset(RampFog fog, PostProcessVolume volume)
         {
-            fog.fogColorStart.value = new Color32(162, 89, 59, 0);
-            fog.fogColorMid.value = new Color32(132, 75, 57, 60);
-            fog.fogColorEnd.value = new Color32(144, 76, 57, 255);
-            fog.skyboxStrength.value = 0.04f;
+            Skybox.SunsetSky();
+            fog.fogColorStart.value = new Color32(66, 66, 66, 50);
+            fog.fogColorMid.value = new Color32(62, 18, 28, 126);
+            fog.fogColorEnd.value = new Color32(160, 74, 61, 200);
+            fog.skyboxStrength.value = 0.52f;
+            fog.fogOne.value = 0.12f;
+            fog.fogIntensity.overrideState = true;
             fog.fogIntensity.value = 1f;
-            fog.fogPower.value = 0.6f;
-            fog.fogZero.value = -0.058f;
-            fog.fogOne.value = 0.15f;
+            fog.fogPower.value = 0.8f;
+
             var sun = GameObject.Find("Directional Light (SUN)");
-            var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
-            sunLight.gameObject.name = "Directional Light (SUN)";
             sun.SetActive(false);
             sun.name = "Shitty Not Working Sun";
-            sunLight.color = new Color32(178, 177, 232, 255);
-            sunLight.intensity = 0.25f;
-            sunLight.shadowStrength = 1f;
             AddSnow(SnowType.Light, 250f);
 
             var bloom = volume.profile.GetSetting<Bloom>();
@@ -123,10 +108,12 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void Titanic(RampFog fog, ColorGrading cgrade, PostProcessVolume volume)
         {
+            Skybox.DaySky();
             fog.fogColorStart.value = new Color32(116, 153, 173, 4);
             fog.fogColorMid.value = new Color32(88, 130, 153, 40);
             fog.fogColorEnd.value = new Color32(77, 127, 152, 255);
-            fog.skyboxStrength.value = 0f;
+            fog.skyboxStrength.value = 0.52f;
+            // 0.75 1 0.6 1
             // cgrade.colorFilter.value = new Color32(178, 255, 230, 255);
             // cgrade.colorFilter.overrideState = true;
             var sun = GameObject.Find("Directional Light (SUN)");
@@ -134,8 +121,8 @@ namespace StageAesthetic.Variants.Stage3
             sun.SetActive(false);
             sun.name = "Shitty Not Working Sun";
             sunLight.name = "Directional Light (SUN)";
-            sunLight.color = new Color32(255, 212, 153, 255);
-            sunLight.intensity = 1.4f;
+            sunLight.color = new Color32(191, 255, 153, 255);
+            sunLight.intensity = 1f;
             sunLight.shadowStrength = 0.7f;
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (Light light in lightList)
@@ -160,33 +147,10 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void TitanicMaterials()
         {
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPTerrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(95, 96, 132, 232);
-            terrainMat.SetFloat("_Depth", 0.1740239f);
-            terrainMat.SetFloat("_BlueChannelBias", 0.9805416f);
-            var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPBoulderMossyProjected.mat").WaitForCompletion());
-            detailMat.color = new Color32(76, 90, 115, 78);
-            detailMat.SetFloat("_SpecularStrength", 0.009451796f);
-            detailMat.SetFloat("_Depth", 0.135765f);
-            var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuinsProjectedHuge.mat").WaitForCompletion());
-            detailMat2.color = new Color32(209, 171, 29, 198);
-            detailMat2.SetFloat("_NormalStrength", 0.1499685f);
-            detailMat2.SetFloat("_SpecularStrength", 0.227f);
-            detailMat2.SetFloat("_SpecularExponent", 5.497946f);
-            detailMat2.SetFloat("_Smoothness", 0.4f);
-            detailMat2.SetFloat("_SnowSpecularStrength", 0.1436673f);
-            detailMat2.SetFloat("_SnowSpecularExponent", 0.9451796f);
-            detailMat2.SetFloat("_SnowSmoothness", 1f);
-            detailMat2.SetFloat("_SnowBias", -0.7378702f);
-            detailMat2.SetFloat("_Depth", 0.07435415f);
-            detailMat2.SetFloat("_TriplanarTextureFactor", 0.4f);
-
-            var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion();
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            var terrainMat = Main.rpdTitanicTerrainMat;
+            var detailMat = Main.rpdTitanicDetailMat;
+            var detailMat2 = Main.rpdTitanicDetailMat2;
+            var water = Main.rpdTitanicWaterMat;
 
             if (terrainMat && detailMat && detailMat2 && water)
             {

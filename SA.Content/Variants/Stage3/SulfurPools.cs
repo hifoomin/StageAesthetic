@@ -19,9 +19,9 @@ namespace StageAesthetic.Variants.Stage3
         {
             fog.skyboxStrength.value = 0.08f;
 
-            fog.fogColorStart.value = new Color32(0, 87, 145, 58);
-            fog.fogColorMid.value = new Color32(0, 106, 145, 90);
-            fog.fogColorEnd.value = new Color32(0, 115, 119, 194);
+            fog.fogColorStart.value = new Color32(0, 87, 145, 30);
+            fog.fogColorMid.value = new Color32(0, 106, 145, 60);
+            fog.fogColorEnd.value = new Color32(0, 115, 119, 100);
             //fog.fogZero.value = -0.019f;
             //fog.fogOne.value = 0.211f;
 
@@ -51,23 +51,19 @@ namespace StageAesthetic.Variants.Stage3
             AddRain(RainType.Drizzle);
         }
 
-        public static void Hell(RampFog fog)
+        public static void Hell(RampFog fog, ColorGrading cgrade)
         {
-            fog.skyboxStrength.value = 0f;
-
-            fog.fogColorStart.value = new Color32(89, 56, 138, 20);
-            fog.fogColorMid.value = new Color32(63, 71, 87, 60);
-            fog.fogColorEnd.value = new Color32(48, 57, 76, 189);
-            fog.skyboxStrength.value = -0.2f;
-            fog.fogIntensity.value = 1f;
-            fog.fogPower.value = 1f;
-            fog.fogZero.value = 0f;
-            fog.fogOne.value = 0.07f;
+            cgrade.SetAllOverridesTo(true);
+            cgrade.colorFilter.value = new Color32(181, 178, 219, 255);
+            fog.fogColorStart.value = new Color32(102, 51, 40, 81);
+            fog.fogColorMid.value = new Color32(56, 87, 89, 93);
+            fog.fogColorEnd.value = new Color32(104, 23, 54, 180);
+            fog.skyboxStrength.value = 0.2f;
 
             var sunTransform = GameObject.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(204, 130, 139, 255);
-            sunLight.intensity = 1.6f;
+            sunLight.color = new Color32(191, 127, 127, 255);
+            sunLight.intensity = 2f;
             sunLight.shadowStrength = 0.6f;
             var fogg = GameObject.Find("mdlSPTerrain");
             fogg.transform.GetChild(3).gameObject.SetActive(false);
@@ -87,34 +83,18 @@ namespace StageAesthetic.Variants.Stage3
             var terrain = GameObject.Find("mdlSPTerrain").transform;
             terrain.GetChild(0).localPosition = new Vector3(0f, 0f, -20f);
             terrain.GetChild(9).gameObject.SetActive(false);
-            GameObject.Find("HOLDER: SulfurPods").SetActive(false);
-            string[] targets = { "SulfurPodBody(Clone)" };
-            foreach (string name in targets)
-            {
-                GameObject go = GameObject.Find(name);
-                // annihilate all pods
-                if (go != null)
-                {
-                    go.SetActive(false);
-                }
-            }
+            AddRain(RainType.Typhoon, true);
             VanillaWater();
             HellMaterials();
         }
 
         public static void Void(RampFog fog, ColorGrading cgrade)
         {
-            fog.skyboxStrength.value = 0f;
-
-            fog.fogColorStart.value = new Color32(21, 35, 114, 35);
-            fog.fogColorMid.value = new Color32(16, 38, 137, 55);
-            fog.fogColorEnd.value = new Color32(16, 16, 99, 170);
-
             var sunTransform = GameObject.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(178, 116, 211, 255);
-            sunLight.intensity = 1.6f;
-            sunLight.shadowStrength = 0.84f;
+            sunTransform.gameObject.SetActive(false);
+
+            Skybox.VoidSky();
+
             var fogg = GameObject.Find("mdlSPTerrain");
             fogg.transform.GetChild(3).gameObject.SetActive(false);
             fogg.transform.GetChild(5).gameObject.SetActive(false);
@@ -131,15 +111,9 @@ namespace StageAesthetic.Variants.Stage3
             fuckYou.transform.GetChild(13).gameObject.SetActive(false);
             GameObject.Find("SPCavePP").SetActive(false);
 
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(255, 255, 255, 96);
-            var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion());
-            // detailMat.color = new Color32(212, 214, 238, 255);
-            var water = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSPWaterGreen.mat").WaitForCompletion();
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            var terrainMat = Main.spVoidTerrainMat;
+            var detailMat = Main.spVoidDetailMat;
+            var water = Main.spVoidWaterMat;
 
             var terrain = GameObject.Find("mdlSPTerrain").transform;
             terrain.GetChild(0).localPosition = new Vector3(0f, 0f, -20f);
@@ -171,17 +145,6 @@ namespace StageAesthetic.Variants.Stage3
                             meshBase.SetActive(false);
                         }
                     }
-                }
-            }
-            GameObject.Find("HOLDER: SulfurPods").SetActive(false);
-            string[] targets = { "SulfurPodBody(Clone)" };
-            foreach (string name in targets)
-            {
-                GameObject go = GameObject.Find(name);
-                // annihilate all pods
-                if (go != null)
-                {
-                    go.SetActive(false);
                 }
             }
 
@@ -222,14 +185,10 @@ namespace StageAesthetic.Variants.Stage3
         {
             var terrain = GameObject.Find("mdlSPTerrain").transform;
             var sphere = GameObject.Find("mdlSPSphere").transform;
-            var terrainMat = GameObject.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(138, 172, 176, 202);
-            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_DimondPattern.mat").WaitForCompletion();
-            var water = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Water.mat").WaitForCompletion();
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            // var terrainMat = GameObject.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion());
+            var terrainMat = Main.spHellTerrainMat;
+            var detailMat = Main.spHellDetailMat;
+            var water = Main.spHellWaterMat;
 
             var zero = terrain.GetChild(0).gameObject.GetComponent<MeshRenderer>();
             var one = terrain.GetChild(2).gameObject.GetComponent<MeshRenderer>();

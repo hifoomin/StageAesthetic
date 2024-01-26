@@ -9,6 +9,7 @@ namespace StageAesthetic.Variants.Stage2
     {
         public static void Morning(RampFog fog, ColorGrading cgrade)
         {
+            Skybox.DaySky();
             fog.fogColorStart.value = new Color32(128, 121, 99, 13);
             fog.fogColorMid.value = new Color32(106, 141, 154, 130);
             fog.fogColorEnd.value = new Color32(104, 150, 199, 255);
@@ -17,7 +18,7 @@ namespace StageAesthetic.Variants.Stage2
             fog.fogIntensity.value = 0.937f;
             cgrade.colorFilter.value = new Color32(240, 213, 248, 255);
             cgrade.colorFilter.overrideState = true;
-            fog.skyboxStrength.value = 0f;
+            fog.skyboxStrength.value = 0.52f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(255, 225, 181, 255);
             sunLight.intensity = 1.1f;
@@ -33,23 +34,20 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void Sunset(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(95, 42, 170, 0);
-            fog.fogColorMid.value = new Color32(189, 125, 64, 130);
-            fog.fogColorEnd.value = new Color32(164, 125, 111, 220);
-
-            cgrade.colorFilter.value = new Color32(185, 144, 98, 255);
-            cgrade.colorFilter.overrideState = true;
-
-            fog.fogIntensity.value = 0.937f;
-            fog.fogPower.value = 1.06f;
-            fog.fogZero.value = -0.06f;
-            fog.fogOne.value = 0.28f;
+            Skybox.SunsetSky();
+            fog.fogColorStart.value = new Color32(66, 66, 66, 50);
+            fog.fogColorMid.value = new Color32(62, 18, 44, 126);
+            fog.fogColorEnd.value = new Color32(123, 74, 61, 180);
+            fog.skyboxStrength.value = 0.56f;
+            fog.fogOne.value = 0.12f;
+            fog.fogIntensity.overrideState = true;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.8f;
 
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(166, 123, 99, 255);
-            sunLight.intensity = 3f;
-            sunLight.shadowStrength = 0.7f;
-            sunLight.transform.eulerAngles = new Vector3(50.00005f, 59.99999f, 69.94977f);
+            sunLight.color = new Color(1f, 0.75f, 0.75f, 1f);
+            sunLight.intensity = 1f;
+
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             var caveInner = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("NonBlended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(127, 124, 84, 0);
@@ -62,19 +60,7 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void Night(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(64, 76, 70, 15);
-            fog.fogColorMid.value = new Color32(48, 66, 58, 173);
-            fog.fogColorEnd.value = new Color32(47, 60, 48, 255);
-            fog.skyboxStrength.value = 0.001f;
-            fog.fogOne.value = 0.25f;
-            fog.fogZero.value = -0.02f;
-            fog.fogPower.value = 0.9f;
-            fog.fogIntensity.value = 0.937f;
-            fog.fogOne.value = 0.355f;
-            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(109, 182, 185, 255);
-            sunLight.intensity = 0.4f;
-            sunLight.shadowStrength = 0.6f;
+            Skybox.NightSky();
             AddRain(RainType.Rainstorm);
 
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
@@ -85,16 +71,7 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void Void(RampFog fog)
         {
-            var s = GameObject.Find("HOLDER: Skybox").transform;
-            s.GetChild(0).localPosition = new Vector3(24.45f, -50f, -84.87f);
-            fog.fogColorStart.value = new Color32(62, 12, 62, 87);
-            fog.fogColorMid.value = new Color32(66, 29, 74, 173);
-            fog.fogColorEnd.value = new Color32(82, 24, 89, 255);
-            fog.fogOne.value = 0.355f;
-            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(187, 145, 238, 255);
-            sunLight.intensity = 1f;
-            sunLight.shadowStrength = 0.6f;
+            Skybox.VoidSky();
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(62, 12, 120, 0);
             caveOuter.fogColorMid.value = new Color32(66, 29, 132, 89);
@@ -113,21 +90,12 @@ namespace StageAesthetic.Variants.Stage2
         {
             var s = GameObject.Find("HOLDER: Skybox").transform;
             var terrain = GameObject.Find("HOLDER: Hero Assets").transform;
-            var terrainMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion();
-            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion());
-            terrainMat2.color = new Color32(171, 167, 234, 132);
-            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainGem.mat").WaitForCompletion();
-            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaHeatvent1.mat").WaitForCompletion();
-            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTrim.mat").WaitForCompletion();
-            var water = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Water.mat").WaitForCompletion());
-            water.color = new Color32(82, 24, 109, 255);
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
+            var terrainMat = Main.wetlandVoidTerrainMat;
+            var terrainMat2 = Main.wetlandVoidTerrainMat2;
+            var detailMat = Main.wetlandVoidDetailMat;
+            var detailMat2 = Main.wetlandVoidDetailMat2;
+            var detailMat3 = Main.wetlandVoidDetailMat3;
+            var water = Main.wetlandVoidWaterMat;
 
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && water)
             {

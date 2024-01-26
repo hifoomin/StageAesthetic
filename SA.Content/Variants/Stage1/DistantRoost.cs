@@ -15,16 +15,11 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Sunny(RampFog fog, string scenename, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(107, 125, 123, 25);
-            fog.fogColorMid.value = new Color32(129, 154, 152, 69);
-            fog.fogColorEnd.value = new Color32(156, 194, 189, 114);
-            fog.skyboxStrength.value = 0.13f;
-            fog.fogZero.value = 0;
-            fog.fogOne.value = 0.142f;
+            Skybox.DaySky();
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(255, 246, 229, 255);
             sunLight.intensity = 1.8f;
-            sunLight.shadowStrength = 1;
+            sunLight.shadowStrength = 0.75f;
             var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
             shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
             cgrade.colorFilter.value = new Color32(255, 234, 194, 255);
@@ -40,19 +35,7 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Night(RampFog fog, string scenename, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(24, 20, 43, 32);
-            fog.fogColorMid.value = new Color32(33, 25, 49, 130);
-            fog.fogColorEnd.value = new Color32(43, 35, 62, 255);
-            fog.skyboxStrength.value = 0.03f;
-            fog.fogPower.value = 0.6f;
-            cgrade.colorFilter.value = new Color32(197, 182, 249, 255);
-            cgrade.colorFilter.overrideState = true;
-            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(106, 69, 160, 255);
-            sunLight.intensity = 7f;
-            sunLight.shadowStrength = 0.45f;
-            var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
-            shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
+            Skybox.NightSky();
             if (scenename == "blackbeach")
             {
                 // Enabling some unused fog
@@ -79,24 +62,9 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void Void(RampFog fog, ColorGrading cgrade)
+        public static void Void()
         {
-            fog.fogColorStart.value = new Color32(40, 19, 40, 32);
-            fog.fogColorMid.value = new Color32(48, 25, 48, 255);
-            fog.fogColorEnd.value = new Color32(61, 34, 58, 255);
-            fog.skyboxStrength.value = 0.03f;
-            fog.fogPower.value = 0.35f;
-            fog.fogIntensity.value = 0.99f;
-            fog.fogZero.value = -0.02f;
-            fog.fogOne.value = 0.25f;
-            cgrade.colorFilter.value = new Color32(213, 183, 247, 255);
-            cgrade.colorFilter.overrideState = true;
-            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(152, 69, 158, 255);
-            sunLight.intensity = 1f;
-            sunLight.shadowStrength = 0.45f;
-            var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
-            shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
+            Skybox.VoidSky();
             var lightList = UnityEngine.Object.FindObjectsOfType(typeof(Light)) as Light[];
             var s = GameObject.Find("SKYBOX").transform;
             foreach (Light light in lightList)
@@ -134,7 +102,7 @@ namespace StageAesthetic.Variants.Stage1
             fog.fogColorEnd.value = new Color32(71, 82, 88, 255);
             fog.skyboxStrength.value = 0.02f;
             fog.fogPower.value = 0.35f;
-            fog.fogIntensity.value = 0.99f;
+            fog.fogIntensity.value = 0.88f;
             fog.fogZero.value = -0.02f;
             fog.fogOne.value = 0.05f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
@@ -186,14 +154,14 @@ namespace StageAesthetic.Variants.Stage1
             fog.fogColorEnd.value = new Color32(68, 27, 27, 255);
             fog.SetAllOverridesTo(true);
             fog.skyboxStrength.value = 0f;
-            fog.fogPower.value = 0.45f;
-            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.88f;
+            fog.fogIntensity.value = 0.9f;
             fog.fogZero.value = -0.05f;
             fog.fogOne.value = 0.27f;
-            cgrade.colorFilter.value = new Color32(201, 201, 166, 255);
+            cgrade.colorFilter.value = new Color32(150, 150, 150, 255);
             cgrade.colorFilter.overrideState = true;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(195, 127, 129, 255);
+            sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
             sunLight.intensity = 1.25f;
             sunLight.shadowStrength = 1f;
             sunLight.transform.eulerAngles = new Vector3(70f, 220f, -9.985f);
@@ -350,19 +318,19 @@ namespace StageAesthetic.Variants.Stage1
                 {
                     if (meshBase.name.Contains("bbSimpleGrassPrefab"))
                     {
-                        mr.sharedMaterial.color = new Color32(89, 23, 37, 211);
+                        mr.sharedMaterial.color = new Color32(45, 45, 45, 211);
                         meshBase.transform.localScale = new Vector3(5.28f, 3.798217104f, 5.28f);
                     }
                     if (meshBase.name.Contains("spmBbFern"))
                     {
                         meshBase.transform.localScale = new Vector3(2f, 2f, 2f);
-                        mr.sharedMaterial.color = new Color32(255, 0, 6, 166);
+                        mr.sharedMaterial.color = new Color32(50, 50, 50, 166);
                         meshBase.transform.localScale = new Vector3(3f, 3f, 3f);
                     }
                     if (meshBase.name.Contains("spmBush"))
                     {
-                        var color = new Color32(255, 255, 255, 255);
-                        mr.sharedMaterial.color = new Color32(255, 255, 255, 255);
+                        var color = new Color32(50, 50, 50, 255);
+                        mr.sharedMaterial.color = new Color32(30, 30, 30, 255);
                         var sharedMaterials = mr.sharedMaterials;
                         for (int i = 0; i < sharedMaterials.Length; i++)
                         {
@@ -372,7 +340,7 @@ namespace StageAesthetic.Variants.Stage1
                     }
                     if (meshBase.name.Contains("spmBbDryBush"))
                     {
-                        var color = new Color32(125, 125, 128, 255);
+                        var color = new Color32(20, 20, 20, 255);
                         var sharedMaterials = mr.sharedMaterials;
                         // mr.sharedMaterial.color = color;
                         for (int i = 0; i < sharedMaterials.Length; i++)
@@ -385,7 +353,7 @@ namespace StageAesthetic.Variants.Stage1
                     {
                         var sharedMaterials = mr.sharedMaterials;
                         var color1 = new Color32(58, 58, 58, 146);
-                        var color2 = new Color32(119, 21, 21, 133);
+                        var color2 = new Color32(119, 119, 119, 133);
                         for (int i = 0; i < sharedMaterials.Length; i++)
                         {
                             sharedMaterials[i].color = color1;
@@ -398,7 +366,7 @@ namespace StageAesthetic.Variants.Stage1
                     }
                     if (meshBase.name.Contains("Vine"))
                     {
-                        mr.sharedMaterial.color = new Color32(79, 21, 20, 255);
+                        mr.sharedMaterial.color = new Color32(79, 63, 60, 255);
                     }
 
                     if (meshBase.name.Contains("spmBbConif_"))
@@ -406,8 +374,8 @@ namespace StageAesthetic.Variants.Stage1
                         meshBase.SetActive(true);
                         var sharedMaterials = mr.sharedMaterials;
                         // mr.sharedMaterial.color = new Color32(164, 35, 47, 255);
-                        var color1 = new Color32(191, 60, 40, 255);
-                        var color2 = new Color32(160, 84, 31, 255);
+                        var color1 = new Color32(100, 75, 75, 255);
+                        var color2 = new Color32(100, 100, 100, 255);
                         for (int i = 0; i < sharedMaterials.Length; i++)
                         {
                             sharedMaterials[i].color = color1;
@@ -423,8 +391,8 @@ namespace StageAesthetic.Variants.Stage1
                         meshBase.SetActive(true);
                         var sharedMaterials = mr.sharedMaterials;
                         // mr.sharedMaterial.color = new Color32(164, 35, 47, 255);
-                        var color1 = new Color32(191, 60, 40, 255);
-                        var color2 = new Color32(115, 68, 65, 255);
+                        var color1 = new Color32(70, 70, 70, 255);
+                        var color2 = new Color32(65, 68, 65, 255);
                         for (int i = 0; i < sharedMaterials.Length; i++)
                         {
                             sharedMaterials[i].color = color1;
@@ -565,7 +533,7 @@ namespace StageAesthetic.Variants.Stage1
                                 mr.sharedMaterial = Main.distantRoostAbyssalTerrainMat;
                             }
                         }
-                        if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("boulder") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Step") || meshBase.name.Contains("Tile") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Bowl") || meshBase.name.Contains("Marker") || meshBase.name.Contains("RuinPillar") || meshBase.name.Contains("DistantBridge") || meshBase.name.Contains("Pebble"))
+                        if (meshBase.name.Contains("Boulder") || meshBase.name.Contains("boulder") || meshBase.name.Contains("Rock") || meshBase.name.Contains("Step") || meshBase.name.Contains("Tile") || meshBase.name.Contains("mdlGeyser") || meshBase.name.Contains("Bowl") || meshBase.name.Contains("Marker") || meshBase.name.Contains("DistantBridge") || meshBase.name.Contains("Pebble"))
                         {
                             if (mr.sharedMaterial)
                             {
@@ -573,7 +541,7 @@ namespace StageAesthetic.Variants.Stage1
                                 mr.sharedMaterial = Main.distantRoostAbyssalDetailMat;
                             }
                         }
-                        if (meshBase.name.Contains("RuinGate") || meshBase.name.Contains("RuinArch"))
+                        if (meshBase.name.Contains("RuinGate") || meshBase.name.Contains("RuinArch") || meshBase.name.Contains("RuinPillar"))
                         {
                             if (mr.sharedMaterial)
                             {
