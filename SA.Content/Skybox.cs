@@ -66,6 +66,9 @@ namespace StageAesthetic
             else
                 skybox.transform.GetChild(1).GetComponent<Light>().color = new Color(1f, 0.5f, 0.5f);
 
+            Debug.LogWarning(skybox.transform.GetChild(1).GetComponent<Light>().intensity);
+            skybox.transform.GetChild(1).GetComponent<Light>().intensity = 1.5f;
+
             string sceneName = SceneManager.GetActiveScene().name;
 
             switch (sceneName)
@@ -101,11 +104,12 @@ namespace StageAesthetic
                     sunInstance.transform.rotation = Quaternion.Euler(0, 180, 0);
                     break;
                 case "ancientloft":
-                    skybox.transform.GetChild(1).GetComponent<Light>().intensity = 0.8f;
+                    skybox.transform.GetChild(1).eulerAngles = new Vector3(60, 90, 0);
+                    skybox.transform.GetChild(1).GetComponent<Light>().intensity = 1.6f;
                     break;
                 case "shipgraveyard":
                     skybox.transform.GetChild(1).rotation = Quaternion.Euler(30, 0, 0);
-                    sunInstance.transform.localPosition = new Vector3(-1000, 150, -750);
+                    sunInstance.transform.localPosition = new Vector3(-1000f, 350f, -1000f);
                     sunInstance.transform.rotation = Quaternion.Euler(0, 80, 0);
                     break;
             }
@@ -126,18 +130,18 @@ namespace StageAesthetic
         {
             GameObject newWeather = Object.Instantiate(eclipseSkybox, Vector3.zero, Quaternion.identity);
             Light moonLight = newWeather.transform.GetChild(1).GetComponent<Light>();
-            if (SceneManager.GetActiveScene().name == "dampcavesimple")
-                moonLight.intensity = 1.5f;
-            moonLight.shadowStrength = 0.25f;
+            moonLight.color = new Color(0.8f, 0.8f, 1f, 1f);
+            moonLight.intensity = 1f;
+            moonLight.shadowStrength = 0.5f;
             newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().profile = ppSick;
-            newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().priority = 9999f;
+            // newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().priority = 9999f;
             SetAmbientLight ambLight = newWeather.transform.GetChild(2).GetComponent<SetAmbientLight>();
             if (SceneManager.GetActiveScene().name == "blackbeach" || SceneManager.GetActiveScene().name == "blackbeach2")
-                ambLight.ambientIntensity = 1.5f;
-            else if (SceneManager.GetActiveScene().name != "ancientloft" && SceneManager.GetActiveScene().name != "foggyswamp")
                 ambLight.ambientIntensity = 1.25f;
-            else
+            else if (SceneManager.GetActiveScene().name != "ancientloft" && SceneManager.GetActiveScene().name != "foggyswamp")
                 ambLight.ambientIntensity = 1f;
+            else
+                ambLight.ambientIntensity = 0.75f;
             if (SceneManager.GetActiveScene().name == "frozenwall" || SceneManager.GetActiveScene().name == "snowyforest" || SceneManager.GetActiveScene().name == "moon2")
                 ambLight.ambientIntensity = 0.5f;
 
@@ -178,7 +182,7 @@ namespace StageAesthetic
             if (SceneManager.GetActiveScene().name != "wispgraveyard")
             {
                 skybox.transform.Rotate(new Vector3(0, 0, 70));
-                skybox.transform.GetChild(0).GetChild(1).localRotation = Quaternion.Euler(0, 300, 190);
+                skybox.transform.GetChild(0).GetChild(1).localRotation = Quaternion.Euler(0, 280, 180);
             }
             else
             {
@@ -186,7 +190,7 @@ namespace StageAesthetic
                 skybox.transform.GetChild(0).GetChild(1).localRotation = Quaternion.Euler(60, 0, 0);
             }
 
-            skybox.transform.GetChild(0).GetChild(1).GetComponent<Light>().intensity = 1f;
+            skybox.transform.GetChild(0).GetChild(1).GetComponent<Light>().intensity = 2f;
             SetAmbientLight ambLight = skybox.transform.GetChild(0).GetChild(0).GetComponent<SetAmbientLight>();
             ambLight.ambientIntensity = 1f;
             ambLight.ApplyLighting();

@@ -61,17 +61,22 @@ namespace StageAesthetic.Variants.Stage2
         public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
             var cloud = GameObject.Find("Cloud3");
-            cgrade.SetAllOverridesTo(true);
-            cgrade.colorFilter.value = new Color32(181, 178, 219, 255);
+            // cgrade.SetAllOverridesTo(true);
+            // cgrade.colorFilter.value = new Color32(181, 178, 219, 255);
             cloud.transform.localPosition = new Vector3(-22.8f, -138f, 46.7f);
+            fog.fogColorStart.value = new Color32(102, 68, 68, 81);
+            fog.fogColorMid.value = new Color32(94, 71, 71, 93);
+            fog.fogColorEnd.value = new Color32(124, 62, 62, 255);
+            /*
             fog.fogColorStart.value = new Color32(102, 51, 40, 81);
             fog.fogColorMid.value = new Color32(56, 87, 89, 93);
             fog.fogColorEnd.value = new Color32(104, 23, 54, 255);
+            */
             fog.skyboxStrength.value = 0f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(191, 191, 191, 255);
+            sunLight.color = new Color32(150, 150, 150, 255);
             sunLight.intensity = 2.5f;
-            sunLight.shadowStrength = 0.4f;
+            // sunLight.shadowStrength = 0.4f;
             var fog1 = GameObject.Find("HOLDER: Cards");
             fog1.transform.localPosition = new Vector3(0f, 110f, 0f);
 

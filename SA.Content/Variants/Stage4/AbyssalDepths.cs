@@ -20,11 +20,16 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void Blue(RampFog fog, ColorGrading cgrade)
         {
+            /*
             fog.fogColorStart.value = new Color32(17, 63, 72, 100);
             fog.fogColorMid.value = new Color32(43, 125, 114, 74);
             fog.fogColorEnd.value = new Color32(16, 74, 72, 160);
+            */
+            fog.fogColorStart.value = new Color32(48, 102, 102, 81); // A cyan-ish color
+            fog.fogColorMid.value = new Color32(61, 87, 94, 93);    // A darker cyan
+            fog.fogColorEnd.value = new Color32(32, 142, 121, 255); // A bluish-green, which complements red
             fog.fogOne.value = 0.3f;
-            fog.fogIntensity.value = 0.75f;
+            fog.fogIntensity.value = 0.65f;
             fog.fogZero.value = -0.02f;
 
             fog.skyboxStrength.value = 0f;
@@ -34,9 +39,9 @@ namespace StageAesthetic.Variants.Stage4
             sunLight.shadowStrength = 0.6f;
             sunLight.transform.eulerAngles = new Vector3(65f, 222.6395f, 202.9964f);
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
-            caveFog.fogColorStart.value = new Color32(58, 35, 60, 80);
-            caveFog.fogColorMid.value = new Color32(44, 74, 55, 184);
-            caveFog.fogColorEnd.value = new Color32(40, 68, 53, 255);
+            caveFog.fogColorStart.value = new Color32(78, 55, 80, 60);
+            caveFog.fogColorMid.value = new Color32(64, 75, 94, 144);
+            caveFog.fogColorEnd.value = new Color32(60, 73, 88, 205);
             SimMaterials(Main.abyssalSimulacrumTerrainMat, Main.abyssalSimulacrumDetailMat, Main.abyssalSimulacrumDetailMat3, Main.abyssalSimulacrumDetailMat2, Main.abyssalSimulacrumBoulderMat);
             // Lighting: Magenta coral, orange otherwise
             LightChange("hive");
@@ -64,11 +69,11 @@ namespace StageAesthetic.Variants.Stage4
             fog.skyboxStrength.value = 0.02f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
-            fog.fogIntensity.value = 1.1f;
+            fog.fogIntensity.value = 0.8f;
             fog.fogPower.value = 0.8f;
 
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
+            sunLight.color = new Color(0.75f, 0.75f, 0.5f, 1f);
             sunLight.intensity = 1.2f;
             sunLight.transform.eulerAngles = new Vector3(70f, 19.64314f, 9.985f);
             sunLight.shadowStrength = 0.6f;

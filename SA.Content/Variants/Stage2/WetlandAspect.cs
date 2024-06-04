@@ -20,7 +20,7 @@ namespace StageAesthetic.Variants.Stage2
             cgrade.colorFilter.overrideState = true;
             fog.skyboxStrength.value = 0.52f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(255, 225, 181, 255);
+            sunLight.color = new Color(0.9f, 0.9f, 1, 1);
             sunLight.intensity = 1.1f;
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             var caveInner = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("NonBlended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
@@ -105,7 +105,7 @@ namespace StageAesthetic.Variants.Stage2
                 terrain.GetChild(3).GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
                 terrain.GetChild(4).GetComponent<MeshRenderer>().sharedMaterial = water;
                 terrain.GetChild(5).GetComponent<MeshRenderer>().sharedMaterial = water;
-                terrain.GetChild(6).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+                terrain.GetChild(6).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
                 s.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
                 GameObject.Find("HOLDER: Ruin Pieces").transform.GetChild(6).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat3;
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
