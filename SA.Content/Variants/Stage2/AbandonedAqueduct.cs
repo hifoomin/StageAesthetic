@@ -42,12 +42,13 @@ namespace StageAesthetic.Variants.Stage2
             var sun = GameObject.Find("Directional Light (SUN)");
             var newSun = Object.Instantiate(sun).GetComponent<Light>();
             sun.SetActive(false);
-            newSun.intensity = 2f;
-            newSun.color = new Color32(191, 115, 115, 255);
+            newSun.intensity = 3f;
+            newSun.shadowStrength = 0.5f;
+            newSun.color = new Color32(102, 102, 166, 255);
             var CaveFog = GameObject.Find("GLUndergroundPPVolume").GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             CaveFog.fogColorStart.value = new Color32(67, 35, 76, 65);
-            CaveFog.fogColorMid.value = new Color32(41, 17, 51, 165);
-            CaveFog.fogColorEnd.value = new Color32(84, 31, 20, 255);
+            CaveFog.fogColorMid.value = new Color32(41, 17, 51, 125);
+            CaveFog.fogColorEnd.value = new Color32(84, 31, 20, 200);
             LightChanges("dark");
             VanillaFoliage();
             AddSand(SandType.Light);
@@ -56,22 +57,22 @@ namespace StageAesthetic.Variants.Stage2
         public static void Sunrise(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(57, 63, 76, 73);
-            fog.fogColorMid.value = new Color32(62, 71, 83, 179);
+            fog.fogColorMid.value = new Color32(62, 71, 83, 129);
             fog.fogColorEnd.value = new Color32(68, 77, 90, 255);
             fog.skyboxStrength.value = 0.055f;
             var CaveFog = GameObject.Find("GLUndergroundPPVolume").GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             CaveFog.fogColorStart.value = new Color32(68, 74, 86, 63);
-            CaveFog.fogColorMid.value = new Color32(73, 83, 96, 164);
-            CaveFog.fogColorEnd.value = new Color32(80, 89, 103, 255);
+            CaveFog.fogColorMid.value = new Color32(73, 83, 96, 100);
+            CaveFog.fogColorEnd.value = new Color32(80, 89, 103, 200);
             Transform base1 = GameObject.Find("HOLDER: Misc Props").transform;
             base1.Find("Props").GetChild(4).gameObject.SetActive(true);
             var lightBase = GameObject.Find("Weather, Goolake").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             var newSun = Object.Instantiate(sunTransform).GetComponent<Light>();
-            newSun.color = new Color32(51, 51, 166, 255);
+            newSun.color = new Color32(125, 125, 255, 255);
             // 0.226 0.2148 0.6638 1
-            newSun.intensity = 1.2f;
-            newSun.shadowStrength = 0.1f;
+            newSun.intensity = 2f;
+            newSun.shadowStrength = 0.25f;
             sunTransform.localEulerAngles = new Vector3(42, 12, 180);
             AddRain(RainType.Rainstorm);
             LightChanges("rain");
@@ -94,9 +95,9 @@ namespace StageAesthetic.Variants.Stage2
         {
             Skybox.NightSky();
             var CaveFog = GameObject.Find("GLUndergroundPPVolume").GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
-            CaveFog.fogColorStart.value = new Color32(37, 46, 67, 115);
-            CaveFog.fogColorMid.value = new Color32(37, 45, 57, 167);
-            CaveFog.fogColorEnd.value = new Color32(38, 42, 55, 255);
+            CaveFog.fogColorStart.value = new Color32(37, 46, 67, 75);
+            CaveFog.fogColorMid.value = new Color32(37, 45, 57, 127);
+            CaveFog.fogColorEnd.value = new Color32(38, 42, 55, 200);
             Transform base1 = GameObject.Find("HOLDER: Misc Props").transform;
             base1.Find("Props").GetChild(4).gameObject.SetActive(true);
             GameObject.Find("Weather, Goolake").SetActive(false);
@@ -111,7 +112,7 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void Sundered(RampFog fog, ColorGrading cgrade)
         {
-            Skybox.SunsetSky();
+            Skybox.VoidSky();
             AddRain(RainType.Drizzle);
             var weather = GameObject.Find("Weather, Goolake");
             weather.SetActive(false);
@@ -124,7 +125,7 @@ namespace StageAesthetic.Variants.Stage2
             GameObject.Find("GLUndergroundPPVolume").SetActive(false);
             var caveLight = GameObject.Find("AmbientLight").GetComponent<Light>();
             caveLight.color = new Color32(150, 29, 119, 255);
-            cgrade.saturation.value = -2f;
+            //cgrade.saturation.value = -2f;
             SunderedFoliage();
             SunderedMaterials();
         }

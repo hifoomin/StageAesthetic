@@ -63,11 +63,12 @@ namespace StageAesthetic
 
             if (SceneManager.GetActiveScene().name == "ancientloft")
                 skybox.transform.GetChild(1).GetComponent<Light>().color = new Color(0.75f, 0.25f, 0.25f);
+            else if (SceneManager.GetActiveScene().name == "shipgraveyard")
+                skybox.transform.GetChild(1).GetComponent<Light>().color = new Color(1f, 0.75f, 0.75f);
             else
                 skybox.transform.GetChild(1).GetComponent<Light>().color = new Color(1f, 0.5f, 0.5f);
 
-            Debug.LogWarning(skybox.transform.GetChild(1).GetComponent<Light>().intensity);
-            skybox.transform.GetChild(1).GetComponent<Light>().intensity = 1.5f;
+            skybox.transform.GetChild(1).GetComponent<Light>().intensity = 2f;
 
             string sceneName = SceneManager.GetActiveScene().name;
 
@@ -79,11 +80,15 @@ namespace StageAesthetic
                     sunInstance.transform.rotation = Quaternion.Euler(0, 90, 0);
                     break;
                 case "golemplains":
+                    skybox.transform.GetChild(1).GetComponent<Light>().intensity = 3f;
+                    skybox.transform.GetChild(1).GetComponent<Light>().shadowStrength = 0.75f;
                     skybox.transform.GetChild(1).rotation = Quaternion.Euler(40, 90, 211);
                     sunInstance.transform.localPosition = new Vector3(-500, 0, -500);
                     sunInstance.transform.rotation = Quaternion.Euler(0, 180, 0);
                     break;
                 case "golemplains2":
+                    skybox.transform.GetChild(1).GetComponent<Light>().intensity = 3f;
+                    skybox.transform.GetChild(1).GetComponent<Light>().shadowStrength = 0.75f;
                     skybox.transform.GetChild(1).rotation = Quaternion.Euler(40, 180, 211);
                     sunInstance.transform.localPosition = new Vector3(500, 300, 2000);
                     sunInstance.transform.rotation = Quaternion.Euler(0, 270, 0);
@@ -98,6 +103,10 @@ namespace StageAesthetic
                     sunInstance.transform.localPosition = new Vector3(1000, 0, -1000);
                     sunInstance.transform.rotation = Quaternion.Euler(0, 80, 0);
                     break;
+                case "wispgraveyard":
+                    skybox.transform.GetChild(1).GetComponent<Light>().intensity = 3f;
+                    skybox.transform.GetChild(1).GetComponent<Light>().shadowStrength = 0.75f;
+                    break;
                 case "frozenwall":
                     skybox.transform.GetChild(1).rotation = Quaternion.Euler(40, 90, 211);
                     sunInstance.transform.localPosition = new Vector3(-3000, 100, -30);
@@ -105,7 +114,7 @@ namespace StageAesthetic
                     break;
                 case "ancientloft":
                     skybox.transform.GetChild(1).eulerAngles = new Vector3(60, 90, 0);
-                    skybox.transform.GetChild(1).GetComponent<Light>().intensity = 1.6f;
+                    skybox.transform.GetChild(1).GetComponent<Light>().intensity = 3f;
                     break;
                 case "shipgraveyard":
                     skybox.transform.GetChild(1).rotation = Quaternion.Euler(30, 0, 0);
@@ -131,8 +140,11 @@ namespace StageAesthetic
             GameObject newWeather = Object.Instantiate(eclipseSkybox, Vector3.zero, Quaternion.identity);
             Light moonLight = newWeather.transform.GetChild(1).GetComponent<Light>();
             moonLight.color = new Color(0.8f, 0.8f, 1f, 1f);
-            moonLight.intensity = 1f;
-            moonLight.shadowStrength = 0.5f;
+            if (SceneManager.GetActiveScene().name == "dampcavesimple")
+                moonLight.intensity = 1.5f;
+            else
+                moonLight.intensity = 1.25f;
+            moonLight.shadowStrength = 0.25f;
             newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().profile = ppSick;
             // newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().priority = 9999f;
             SetAmbientLight ambLight = newWeather.transform.GetChild(2).GetComponent<SetAmbientLight>();
@@ -158,10 +170,29 @@ namespace StageAesthetic
                 sun.SetActive(false);
             if ((bool)probe)
                 probe.SetActive(false);
-
+            string sceneName = SceneManager.GetActiveScene().name;
             GameObject skybox = Object.Instantiate(voidStageSkybox, Vector3.zero, Quaternion.identity);
-            skybox.transform.Rotate(new Vector3(180, 0, 0));
-            skybox.transform.GetChild(0).GetChild(1).GetComponent<Light>().intensity = 1f;
+            switch (sceneName)
+            {
+                case "blackbeach":
+                    skybox.transform.eulerAngles = new Vector3(30, 0, 220);
+                    break;
+                case "snowyforest":
+                    skybox.transform.eulerAngles = new Vector3(0, 100, 140);
+                    break;
+                case "sulfurpools":
+                    skybox.transform.eulerAngles = new Vector3(0, 180, 140);
+                    break;
+                default:
+                    skybox.transform.Rotate(new Vector3(180, 0, 0));
+                    break;
+            }
+            if (sceneName == "goolake")
+                skybox.transform.GetChild(0).GetChild(1).GetComponent<Light>().intensity = 3f;
+            else if (sceneName == "sulfurpools")
+                skybox.transform.GetChild(0).GetChild(1).GetComponent<Light>().intensity = 1.5f;
+            else
+                skybox.transform.GetChild(0).GetChild(1).GetComponent<Light>().intensity = 1f;
             SetAmbientLight ambLight = skybox.transform.GetChild(0).GetChild(0).GetComponent<SetAmbientLight>();
             if (SceneManager.GetActiveScene().name != "frozenwall" && SceneManager.GetActiveScene().name != "snowyforest")
                 ambLight.ambientIntensity = 0.75f;

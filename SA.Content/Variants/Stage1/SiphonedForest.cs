@@ -49,9 +49,9 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Crimson(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(100, 70, 70, 0);
-            fog.fogColorMid.value = new Color32(60, 50, 40, 120);
-            fog.fogColorEnd.value = new Color32(90, 35, 46, 225);
+            fog.fogColorStart.value = new Color32(140, 70, 70, 0);
+            fog.fogColorMid.value = new Color32(120, 50, 40, 75);
+            fog.fogColorEnd.value = new Color32(90, 35, 46, 150);
             fog.SetAllOverridesTo(true);
             fog.skyboxStrength.value = 0.01f;
             fog.fogPower.value = 0.35f;
@@ -61,12 +61,12 @@ namespace StageAesthetic.Variants.Stage1
             var aurora = GameObject.Find("mdlSnowyForestAurora");
 
             aurora.SetActive(false);
-            sunLight.color = new Color32(191, 122, 122, 255);
-            sunLight.intensity = 3f;
+            sunLight.color = new Color32(200, 150, 150, 255);
+            sunLight.intensity = 2f;
             sunLight.shadowStrength = 0.5f;
             sunLight.transform.eulerAngles = new Vector3(55f, 0f, 0f);
-            cgrade.colorFilter.value = new Color32(255, 255, 201, 255);
-            cgrade.colorFilter.overrideState = true;
+            //  cgrade.colorFilter.value = new Color32(255, 255, 201, 255);
+            // cgrade.colorFilter.overrideState = true;
 
             var skybox = GameObject.Find("HOLDER: Skybox").transform;
             var godrays = skybox.Find("Godrays").gameObject;
@@ -92,13 +92,13 @@ namespace StageAesthetic.Variants.Stage1
             Skybox.DaySky();
             fog.fogColorStart.value = new Color32(117, 154, 255, 7);
             fog.fogColorMid.value = new Color32(111, 196, 248, 45);
-            fog.fogColorEnd.value = new Color32(117, 154, 255, 255);
+            fog.fogColorEnd.value = new Color32(117, 154, 255, 150);
             fog.skyboxStrength.value = 0.26f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             var aurora = GameObject.Find("mdlSnowyForestAurora");
 
             aurora.SetActive(false);
-            sunLight.color = new Color32(205, 158, 90, 255);
+            sunLight.color = new Color32(90, 158, 205, 255);
             sunLight.intensity = 4f;
             sunLight.shadowStrength = 0.88f;
             // cgrade.colorFilter.value = new Color32(111, 196, 248, 17);
@@ -117,15 +117,15 @@ namespace StageAesthetic.Variants.Stage1
             sunBase.transform.rotation = Quaternion.Euler(40, 0, 211);
             Light sunLight = sunBase.GetComponent<Light>();
             sunLight.color = new Color(1f, 0.75f, 0.75f, 1f);
-            sunLight.intensity = 5f;
-            sunLight.shadowStrength = 0.6f;
+            sunLight.intensity = 6f;
+            sunLight.shadowStrength = 0.75f;
             // Quaternion.Euler(40, 0, 211)
             GameObject surroundingTrees = GameObject.Find("Treecards");
             if (surroundingTrees)
                 surroundingTrees.SetActive(false);
-            fog.fogColorStart.value = new Color32(66, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(62, 18, 24, 126);
-            fog.fogColorEnd.value = new Color32(180, 74, 61, 160);
+            fog.fogColorStart.value = new Color32(66, 66, 66, 0);
+            fog.fogColorMid.value = new Color32(62, 18, 24, 50);
+            fog.fogColorEnd.value = new Color32(180, 74, 61, 120);
             fog.skyboxStrength.value = 0.5f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;

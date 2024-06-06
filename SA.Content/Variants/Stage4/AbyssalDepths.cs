@@ -27,7 +27,7 @@ namespace StageAesthetic.Variants.Stage4
             */
             fog.fogColorStart.value = new Color32(48, 102, 102, 81); // A cyan-ish color
             fog.fogColorMid.value = new Color32(61, 87, 94, 93);    // A darker cyan
-            fog.fogColorEnd.value = new Color32(32, 142, 121, 255); // A bluish-green, which complements red
+            fog.fogColorEnd.value = new Color32(32, 142, 121, 200); // A bluish-green, which complements red
             fog.fogOne.value = 0.3f;
             fog.fogIntensity.value = 0.65f;
             fog.fogZero.value = -0.02f;
@@ -50,13 +50,15 @@ namespace StageAesthetic.Variants.Stage4
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
             Skybox.NightSky();
+            GameObject.Find("CEILING").SetActive(false);
+            GameObject.Find("SceneInfo").GetComponent<PostProcessVolume>().enabled = false;
             GameObject.Find("Directional Light (SUN)").SetActive(false);
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveFog.fogColorStart.value = new Color32(67, 65, 109, 76);
             caveFog.fogColorMid.value = new Color32(40, 68, 123, 161);
-            caveFog.fogColorEnd.value = new Color32(46, 128, 148, 255);
-            cgrade.colorFilter.value = new Color32(119, 207, 181, 255);
-            cgrade.colorFilter.overrideState = true;
+            caveFog.fogColorEnd.value = new Color32(46, 128, 148, 200);
+            // cgrade.colorFilter.value = new Color32(119, 207, 181, 255);
+            //cgrade.colorFilter.overrideState = true;
             // Lighting: Blue coral, cyan or green lighting otherwise
             LightChange("azure");
         }
@@ -64,8 +66,8 @@ namespace StageAesthetic.Variants.Stage4
         public static void Orange(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(62, 18, 44, 126);
-            fog.fogColorEnd.value = new Color32(123, 74, 61, 200);
+            fog.fogColorMid.value = new Color32(62, 18, 44, 100);
+            fog.fogColorEnd.value = new Color32(123, 74, 61, 150);
             fog.skyboxStrength.value = 0.02f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
@@ -80,8 +82,8 @@ namespace StageAesthetic.Variants.Stage4
 
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveFog.fogColorStart.value = new Color32(85, 57, 91, 33);
-            caveFog.fogColorMid.value = new Color32(90, 55, 97, 148);
-            caveFog.fogColorEnd.value = new Color32(135, 76, 149, 180);
+            caveFog.fogColorMid.value = new Color32(90, 55, 97, 100);
+            caveFog.fogColorEnd.value = new Color32(135, 76, 149, 150);
             // Lighting: Pink coral, orange otherwise
             LightChange("meadow");
         }
@@ -140,7 +142,7 @@ namespace StageAesthetic.Variants.Stage4
             fog.fogColorEnd.value = new Color32(183, 93, 129, 100);
             GameObject.Find("Directional Light (SUN)").transform.rotation = Quaternion.Euler(90f, 0f, 0f);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color(0.8471f, 0.7529f, 0.1255f, 1);
+            sunLight.color = new Color32(130, 163, 204, 255);
             sunLight.intensity = 2f;
             sunLight.shadowStrength = 0.7f;
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
@@ -149,7 +151,7 @@ namespace StageAesthetic.Variants.Stage4
                 if (l != null && !l.name.Contains("Light (SUN)"))
                 {
                     l.color = new Color32(216, 192, 32, 255);
-                    l.intensity = 50f;
+                    l.intensity = 25f;
                     l.range = 30f;
                 }
                 if (l.gameObject.GetComponent<FlickerLight>() != null)

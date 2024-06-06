@@ -151,19 +151,19 @@ namespace StageAesthetic.Variants.Stage1
         {
             fog.fogColorStart.value = new Color32(99, 27, 63, 72);
             fog.fogColorMid.value = new Color32(26, 61, 91, 70);
-            fog.fogColorEnd.value = new Color32(68, 27, 27, 255);
+            fog.fogColorEnd.value = new Color32(68, 27, 27, 155);
             fog.SetAllOverridesTo(true);
             fog.skyboxStrength.value = 0f;
-            fog.fogPower.value = 0.88f;
+            fog.fogPower.value = 1f;
             fog.fogIntensity.value = 0.9f;
             fog.fogZero.value = -0.05f;
             fog.fogOne.value = 0.27f;
-            cgrade.colorFilter.value = new Color32(150, 150, 150, 255);
-            cgrade.colorFilter.overrideState = true;
+            //  cgrade.colorFilter.value = new Color32(150, 150, 150, 255);
+            // cgrade.colorFilter.overrideState = true;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
-            sunLight.intensity = 1.25f;
-            sunLight.shadowStrength = 1f;
+            sunLight.intensity = 5f;
+            sunLight.shadowStrength = 0.75f;
             sunLight.transform.eulerAngles = new Vector3(70f, 220f, -9.985f);
             var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
             shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;

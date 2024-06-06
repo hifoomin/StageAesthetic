@@ -18,14 +18,14 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void Jade(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(66, 82, 99, 10);
-            fog.fogColorMid.value = new Color32(107, 120, 68, 67);
-            fog.fogColorEnd.value = new Color32(119, 140, 74, 130);
+            fog.fogColorStart.value = new Color32(70, 90, 84, 0);
+            fog.fogColorMid.value = new Color32(74, 99, 105, 100);
+            fog.fogColorEnd.value = new Color32(77, 113, 85, 150);
             fog.skyboxStrength.value = 0f;
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(122, 180, 122, 255);
+            sunLight.color = new Color32(152, 255, 255, 255);
             sunLight.intensity = 2f;
             sunTransform.localEulerAngles = new Vector3(60, 15, -4);
             VanillaFoliage();
@@ -35,7 +35,7 @@ namespace StageAesthetic.Variants.Stage4
         {
             fog.fogColorStart.value = new Color32(128, 121, 99, 13);
             fog.fogColorMid.value = new Color32(106, 141, 154, 60);
-            fog.fogColorEnd.value = new Color32(104, 150, 199, 120);
+            fog.fogColorEnd.value = new Color32(104, 150, 199, 150);
             fog.fogZero.value = -0.058f;
             fog.fogPower.value = 1.2f;
             fog.fogIntensity.value = 0.937f;
@@ -44,7 +44,7 @@ namespace StageAesthetic.Variants.Stage4
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(255, 225, 181, 255);
-            sunLight.intensity = 2f;
+            sunLight.intensity = 1.8f;
             sunTransform.localEulerAngles = new Vector3(60, 15, -4);
             VanillaFoliage();
         }
@@ -56,14 +56,14 @@ namespace StageAesthetic.Variants.Stage4
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(203, 221, 243, 255);
             sunLight.intensity = 3f;
-            fog.fogColorStart.value = new Color32(44, 45, 58, 17);
-            fog.fogColorMid.value = new Color32(46, 50, 60, 132);
-            fog.fogColorEnd.value = new Color32(76, 81, 84, 180);
-            fog.fogZero.value = -0.04f;
-            fog.fogOne.value = 0.095f;
-            fog.skyboxStrength.value = 0.126f;
-            cgrade.colorFilter.value = new Color32(148, 206, 183, 255);
-            cgrade.colorFilter.overrideState = true;
+            fog.fogColorStart.value = new Color32(47, 52, 62, 75);
+            fog.fogColorMid.value = new Color32(72, 80, 98, 200);
+            fog.fogColorEnd.value = new Color32(90, 101, 119, 255);
+            fog.skyboxStrength.value = 0f;
+            fog.fogZero.value = -0.05f;
+            fog.fogOne.value = 0.1f;
+            // cgrade.colorFilter.value = new Color32(148, 206, 183, 255);
+            //cgrade.colorFilter.overrideState = true;
 
             var rain = lightBase.Find("CameraRelative").gameObject;
             rain.SetActive(false);
@@ -155,7 +155,10 @@ namespace StageAesthetic.Variants.Stage4
 
                         if (meshBase.name.Contains("RJTwistedTreeBig"))
                         {
-                            meshBase.SetActive(false);
+                            if (mr.sharedMaterial)
+                            {
+                                mr.sharedMaterial = terrainMat;
+                            }
                         }
                     }
                 }
@@ -172,6 +175,7 @@ namespace StageAesthetic.Variants.Stage4
                     l.intensity = 1f;
                 }
             }
+            /*
             c.GetChild(0).localScale = new Vector3(2000, 2000, 2000);
             c.GetChild(0).localPosition = new Vector3(0, 0, 0);
             c.GetChild(1).gameObject.SetActive(false);
@@ -179,6 +183,7 @@ namespace StageAesthetic.Variants.Stage4
             c.GetChild(3).gameObject.SetActive(false);
             c.GetChild(4).gameObject.SetActive(false);
             GameObject.Find("GROUP: DistantTreeFoliage").SetActive(false);
+            */
             SandyFoliage();
         }
 
@@ -246,7 +251,7 @@ namespace StageAesthetic.Variants.Stage4
                     }
                     if (meshBase.name.Contains("RJTowerTreeFoliage_"))
                     {
-                        var color = new Color32(255, 95, 0, 103);
+                        var color = new Color32(255, 149, 0, 255);
                         var sharedMaterials = mr.sharedMaterials;
                         for (int i = 0; i < sharedMaterials.Length; i++)
                         {

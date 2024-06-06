@@ -36,8 +36,8 @@ namespace StageAesthetic.Variants.Stage2
         {
             Skybox.SunsetSky();
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(62, 18, 44, 126);
-            fog.fogColorEnd.value = new Color32(123, 74, 61, 180);
+            fog.fogColorMid.value = new Color32(62, 18, 44, 100);
+            fog.fogColorEnd.value = new Color32(123, 74, 61, 150);
             fog.skyboxStrength.value = 0.56f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
@@ -46,16 +46,16 @@ namespace StageAesthetic.Variants.Stage2
 
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color(1f, 0.75f, 0.75f, 1f);
-            sunLight.intensity = 1f;
+            sunLight.intensity = 2f;
 
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             var caveInner = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("NonBlended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(127, 124, 84, 0);
             caveOuter.fogColorMid.value = new Color32(188, 163, 47, 88);
-            caveOuter.fogColorEnd.value = new Color32(162, 123, 46, 255);
+            caveOuter.fogColorEnd.value = new Color32(162, 123, 46, 200);
             caveInner.fogColorStart.value = new Color32(162, 192, 5, 0);
             caveInner.fogColorMid.value = new Color32(149, 154, 89, 89);
-            caveInner.fogColorEnd.value = new Color32(217, 201, 11, 255);
+            caveInner.fogColorEnd.value = new Color32(217, 201, 11, 200);
         }
 
         public static void Night(RampFog fog)
@@ -66,7 +66,7 @@ namespace StageAesthetic.Variants.Stage2
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(14, 111, 160, 0);
             caveOuter.fogColorMid.value = new Color32(66, 76, 43, 89);
-            caveOuter.fogColorEnd.value = new Color32(75, 84, 51, 255);
+            caveOuter.fogColorEnd.value = new Color32(75, 84, 51, 200);
         }
 
         public static void Void(RampFog fog)
@@ -75,7 +75,7 @@ namespace StageAesthetic.Variants.Stage2
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveOuter.fogColorStart.value = new Color32(62, 12, 120, 0);
             caveOuter.fogColorMid.value = new Color32(66, 29, 132, 89);
-            caveOuter.fogColorEnd.value = new Color32(187, 145, 238, 255);
+            caveOuter.fogColorEnd.value = new Color32(187, 145, 238, 200);
             var terrain = GameObject.Find("HOLDER: Hero Assets").transform;
             terrain.GetChild(4).localPosition = new Vector3(-23.9f, -149.9f, 119f);
             GameObject.Find("HOLDER: Hidden Altar Stuff").transform.GetChild(1).gameObject.SetActive(false);

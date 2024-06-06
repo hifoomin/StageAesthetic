@@ -17,20 +17,20 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void Coral(RampFog fog)
         {
-            fog.skyboxStrength.value = 0.08f;
-
-            fog.fogColorStart.value = new Color32(0, 87, 145, 30);
-            fog.fogColorMid.value = new Color32(0, 106, 145, 60);
-            fog.fogColorEnd.value = new Color32(0, 115, 119, 100);
-            //fog.fogZero.value = -0.019f;
-            //fog.fogOne.value = 0.211f;
+            fog.fogColorStart.value = new Color32(127, 127, 153, 25);
+            fog.fogColorMid.value = new Color32(0, 106, 145, 150);
+            fog.fogColorEnd.value = new Color32(0, 115, 119, 255);
+            fog.fogZero.value = -0.01f;
+            fog.fogOne.value = 0.15f;
+            fog.fogPower.value = 2f;
+            fog.skyboxStrength.value = 0.1f;
 
             var sunTransform = GameObject.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(130, 163, 204, 255);
             sunLight.useColorTemperature = true;
             sunLight.colorTemperature = 0f;
-            sunLight.intensity = 1.6f;
+            sunLight.intensity = 1.2f;
             sunLight.shadowStrength = 0.7f;
             var fogg = GameObject.Find("mdlSPTerrain");
             fogg.transform.GetChild(3).gameObject.SetActive(false);
@@ -53,16 +53,16 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void Hell(RampFog fog, ColorGrading cgrade)
         {
-            cgrade.SetAllOverridesTo(true);
-            cgrade.colorFilter.value = new Color32(181, 178, 219, 255);
+            // cgrade.SetAllOverridesTo(true);
+            // cgrade.colorFilter.value = new Color32(181, 178, 219, 255);
             fog.fogColorStart.value = new Color32(102, 51, 40, 81);
             fog.fogColorMid.value = new Color32(56, 87, 89, 93);
-            fog.fogColorEnd.value = new Color32(104, 23, 54, 180);
-            fog.skyboxStrength.value = 0.2f;
+            fog.fogColorEnd.value = new Color32(104, 23, 54, 200);
+            fog.skyboxStrength.value = 0.05f;
 
             var sunTransform = GameObject.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(191, 127, 127, 255);
+            sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
             sunLight.intensity = 2f;
             sunLight.shadowStrength = 0.6f;
             var fogg = GameObject.Find("mdlSPTerrain");
@@ -92,7 +92,9 @@ namespace StageAesthetic.Variants.Stage3
         {
             var sunTransform = GameObject.Find("Directional Light (SUN)");
             sunTransform.gameObject.SetActive(false);
-
+            var goofyAhh = GameObject.Find("PP + Amb");
+            if (goofyAhh)
+                goofyAhh.gameObject.SetActive(false);
             Skybox.VoidSky();
 
             var fogg = GameObject.Find("mdlSPTerrain");
@@ -100,10 +102,6 @@ namespace StageAesthetic.Variants.Stage3
             fogg.transform.GetChild(5).gameObject.SetActive(false);
             fogg.transform.GetChild(12).gameObject.SetActive(false);
             fogg.transform.GetChild(14).gameObject.SetActive(false);
-            var goofyAhh = GameObject.Find("PP + Amb").GetComponent<PostProcessVolume>().sharedProfile;
-            try { goofyAhh.RemoveSettings<DepthOfField>(); } catch { }
-            try { goofyAhh.RemoveSettings<Bloom>(); } catch { }
-            try { goofyAhh.RemoveSettings<Vignette>(); } catch { }
             var fuckYou = GameObject.Find("HOLDER: Skybox");
             fuckYou.transform.GetChild(10).gameObject.SetActive(false);
             fuckYou.transform.GetChild(11).gameObject.SetActive(false);

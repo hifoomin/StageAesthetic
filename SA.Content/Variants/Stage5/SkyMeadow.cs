@@ -22,7 +22,7 @@ namespace StageAesthetic.Variants.Stage5
         {
             fog.fogColorStart.value = new Color32(85, 67, 93, 0);
             fog.fogColorMid.value = new Color32(12, 15, 59, 131);
-            fog.fogColorEnd.value = new Color32(18, 3, 45, 255);
+            fog.fogColorEnd.value = new Color32(18, 3, 45, 200);
             fog.fogZero.value = -0.08f;
             fog.fogIntensity.value = 1f;
             fog.fogPower.value = 0.6f;
@@ -72,12 +72,17 @@ namespace StageAesthetic.Variants.Stage5
 
         public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
-            cgrade.SetAllOverridesTo(true);
-            cgrade.colorFilter.value = new Color32(181, 178, 219, 255);
-            fog.fogColorStart.value = new Color32(100, 70, 70, 0);
-            fog.fogColorMid.value = new Color32(60, 50, 40, 120);
-            fog.fogColorEnd.value = new Color32(120, 35, 46, 225);
-            fog.skyboxStrength.value = 0.1f;
+            // cgrade.SetAllOverridesTo(true);
+            //Scgrade.colorFilter.value = new Color32(181, 178, 219, 255);
+            fog.fogColorStart.value = new Color32(99, 27, 63, 72);
+            fog.fogColorMid.value = new Color32(26, 61, 91, 150);
+            fog.fogColorEnd.value = new Color32(68, 27, 27, 200);
+            fog.SetAllOverridesTo(true);
+            fog.skyboxStrength.value = 0.05f;
+            fog.fogPower.value = 0.75f;
+            fog.fogIntensity.value = 1f;
+            fog.fogZero.value = -0.05f;
+            fog.fogOne.value = 0.1f;
 
             AddRain(RainType.Typhoon, true);
 
@@ -86,8 +91,8 @@ namespace StageAesthetic.Variants.Stage5
             hardFloor.gameObject.SetActive(false);
             GameObject.Find("HOLDER: Terrain").transform.GetChild(1).gameObject.SetActive(false);
             var sun = lightBase.GetChild(0).GetComponent<Light>();
-            sun.color = new Color(0.25f, 0.25f, 0.25f, 1f);
-            sun.intensity = 3f;
+            sun.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            sun.intensity = 2f;
             sun.shadowStrength = 0.6f;
             lightBase.Find("CameraRelative").Find("SmallStars").gameObject.SetActive(true);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("ShatteredMoonMesh").gameObject.SetActive(false);
@@ -258,6 +263,12 @@ namespace StageAesthetic.Variants.Stage5
 
         public static void Titanic(RampFog fog)
         {
+            Skybox.DaySky();
+
+            var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
+            var sun = lightBase.GetChild(0).GetComponent<Light>();
+            sun.intensity = 2f;
+
             fog.fogColorStart.value = new Color32(125, 141, 160, 0);
             fog.fogColorMid.value = new Color32(119, 144, 175, 60);
             fog.fogColorEnd.value = new Color32(94, 137, 195, 110);
@@ -429,9 +440,9 @@ namespace StageAesthetic.Variants.Stage5
             AddSand(SandType.Gigachad);
             RampFog rampFog = ppProfile.GetSetting<RampFog>();
 
-            fog.fogColorStart.value = new Color(0.49f, 0.363f, 0.374f, 0f);
-            fog.fogColorMid.value = new Color(0.58f, 0.486f, 0.331f, 0.25f);
-            fog.fogColorEnd.value = new Color(0.77f, 0.839f, 0.482f, 0.5f);
+            fog.fogColorStart.value = new Color(0.59f, 0.363f, 0.374f, 0f);
+            fog.fogColorMid.value = new Color(0.68f, 0.486f, 0.331f, 0.25f);
+            fog.fogColorEnd.value = new Color(0.87f, 0.839f, 0.482f, 0.5f);
             fog.fogZero.value = rampFog.fogZero.value;
             fog.fogIntensity.value = rampFog.fogIntensity.value;
             fog.fogPower.value = rampFog.fogPower.value;
@@ -440,8 +451,8 @@ namespace StageAesthetic.Variants.Stage5
 
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sun = lightBase.GetChild(0).GetComponent<Light>();
-            sun.color = new Color(0.25f, 0.25f, 0.25f, 1f);
-            sun.intensity = 2f;
+            sun.color = new Color(1f, 0.65f, 0.5f, 1f);
+            sun.intensity = 1f;
             sun.shadowStrength = 0.75f;
 
             // var detail3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
