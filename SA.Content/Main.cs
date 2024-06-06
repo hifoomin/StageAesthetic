@@ -131,6 +131,9 @@ namespace StageAesthetic
         public static Material skyMeadowAbandonedDetailMat6;
         public static Material skyMeadowAbandonedWaterMat;
 
+        public static Material moonRedFlameMat;
+        public static Material moonPurpleFlameMat;
+
         public static bool ForgottenRelicsLoaded = false;
 
         public void Awake()
@@ -162,6 +165,8 @@ namespace StageAesthetic
 
             abyssalPlatform = stageaesthetic.LoadAsset<Material>("Assets/StageAesthetic/Materials/matAbyssalPlatform.mat");
 
+            moonRedFlameMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matFireStaticLarge.mat").WaitForCompletion();
+            moonPurpleFlameMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidoutro/matFireStaticVoidOutroEyePurple.mat").WaitForCompletion();
             // pre-caching in hopes of eliminating the null material issue
 
             // Distant Roost (Void)

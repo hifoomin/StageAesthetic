@@ -75,10 +75,10 @@ namespace StageAesthetic.Variants.Stage4
             fog.fogPower.value = 0.75f;
 
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color(0.75f, 1f, 0.75f, 1f);
-            sunLight.intensity = 1.2f;
+            sunLight.color = new Color(1f, 1f, 0.75f, 1f);
+            sunLight.intensity = 1f;
             sunLight.transform.eulerAngles = new Vector3(70f, 19.64314f, 9.985f);
-            sunLight.shadowStrength = 0.6f;
+            sunLight.shadowStrength = 0.75f;
 
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             caveFog.fogColorStart.value = new Color32(85, 57, 91, 33);
@@ -140,9 +140,9 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void Coral(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(127, 70, 206, 15);
-            fog.fogColorMid.value = new Color32(185, 72, 119, 66);
-            fog.fogColorEnd.value = new Color32(183, 93, 129, 150);
+            fog.fogColorStart.value = new Color32(127, 70, 206, 0);
+            fog.fogColorMid.value = new Color32(185, 72, 119, 50);
+            fog.fogColorEnd.value = new Color32(183, 93, 129, 125);
             GameObject.Find("Directional Light (SUN)").transform.rotation = Quaternion.Euler(90f, 0f, 0f);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(130, 163, 175, 255);

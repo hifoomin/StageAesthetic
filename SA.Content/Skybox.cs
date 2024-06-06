@@ -148,7 +148,8 @@ namespace StageAesthetic
                 moonLight.intensity = 1.25f;
             moonLight.shadowStrength = 0.25f;
             newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().profile = ppSick;
-            // newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().priority = 9999f;
+            if (SceneManager.GetActiveScene().name == "moon2")
+                newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().priority = 9999f;
             SetAmbientLight ambLight = newWeather.transform.GetChild(2).GetComponent<SetAmbientLight>();
             if (SceneManager.GetActiveScene().name == "blackbeach" || SceneManager.GetActiveScene().name == "blackbeach2")
                 ambLight.ambientIntensity = 1.25f;
