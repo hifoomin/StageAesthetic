@@ -54,14 +54,17 @@ namespace StageAesthetic.Variants.Stage4
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(203, 221, 243, 255);
+            sunLight.color = new Color32(77, 188, 175, 255);
             sunLight.intensity = 3f;
-            fog.fogColorStart.value = new Color32(47, 52, 62, 75);
-            fog.fogColorMid.value = new Color32(72, 80, 98, 200);
-            fog.fogColorEnd.value = new Color32(90, 101, 119, 255);
-            fog.skyboxStrength.value = 0f;
-            fog.fogZero.value = -0.05f;
-            fog.fogOne.value = 0.1f;
+            fog.fogColorStart.value = new Color32(31, 46, 63, 50);
+            fog.fogColorMid.value = new Color(0.205f, 0.269f, 0.288f, 0.76f);
+            fog.fogColorEnd.value = new Color32(71, 82, 88, 255);
+            fog.skyboxStrength.value = 0.02f;
+            fog.fogPower.value = 0.35f;
+            fog.fogIntensity.value = 0.88f;
+            fog.fogZero.value = -0.02f;
+            fog.fogOne.value = 0.05f;
+
             // cgrade.colorFilter.value = new Color32(148, 206, 183, 255);
             //cgrade.colorFilter.overrideState = true;
 

@@ -90,6 +90,8 @@ namespace StageAesthetic
         public static Material sirensAphelianDetailMat2;
         public static Material sirensAphelianDetailMat3;
 
+        public static Material abyssalGoldTerrainMat;
+
         public static Material abyssalSimulacrumTerrainMat;
         public static Material abyssalSimulacrumBoulderMat;
         public static Material abyssalSimulacrumDetailMat;
@@ -326,6 +328,11 @@ namespace StageAesthetic
             groveAbandonedDetailMat2.color = new Color32(176, 153, 57, 255);
 
             // Abyssal Depths (Simulacrum)
+
+            // R
+            Texture2D abyssalGoldTerrainTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC1/itskymeadow/texSMGrassTerrainInfiniteTower.png").WaitForCompletion();
+            abyssalGoldTerrainMat = new Material(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
+            abyssalGoldTerrainMat.SetTexture("_GreenChannelTex", abyssalGoldTerrainTex);
 
             abyssalSimulacrumTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matDCTerrainFloorInfiniteTower.mat").WaitForCompletion();
             abyssalSimulacrumBoulderMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matDCBoulderInfiniteTower.mat").WaitForCompletion();

@@ -142,6 +142,8 @@ namespace StageAesthetic
             moonLight.color = new Color(0.8f, 0.8f, 1f, 1f);
             if (SceneManager.GetActiveScene().name == "dampcavesimple")
                 moonLight.intensity = 1.5f;
+            else if (SceneManager.GetActiveScene().name == "moon2")
+                moonLight.intensity = 0.25f;
             else
                 moonLight.intensity = 1.25f;
             moonLight.shadowStrength = 0.25f;

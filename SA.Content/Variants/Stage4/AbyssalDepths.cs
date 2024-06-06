@@ -14,7 +14,7 @@ namespace StageAesthetic.Variants.Stage4
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.intensity = 3f;
             sunLight.transform.localEulerAngles = new Vector3(35, 15, 351);
-            sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
+            sunLight.color = new Color(0.5f, 0.5f, 0.5f, 1f);
             sunLight.shadowStrength = 0.6f;
         }
 
@@ -66,16 +66,16 @@ namespace StageAesthetic.Variants.Stage4
         public static void Orange(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(62, 18, 44, 100);
-            fog.fogColorEnd.value = new Color32(123, 74, 61, 150);
+            fog.fogColorMid.value = new Color32(44, 18, 62, 100);
+            fog.fogColorEnd.value = new Color32(61, 74, 123, 150);
             fog.skyboxStrength.value = 0.02f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
-            fog.fogIntensity.value = 0.8f;
-            fog.fogPower.value = 0.8f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.75f;
 
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color(0.75f, 0.75f, 0.5f, 1f);
+            sunLight.color = new Color(0.75f, 1f, 0.75f, 1f);
             sunLight.intensity = 1.2f;
             sunLight.transform.eulerAngles = new Vector3(70f, 19.64314f, 9.985f);
             sunLight.shadowStrength = 0.6f;
@@ -84,6 +84,9 @@ namespace StageAesthetic.Variants.Stage4
             caveFog.fogColorStart.value = new Color32(85, 57, 91, 33);
             caveFog.fogColorMid.value = new Color32(90, 55, 97, 100);
             caveFog.fogColorEnd.value = new Color32(135, 76, 149, 150);
+
+            SimMaterials(Main.abyssalGoldTerrainMat, Main.distantRoostAbyssalDetailMat, Main.abyssalSimulacrumDetailMat3, Main.distantRoostAbyssalDetailMat2, Main.abyssalSimulacrumBoulderMat);
+
             // Lighting: Pink coral, orange otherwise
             LightChange("meadow");
         }
@@ -138,13 +141,13 @@ namespace StageAesthetic.Variants.Stage4
         public static void Coral(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(127, 70, 206, 15);
-            fog.fogColorMid.value = new Color32(185, 72, 119, 33);
-            fog.fogColorEnd.value = new Color32(183, 93, 129, 100);
+            fog.fogColorMid.value = new Color32(185, 72, 119, 66);
+            fog.fogColorEnd.value = new Color32(183, 93, 129, 150);
             GameObject.Find("Directional Light (SUN)").transform.rotation = Quaternion.Euler(90f, 0f, 0f);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(130, 163, 204, 255);
-            sunLight.intensity = 2f;
-            sunLight.shadowStrength = 0.7f;
+            sunLight.color = new Color32(130, 163, 175, 255);
+            sunLight.intensity = 1f;
+            sunLight.shadowStrength = 0.75f;
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (Light l in lightList)
             {

@@ -42,18 +42,19 @@ namespace StageAesthetic.Variants.Stage5
 
         public static void Overcast(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(98, 94, 76, 0);
-            fog.fogColorMid.value = new Color32(66, 65, 93, 120);
-            fog.fogColorEnd.value = new Color32(72, 79, 95, 180);
+            fog.fogColorStart.value = new Color32(31, 46, 63, 50);
+            fog.fogColorMid.value = new Color(0.205f, 0.269f, 0.288f, 0.76f);
+            fog.fogColorEnd.value = new Color32(71, 82, 88, 255);
+            fog.skyboxStrength.value = 0.02f;
+            fog.fogPower.value = 0.35f;
+            fog.fogIntensity.value = 0.88f;
             fog.fogZero.value = -0.02f;
-            fog.fogIntensity.value = 1f;
-            fog.fogPower.value = 0.5f;
-            fog.fogOne.value = 0.1f;
-            fog.skyboxStrength.value = 0.1f;
+            fog.fogOne.value = 0.05f;
+
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             var sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(202, 183, 142, 255);
+            sunLight.color = new Color32(77, 188, 175, 255);
             sunLight.intensity = 1.5f;
             sunLight.shadowStrength = 0.6f;
             AddRain(RainType.Typhoon);
