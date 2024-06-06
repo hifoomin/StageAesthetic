@@ -42,9 +42,9 @@
     </PackageReference>
   </ItemGroup>
 
-<ItemGroup>
+  <ItemGroup>
     <Reference Include="FHCSharp">
-      <HintPath>libs\FHCSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\FHCSharp.dll</HintPath>
     </Reference>
     <Reference Include="KinematicCharacterController">
       <HintPath>libs\KinematicCharacterController.dll</HintPath>
@@ -53,13 +53,13 @@
       <HintPath>libs\MMHOOK_RoR2.dll</HintPath>
     </Reference>
     <Reference Include="RiskOfOptions">
-      <HintPath>libs\RiskOfOptions.dll</HintPath>
+      <HintPath>..\..\..\..\..\RiskOfOptions.dll</HintPath>
     </Reference>
     <Reference Include="RoR2">
       <HintPath>..\..\libs\RoR2-nstrip.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>libs\Unity.Postprocessing.Runtime.dll</HintPath>
+      <HintPath>P:\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Wwise">
       <HintPath>libs\Wwise.dll</HintPath>
