@@ -18,12 +18,13 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void Overcast(RampFog fog, PostProcessVolume volume)
         {
-            fog.fogColorStart.value = new Color32(47, 52, 62, 50);
-            fog.fogColorMid.value = new Color32(72, 80, 98, 165);
-            fog.fogColorEnd.value = new Color32(90, 101, 119, 180);
-            fog.skyboxStrength.value = 0.15f;
+            fog.fogColorStart.value = new Color32(47, 52, 62, 75);
+            fog.fogColorMid.value = new Color32(72, 80, 98, 200);
+            fog.fogColorEnd.value = new Color32(90, 101, 119, 255);
+            fog.skyboxStrength.value = 0f;
             fog.fogZero.value = -0.05f;
-            fog.fogOne.value = 0.4f;
+            fog.fogPower.value = 0.75f;
+            fog.fogOne.value = 0.2f;
             var sun = GameObject.Find("Directional Light (SUN)");
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
             sun.SetActive(false);
@@ -88,9 +89,9 @@ namespace StageAesthetic.Variants.Stage3
         {
             Skybox.SunsetSky();
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(62, 18, 28, 126);
-            fog.fogColorEnd.value = new Color32(160, 74, 61, 200);
-            fog.skyboxStrength.value = 0.52f;
+            fog.fogColorMid.value = new Color32(62, 18, 28, 100);
+            fog.fogColorEnd.value = new Color32(160, 74, 61, 150);
+            fog.skyboxStrength.value = 0.35f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
             fog.fogIntensity.value = 1f;

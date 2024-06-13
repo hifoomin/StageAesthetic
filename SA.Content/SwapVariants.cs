@@ -707,6 +707,11 @@ namespace StageAesthetic
                             currentVariantName = "Vanilla";
                         }
                         else
+                        {
+                            GameObject camera = GameObject.Find("Main Camera(Clone)");
+                            if (camera)
+                                camera.transform.GetChild(0).GetComponent<PostProcessLayer>().breakBeforeColorGrading = true;
+
                             switch (selectedAbyssalDepthsVariant)
                             {
                                 case "Blue":
@@ -729,6 +734,7 @@ namespace StageAesthetic
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
                                     break;
                             }
+                        }
                         currentVariantName = selectedAbyssalDepthsVariant;
                         abyssalDepthsVariant = abyssalDepthsCounter;
 

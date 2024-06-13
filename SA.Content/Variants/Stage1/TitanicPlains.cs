@@ -79,14 +79,14 @@ namespace StageAesthetic.Variants.Stage1
         public static void Abandoned(RampFog fog, PostProcessProfile ppProfile)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sun.color = Color.gray;
+            sun.color = new Color(1f, 0.65f, 0.5f, 1f);
             sun.intensity = 1f;
 
             RampFog rampFog = ppProfile.GetSetting<RampFog>();
 
-            fog.fogColorStart.value = new Color(0.49f, 0.363f, 0.374f, 0f);
-            fog.fogColorMid.value = new Color(0.58f, 0.486f, 0.331f, 0.25f);
-            fog.fogColorEnd.value = new Color(0.77f, 0.839f, 0.482f, 0.5f);
+            fog.fogColorStart.value = new Color(0.59f, 0.363f, 0.374f, 0f);
+            fog.fogColorMid.value = new Color(0.68f, 0.486f, 0.331f, 0.25f);
+            fog.fogColorEnd.value = new Color(0.87f, 0.839f, 0.482f, 0.5f);
             fog.fogZero.value = rampFog.fogZero.value;
             fog.fogIntensity.value = rampFog.fogIntensity.value;
             fog.fogPower.value = rampFog.fogPower.value;

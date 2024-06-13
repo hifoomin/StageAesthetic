@@ -90,6 +90,8 @@ namespace StageAesthetic
         public static Material sirensAphelianDetailMat2;
         public static Material sirensAphelianDetailMat3;
 
+        public static Material abyssalGoldTerrainMat;
+
         public static Material abyssalSimulacrumTerrainMat;
         public static Material abyssalSimulacrumBoulderMat;
         public static Material abyssalSimulacrumDetailMat;
@@ -129,6 +131,9 @@ namespace StageAesthetic
         public static Material skyMeadowAbandonedDetailMat6;
         public static Material skyMeadowAbandonedWaterMat;
 
+        public static Material moonRedFlameMat;
+        public static Material moonPurpleFlameMat;
+
         public static bool ForgottenRelicsLoaded = false;
 
         public void Awake()
@@ -160,6 +165,8 @@ namespace StageAesthetic
 
             abyssalPlatform = stageaesthetic.LoadAsset<Material>("Assets/StageAesthetic/Materials/matAbyssalPlatform.mat");
 
+            moonRedFlameMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matFireStaticLarge.mat").WaitForCompletion();
+            moonPurpleFlameMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidoutro/matFireStaticVoidOutroEyePurple.mat").WaitForCompletion();
             // pre-caching in hopes of eliminating the null material issue
 
             // Distant Roost (Void)
@@ -327,9 +334,14 @@ namespace StageAesthetic
 
             // Abyssal Depths (Simulacrum)
 
+            // R
+            Texture2D abyssalGoldTerrainTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC1/itskymeadow/texSMGrassTerrainInfiniteTower.png").WaitForCompletion();
+            abyssalGoldTerrainMat = new Material(Addressables.LoadAssetAsync<Material>("RoR2/Base/dampcave/matDCTerrainGiantColumns.mat").WaitForCompletion());
+            abyssalGoldTerrainMat.SetTexture("_GreenChannelTex", abyssalGoldTerrainTex);
+
             abyssalSimulacrumTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matDCTerrainFloorInfiniteTower.mat").WaitForCompletion();
             abyssalSimulacrumBoulderMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matDCBoulderInfiniteTower.mat").WaitForCompletion();
-            abyssalSimulacrumDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Titan/matTitanGoldArcaneFlare.mat").WaitForCompletion();
+            abyssalSimulacrumDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/TitanGoldDuringTP/matGoldHeart.mat").WaitForCompletion();
             abyssalSimulacrumDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matTrimSheetLemurianRuinsHeavyInfiniteTower.mat").WaitForCompletion();
             abyssalSimulacrumDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itdampcave/matDCTerrainWallsInfiniteTower.mat").WaitForCompletion();
 
