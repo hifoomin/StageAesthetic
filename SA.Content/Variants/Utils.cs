@@ -30,6 +30,16 @@ namespace StageAesthetic.Variants
             Gigachad
         }
 
+        public enum SoundType
+        {
+            DayNature,
+            Rain,
+            Storm,
+            NightNature,
+            WaterStream,
+            Wind
+        }
+
         public static GameObject rain = SwapVariants.rain;
         public static GameObject snow = SwapVariants.snow;
         public static GameObject sand = SwapVariants.sand;
@@ -38,14 +48,17 @@ namespace StageAesthetic.Variants
         {
             if (!rain)
             {
+                Debug.LogError("Rain gameobject not found");
                 return;
             }
             if (!WeatherEffects.Value)
             {
+                Debug.LogError("Weather effects turned off");
                 return;
             }
             if (!Run.instance)
             {
+                Debug.LogError("Run instance not found");
                 return;
             }
 
@@ -355,6 +368,37 @@ namespace StageAesthetic.Variants
             // Debug.LogErrorFormat("Rain Type {0} Rain Intensity {1} Rain Speed {2} Max Particles {3} Rate Over Time Constant {4} Difficulty Def Scaling Value {5} Difficulty Coefficient {6}", rainType, intensity, speed, main.maxParticles, rateOverTime.constant, difficultyDefScalingValue, difficultyCoefficient);
 
             UnityEngine.Object.Instantiate(sand, Vector3.zero, Quaternion.identity);
+        }
+
+        public static void PlaySound(SoundType soundType)
+        {
+            if (!WeatherSounds.Value)
+            {
+                return;
+            }
+
+            var soundToPlay = soundType switch
+            {
+                SoundType.DayNature => "Play_SA_birds",
+                SoundType.Rain => "Play_SA_rain",
+                SoundType.Storm => "Play_SA_storm",
+                SoundType.NightNature => "Play_SA_night",
+                SoundType.WaterStream => "Play_SA_water",
+                SoundType.Wind => "Play_SA_wind",
+                _ => "Play_SA_wind"
+            };
+
+            Util.PlaySound(soundToPlay, RoR2Application.instance.gameObject);
+        }
+
+        public static void StopSounds()
+        {
+            Util.PlaySound("Stop_SA_birds", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_rain", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_storm", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_night", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_water", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_wind", RoR2Application.instance.gameObject);
         }
     }
 

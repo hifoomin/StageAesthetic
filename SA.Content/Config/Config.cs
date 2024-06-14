@@ -31,6 +31,7 @@ namespace StageAesthetic.Config
 
         public static ConfigEntry<bool> TitleScene { get; set; }
         public static ConfigEntry<bool> WeatherEffects { get; set; }
+        public static ConfigEntry<bool> WeatherSounds { get; set; }
         public static ConfigEntry<bool> DisplayVariantName { get; set; }
 
         // Roost
@@ -329,6 +330,7 @@ namespace StageAesthetic.Config
 
             TitleScene = SAConfig.Bind("Stages Misc", "Alter title screen?", true, "Adds rain, patches of grass, particles and brings a Commando closer to focus.");
             WeatherEffects = SAConfig.Bind("Stages Misc", "Import weather effects?", true, "Adds/swaps rain/snow/sand for stages. Disabling this is recommended if performance is a big issue. Starstorm 2 compatibility coming soon.");
+            WeatherSounds = SAConfig.Bind("Stages Misc", "Use weather sound effects?", true, "Adds sound effects for weather.");
 
             var tabID = 0;
             foreach (ConfigEntryBase ceb in SAConfig.GetConfigEntries())
