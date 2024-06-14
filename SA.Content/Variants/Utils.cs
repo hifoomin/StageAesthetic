@@ -66,7 +66,7 @@ namespace StageAesthetic.Variants
             rainMaterial.SetFloat("_DstBlend", 10);
             rainMaterial.SetFloat("_SrcBlend", 5);
             if (bloodRain)
-                rainMaterial.SetColor("_TintColor", new Color32(56, 12, 12, 255));
+                rainMaterial.SetColor("_TintColor", new Color32(72, 36, 36, 255));
             else
                 rainMaterial.SetColor("_TintColor", new Color32(166, 166, 166, 255));
             /*

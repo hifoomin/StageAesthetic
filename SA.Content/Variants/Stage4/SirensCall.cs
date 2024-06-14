@@ -10,19 +10,10 @@ namespace StageAesthetic.Variants.Stage4
     {
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(39, 81, 107, 0);
-            fog.fogColorMid.value = new Color32(15, 62, 50, 99);
-            fog.fogColorEnd.value = new Color32(10, 40, 36, 255);
-            cgrade.colorFilter.value = new Color32(171, 223, 227, 255);
-            cgrade.colorFilter.overrideState = true;
-            fog.skyboxStrength.value = 0.8f;
-            fog.fogOne.value = 0.085f;
+            Skybox.NightSky();
             var lightBase = GameObject.Find("Weather, Shipgraveyard").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(155, 163, 227, 255);
-            sunLight.intensity = 2f;
-            sunLight.shadowStrength = 0.5f;
+            sunTransform.gameObject.SetActive(false);
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
             {
@@ -55,13 +46,13 @@ namespace StageAesthetic.Variants.Stage4
         {
             fog.fogColorStart.value = new Color32(53, 66, 82, 18);
             fog.fogColorMid.value = new Color32(64, 67, 103, 154);
-            fog.fogColorEnd.value = new Color32(126, 156, 166, 255);
+            fog.fogColorEnd.value = new Color32(126, 156, 166, 200);
             var lightBase = GameObject.Find("Weather, Shipgraveyard").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(255, 239, 223, 255);
-            sunLight.intensity = 2f;
-            sunLight.shadowStrength = 0.7f;
+            sunLight.intensity = 1.6f;
+            sunLight.shadowStrength = 0.6f;
             sunTransform.localEulerAngles = new Vector3(33, 0, 0);
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
@@ -93,11 +84,19 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void Overcast(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(58, 62, 68, 0);
-            fog.fogColorMid.value = new Color32(46, 67, 76, 130);
-            fog.fogColorEnd.value = new Color32(78, 94, 87, 255);
+            fog.fogColorStart.value = new Color32(31, 46, 63, 50);
+            fog.fogColorMid.value = new Color(0.205f, 0.269f, 0.288f, 0.5f);
+            fog.fogColorEnd.value = new Color32(71, 82, 88, 180);
+            fog.skyboxStrength.value = 0.02f;
+            fog.fogPower.value = 0.35f;
+            fog.fogIntensity.value = 0.88f;
             fog.fogZero.value = -0.02f;
-            fog.fogOne.value = 0.057f;
+            fog.fogOne.value = 0.05f;
+
+            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            sunLight.color = new Color32(77, 188, 175, 255);
+            sunLight.intensity = 1.7f;
+            sunLight.shadowStrength = 0.6f;
 
             AddRain(RainType.Typhoon);
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
@@ -130,18 +129,17 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void Aphelian(RampFog fog, ColorGrading cgrade)
         {
+            GameObject.Find("Directional Light (SUN)").SetActive(false);
+
+            Skybox.SunsetSky();
             fog.fogColorStart.value = new Color32(122, 69, 56, 5);
             fog.fogColorMid.value = new Color32(122, 69, 56, 35);
-            fog.fogColorEnd.value = new Color32(91, 52, 42, 255);
+            fog.fogColorEnd.value = new Color32(91, 52, 42, 180);
             // cgrade.colorFilter.value = new Color32(7, 0, 140, 10);
             // cgrade.colorFilter.overrideState = true;
             fog.skyboxStrength.value = 0f;
             fog.fogOne.value = 0.085f;
-            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.intensity = 1.4f;
-            sunLight.shadowStrength = 0.8f;
-            sunLight.color = new Color32(221, 174, 167, 255);
-            sunLight.transform.eulerAngles = new Vector3(20f, 79.13635f, 97.21165f);
+
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
             {
@@ -191,21 +189,11 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void AphelianMaterials()
         {
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Terrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(138, 176, 167, 255);
-            var terrainMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Temple.mat").WaitForCompletion());
-            terrainMat2.color = new Color32(138, 176, 167, 255);
-            var detailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetAlien1BossEmissionDirty.mat").WaitForCompletion());
-            detailMat.color = new Color32(252, 154, 72, 235);
-            var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_StoneSurface.mat").WaitForCompletion());
-            detailMat2.color = new Color32(178, 127, 68, 159);
-            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/MajorAndMinorConstruct/matMajorConstructDefenseMatrixEdges.mat").WaitForCompletion();
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
+            var terrainMat = Main.sirensAphelianTerrainMat;
+            var terrainMat2 = Main.sirensAphelianTerrainMat2;
+            var detailMat = Main.sirensAphelianDetailMat;
+            var detailMat2 = Main.sirensAphelianDetailMat2;
+            var detailMat3 = Main.sirensAphelianDetailMat3;
 
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3)
             {

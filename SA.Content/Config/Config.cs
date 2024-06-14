@@ -219,7 +219,7 @@ namespace StageAesthetic.Config
             SiphonedForestNight = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Night)?", true, "Blue and dark.");
             SiphonedForestMorning = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Morning)?", true, "Yellow sun with blue shadows.");
             SiphonedForestPurple = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Purple)?", true, "Extra snowy with purple hints.");
-            SiphonedForestCrimson = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Crimson)?", false, "Red fog with Doom vibes. Kinda sucks right now.");
+            SiphonedForestCrimson = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Crimson)?", true, "Red fog with Doom vibes.");
             SiphonedForestDesolate = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Desolate)?", true, "Green ground with a purple contrast.");
 
             TitanicPlainsVanilla = SAConfig.Bind("Stages : Titanic Plains", "Enable Titanic Plains (Vanilla)?", false, "Disabling removes vanilla from getting picked");
@@ -271,8 +271,8 @@ namespace StageAesthetic.Config
             ScorchedAcresSunset = SAConfig.Bind("Stages ::: Scorched Acres", "Enable Scorched Acres (Sunset)?", true, "Orange....");
             ScorchedAcresNight = SAConfig.Bind("Stages ::: Scorched Acres", "Enable Scorched Acres (Night)?", true, "Dark purple with stars!");
             ScorchedAcresJade = SAConfig.Bind("Stages ::: Scorched Acres", "Enable Scorched Acres (Jade)?", true, "Green fog with stars!");
-            ScorchedAcresSunnyBeta = SAConfig.Bind("Stages ::: Scorched Acres", "Enable Scorched Acres (Sunny Beta)?", false, "Brings back the unreleased Scorched Acres' look.");
-            ScorchedAcresCrimsonBeta = SAConfig.Bind("Stages ::: Scorched Acres", "Enable Scorched Acres (Crimson Beta)?", false, "Brings back the unreleased Scorched Acres' look (alt ver)");
+            ScorchedAcresSunnyBeta = SAConfig.Bind("Stages ::: Scorched Acres", "Enable Scorched Acres (Sunny Beta)?", true, "Brings back the unreleased Scorched Acres' look.");
+            ScorchedAcresCrimsonBeta = SAConfig.Bind("Stages ::: Scorched Acres", "Enable Scorched Acres (Crimson Beta)?", true, "Brings back the unreleased Scorched Acres' look (alt ver)");
             ScorchedAcresTwilight = SAConfig.Bind("Stages ::: Scorched Acres", "Enable Scorched Acres (Twilight)?", true, "Blue and pinkish.");
 
             ScorchedAcresChanges = SAConfig.Bind("Stages ::: Scorched Acres", "Alter Scorched Acres (Vanilla)?", true, "Greatly increases the sunlight intensity, and alters the light angle and sun position towards a different corner of the map.");

@@ -9,21 +9,20 @@ namespace StageAesthetic.Variants.Stage1
     {
         public static void Sunset(RampFog fog)
         {
-            fog.fogColorStart.value = new Color32(45, 49, 75, 0);
-            fog.fogColorMid.value = new Color32(99, 60, 42, 130);
-            fog.fogColorEnd.value = new Color32(172, 89, 79, 255);
-            fog.skyboxStrength.value = 0.04f;
-            fog.fogZero.value = -0.03f;
-            fog.fogOne.value = 0.2f;
-            fog.fogIntensity.value = 1f;
-            fog.fogPower.value = 0.5f;
-            var lightBase = GameObject.Find("Weather, Golemplains").transform;
-            var sunTransform = lightBase.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(255, 102, 0, 255);
-            sunLight.intensity = 1.6f;
-            sunLight.shadowStrength = 0.877f;
-            sunTransform.localEulerAngles = new Vector3(35f, 60f, 0f);
+            Skybox.SunsetSky();
+
+            fog.fogColorStart.value = new Color32(66, 66, 66, 50);
+            fog.fogColorMid.value = new Color32(62, 18, 44, 126);
+            fog.fogColorEnd.value = new Color32(123, 74, 61, 200);
+            fog.skyboxStrength.value = 0.02f;
+            fog.fogOne.value = 0.12f;
+            fog.fogIntensity.overrideState = true;
+            fog.fogIntensity.value = 1.1f;
+            fog.fogPower.value = 0.8f;
+
+            GameObject weather = GameObject.Find("Weather, Golemplains");
+            if (weather)
+                weather.SetActive(false);
             VanillaFoliage();
         }
 
@@ -31,15 +30,16 @@ namespace StageAesthetic.Variants.Stage1
         {
             fog.fogColorStart.value = new Color32(34, 45, 62, 18);
             fog.fogColorMid.value = new Color32(72, 84, 103, 165);
-            fog.fogColorEnd.value = new Color32(97, 109, 129, 255);
+            fog.fogColorEnd.value = new Color32(97, 109, 129, 200);
             fog.skyboxStrength.value = 0.075f;
             fog.fogPower.value = 0.35f;
             fog.fogOne.value = 0.108f;
+
             var lightBase = GameObject.Find("Weather, Golemplains").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(64, 144, 219, 255);
-            sunLight.intensity = 0.9f;
+            sunLight.color = new Color32(77, 188, 175, 255);
+            sunLight.intensity = 1.5f;
             sunLight.shadowStrength = 0.7f;
             sunTransform.localEulerAngles = new Vector3(50, 17, 270);
             AddRain(RainType.Rainstorm);
@@ -56,22 +56,9 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(0, 0, 0, 0);
-            fog.fogColorMid.value = new Color32(52, 73, 85, 34);
-            fog.fogColorEnd.value = new Color32(12, 18, 54, 255);
-            fog.skyboxStrength.value = 0.08f;
-            fog.fogZero.value = 0f;
-            fog.fogOne.value = 1f;
-            fog.fogIntensity.value = 1f;
-            fog.fogPower.value = 0.06f;
-            cgrade.colorFilter.value = new Color32(180, 184, 255, 255);
-            var lightBase = GameObject.Find("Weather, Golemplains").transform;
-            var sunTransform = lightBase.Find("Directional Light (SUN)");
-            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(113, 132, 255, 255);
-            sunLight.intensity = 1.6f;
-            sunLight.shadowStrength = 0.7f;
-            sunTransform.localEulerAngles = new Vector3(38, 270, 97);
+            Skybox.NightSky();
+            var weather = GameObject.Find("Weather, Golemplains");
+            weather.SetActive(false);
             Object.Instantiate(rain, Vector3.zero, Quaternion.identity);
             VanillaFoliage();
         }
@@ -81,10 +68,7 @@ namespace StageAesthetic.Variants.Stage1
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sun.color = new Color(0.7450981f, 0.8999812f, 0.9137255f);
             sun.intensity = 1.34f;
-            fog.fogColorStart.value = new Color32(93, 127, 106, 3);
-            fog.fogColorMid.value = new Color32(119, 153, 132, 7);
-            fog.fogColorEnd.value = new Color32(101, 158, 144, 130);
-            fog.fogPower.value = 0.5f;
+
             Debug.Log("NOSTALGIA PLAINS W");
             Debug.Log("NOSTALGIA PLAINS W");
             Debug.Log("NOSTALGIA PLAINS W");
@@ -92,31 +76,28 @@ namespace StageAesthetic.Variants.Stage1
             VanillaFoliage();
         }
 
-        public static void Abandoned(RampFog fog)
+        public static void Abandoned(RampFog fog, PostProcessProfile ppProfile)
         {
             var sun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sun.color = new Color32(211, 151, 105, 255);
-            sun.intensity = 1.3f;
+            sun.color = Color.gray;
+            sun.intensity = 1f;
 
-            fog.fogColorStart.value = new Color32(137, 122, 83, 9);
-            fog.fogColorMid.value = new Color32(150, 119, 82, 45);
-            fog.fogColorEnd.value = new Color32(164, 106, 68, 255);
-            fog.fogZero.value = -0.01f;
-            fog.skyboxStrength.value = 0.15f;
-            fog.fogPower.value = 0.3f;
+            RampFog rampFog = ppProfile.GetSetting<RampFog>();
 
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeTerrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(230, 223, 174, 219);
-            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimSandy.mat").WaitForCompletion();
-            var detailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimLightSand.mat").WaitForCompletion();
-            var detailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
-            var tar = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolake.mat").WaitForCompletion();
+            fog.fogColorStart.value = new Color(0.49f, 0.363f, 0.374f, 0f);
+            fog.fogColorMid.value = new Color(0.58f, 0.486f, 0.331f, 0.25f);
+            fog.fogColorEnd.value = new Color(0.77f, 0.839f, 0.482f, 0.5f);
+            fog.fogZero.value = rampFog.fogZero.value;
+            fog.fogIntensity.value = rampFog.fogIntensity.value;
+            fog.fogPower.value = rampFog.fogPower.value;
+            fog.fogOne.value = rampFog.fogOne.value;
+            fog.skyboxStrength.value = 0.01f;
 
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat3);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + tar);
+            var terrainMat = Main.plainsAbandonedTerrainMat;
+            var detailMat = Main.plainsAbandonedDetailMat;
+            var detailMat2 = Main.plainsAbandonedDetailMat2;
+            var detailMat3 = Main.plainsAbandonedDetailMat3;
+            var tar = Main.plainsAbandonedWaterMat;
 
             GameObject.Find("FOLIAGE: Grass").SetActive(false);
             var water = GameObject.Find("HOLDER: Water").transform.GetChild(0);
