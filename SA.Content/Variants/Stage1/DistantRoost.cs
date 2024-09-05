@@ -15,7 +15,7 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Sunny(RampFog fog, string scenename, ColorGrading cgrade)
         {
-            Skybox.SunnyDistantRoostSky();
+            Skybox.DaySky();
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(255, 246, 229, 255);
             sunLight.intensity = 1.8f;

@@ -90,10 +90,12 @@ namespace StageAesthetic.Variants.Stage1
                 surroundingTrees.SetActive(false);
 
             Skybox.DaySky();
+            /*
             fog.fogColorStart.value = new Color32(117, 154, 255, 7);
             fog.fogColorMid.value = new Color32(111, 196, 248, 45);
             fog.fogColorEnd.value = new Color32(117, 154, 255, 150);
             fog.skyboxStrength.value = 0.26f;
+            */
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             var aurora = GameObject.Find("mdlSnowyForestAurora");
 
@@ -124,8 +126,8 @@ namespace StageAesthetic.Variants.Stage1
             if (surroundingTrees)
                 surroundingTrees.SetActive(false);
             fog.fogColorStart.value = new Color32(66, 66, 66, 0);
-            fog.fogColorMid.value = new Color32(62, 18, 24, 50);
-            fog.fogColorEnd.value = new Color32(180, 74, 61, 120);
+            fog.fogColorMid.value = new Color32(42, 18, 24, 50);
+            fog.fogColorEnd.value = new Color32(140, 74, 61, 120);
             fog.skyboxStrength.value = 0.5f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;

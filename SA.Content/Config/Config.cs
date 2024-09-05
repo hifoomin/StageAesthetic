@@ -62,6 +62,11 @@ namespace StageAesthetic.Config
         public static ConfigEntry<bool> TitanicPlainsNostalgic { get; set; }
         public static ConfigEntry<bool> TitanicPlainsAbandoned { get; set; }
 
+        // Abodes
+        public static ConfigEntry<bool> ShatteredAbodesVanilla { get; set; }
+        public static ConfigEntry<bool> ShatteredAbodesSunny { get; set; }
+        public static ConfigEntry<bool> ShatteredAbodesAbandoned { get; set; }
+
         // Aqueduct
         public static ConfigEntry<bool> AbandonedAqueductVanilla { get; set; }
 
@@ -215,6 +220,10 @@ namespace StageAesthetic.Config
             DistantRoostAbyssal = SAConfig.Bind("Stages : Distant Roost", "Enable Distant Roost (Abyssal)?", true, "Texture swap to Red Abyssal Depths.");
 
             DistantRoostChanges = SAConfig.Bind("Stages : Distant Roost", "Alter Distant Roost (Vanilla)?", true, "Adds rain to the alt version.");
+
+            ShatteredAbodesVanilla = SAConfig.Bind("Stages : Shattered Abodes", "Enable Shattered Abodes (Vanilla)?", true, "Disabling removes vanilla from getting picked");
+            ShatteredAbodesSunny = SAConfig.Bind("Stages : Shattered Abodes", "Enable Shattered Abodes (Verdant)?", true, "Sunny and bright green.");
+            ShatteredAbodesAbandoned = SAConfig.Bind("Stages : Shattered Abodes", "Enable Shattered Abodes (Abandoned)?", true, "Scorching Desert.");
 
             SiphonedForestVanilla = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             SiphonedForestNight = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Night)?", true, "Blue and dark.");
@@ -396,6 +405,7 @@ namespace StageAesthetic.Config
             distantRoostAltList = new();
             siphonedForestList = new();
             titanicPlainsList = new();
+            shatteredAbodesList = new();
 
             abandonedAqueductList = new();
             aphelianSanctuaryList = new();
@@ -446,6 +456,10 @@ namespace StageAesthetic.Config
                 SALogger.LogWarning("Distant Roost Alt list empty - adding vanilla...");
                 distantRoostAltList.Add("Vanilla");
             }
+
+            if (ShatteredAbodesVanilla.Value) shatteredAbodesList.Add("Vanilla");
+            if (ShatteredAbodesSunny.Value) shatteredAbodesList.Add("Verdant");
+            if (ShatteredAbodesAbandoned.Value) shatteredAbodesList.Add("Abandoned");
 
             if (SiphonedForestVanilla.Value) siphonedForestList.Add("Vanilla");
             if (SiphonedForestNight.Value) siphonedForestList.Add("Night");

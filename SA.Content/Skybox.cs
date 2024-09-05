@@ -9,10 +9,10 @@ namespace StageAesthetic
 {
     public class Skybox
     {
-        private static readonly PostProcessProfile ppPlains = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneGolemplainsFoggy.asset").WaitForCompletion();
-        private static readonly PostProcessProfile ppPlainsRoost = Object.Instantiate(Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneGolemplainsFoggy.asset").WaitForCompletion());
-        private static readonly PostProcessProfile ppSunset = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneWispGraveyard.asset").WaitForCompletion();
-        private static readonly PostProcessProfile ppSick = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneMysterySpace.asset").WaitForCompletion();
+        private static readonly PostProcessProfile ppPlains = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneGolemplainsFoggy.asset").WaitForCompletion();
+        private static readonly PostProcessProfile ppPlainsRoost = Object.Instantiate(Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneGolemplainsFoggy.asset").WaitForCompletion());
+        private static readonly PostProcessProfile ppSunset = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneWispGraveyard.asset").WaitForCompletion();
+        private static readonly PostProcessProfile ppSick = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneMysterySpace.asset").WaitForCompletion();
         private static readonly Material sunMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Sun.mat").WaitForCompletion();
         private static readonly Material sunsetSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/bazaar/matSkybox4.mat").WaitForCompletion();
         private static readonly Material spaceSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSkyboxSP.mat").WaitForCompletion();
@@ -56,7 +56,17 @@ namespace StageAesthetic
             if (SceneManager.GetActiveScene().name == "snowyforest" || SceneManager.GetActiveScene().name == "foggyswamp" || SceneManager.GetActiveScene().name == "frozenwall" || SceneManager.GetActiveScene().name == "skymeadow")
                 GameObject.Destroy(skybox.transform.GetChild(0).GetComponent<PostProcessVolume>());
             else
-                skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppPlains;
+                skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppPlainsRoost;
+
+            RampFog fog = ppPlainsRoost.GetSetting<RampFog>();
+            fog.fogColorStart.value = new Color32(127, 127, 153, 25);
+            fog.fogColorMid.value = new Color32(0, 106, 145, 150);
+            fog.fogColorEnd.value = new Color32(0, 115, 119, 255);
+            fog.fogZero.value = -0.01f;
+            fog.fogOne.value = 0.15f;
+            fog.fogPower.value = 2f;
+            fog.skyboxStrength.value = 0.1f;
+
             SetAmbientLight ambLight = skybox.transform.GetChild(0).GetComponent<SetAmbientLight>();
             ambLight.skyboxMaterial = spaceSkyboxMat;
             ambLight.ambientIntensity = 1f;

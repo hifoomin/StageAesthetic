@@ -16,7 +16,7 @@ namespace StageAesthetic
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "StageAesthetic";
 
-        public const string PluginVersion = "1.1.0";
+        public const string PluginVersion = "1.2.0";
 
         public static AssetBundle stageaesthetic;
         public static Shader cloudRemap = Addressables.LoadAssetAsync<Shader>("RoR2/Base/Shaders/HGCloudRemap.shader").WaitForCompletion();
@@ -47,6 +47,11 @@ namespace StageAesthetic
         public static Material plainsAbandonedDetailMat2;
         public static Material plainsAbandonedDetailMat3;
         public static Material plainsAbandonedWaterMat;
+
+        public static Material verdantTerrainMat;
+        public static Material verdantDetailMat;
+        public static Material verdantDetailMat2;
+        public static Material verdantDetailMat3;
 
         public static Texture2D siphonedDesolateNormal;
         public static Texture2D siphonedDesolateSide;
@@ -132,6 +137,11 @@ namespace StageAesthetic
         public static Material skyMeadowAbandonedDetailMat6;
         public static Material skyMeadowAbandonedWaterMat;
 
+        public static Material itSkyMeadowTerrainMat;
+        public static Material itSkyMeadowDetailMat;
+        public static Material itSkyMeadowDetailMat2;
+        public static Material itSkyMeadowDetailMat3;
+
         public static Material moonRedFlameMat;
         public static Material moonPurpleFlameMat;
 
@@ -170,6 +180,30 @@ namespace StageAesthetic
             moonPurpleFlameMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidoutro/matFireStaticVoidOutroEyePurple.mat").WaitForCompletion();
             // pre-caching in hopes of eliminating the null material issue
 
+            itSkyMeadowTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itskymeadow/matSMTerrainInfiniteTower.mat").WaitForCompletion();
+            itSkyMeadowDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itskymeadow/matSMRockInfiniteTower.mat").WaitForCompletion();
+            itSkyMeadowDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itskymeadow/matTrimSheetMeadowRuinsProjectedInfiniteTower.mat").WaitForCompletion();
+            itSkyMeadowDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itskymeadow/matSMSpikeBridgeInfinitetower.mat").WaitForCompletion();
+
+            // Shattered Abodes (Sunny)
+            Texture2D tlCliffTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC2/lakes/Assets/texTLTerrainCliff.tga").WaitForCompletion();
+            Texture2D tlDirtTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC2/lakes/Assets/texTLTerrainDirt.tga").WaitForCompletion();
+            Texture2D rockNormal = Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/texNormalBumpyRock.jpg").WaitForCompletion();
+            /*
+            overgrowthTerrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itancientloft/matAncientLoft_TempleProjectedInfiniteTower.mat").WaitForCompletion());
+            overgrowthTerrainMat.color = new Color(0.701f, 0.623f, 0.403f, 1);
+            overgrowthTerrainMat.SetTexture("_SplatmapTex", null);
+            // overgrowthTerrainMat.SetTexture("_NormalTex", rockNormal);
+            overgrowthTerrainMat.SetTexture("_RedChannelSideTex", tlCliffTex);
+            overgrowthTerrainMat.SetTexture("_RedChannelTopTex", tlDirtTex);
+            overgrowthDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itancientloft/matAncientLoft_BoulderInfiniteTower.mat").WaitForCompletion();
+            overgrowthDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itancientloft/matAncientLoft_TempleProjectedInfiniteTower.mat").WaitForCompletion();
+            overgrowthDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTree.mat").WaitForCompletion();
+            */
+            verdantTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLTerrainStone.mat").WaitForCompletion();
+            verdantDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLRocks.mat").WaitForCompletion();
+            verdantDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLShip.mat").WaitForCompletion();
+            verdantDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLGVine.mat").WaitForCompletion();
             // Distant Roost (Void)
 
             distantRoostVoidTerrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion());
@@ -395,21 +429,10 @@ namespace StageAesthetic
             if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("PlasmaCore.ForgottenRelics"))
                 ForgottenRelicsLoaded = true;
 
-            On.RoR2.RoR2Application.Start += RoR2Application_Start;
 
             SwapVariants.Initialize();
 
             // SwapVariants.SALogger.LogError("Forgotten Relics Loaded:" + ForgottenRelicsLoaded);
-        }
-
-        private void RoR2Application_Start(On.RoR2.RoR2Application.orig_Start orig, RoR2.RoR2Application self)
-        {
-            orig(self);
-            var path = typeof(Main).Assembly.Location.Replace("StageAesthetic.dll", "");
-            AkSoundEngine.AddBasePath(path);
-
-            AkSoundEngine.LoadBank("InitSA", out _);
-            AkSoundEngine.LoadBank("StageAesthetic", out _);
         }
     }
 }

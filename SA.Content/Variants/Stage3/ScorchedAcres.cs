@@ -2,7 +2,6 @@
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Experimental.TerrainAPI.TerrainUtility;
 
 namespace StageAesthetic.Variants.Stage3
 {
