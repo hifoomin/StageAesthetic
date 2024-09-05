@@ -388,17 +388,18 @@ namespace StageAesthetic.Variants
                 _ => "Play_SA_wind"
             };
 
-            Util.PlaySound(soundToPlay, RoR2Application.instance.gameObject);
+            Util.PlaySound(soundToPlay, RoR2Application.instance.GetComponentInChildren<MusicController>().gameObject);
         }
 
         public static void StopSounds()
         {
-            Util.PlaySound("Stop_SA_birds", RoR2Application.instance.gameObject);
-            Util.PlaySound("Stop_SA_rain", RoR2Application.instance.gameObject);
-            Util.PlaySound("Stop_SA_storm", RoR2Application.instance.gameObject);
-            Util.PlaySound("Stop_SA_night", RoR2Application.instance.gameObject);
-            Util.PlaySound("Stop_SA_water", RoR2Application.instance.gameObject);
-            Util.PlaySound("Stop_SA_wind", RoR2Application.instance.gameObject);
+            var musicController = RoR2Application.instance.GetComponentInChildren<MusicController>().gameObject;
+            Util.PlaySound("Stop_SA_birds", musicController);
+            Util.PlaySound("Stop_SA_rain", musicController);
+            Util.PlaySound("Stop_SA_storm", musicController);
+            Util.PlaySound("Stop_SA_night", musicController);
+            Util.PlaySound("Stop_SA_water", musicController);
+            Util.PlaySound("Stop_SA_wind", musicController);
         }
     }
 

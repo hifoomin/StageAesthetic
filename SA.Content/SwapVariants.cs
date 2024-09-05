@@ -35,7 +35,7 @@ namespace StageAesthetic
         private static void AssignStageToken_Start(On.RoR2.UI.AssignStageToken.orig_Start orig, AssignStageToken self)
         {
             orig(self);
-            if (DisplayVariantName.Value)
+            if (DisplayVariantName.Value && currentVariantName != "")
                 self.titleText.text += " (" + currentVariantName + ")";
         }
 
@@ -93,19 +93,19 @@ namespace StageAesthetic
         {
             if (!rain)
             {
-                rain = Main.stageaesthetic.LoadAsset<GameObject>("Assets/StageAesthetic/Stage Aesthetic Rain.prefab");
+                rain = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Rain.prefab");
                 rain.transform.eulerAngles = new Vector3(90, 0, 0);
             }
 
             if (!snow)
             {
-                snow = Main.stageaesthetic.LoadAsset<GameObject>("Assets/StageAesthetic/Stage Aesthetic Snow.prefab");
+                snow = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Snow.prefab");
                 snow.transform.eulerAngles = new Vector3(90, 0, 0);
             }
 
             if (!sand)
             {
-                sand = Main.stageaesthetic.LoadAsset<GameObject>("Assets/StageAesthetic/Stage Aesthetic Sand.prefab");
+                sand = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Sand.prefab");
                 // sand.transform.eulerAngles = new Vector3(90, 0, 0);
             }
 
