@@ -527,6 +527,16 @@ namespace StageAesthetic
                         string selectedAphelianSanctuaryVariant = aphelianSanctuaryArray[aphelianSanctuaryCounter];
                         if (selectedAphelianSanctuaryVariant == "Vanilla")
                         {
+                            GameObject sun = GameObject.Find("AL_Sun");
+                            if (sun)
+                            {
+                                sun.SetActive(false);
+                                GameObject newSun = GameObject.Instantiate(Skybox.sun, sun.transform.parent);
+                                newSun.transform.localPosition = new Vector3(-897.0126f, 350f, 209.9904f);
+                                newSun.transform.eulerAngles = new Vector3(275f, 90f, 90f);
+                                newSun.GetComponent<MeshRenderer>().sharedMaterial = Skybox.sunMat;
+                            }
+
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -541,6 +551,16 @@ namespace StageAesthetic
                                     break;
 
                                 case "Sunset":
+                                    GameObject sun = GameObject.Find("AL_Sun");
+                                    if (sun)
+                                    {
+                                        sun.SetActive(false);
+                                        GameObject newSun = GameObject.Instantiate(Skybox.sun, sun.transform.parent);
+                                        newSun.transform.localPosition = new Vector3(-897.0126f, 350f, 209.9904f);
+                                        newSun.transform.eulerAngles = new Vector3(275f, 90f, 90f);
+                                        newSun.GetComponent<MeshRenderer>().sharedMaterial = Skybox.sunMat;
+                                    }
+
                                     AphelianSanctuary.Sunset(rampFog, colorGrading);
                                     break;
 

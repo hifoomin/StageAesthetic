@@ -97,21 +97,23 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Overcast(RampFog fog, string scenename)
         {
-            fog.fogColorStart.value = new Color32(31, 46, 63, 50);
-            fog.fogColorMid.value = new Color(0.205f, 0.269f, 0.288f, 0.76f);
-            fog.fogColorEnd.value = new Color32(71, 82, 88, 255);
-            fog.skyboxStrength.value = 0.02f;
-            fog.fogPower.value = 0.35f;
-            fog.fogIntensity.value = 0.88f;
+            AddRain(RainType.Typhoon);
+            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 1);
+            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.4f);
+            fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
+            fog.fogPower.value = 0.5f;
             fog.fogZero.value = -0.02f;
-            fog.fogOne.value = 0.05f;
+            fog.fogOne.value = 0.025f;
+            fog.skyboxStrength.value = 0.03f;
+            fog.fogIntensity.value = 0.88f;
+
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(77, 188, 175, 255);
             sunLight.intensity = 1.7f;
             sunLight.shadowStrength = 0.6f;
             var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
             shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
-            Utils.AddRain(Utils.RainType.Monsoon);
+
             GameObject wind = GameObject.Find("WindZone");
             wind.transform.eulerAngles = new Vector3(30, 20, 0);
             var windZone = wind.GetComponent<WindZone>();

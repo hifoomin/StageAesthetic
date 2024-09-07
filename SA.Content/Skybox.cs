@@ -14,14 +14,14 @@ namespace StageAesthetic
         private static readonly PostProcessProfile ppPlainsRoost = Object.Instantiate(Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneGolemplainsFoggy.asset").WaitForCompletion());
         private static readonly PostProcessProfile ppSunset = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneWispGraveyard.asset").WaitForCompletion();
         private static readonly PostProcessProfile ppSick = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneMysterySpace.asset").WaitForCompletion();
-        private static readonly Material sunMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Sun.mat").WaitForCompletion();
+        public static readonly Material sunMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Sun.mat").WaitForCompletion();
         private static readonly Material sunsetSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/bazaar/matSkybox4.mat").WaitForCompletion();
         private static readonly Material spaceSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSkyboxSP.mat").WaitForCompletion();
         private static readonly Material spaceStarsMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/eclipseworld/matEclipseStarsSpheres.mat").WaitForCompletion();
         private static readonly GameObject eclipseSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/eclipseworld/Weather, Eclipse.prefab").WaitForCompletion(), "SAEclipseSkybox", false);
         private static readonly GameObject planetariumSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/voidraid/Weather, Void Raid Starry Night Variant.prefab").WaitForCompletion(), "SADaySkybox", false);
         private static readonly GameObject voidStageSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/voidstage/Weather, Void Stage.prefab").WaitForCompletion(), "SAVoidSkybox", false);
-        private static readonly GameObject sun = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/ancientloft/mdlAncientLoft_Terrain.fbx").WaitForCompletion().transform.GetChild(5).GetChild(0).gameObject, "SASun", false);
+        public static readonly GameObject sun = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/ancientloft/mdlAncientLoft_Terrain.fbx").WaitForCompletion().transform.GetChild(5).GetChild(0).gameObject, "SASun", false);
 
         public static void SunnyDistantRoostSky()
         {
@@ -212,15 +212,11 @@ namespace StageAesthetic
 
             if (sceneName == "blackbeach" || sceneName == "blackbeach2")
             {
-                ambLight.ambientIntensity = 1f;
-            }
-            else if (SceneManager.GetActiveScene().name != "ancientloft" && SceneManager.GetActiveScene().name != "foggyswamp")
-            {
-                ambLight.ambientIntensity = 0.75f;
+                ambLight.ambientIntensity = 1.25f;
             }
             else
             {
-                ambLight.ambientIntensity = 0.5f;
+                ambLight.ambientIntensity = 1f;
             }
 
             if (sceneName == "frozenwall" || sceneName == "snowyforest" || sceneName == "moon2")

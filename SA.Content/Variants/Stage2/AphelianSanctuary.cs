@@ -14,7 +14,7 @@ namespace StageAesthetic.Variants.Stage2
             Skybox.NightSky();
             var terrain = GameObject.Find("HOLDER: Terrain").transform;
             var terrain2 = terrain.Find("mdlAncientLoft_Terrain");
-            var sun = terrain2.Find("Sun").gameObject;
+            var sun = terrain2.Find("AL_Sun").gameObject;
             sun.SetActive(false);
             var fog1 = GameObject.Find("HOLDER: Cards");
             fog1.SetActive(false);
@@ -52,8 +52,8 @@ namespace StageAesthetic.Variants.Stage2
             sun.SetActive(false);
             var fog1 = GameObject.Find("HOLDER: Cards");
             fog1.SetActive(false);
-            var fog2 = GameObject.Find("DeepFog");
-            fog2.SetActive(false);
+            // var fog2 = GameObject.Find("DeepFog");
+            // fog2.SetActive(false);
             VanillaFoliage();
         }
 
