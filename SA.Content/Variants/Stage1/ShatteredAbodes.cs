@@ -12,16 +12,18 @@ namespace StageAesthetic.Variants.Stage1
     {
       // Skybox.DaySky();
 
-      fog.fogColorStart.value = new Color32(128, 121, 99, 13);
-      fog.fogColorMid.value = new Color32(106, 141, 154, 130);
-      fog.fogColorEnd.value = new Color32(104, 150, 199, 255);
+      fog.fogColorStart.value = new Color32(53, 66, 82, 18);
+      fog.fogColorMid.value = new Color32(103, 67, 64, 154);
+      fog.fogColorEnd.value = new Color32(146, 176, 255, 255);
+      fog.fogOne.value = 0.2f;
+      fog.fogZero.value = -0.05f;
 
       GameObject rainParticles = GameObject.Find("CAMERA PARTICLES: RainParticles (1)");
       rainParticles.SetActive(false);
       GameObject sun = GameObject.Find("Directional Light (SUN)");
       sun.transform.eulerAngles = new Vector3(60f, 65f, 210f);
       var sunLight = sun.GetComponent<Light>();
-      sunLight.color = new Color32(255, 246, 229, 255);
+      sunLight.color = new Color32(255, 246, 180, 255);
       sunLight.intensity = 0.8f;
       sunLight.shadowStrength = 0.7f;
       // 30.512 64.27 209.701

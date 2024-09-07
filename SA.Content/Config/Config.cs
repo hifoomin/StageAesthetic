@@ -67,6 +67,17 @@ namespace StageAesthetic.Config
         public static ConfigEntry<bool> ShatteredAbodesSunny { get; set; }
         public static ConfigEntry<bool> ShatteredAbodesAbandoned { get; set; }
 
+        // Reformed Altar
+        public static ConfigEntry<bool> ReformedAltarVanilla { get; set; }
+        public static ConfigEntry<bool> ReformedAltarVerdant { get; set; }
+        public static ConfigEntry<bool> ReformedAltarHelminth { get; set; }
+
+        // Treeborn Colony
+        public static ConfigEntry<bool> TreebornColonyVanilla { get; set; }
+        public static ConfigEntry<bool> TreebornColonyOvercast { get; set; }
+        public static ConfigEntry<bool> TreebornColonySunny { get; set; }
+        public static ConfigEntry<bool> TreebornColonyNight { get; set; }
+
         // Aqueduct
         public static ConfigEntry<bool> AbandonedAqueductVanilla { get; set; }
 
@@ -224,6 +235,15 @@ namespace StageAesthetic.Config
             ShatteredAbodesVanilla = SAConfig.Bind("Stages : Shattered Abodes", "Enable Shattered Abodes (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             ShatteredAbodesSunny = SAConfig.Bind("Stages : Shattered Abodes", "Enable Shattered Abodes (Verdant)?", true, "Sunny and bright green.");
             ShatteredAbodesAbandoned = SAConfig.Bind("Stages : Shattered Abodes", "Enable Shattered Abodes (Abandoned)?", true, "Scorching Desert.");
+
+            ReformedAltarVanilla = SAConfig.Bind("Stages : Reformed Altar", "Enable Reformed Altar (Vanilla)?", true, "Disabling removes vanilla from getting picked");
+            ReformedAltarVerdant = SAConfig.Bind("Stages : Reformed Altar", "Enable Reformed Altar (Verdant)?", true, "Sunny and bright green.");
+            ReformedAltarHelminth = SAConfig.Bind("Stages : Reformed Altar", "Enable Reformed Altar (Helminth)?", true, "Dark and red.");
+
+            TreebornColonyVanilla = SAConfig.Bind("Stages : Treeborn Colony", "Enable Treeborn Colony (Vanilla)?", true, "Disabling removes vanilla from getting picked");
+            TreebornColonyOvercast = SAConfig.Bind("Stages : Treeborn Colony", "Enable Treeborn Colony (Overcast)?", true, "Foggy storm.");
+            TreebornColonySunny = SAConfig.Bind("Stages : Treeborn Colony", "Enable Treeborn Colony (Sunny)?", true, "Sunny, blue sky, and changes sun's angle.");
+            TreebornColonyNight = SAConfig.Bind("Stages : Treeborn Colony", "Enable Treeborn Colony (Night)?", true, "Dark and blue with a starry sky.");
 
             SiphonedForestVanilla = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             SiphonedForestNight = SAConfig.Bind("Stages : Siphoned Forest", "Enable Siphoned Forest (Night)?", true, "Blue and dark.");
@@ -407,6 +427,9 @@ namespace StageAesthetic.Config
             titanicPlainsList = new();
             shatteredAbodesList = new();
 
+            reformedAltarList = new();
+            treebornColonyList = new();
+
             abandonedAqueductList = new();
             aphelianSanctuaryList = new();
             dryBasinList = new();
@@ -461,6 +484,15 @@ namespace StageAesthetic.Config
             if (ShatteredAbodesSunny.Value) shatteredAbodesList.Add("Verdant");
             if (ShatteredAbodesAbandoned.Value) shatteredAbodesList.Add("Abandoned");
 
+            if (ReformedAltarVanilla.Value) reformedAltarList.Add("Vanilla");
+            if (ReformedAltarVerdant.Value) reformedAltarList.Add("Verdant");
+            if (ReformedAltarHelminth.Value) reformedAltarList.Add("Helminth");
+
+            if (TreebornColonyVanilla.Value) treebornColonyList.Add("Vanilla");
+            if (TreebornColonyOvercast.Value) treebornColonyList.Add("Overcast");
+            if (TreebornColonySunny.Value) treebornColonyList.Add("Sunny");
+            if (TreebornColonyNight.Value) treebornColonyList.Add("Night");
+
             if (SiphonedForestVanilla.Value) siphonedForestList.Add("Vanilla");
             if (SiphonedForestNight.Value) siphonedForestList.Add("Night");
             if (SiphonedForestMorning.Value) siphonedForestList.Add("Morning");
@@ -484,8 +516,6 @@ namespace StageAesthetic.Config
                 SALogger.LogWarning("Titanic Plains list empty - adding vanilla...");
                 titanicPlainsList.Add("Vanilla");
             }
-
-            //
 
             if (AbandonedAqueductVanilla.Value) abandonedAqueductList.Add("Vanilla");
             if (AbandonedAqueductDawn.Value) abandonedAqueductList.Add("Dawn");

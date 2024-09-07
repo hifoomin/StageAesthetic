@@ -85,7 +85,7 @@ namespace StageAesthetic.Variants.Stage1
                 }
             }
             AddSnow(SnowType.Light, -10f);
-            s.GetChild(19).GetChild(0).localPosition = new Vector3(0, 0, -10);
+            // s.GetChild(19).GetChild(0).localPosition = new Vector3(0, 0, -10); something moved/broke with this
 
             GameObject.Find("HOLDER: Grass").SetActive(false);
             GameObject.Find("FOLIAGE").SetActive(false);
@@ -149,15 +149,15 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(99, 27, 63, 72);
-            fog.fogColorMid.value = new Color32(26, 61, 91, 70);
-            fog.fogColorEnd.value = new Color32(68, 27, 27, 155);
+            fog.fogColorStart.value = new Color32(99, 27, 63, 25);
+            fog.fogColorMid.value = new Color32(26, 61, 91, 150);
+            fog.fogColorEnd.value = new Color32(68, 27, 27, 255);
             fog.SetAllOverridesTo(true);
-            fog.skyboxStrength.value = 0f;
+            fog.skyboxStrength.value = 0.1f;
             fog.fogPower.value = 1f;
-            fog.fogIntensity.value = 0.9f;
+            fog.fogIntensity.value = 1f;
             fog.fogZero.value = -0.05f;
-            fog.fogOne.value = 0.27f;
+            fog.fogOne.value = 0.2f;
             //  cgrade.colorFilter.value = new Color32(150, 150, 150, 255);
             // cgrade.colorFilter.overrideState = true;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
@@ -430,8 +430,8 @@ namespace StageAesthetic.Variants.Stage1
             {
                 // GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
                 // GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-                GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = Main.distantRoostVoidTerrainMat;
-                GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = Main.distantRoostVoidTerrainMat;
+                GameObject.Find("GAMEPLAY SPACE").transform.GetChild(1).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = Main.distantRoostVoidTerrainMat;
+                GameObject.Find("GAMEPLAY SPACE").transform.GetChild(1).GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = Main.distantRoostVoidTerrainMat;
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
                 foreach (MeshRenderer mr in meshList)
                 {

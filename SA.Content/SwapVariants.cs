@@ -91,10 +91,8 @@ namespace StageAesthetic
         {
             if (!rain)
             {
-                Debug.LogWarning("Loading rain");
                 rain = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Rain.prefab");
                 rain.transform.eulerAngles = new Vector3(90, 0, 0);
-                Debug.LogWarning(rain);
             }
 
             if (!snow)
@@ -360,6 +358,80 @@ namespace StageAesthetic
 
                         #endregion TitanicPlainsAndAlt
 
+                        break;
+
+                    case "habitat":
+
+                        #region TreebornColony
+                        int treebornColonyCounter = rng.RangeInt(0, treebornColonyList.Count);
+
+                        if (treebornColonyList.Count > 1 && treebornColonyCounter == treebornColonyVariant)
+                            treebornColonyCounter = (treebornColonyCounter + 1) % treebornColonyList.Count;
+
+                        string[] treebornColonyArray = treebornColonyList.ToArray();
+                        string selectedtreebornColonyVariant = treebornColonyArray[treebornColonyCounter];
+
+                        if (selectedtreebornColonyVariant == "Vanilla")
+                        {
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedtreebornColonyVariant)
+                            {
+                                case "Sunny":
+                                    SetAmbientLight amb = volume.GetComponent<SetAmbientLight>();
+                                    amb.ambientSkyColor = new Color(0.88078f, 0.8431f, 0.5373f, 1);
+                                    amb.ApplyLighting();
+                                    TreebornColony.Sunny(rampFog);
+                                    break;
+                                case "Overcast":
+                                    SetAmbientLight amb2 = volume.GetComponent<SetAmbientLight>();
+                                    amb2.ambientSkyColor = new Color(0.5373f, 0.6354f, 0.6431f, 1);
+                                    amb2.ambientIntensity = 0.61f;
+                                    amb2.ApplyLighting();
+                                    TreebornColony.Meridian(rampFog);
+                                    break;
+                                case "Night":
+                                    TreebornColony.Night();
+                                    break;
+                            }
+
+                        currentVariantName = selectedtreebornColonyVariant;
+                        reformedAltarVariant = treebornColonyCounter;
+
+                        #endregion TreebornColony
+                        break;
+
+                    case "lemuriantemple":
+
+                        #region ReformedAltar
+                        int reformedAltarCounter = rng.RangeInt(0, reformedAltarList.Count);
+
+                        if (reformedAltarList.Count > 1 && reformedAltarCounter == reformedAltarVariant)
+                            reformedAltarCounter = (reformedAltarCounter + 1) % reformedAltarList.Count;
+
+                        string[] reformedAltarArray = reformedAltarList.ToArray();
+                        string selectedReformedAltarVariant = reformedAltarArray[reformedAltarCounter];
+
+                        if (selectedReformedAltarVariant == "Vanilla")
+                        {
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedReformedAltarVariant)
+                            {
+                                case "Verdant":
+                                    ReformedAltar.Verdant(rampFog);
+                                    break;
+                                case "Helminth":
+                                    ReformedAltar.Helminth(rampFog);
+                                    break;
+                            }
+
+                        currentVariantName = selectedReformedAltarVariant;
+                        reformedAltarVariant = reformedAltarCounter;
+
+                        #endregion ReformedAltar
                         break;
 
                     case "village":
@@ -1034,6 +1106,9 @@ namespace StageAesthetic
         public static int titanicPlainsAltVariant = -1;
         public static int shatteredAbodesVariant = -1;
 
+        public static int reformedAltarVariant = -1;
+        public static int treebornColonyVariant = -1;
+
         public static int abandonedAqueductVariant = -1;
         public static int aphelianSanctuaryVariant = -1;
         public static int dryBasinVariant = -1;
@@ -1072,6 +1147,9 @@ namespace StageAesthetic
         public static List<string> siphonedForestList = new();
         public static List<string> titanicPlainsList = new();
         public static List<string> shatteredAbodesList = new();
+
+        public static List<string> reformedAltarList = new();
+        public static List<string> treebornColonyList = new();
 
         public static List<string> abandonedAqueductList = new();
         public static List<string> aphelianSanctuaryList = new();

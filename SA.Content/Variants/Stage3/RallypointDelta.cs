@@ -88,9 +88,9 @@ namespace StageAesthetic.Variants.Stage3
         {
             Skybox.SunsetSky();
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(62, 18, 28, 100);
-            fog.fogColorEnd.value = new Color32(160, 74, 61, 150);
-            fog.skyboxStrength.value = 0.35f;
+            fog.fogColorMid.value = new Color32(62, 18, 28, 150);
+            fog.fogColorEnd.value = new Color32(160, 74, 61, 255);
+            fog.skyboxStrength.value = 0.1f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
             fog.fogIntensity.value = 1f;

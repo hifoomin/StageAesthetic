@@ -52,6 +52,8 @@ namespace StageAesthetic
         public static Material verdantDetailMat;
         public static Material verdantDetailMat2;
         public static Material verdantDetailMat3;
+        public static Material verdantGrassMat;
+        public static Material verdantBlueGrassMat;
 
         public static Texture2D siphonedDesolateNormal;
         public static Texture2D siphonedDesolateSide;
@@ -142,10 +144,29 @@ namespace StageAesthetic
         public static Material itSkyMeadowDetailMat2;
         public static Material itSkyMeadowDetailMat3;
 
+        public static Material reformedAltarTempleMat;
+
+        public static Material helminthTerrainMat;
+        public static Material helminthDetailMat;
+        public static Material helminthDetailMat2;
+        public static Material helminthDetailMat3;
+        public static Material helminthGrassMat;
+        public static Material helminthGrassMat2;
+        public static Material helminthObsidianMat;
+
+        public static Material meridianTerrainMat;
+        public static Material meridianDetailMat;
+        public static Material meridianDetailMat2;
+        public static Material meridianDetailMat3;
+        public static Material meridianStormCloudMat;
+
         public static Material moonRedFlameMat;
         public static Material moonPurpleFlameMat;
 
         public static bool ForgottenRelicsLoaded = false;
+
+        public static GameObject helminthFlower = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/helminthroost/Assets/HRFireBlossom.prefab").WaitForCompletion();
+        public static GameObject helminthWeather = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/helminthroost/Weather, Helminthroost.prefab").WaitForCompletion();
 
         public void Awake()
         {
@@ -189,6 +210,23 @@ namespace StageAesthetic
             Texture2D tlCliffTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC2/lakes/Assets/texTLTerrainCliff.tga").WaitForCompletion();
             Texture2D tlDirtTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC2/lakes/Assets/texTLTerrainDirt.tga").WaitForCompletion();
             Texture2D rockNormal = Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/texNormalBumpyRock.jpg").WaitForCompletion();
+
+            meridianTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/meridian/Assets/matPMTerrainDirt.mat").WaitForCompletion();
+            meridianDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/meridian/Assets/matPMFloatingCrystal.mat").WaitForCompletion();
+            meridianDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/meridian/Assets/matPMTerrainPlayZone.mat").WaitForCompletion();
+            meridianDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/meridian/Assets/matPMShrineStoneBell.mat").WaitForCompletion();
+            meridianStormCloudMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/meridian/Assets/matPMStormCloud.mat").WaitForCompletion();
+
+            reformedAltarTempleMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lemuriantemple/Assets/matLTFloor.mat").WaitForCompletion();
+
+            helminthTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/helminthroost/Assets/matHRTerrain.mat").WaitForCompletion();
+            //helminthTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/helminthroost/Assets/matHRTerrainOuter.mat").WaitForCompletion();
+            helminthDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/helminthroost/Assets/matHRRocks.mat").WaitForCompletion();
+            helminthDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/helminthroost/Assets/matHRWalls.mat").WaitForCompletion();
+            helminthDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/helminthroost/Assets/matHRTerrainLava.mat").WaitForCompletion();
+            helminthGrassMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/helminthroost/Assets/matHRFireGrass.mat").WaitForCompletion();
+            helminthObsidianMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/helminthroost/Assets/matHRObsidian.mat").WaitForCompletion();
+            // helminthGrassMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/helminthroost/Assets/matHRFireBlossom.mat").WaitForCompletion();
             /*
             overgrowthTerrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itancientloft/matAncientLoft_TempleProjectedInfiniteTower.mat").WaitForCompletion());
             overgrowthTerrainMat.color = new Color(0.701f, 0.623f, 0.403f, 1);
@@ -204,6 +242,8 @@ namespace StageAesthetic
             verdantDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLRocks.mat").WaitForCompletion();
             verdantDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLShip.mat").WaitForCompletion();
             verdantDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLGVine.mat").WaitForCompletion();
+            verdantGrassMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/MatTLGrassSparseGreen.mat").WaitForCompletion();
+            verdantBlueGrassMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLGrassSparseBlue.mat").WaitForCompletion();
             // Distant Roost (Void)
 
             distantRoostVoidTerrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrain.mat").WaitForCompletion());

@@ -10,8 +10,8 @@ namespace StageAesthetic.Variants.Stage3
         public static void Sunset(RampFog fog, ColorGrading cgrade)
         {
             fog.fogColorStart.value = new Color32(86, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(82, 18, 44, 60);
-            fog.fogColorEnd.value = new Color32(143, 74, 91, 160);
+            fog.fogColorMid.value = new Color32(82, 18, 44, 120);
+            fog.fogColorEnd.value = new Color32(143, 74, 91, 255);
             fog.skyboxStrength.value = 0.1f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
