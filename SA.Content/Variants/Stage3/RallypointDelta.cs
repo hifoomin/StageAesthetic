@@ -18,13 +18,13 @@ namespace StageAesthetic.Variants.Stage3
         public static void Overcast(RampFog fog, PostProcessVolume volume)
         {
             fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 1);
-            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.4f);
+            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
             fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
-            fog.fogPower.value = 0.5f;
+            fog.fogPower.value = 1.5f;
             fog.fogZero.value = -0.02f;
             fog.fogOne.value = 0.025f;
-            fog.skyboxStrength.value = 0.03f;
-            fog.fogIntensity.value = 0.88f;
+            fog.skyboxStrength.value = 0f;
+            fog.fogIntensity.value = 1f;
 
             var sun = GameObject.Find("Directional Light (SUN)");
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();

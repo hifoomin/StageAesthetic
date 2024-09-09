@@ -963,6 +963,38 @@ namespace StageAesthetic
 
                         break;
 
+                    case "helminthroost":
+
+                        #region HelminthHatchery
+
+                        int helminthHatcheryCounter = rng.RangeInt(0, helminthHatcheryList.Count);
+
+                        if (helminthHatcheryList.Count > 1 && helminthHatcheryCounter == helminthHatcheryVariant)
+                            helminthHatcheryCounter = (helminthHatcheryCounter + 1) % helminthHatcheryList.Count;
+
+                        string[] helminthHatcheryArray = helminthHatcheryList.ToArray();
+                        string selectedHelminthHatcheryVariant = helminthHatcheryArray[helminthHatcheryCounter];
+                        if (selectedHelminthHatcheryVariant == "Vanilla")
+                        {
+                            if (HelminthHatcheryVanillaChanges.Value)
+                                HelminthHatchery.VanillaChanges(rampFog);
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                        {
+                            switch (selectedHelminthHatcheryVariant)
+                            {
+                                case "Lunar":
+                                    HelminthHatchery.Lunar(rampFog);
+                                    break;
+                            }
+                        }
+                        currentVariantName = selectedHelminthHatcheryVariant;
+                        helminthHatcheryVariant = helminthHatcheryCounter;
+
+                        #endregion HelminthHatchery
+
+                        break;
                     case "skymeadow":
 
                         #region SkyMeadow
@@ -1144,6 +1176,7 @@ namespace StageAesthetic
         public static int sunderedGroveVariant = -1;
 
         public static int skyMeadowVariant = -1;
+        public static int helminthHatcheryVariant = -1;
         public static int slumberingSatelliteVariant = -1;
 
         public static int commencementVariant = -1;
@@ -1186,6 +1219,7 @@ namespace StageAesthetic
         public static List<string> sunderedGroveList = new();
 
         public static List<string> skyMeadowList = new();
+        public static List<string> helminthHatcheryList = new();
         public static List<string> slumberingSatelliteList = new();
 
         public static List<string> commencementList = new();

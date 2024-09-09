@@ -9,7 +9,7 @@ namespace StageAesthetic
 {
     public class Skybox
     {
-        private static readonly PostProcessProfile ppPlains = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneGolemplainsFoggy.asset").WaitForCompletion();
+        private static readonly PostProcessProfile ppHelminth = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/DLC2/helminthroost/ppSceneHelminth.asset").WaitForCompletion();
         private static readonly PostProcessProfile ppScorched = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneWispGraveyard.asset").WaitForCompletion();
         private static readonly PostProcessProfile ppPlainsRoost = Object.Instantiate(Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneGolemplainsFoggy.asset").WaitForCompletion());
         private static readonly PostProcessProfile ppSunset = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneWispGraveyard.asset").WaitForCompletion();
@@ -26,15 +26,18 @@ namespace StageAesthetic
         public static void SunnyDistantRoostSky()
         {
             GameObject skybox = Object.Instantiate(planetariumSkybox, Vector3.zero, Quaternion.identity);
-            skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppPlainsRoost;
+            PostProcessProfile ppProfile = Object.Instantiate(ppPlainsRoost);
+            RampFog fog = ppProfile.GetSetting<RampFog>();
+            fog.fogColorStart.value = new Color32(53, 66, 82, 18);
+            fog.fogColorMid.value = new Color32(103, 67, 64, 154);
+            fog.fogColorEnd.value = new Color32(146, 176, 255, 255);
+            fog.fogOne.value = 0.2f;
+            fog.fogZero.value = -0.05f;
+            skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppProfile;
             SetAmbientLight ambLight = skybox.transform.GetChild(0).GetComponent<SetAmbientLight>();
             ambLight.skyboxMaterial = spaceSkyboxMat;
-            ambLight.ambientIntensity = 1f;
+            ambLight.ambientIntensity = 0.75f;
             ambLight.ApplyLighting();
-
-            var pp = skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
-            pp.fogColorEnd.value = new Color32(125, 118, 108, 178);
-            pp.skyboxStrength.value = 0f;
 
             skybox.transform.GetChild(1).gameObject.SetActive(false);
             skybox.transform.GetChild(4).GetChild(0).GetChild(2).gameObject.SetActive(false);

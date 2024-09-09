@@ -179,6 +179,11 @@ namespace StageAesthetic.Config
         public static ConfigEntry<bool> SkyMeadowTitanic { get; set; }
         public static ConfigEntry<bool> SkyMeadowAbandoned { get; set; }
 
+        // Helminth Hatchery
+        public static ConfigEntry<bool> HelminthHatcheryVanilla { get; set; }
+        public static ConfigEntry<bool> HelminthHatcheryVanillaChanges { get; set; }
+        public static ConfigEntry<bool> HelminthHatcheryLunar { get; set; }
+
         // Satellite
         public static ConfigEntry<bool> SlumberingSatelliteVanilla { get; set; }
 
@@ -341,6 +346,10 @@ namespace StageAesthetic.Config
 
             SkyMeadowChanges = SAConfig.Bind("Stages ::::: Sky Meadow", "Alter Sky Meadow (Vanilla)?", true, "Makes the sun a slightly more intense yellow-orange.");
 
+            HelminthHatcheryVanilla = SAConfig.Bind("Stages ::::: Helminth Hatchery", "Enable Helminth Hatchery (Vanilla)?", true, "Disabling removes vanilla from getting picked.");
+            HelminthHatcheryVanillaChanges = SAConfig.Bind("Stages ::::: Helminth Hatchery", "Alter Helminth Hatchery (Vanilla)?", true, "Removes smoke from screen and brightens up the map.");
+            HelminthHatcheryLunar = SAConfig.Bind("Stages ::::: Helminth Hatchery", "Enable Helminth Hatchery (Lunar)?", true, "Bleu and ashy terrain.");
+
             SlumberingSatelliteVanilla = SAConfig.Bind("Stages ::::: Slumbering Satellite", "Enable Slumbering Satellite (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             SlumberingSatelliteMorning = SAConfig.Bind("Stages ::::: Slumbering Satellite", "Enable Slumbering Satellite (Morning)?", true, "Blue and yellow.");
             SlumberingSatelliteOvercast = SAConfig.Bind("Stages ::::: Slumbering Satellite", "Enable Slumbering Satellite (Overcast)?", true, "Rainy with more fog.");
@@ -446,6 +455,7 @@ namespace StageAesthetic.Config
 
             skyMeadowList = new();
             slumberingSatelliteList = new();
+            helminthHatcheryList = new();
 
             commencementList = new();
             voidLocusList = new();
@@ -642,6 +652,9 @@ namespace StageAesthetic.Config
             }
 
             //
+
+            if (HelminthHatcheryVanilla.Value) helminthHatcheryList.Add("Vanilla");
+            if (HelminthHatcheryLunar.Value) helminthHatcheryList.Add("Lunar");
 
             if (SkyMeadowVanilla.Value) skyMeadowList.Add("Vanilla");
             if (SkyMeadowNight.Value) skyMeadowList.Add("Night");

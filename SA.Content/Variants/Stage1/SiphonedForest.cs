@@ -49,19 +49,32 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Crimson(RampFog fog, ColorGrading cgrade)
         {
+            /*
+      // fog end 0.3208 0.1234 0.1044 1
+      // fog mid 0.5176 0.3338 0.2706 0.4471
+      // fog start 0.7453 0.3527 0.2988 0
             fog.fogColorStart.value = new Color32(140, 70, 70, 0);
             fog.fogColorMid.value = new Color32(120, 50, 40, 75);
             fog.fogColorEnd.value = new Color32(90, 35, 46, 150);
+            */
+            fog.fogColorStart.value = new Color(0.7453f, 0.3527f, 0.2988f, 0);
+            fog.fogColorMid.value = new Color(0.6176f, 0.3338f, 0.2706f, 0.4471f);
+            fog.fogColorEnd.value = new Color(0.4208f, 0.1234f, 0.1044f, 0.75f);
             fog.SetAllOverridesTo(true);
             fog.skyboxStrength.value = 0.01f;
+            fog.fogPower.value = 1f;
+            fog.fogOne.value = 0.2f;
+            fog.fogZero.value = -0.02f;
+            /*
             fog.fogPower.value = 0.35f;
             fog.fogOne.value = 0.108f;
             fog.fogZero.value = -0.007f;
+            */
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             var aurora = GameObject.Find("mdlSnowyForestAurora");
 
             aurora.SetActive(false);
-            sunLight.color = new Color32(200, 150, 150, 255);
+            sunLight.color = new Color32(200, 175, 150, 255);
             sunLight.intensity = 2f;
             sunLight.shadowStrength = 0.5f;
             sunLight.transform.eulerAngles = new Vector3(55f, 0f, 0f);
@@ -152,150 +165,104 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void DesolateMaterials()
         {
-            var normal = Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/texNormalBumpyRock.jpg").WaitForCompletion();
-            var side = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texRockSide.png");
-            var top = Main.stageaesthetic.LoadAsset<Texture2D>("Assets/StageAesthetic/Materials/texRockTop.png");
+            var terrainMat = Main.siphonedDesolateTerrainMat;
+            var detailMat = Main.siphonedDesolateDetailMat;
+            var detailMat2 = Main.siphonedDesolateDetailMat2;
+            var water = Main.siphonedDesolateWaterMat;
+            var detailMat4 = Main.siphonedDesolateDetailMat4;
+            var detailMat5 = Main.siphonedDesolateDetailMat5;
+            var detailMat6 = Main.siphonedDesolateDetailMat6;
 
-            var terrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/blackbeach/matBbTerrain.mat").WaitForCompletion());
-            terrainMat.color = new Color32(174, 153, 129, 255);
-            terrainMat.SetFloat("_RedChannelSmoothness", 0.5063887f);
-            terrainMat.SetFloat("_RedChannelBias", 1.2f);
-            terrainMat.SetFloat("_RedChannelSpecularExponent", 20f);
-            terrainMat.SetTexture("_RedChannelSideTex", side);
-            terrainMat.SetTexture("_RedChannelTopTex", top);
-
-            terrainMat.SetFloat("_GreenChannelBias", 1.87f);
-            terrainMat.SetFloat("_GreenChannelSpecularStrength", 0f);
-            terrainMat.SetFloat("_GreenChannelSpecularExponent", 20f);
-            terrainMat.SetFloat("_GreenChannelSmoothnes", 0.4169469f);
-
-            terrainMat.SetFloat("_BlueChannelBias", 1.3f);
-            terrainMat.SetFloat("_BlueChannelSmoothness", 0.3059852f);
-
-            terrainMat.SetFloat("_TextureFactor", 0.06f);
-            terrainMat.SetFloat("_NormalStrength", 0.3f);
-
-            terrainMat.SetFloat("_Depth", 0.1f);
-            terrainMat.SetInt("_RampInfo", 5);
-            terrainMat.SetTexture("_NormalTex", normal);
-
-            var detailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/blackbeach/matBbBoulder.mat").WaitForCompletion();
-            var detailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Temple.mat").WaitForCompletion());
-            detailMat2.color = new Color32(18, 79, 40, 255);
-            var water = Addressables.LoadAssetAsync<Material>("RoR2/Base/moon/matMoonWaterBridge.mat").WaitForCompletion();
-            var detailMat4 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTree.mat").WaitForCompletion());
-            detailMat4.color = new Color32(205, 104, 12, 255);
-            detailMat4.SetFloat("_Depth", 0.714f);
-            detailMat4.SetFloat("_NormalStrength", 0.25f);
-            detailMat4.SetFloat("_RedChannelBias", 0.17f);
-            detailMat4.SetFloat("_RedChannelSpecularStrength", 0.0338f);
-            detailMat4.SetFloat("_GreenChannelBias", 0f);
-            detailMat4.SetTextureScale("_NormalTex", new Vector2(0.3f, 0.3f));
-            var detailMat5 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTree.mat").WaitForCompletion());
-            detailMat5.color = new Color32(255, 255, 255, 255);
-            var detailMat6 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Captain/matCaptainSupplyDropEquipmentRestock.mat").WaitForCompletion());
-            detailMat6.color = new Color32(80, 162, 90, 255);
-
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + terrainMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat2);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + water);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat4);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat5);
-            SwapVariants.SALogger.LogInfo("Initializing material, if this is null then guhhh... " + detailMat6);
-
-            if (terrainMat && detailMat && detailMat2 && water && detailMat4 && detailMat5 && detailMat6)
+            var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+            var particleList = Object.FindObjectsOfType(typeof(ParticleSystem)) as ParticleSystem[];
+            var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
+            foreach (Light light in lightList)
             {
-                var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
-                var particleList = Object.FindObjectsOfType(typeof(ParticleSystem)) as ParticleSystem[];
-                var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
-                foreach (Light light in lightList)
+                var lightBase = light.gameObject;
+                if (lightBase && !lightBase.name.Contains("Directional Light (SUN)"))
                 {
-                    var lightBase = light.gameObject;
-                    if (lightBase && !lightBase.name.Contains("Directional Light (SUN)"))
+                    light.color = new Color32(53, 56, 148, 255);
+                    light.intensity = 5f;
+                    light.range = 120f;
+                    var flickerLight = light.GetComponent<FlickerLight>();
+                    if (flickerLight)
+                        flickerLight.enabled = false;
+                }
+            }
+            foreach (ParticleSystem ps in particleList)
+            {
+                var particleBase = ps.gameObject;
+                if (particleBase)
+                {
+                    if (particleBase.name.Contains("Fire") || particleBase.name.Contains("HeatGas"))
                     {
-                        light.color = new Color32(53, 56, 148, 255);
-                        light.intensity = 5f;
-                        light.range = 120f;
-                        var flickerLight = light.GetComponent<FlickerLight>();
-                        if (flickerLight)
-                            flickerLight.enabled = false;
+                        particleBase.SetActive(false);
                     }
                 }
-                foreach (ParticleSystem ps in particleList)
+            }
+            foreach (MeshRenderer mr in meshList)
+            {
+                var meshBase = mr.gameObject;
+                if (meshBase != null)
                 {
-                    var particleBase = ps.gameObject;
-                    if (particleBase)
+                    if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("SnowPile"))
                     {
-                        if (particleBase.name.Contains("Fire") || particleBase.name.Contains("HeatGas"))
+                        if (mr.sharedMaterial)
                         {
-                            particleBase.SetActive(false);
+                            mr.sharedMaterial = terrainMat;
                         }
                     }
-                }
-                foreach (MeshRenderer mr in meshList)
-                {
-                    var meshBase = mr.gameObject;
-                    if (meshBase != null)
+                    if (meshBase.name == "SF_GiantTreesTops")
                     {
-                        if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("SnowPile"))
+                        meshBase.gameObject.SetActive(false);
+                    }
+                    if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rock") || meshBase.name.Contains("mdlSFCeilingSpikes"))
+                    {
+                        if (mr.sharedMaterial)
                         {
-                            if (mr.sharedMaterial)
-                            {
-                                mr.sharedMaterial = terrainMat;
-                            }
+                            mr.sharedMaterial = detailMat;
                         }
-                        if (meshBase.name == "meshSnowyForestGiantTreesTops")
+                    }
+                    if (meshBase.name.Contains("RuinGate") || meshBase.name.Contains("SF_Aqueduct") || meshBase.name == "meshSnowyForestFirepitFloor" || meshBase.name.Contains("meshSnowyForestFirepitRing") || meshBase.name.Contains("meshSnowyForestFirepitJar") || (meshBase.name.Contains("meshSnowyForestPot") && meshBase.name != "meshSnowyForestPotSap") || meshBase.name.Contains("mdlSFHangingLantern") || meshBase.name.Contains("mdlSFBrokenLantern") || meshBase.name.Contains("meshSnowyForestCrate"))
+                    {
+                        if (mr.sharedMaterial)
                         {
-                            meshBase.gameObject.SetActive(false);
+                            mr.sharedMaterial = detailMat2;
                         }
-                        if (meshBase.name.Contains("Pebble") || meshBase.name.Contains("Rock") || meshBase.name.Contains("mdlSFCeilingSpikes"))
+                    }
+                    if (meshBase.name.Contains("SF_TreeLog") || meshBase.name.Contains("SF_TreeTrunk") || meshBase.name.Contains("SF_GiantTrees") || meshBase.name.Contains("SF_SurroundingTrees"))
+                    {
+                        if (mr.sharedMaterial)
                         {
-                            if (mr.sharedMaterial)
-                            {
-                                mr.sharedMaterial = detailMat;
-                            }
+                            mr.sharedMaterial = detailMat4;
                         }
-                        if (meshBase.name.Contains("RuinGate") || meshBase.name.Contains("meshSnowyForestAqueduct") || meshBase.name == "meshSnowyForestFirepitFloor" || meshBase.name.Contains("meshSnowyForestFirepitRing") || meshBase.name.Contains("meshSnowyForestFirepitJar") || (meshBase.name.Contains("meshSnowyForestPot") && meshBase.name != "meshSnowyForestPotSap") || meshBase.name.Contains("mdlSFHangingLantern") || meshBase.name.Contains("mdlSFBrokenLantern") || meshBase.name.Contains("meshSnowyForestCrate"))
+                    }
+                    if (meshBase.name.Contains("mdlSnowyForestTreeStump"))
+                    {
+                        if (mr.sharedMaterial)
                         {
-                            if (mr.sharedMaterial)
-                            {
-                                mr.sharedMaterial = detailMat2;
-                            }
+                            mr.sharedMaterial = detailMat5;
+                            mr.sharedMaterials[0] = Main.siphonedDesolateTreeRingMat;
+                            mr.sharedMaterials[1] = detailMat5;
                         }
-                        if (meshBase.name.Contains("meshSnowyForestTreeLog") || meshBase.name.Contains("meshSnowyForestTreeTrunk") || meshBase.name.Contains("meshSnowyForestGiantTrees") || meshBase.name.Contains("meshSnowyForestSurroundingTrees"))
+                    }
+                    if (meshBase.name.Contains("mdlSFHangingLanternRope") || meshBase.name.Contains("mdlSFLanternRope"))
+                    {
+                        if (mr.sharedMaterial)
                         {
-                            if (mr.sharedMaterial)
-                            {
-                                mr.sharedMaterial = detailMat4;
-                            }
+                            mr.sharedMaterial = detailMat6;
                         }
-                        if (meshBase.name.Contains("mdlSnowyForestTreeStump"))
+                    }
+                    if (meshBase.name == "meshSnowyForestFirepitFloor (1)" || meshBase.name.Contains("SF_Sap") || meshBase.name.Contains("goo"))
+                    {
+                        if (mr.sharedMaterial)
                         {
-                            if (mr.sharedMaterial)
-                            {
-                                mr.sharedMaterial = detailMat5;
-                                mr.sharedMaterials[1] = detailMat5;
-                            }
+                            mr.sharedMaterial = water;
                         }
-                        if (meshBase.name.Contains("mdlSFHangingLanternRope") || meshBase.name.Contains("mdlSFLanternRope"))
-                        {
-                            if (mr.sharedMaterial)
-                            {
-                                mr.sharedMaterial = detailMat6;
-                            }
-                        }
-                        if (meshBase.name == "meshSnowyForestFirepitFloor (1)" || meshBase.name.Contains("meshSnowyForestSap") || meshBase.name.Contains("goo"))
-                        {
-                            if (mr.sharedMaterial)
-                            {
-                                mr.sharedMaterial = water;
-                            }
-                        }
-                        if (meshBase.name == "meshSnowyForestPotSap")
-                        {
-                            meshBase.SetActive(false);
-                        }
+                    }
+                    if (meshBase.name == "meshSnowyForestPotSap")
+                    {
+                        meshBase.SetActive(false);
                     }
                 }
             }

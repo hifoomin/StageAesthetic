@@ -98,14 +98,14 @@ namespace StageAesthetic.Variants.Stage1
         public static void Overcast(RampFog fog, string scenename)
         {
             AddRain(RainType.Typhoon);
-            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 1);
-            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.4f);
+            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 0.95f);
+            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
             fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
-            fog.fogPower.value = 0.5f;
+            fog.fogPower.value = 2f;
             fog.fogZero.value = -0.02f;
             fog.fogOne.value = 0.025f;
-            fog.skyboxStrength.value = 0.03f;
-            fog.fogIntensity.value = 0.88f;
+            fog.skyboxStrength.value = 0f;
+            fog.fogIntensity.value = 1f;
 
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(77, 188, 175, 255);
@@ -164,7 +164,7 @@ namespace StageAesthetic.Variants.Stage1
             // cgrade.colorFilter.overrideState = true;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
-            sunLight.intensity = 5f;
+            sunLight.intensity = 3f;
             sunLight.shadowStrength = 0.75f;
             sunLight.transform.eulerAngles = new Vector3(70f, 220f, -9.985f);
             var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
+using R2API;
 
 namespace StageAesthetic
 {
@@ -58,12 +59,14 @@ namespace StageAesthetic
         public static Texture2D siphonedDesolateNormal;
         public static Texture2D siphonedDesolateSide;
         public static Texture2D siphonedDesolateTop;
+        public static Material siphonedDesolateTreeRingMat;
         public static Material siphonedDesolateTerrainMat;
         public static Material siphonedDesolateDetailMat;
         public static Material siphonedDesolateDetailMat2;
         public static Material siphonedDesolateDetailMat3;
         public static Material siphonedDesolateDetailMat4;
         public static Material siphonedDesolateDetailMat5;
+        public static Material siphonedDesolateDetailMat6;
         public static Material siphonedDesolateWaterMat;
 
         public static Material aqueductSunderedTerrainMat;
@@ -160,13 +163,21 @@ namespace StageAesthetic
         public static Material meridianDetailMat3;
         public static Material meridianStormCloudMat;
 
+        public static Material verdantNightWaterMat;
+        public static Material verdantNightWaterfallMat;
+
+        public static Material helminthLavaMat;
+
         public static Material moonRedFlameMat;
         public static Material moonPurpleFlameMat;
 
-        public static bool ForgottenRelicsLoaded = false;
+        public static Material moonTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/moon/matMoonTerrain.mat").WaitForCompletion();
+        public static Material moonDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/moon/matMoonBoulder.mat").WaitForCompletion();
+        public static Material moonDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/moon/matMoonBridge.mat").WaitForCompletion();
+        public static Material moonDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/moon/matMoonBaseStandTriplanar.mat").WaitForCompletion();
+        public static Material blueFireMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matFireStaticBlueLarge.mat").WaitForCompletion();
 
-        public static GameObject helminthFlower = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/helminthroost/Assets/HRFireBlossom.prefab").WaitForCompletion();
-        public static GameObject helminthWeather = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC2/helminthroost/Weather, Helminthroost.prefab").WaitForCompletion();
+        public static bool ForgottenRelicsLoaded = false;
 
         public void Awake()
         {
@@ -210,6 +221,11 @@ namespace StageAesthetic
             Texture2D tlCliffTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC2/lakes/Assets/texTLTerrainCliff.tga").WaitForCompletion();
             Texture2D tlDirtTex = Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC2/lakes/Assets/texTLTerrainDirt.tga").WaitForCompletion();
             Texture2D rockNormal = Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/texNormalBumpyRock.jpg").WaitForCompletion();
+
+            verdantNightWaterMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakesnight/Assets/matTLSlowWaterNight.mat").WaitForCompletion();
+            verdantNightWaterfallMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakesnight/Assets/matTLSlowWaterFallsNight.mat").WaitForCompletion();
+
+            helminthLavaMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/helminthroost/Assets/matHRLava.mat").WaitForCompletion();
 
             meridianTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/meridian/Assets/matPMTerrainDirt.mat").WaitForCompletion();
             meridianDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/meridian/Assets/matPMFloatingCrystal.mat").WaitForCompletion();
@@ -294,6 +310,9 @@ namespace StageAesthetic
             siphonedDesolateTerrainMat.SetTexture("_RedChannelSideTex", siphonedDesolateSide);
             siphonedDesolateTerrainMat.SetTexture("_RedChannelTopTex", siphonedDesolateTop);
 
+            siphonedDesolateTreeRingMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/DLC1/snowyforest/matSFTreering.mat").WaitForCompletion());
+            siphonedDesolateTreeRingMat.SetTexture("_SnowTex", siphonedDesolateTerrainMat.GetTexture("_GreenChannelTex"));
+
             siphonedDesolateTerrainMat.SetFloat("_GreenChannelBias", 1.87f);
             siphonedDesolateTerrainMat.SetFloat("_GreenChannelSpecularStrength", 0f);
             siphonedDesolateTerrainMat.SetFloat("_GreenChannelSpecularExponent", 20f);
@@ -325,7 +344,8 @@ namespace StageAesthetic
             siphonedDesolateDetailMat4.color = new Color32(255, 255, 255, 255);
             siphonedDesolateDetailMat5 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Captain/matCaptainSupplyDropEquipmentRestock.mat").WaitForCompletion());
             siphonedDesolateDetailMat5.color = new Color32(80, 162, 90, 255);
-
+            siphonedDesolateDetailMat6 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Captain/matCaptainSupplyDropEquipmentRestock.mat").WaitForCompletion());
+            siphonedDesolateDetailMat6.color = new Color32(80, 162, 90, 255);
             // Abandoned Aqueduct (Sundered)
 
             aqueductSunderedTerrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTerrain2.mat").WaitForCompletion());
