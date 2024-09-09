@@ -67,6 +67,11 @@ namespace StageAesthetic.Config
         public static ConfigEntry<bool> ShatteredAbodesSunny { get; set; }
         public static ConfigEntry<bool> ShatteredAbodesAbandoned { get; set; }
 
+        // Verdant
+        public static ConfigEntry<bool> VerdantFallsVanilla { get; set; }
+        public static ConfigEntry<bool> VerdantFallsSunny { get; set; }
+        public static ConfigEntry<bool> VerdantFallsPurple { get; set; }
+
         // Reformed Altar
         public static ConfigEntry<bool> ReformedAltarVanilla { get; set; }
         public static ConfigEntry<bool> ReformedAltarVerdant { get; set; }
@@ -240,6 +245,10 @@ namespace StageAesthetic.Config
             ShatteredAbodesVanilla = SAConfig.Bind("Stages : Shattered Abodes", "Enable Shattered Abodes (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             ShatteredAbodesSunny = SAConfig.Bind("Stages : Shattered Abodes", "Enable Shattered Abodes (Verdant)?", true, "Sunny and bright green.");
             ShatteredAbodesAbandoned = SAConfig.Bind("Stages : Shattered Abodes", "Enable Shattered Abodes (Abandoned)?", true, "Scorching Desert.");
+
+            VerdantFallsVanilla = SAConfig.Bind("Stages : Verdant Falls", "Enable Verdant Falls (Vanilla)?", true, "Disabling removes vanilla from getting picked");
+            VerdantFallsSunny = SAConfig.Bind("Stages : Verdant Falls", "Enable Verdant Falls (Sunny)?", true, "Sunny and bright.");
+            VerdantFallsPurple = SAConfig.Bind("Stages : Verdant Falls", "Enable Verdant Falls (Purple)?", true, "Purple sky with snow.");
 
             ReformedAltarVanilla = SAConfig.Bind("Stages : Reformed Altar", "Enable Reformed Altar (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             ReformedAltarVerdant = SAConfig.Bind("Stages : Reformed Altar", "Enable Reformed Altar (Verdant)?", true, "Sunny and bright green.");
@@ -435,6 +444,7 @@ namespace StageAesthetic.Config
             siphonedForestList = new();
             titanicPlainsList = new();
             shatteredAbodesList = new();
+            verdantFallsList = new();
 
             reformedAltarList = new();
             treebornColonyList = new();
@@ -493,6 +503,10 @@ namespace StageAesthetic.Config
             if (ShatteredAbodesVanilla.Value) shatteredAbodesList.Add("Vanilla");
             if (ShatteredAbodesSunny.Value) shatteredAbodesList.Add("Verdant");
             if (ShatteredAbodesAbandoned.Value) shatteredAbodesList.Add("Abandoned");
+
+            if (VerdantFallsVanilla.Value) verdantFallsList.Add("Vanilla");
+            if (VerdantFallsSunny.Value) verdantFallsList.Add("Sunny");
+            if (VerdantFallsPurple.Value) verdantFallsList.Add("Purple");
 
             if (ReformedAltarVanilla.Value) reformedAltarList.Add("Vanilla");
             if (ReformedAltarVerdant.Value) reformedAltarList.Add("Verdant");

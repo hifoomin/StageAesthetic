@@ -433,7 +433,37 @@ namespace StageAesthetic
 
                         #endregion ReformedAltar
                         break;
+                    case "lakes":
 
+                        #region VerdantFalls
+                        int verdantFallsCounter = rng.RangeInt(0, verdantFallsList.Count);
+
+                        if (verdantFallsList.Count > 1 && verdantFallsCounter == verdantFallsVariant)
+                            verdantFallsCounter = (verdantFallsCounter + 1) % verdantFallsList.Count;
+
+                        string[] verdantFallsArray = verdantFallsList.ToArray();
+                        string selectedverdantFallsVariant = verdantFallsArray[verdantFallsCounter];
+
+                        if (selectedverdantFallsVariant == "Vanilla")
+                        {
+                            currentVariantName = "Vanilla";
+                        }
+                        else
+                            switch (selectedverdantFallsVariant)
+                            {
+                                case "Sunny":
+                                    VerdantFalls.Sunny(rampFog);
+                                    break;
+                                case "Purple":
+                                    VerdantFalls.Purple(rampFog);
+                                    break;
+                            }
+
+                        currentVariantName = selectedverdantFallsVariant;
+                        shatteredAbodesVariant = verdantFallsCounter;
+
+                        #endregion VerdantFalls
+                        break;
                     case "village":
 
                         #region ShatteredAbodes
@@ -1157,6 +1187,7 @@ namespace StageAesthetic
         public static int titanicPlainsVariant = -1;
         public static int titanicPlainsAltVariant = -1;
         public static int shatteredAbodesVariant = -1;
+        public static int verdantFallsVariant = -1;
 
         public static int reformedAltarVariant = -1;
         public static int treebornColonyVariant = -1;
@@ -1200,6 +1231,7 @@ namespace StageAesthetic
         public static List<string> siphonedForestList = new();
         public static List<string> titanicPlainsList = new();
         public static List<string> shatteredAbodesList = new();
+        public static List<string> verdantFallsList = new();
 
         public static List<string> reformedAltarList = new();
         public static List<string> treebornColonyList = new();

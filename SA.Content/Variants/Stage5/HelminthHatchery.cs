@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.Rendering.PostProcessing;
-using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants.Stage5
 {

@@ -244,6 +244,10 @@ namespace StageAesthetic
             GameObject skybox = Object.Instantiate(voidStageSkybox, Vector3.zero, Quaternion.identity);
             switch (sceneName)
             {
+                case "lakes":
+                    skybox.transform.eulerAngles = new Vector3(45, 180, 180);
+                    break;
+
                 case "blackbeach":
                     skybox.transform.eulerAngles = new Vector3(30, 0, 220);
                     break;
