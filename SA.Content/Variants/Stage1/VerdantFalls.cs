@@ -1,12 +1,23 @@
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.Rendering.PostProcessing;
-using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants.Stage1
 {
     internal class VerdantFalls
     {
+
+        public static void Sunny(RampFog fog)
+        {
+            GameObject.Find("Directional Light (SUN)").GetComponent<Light>().color = new Color(0.9333f, 0.8275f, 0.3361f, 1);
+            Skybox.DaySky();
+        }
+
+        public static void Purple(RampFog fog)
+        {
+            Skybox.VoidSky();
+            GameObject.Find("TLTerrainOuterDistant").SetActive(false);
+
+            AddSnow(SnowType.Moderate);
+        }
         /*
         // this gets most of the objects in the map though there's crates and maybe a few minor things that arent covered
         public static void Falls(Material terrainMat, Material detailMat, Material detailMat2, Material detailMat3, Color32 color)

@@ -1,4 +1,5 @@
-﻿using FRCSharp;
+﻿/*
+using FRCSharp;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -158,3 +159,4 @@ namespace StageAesthetic.Variants.Stage5
         }
     }
 }
+*/

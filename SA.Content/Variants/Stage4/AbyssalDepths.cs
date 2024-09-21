@@ -65,6 +65,8 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void Orange(RampFog fog)
         {
+            Skybox.DaySky();
+            /*
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
             fog.fogColorMid.value = new Color32(44, 18, 62, 100);
             fog.fogColorEnd.value = new Color32(61, 74, 123, 150);
@@ -73,9 +75,9 @@ namespace StageAesthetic.Variants.Stage4
             fog.fogIntensity.overrideState = true;
             fog.fogIntensity.value = 1f;
             fog.fogPower.value = 0.75f;
-
+            */
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color(1f, 1f, 0.75f, 1f);
+            sunLight.color = new Color32(77, 188, 175, 255);
             sunLight.intensity = 1f;
             sunLight.transform.eulerAngles = new Vector3(70f, 19.64314f, 9.985f);
             sunLight.shadowStrength = 0.75f;

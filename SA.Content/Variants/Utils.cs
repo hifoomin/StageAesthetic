@@ -370,37 +370,6 @@ namespace StageAesthetic.Variants
             UnityEngine.Object.Instantiate(sand, Vector3.zero, Quaternion.identity);
         }
 
-        public static void PlaySound(SoundType soundType)
-        {
-            if (!WeatherSounds.Value)
-            {
-                return;
-            }
-
-            var soundToPlay = soundType switch
-            {
-                SoundType.DayNature => "Play_SA_birds",
-                SoundType.Rain => "Play_SA_rain",
-                SoundType.Storm => "Play_SA_storm",
-                SoundType.NightNature => "Play_SA_night",
-                SoundType.WaterStream => "Play_SA_water",
-                SoundType.Wind => "Play_SA_wind",
-                _ => "Play_SA_wind"
-            };
-
-            Util.PlaySound(soundToPlay, RoR2Application.instance.GetComponentInChildren<MusicController>().gameObject);
-        }
-
-        public static void StopSounds()
-        {
-            var musicController = RoR2Application.instance.GetComponentInChildren<MusicController>().gameObject;
-            Util.PlaySound("Stop_SA_birds", musicController);
-            Util.PlaySound("Stop_SA_rain", musicController);
-            Util.PlaySound("Stop_SA_storm", musicController);
-            Util.PlaySound("Stop_SA_night", musicController);
-            Util.PlaySound("Stop_SA_water", musicController);
-            Util.PlaySound("Stop_SA_wind", musicController);
-        }
     }
 
     // for compat

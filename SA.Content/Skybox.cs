@@ -9,31 +9,35 @@ namespace StageAesthetic
 {
     public class Skybox
     {
-        private static readonly PostProcessProfile ppPlains = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneGolemplainsFoggy.asset").WaitForCompletion();
-        private static readonly PostProcessProfile ppPlainsRoost = Object.Instantiate(Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneGolemplainsFoggy.asset").WaitForCompletion());
-        private static readonly PostProcessProfile ppSunset = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneWispGraveyard.asset").WaitForCompletion();
-        private static readonly PostProcessProfile ppSick = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/ppSceneMysterySpace.asset").WaitForCompletion();
-        private static readonly Material sunMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Sun.mat").WaitForCompletion();
+        private static readonly PostProcessProfile ppHelminth = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/DLC2/helminthroost/ppSceneHelminth.asset").WaitForCompletion();
+        private static readonly PostProcessProfile ppScorched = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneWispGraveyard.asset").WaitForCompletion();
+        private static readonly PostProcessProfile ppPlainsRoost = Object.Instantiate(Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneGolemplainsFoggy.asset").WaitForCompletion());
+        private static readonly PostProcessProfile ppSunset = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneWispGraveyard.asset").WaitForCompletion();
+        private static readonly PostProcessProfile ppSick = Addressables.LoadAssetAsync<PostProcessProfile>("RoR2/Base/title/PostProcessing/ppSceneMysterySpace.asset").WaitForCompletion();
+        public static readonly Material sunMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/ancientloft/matAncientLoft_Sun.mat").WaitForCompletion();
         private static readonly Material sunsetSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/bazaar/matSkybox4.mat").WaitForCompletion();
         private static readonly Material spaceSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSkyboxSP.mat").WaitForCompletion();
         private static readonly Material spaceStarsMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/eclipseworld/matEclipseStarsSpheres.mat").WaitForCompletion();
         private static readonly GameObject eclipseSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/eclipseworld/Weather, Eclipse.prefab").WaitForCompletion(), "SAEclipseSkybox", false);
         private static readonly GameObject planetariumSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/voidraid/Weather, Void Raid Starry Night Variant.prefab").WaitForCompletion(), "SADaySkybox", false);
         private static readonly GameObject voidStageSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/voidstage/Weather, Void Stage.prefab").WaitForCompletion(), "SAVoidSkybox", false);
-        private static readonly GameObject sun = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/ancientloft/mdlAncientLoft_Terrain.fbx").WaitForCompletion().transform.GetChild(5).GetChild(0).gameObject, "SASun", false);
+        public static readonly GameObject sun = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/ancientloft/mdlAncientLoft_Terrain.fbx").WaitForCompletion().transform.GetChild(5).GetChild(0).gameObject, "SASun", false);
 
         public static void SunnyDistantRoostSky()
         {
             GameObject skybox = Object.Instantiate(planetariumSkybox, Vector3.zero, Quaternion.identity);
-            skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppPlainsRoost;
+            PostProcessProfile ppProfile = Object.Instantiate(ppPlainsRoost);
+            RampFog fog = ppProfile.GetSetting<RampFog>();
+            fog.fogColorStart.value = new Color32(53, 66, 82, 18);
+            fog.fogColorMid.value = new Color32(103, 67, 64, 154);
+            fog.fogColorEnd.value = new Color32(146, 176, 255, 255);
+            fog.fogOne.value = 0.2f;
+            fog.fogZero.value = -0.05f;
+            skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppProfile;
             SetAmbientLight ambLight = skybox.transform.GetChild(0).GetComponent<SetAmbientLight>();
             ambLight.skyboxMaterial = spaceSkyboxMat;
-            ambLight.ambientIntensity = 1f;
+            ambLight.ambientIntensity = 0.75f;
             ambLight.ApplyLighting();
-
-            var pp = skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
-            pp.fogColorEnd.value = new Color32(125, 118, 108, 178);
-            pp.skyboxStrength.value = 0f;
 
             skybox.transform.GetChild(1).gameObject.SetActive(false);
             skybox.transform.GetChild(4).GetChild(0).GetChild(2).gameObject.SetActive(false);
@@ -56,7 +60,17 @@ namespace StageAesthetic
             if (SceneManager.GetActiveScene().name == "snowyforest" || SceneManager.GetActiveScene().name == "foggyswamp" || SceneManager.GetActiveScene().name == "frozenwall" || SceneManager.GetActiveScene().name == "skymeadow")
                 GameObject.Destroy(skybox.transform.GetChild(0).GetComponent<PostProcessVolume>());
             else
-                skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppPlains;
+                skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppPlainsRoost;
+
+            RampFog fog = ppPlainsRoost.GetSetting<RampFog>();
+            fog.fogColorStart.value = new Color32(127, 127, 153, 25);
+            fog.fogColorMid.value = new Color32(0, 106, 145, 150);
+            fog.fogColorEnd.value = new Color32(0, 115, 119, 255);
+            fog.fogZero.value = -0.01f;
+            fog.fogOne.value = 0.15f;
+            fog.fogPower.value = 2f;
+            fog.skyboxStrength.value = 0.1f;
+
             SetAmbientLight ambLight = skybox.transform.GetChild(0).GetComponent<SetAmbientLight>();
             ambLight.skyboxMaterial = spaceSkyboxMat;
             ambLight.ambientIntensity = 1f;
@@ -84,11 +98,7 @@ namespace StageAesthetic
             if (SceneManager.GetActiveScene().name != "ancientloft")
                 sunInstance = Object.Instantiate(sun, skybox.transform);
 
-            if (SceneManager.GetActiveScene().name != "goolake")
-            {
-                //skybox.transform.GetChild(1).GetComponent<Light>().color = new Color(1f, 0f, 0f);
-                GameObject.Destroy(skybox.transform.GetChild(0).GetComponent<PostProcessVolume>());
-            }
+            skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppScorched;
 
             if (SceneManager.GetActiveScene().name == "ancientloft")
                 skybox.transform.GetChild(1).GetComponent<Light>().color = new Color(0.75f, 0.25f, 0.25f);
@@ -159,10 +169,6 @@ namespace StageAesthetic
                     sunInstance.transform.rotation = Quaternion.Euler(0, 80, 0);
                     break;
             }
-            if (sceneName == "goolake")
-            {
-                skybox.transform.GetChild(0).GetComponent<PostProcessVolume>().profile = ppPlains;
-            }
 
             SetAmbientLight ambLight = skybox.transform.GetChild(0).GetComponent<SetAmbientLight>();
             ambLight.skyboxMaterial = sunsetSkyboxMat;
@@ -185,7 +191,7 @@ namespace StageAesthetic
 
             if (sceneName == "dampcavesimple")
             {
-                moonLight.intensity = 1.5f;
+                moonLight.intensity = 1.25f;
             }
             else if (sceneName == "moon2")
             {
@@ -193,10 +199,10 @@ namespace StageAesthetic
             }
             else
             {
-                moonLight.intensity = 1.25f;
+                moonLight.intensity = 1f;
             }
 
-            moonLight.shadowStrength = 0.25f;
+            moonLight.shadowStrength = 0.5f;
 
             newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().profile = ppSick;
 
@@ -211,13 +217,9 @@ namespace StageAesthetic
             {
                 ambLight.ambientIntensity = 1.25f;
             }
-            else if (SceneManager.GetActiveScene().name != "ancientloft" && SceneManager.GetActiveScene().name != "foggyswamp")
-            {
-                ambLight.ambientIntensity = 1f;
-            }
             else
             {
-                ambLight.ambientIntensity = 0.75f;
+                ambLight.ambientIntensity = 1f;
             }
 
             if (sceneName == "frozenwall" || sceneName == "snowyforest" || sceneName == "moon2")
@@ -242,6 +244,10 @@ namespace StageAesthetic
             GameObject skybox = Object.Instantiate(voidStageSkybox, Vector3.zero, Quaternion.identity);
             switch (sceneName)
             {
+                case "lakes":
+                    skybox.transform.eulerAngles = new Vector3(45, 180, 180);
+                    break;
+
                 case "blackbeach":
                     skybox.transform.eulerAngles = new Vector3(30, 0, 220);
                     break;

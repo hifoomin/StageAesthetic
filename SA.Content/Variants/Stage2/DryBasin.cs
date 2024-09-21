@@ -1,4 +1,5 @@
-﻿using FRCSharp;
+﻿/*
+using FRCSharp;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
@@ -106,3 +107,4 @@ namespace StageAesthetic.Variants.Stage2
         }
     }
 }
+*/

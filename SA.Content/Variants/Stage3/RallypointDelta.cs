@@ -3,7 +3,6 @@ using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
-using static UnityEngine.Experimental.TerrainAPI.TerrainUtility;
 using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants.Stage3
@@ -18,24 +17,28 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void Overcast(RampFog fog, PostProcessVolume volume)
         {
-            fog.fogColorStart.value = new Color32(47, 52, 62, 75);
-            fog.fogColorMid.value = new Color32(72, 80, 98, 200);
-            fog.fogColorEnd.value = new Color32(90, 101, 119, 255);
+            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 0.95f);
+            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
+            fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
+            fog.fogPower.value = 2f;
+            fog.fogZero.value = -0.02f;
+            fog.fogOne.value = 0.025f;
             fog.skyboxStrength.value = 0f;
-            fog.fogZero.value = -0.05f;
-            fog.fogPower.value = 0.75f;
-            fog.fogOne.value = 0.2f;
+            fog.fogIntensity.value = 1f;
+
             var sun = GameObject.Find("Directional Light (SUN)");
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
             sun.SetActive(false);
             sun.name = "Shitty Not Working Sun";
+            var water = Main.rpdTitanicWaterMat;
             GameObject.Find("HOLDER: Skybox").transform.Find("Water").localPosition = new Vector3(-1260, -66, 0);
+            GameObject.Find("HOLDER: Skybox").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
             sunLight.color = Color.gray;
             sunLight.intensity = 1.3f;
             sunLight.name = "Directional Light (SUN)";
-            AddRain(RainType.Monsoon);
+
             DisableRallypointSnow();
-            AddSnow(SnowType.Light, 250f);
+            AddSnow(SnowType.Gigachad, 250f);
             var wind = GameObject.Find("WindZone");
             wind.transform.eulerAngles = new Vector3(30, 20, 0);
             var windZone = wind.GetComponent<WindZone>();
@@ -89,9 +92,9 @@ namespace StageAesthetic.Variants.Stage3
         {
             Skybox.SunsetSky();
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(62, 18, 28, 100);
-            fog.fogColorEnd.value = new Color32(160, 74, 61, 150);
-            fog.skyboxStrength.value = 0.35f;
+            fog.fogColorMid.value = new Color32(62, 18, 28, 150);
+            fog.fogColorEnd.value = new Color32(160, 74, 61, 255);
+            fog.skyboxStrength.value = 0.1f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
             fog.fogIntensity.value = 1f;

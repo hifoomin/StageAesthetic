@@ -12,13 +12,14 @@ namespace StageAesthetic.Variants.Stage1
             Skybox.SunsetSky();
 
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(62, 18, 44, 126);
-            fog.fogColorEnd.value = new Color32(123, 74, 61, 200);
+            fog.fogColorMid.value = new Color32(62, 18, 44, 150);
+            fog.fogColorEnd.value = new Color32(123, 74, 61, 255);
             fog.skyboxStrength.value = 0.02f;
-            fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
             fog.fogIntensity.value = 1.1f;
-            fog.fogPower.value = 0.8f;
+            fog.fogPower.value = 0.5f;
+            fog.fogZero.value = -0.02f;
+            fog.fogOne.value = 0.05f;
 
             GameObject weather = GameObject.Find("Weather, Golemplains");
             if (weather)
@@ -28,12 +29,15 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Overcast(RampFog fog, string scenename)
         {
-            fog.fogColorStart.value = new Color32(34, 45, 62, 18);
-            fog.fogColorMid.value = new Color32(72, 84, 103, 165);
-            fog.fogColorEnd.value = new Color32(97, 109, 129, 200);
-            fog.skyboxStrength.value = 0.075f;
-            fog.fogPower.value = 0.35f;
-            fog.fogOne.value = 0.108f;
+            AddRain(RainType.Typhoon);
+            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 0.95f);
+            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
+            fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
+            fog.fogPower.value = 2f;
+            fog.fogZero.value = -0.02f;
+            fog.fogOne.value = 0.025f;
+            fog.skyboxStrength.value = 0f;
+            fog.fogIntensity.value = 1f;
 
             var lightBase = GameObject.Find("Weather, Golemplains").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
@@ -42,7 +46,6 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.intensity = 1.5f;
             sunLight.shadowStrength = 0.7f;
             sunTransform.localEulerAngles = new Vector3(50, 17, 270);
-            AddRain(RainType.Rainstorm);
             if (scenename == "golemplains")
             {
                 GameObject wind = GameObject.Find("WindZone");

@@ -15,7 +15,7 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Sunny(RampFog fog, string scenename, ColorGrading cgrade)
         {
-            Skybox.SunnyDistantRoostSky();
+            Skybox.DaySky();
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(255, 246, 229, 255);
             sunLight.intensity = 1.8f;
@@ -85,7 +85,7 @@ namespace StageAesthetic.Variants.Stage1
                 }
             }
             AddSnow(SnowType.Light, -10f);
-            s.GetChild(19).GetChild(0).localPosition = new Vector3(0, 0, -10);
+            // s.GetChild(19).GetChild(0).localPosition = new Vector3(0, 0, -10); something moved/broke with this
 
             GameObject.Find("HOLDER: Grass").SetActive(false);
             GameObject.Find("FOLIAGE").SetActive(false);
@@ -97,21 +97,23 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Overcast(RampFog fog, string scenename)
         {
-            fog.fogColorStart.value = new Color32(31, 46, 63, 50);
-            fog.fogColorMid.value = new Color(0.205f, 0.269f, 0.288f, 0.76f);
-            fog.fogColorEnd.value = new Color32(71, 82, 88, 255);
-            fog.skyboxStrength.value = 0.02f;
-            fog.fogPower.value = 0.35f;
-            fog.fogIntensity.value = 0.88f;
+            AddRain(RainType.Typhoon);
+            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 0.95f);
+            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
+            fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
+            fog.fogPower.value = 2f;
             fog.fogZero.value = -0.02f;
-            fog.fogOne.value = 0.05f;
+            fog.fogOne.value = 0.025f;
+            fog.skyboxStrength.value = 0f;
+            fog.fogIntensity.value = 1f;
+
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(77, 188, 175, 255);
             sunLight.intensity = 1.7f;
             sunLight.shadowStrength = 0.6f;
             var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
             shadows.NGSS_SHADOWS_RESOLUTION = NGSS_Directional.ShadowMapResolution.UseQualitySettings;
-            Utils.AddRain(Utils.RainType.Monsoon);
+
             GameObject wind = GameObject.Find("WindZone");
             wind.transform.eulerAngles = new Vector3(30, 20, 0);
             var windZone = wind.GetComponent<WindZone>();
@@ -149,20 +151,20 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(99, 27, 63, 72);
-            fog.fogColorMid.value = new Color32(26, 61, 91, 70);
-            fog.fogColorEnd.value = new Color32(68, 27, 27, 155);
+            fog.fogColorStart.value = new Color32(99, 27, 63, 25);
+            fog.fogColorMid.value = new Color32(26, 61, 91, 150);
+            fog.fogColorEnd.value = new Color32(68, 27, 27, 255);
             fog.SetAllOverridesTo(true);
-            fog.skyboxStrength.value = 0f;
+            fog.skyboxStrength.value = 0.1f;
             fog.fogPower.value = 1f;
-            fog.fogIntensity.value = 0.9f;
+            fog.fogIntensity.value = 1f;
             fog.fogZero.value = -0.05f;
-            fog.fogOne.value = 0.27f;
+            fog.fogOne.value = 0.2f;
             //  cgrade.colorFilter.value = new Color32(150, 150, 150, 255);
             // cgrade.colorFilter.overrideState = true;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color(0.75f, 0.75f, 0.75f, 1f);
-            sunLight.intensity = 5f;
+            sunLight.intensity = 3f;
             sunLight.shadowStrength = 0.75f;
             sunLight.transform.eulerAngles = new Vector3(70f, 220f, -9.985f);
             var shadows = sunLight.gameObject.GetComponent<NGSS_Directional>();
@@ -430,8 +432,8 @@ namespace StageAesthetic.Variants.Stage1
             {
                 // GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
                 // GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-                GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = Main.distantRoostVoidTerrainMat;
-                GameObject.Find("GAMEPLAY SPACE").transform.GetChild(7).GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = Main.distantRoostVoidTerrainMat;
+                GameObject.Find("GAMEPLAY SPACE").transform.GetChild(1).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = Main.distantRoostVoidTerrainMat;
+                GameObject.Find("GAMEPLAY SPACE").transform.GetChild(1).GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = Main.distantRoostVoidTerrainMat;
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
                 foreach (MeshRenderer mr in meshList)
                 {
