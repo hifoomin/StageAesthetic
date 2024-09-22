@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="16" SoundBankVersion="150">
+	<RootPaths>
+		<ProjectRoot>../..</ProjectRoot>
+		<SourceFilesRoot>../../.cache/Windows</SourceFilesRoot>
+		<SoundBanksRoot>.</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>.</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<SoundBanks>
+		<SoundBank Id="374568165" Type="User" Language="SFX" Hash="{663AD995-13F9-FE3A-895B-FA69303A587D}">
+			<ShortName>StageAesthetic</ShortName>
+			<Path>StageAesthetic.bnk</Path>
+			<Media>
+				<File Id="76023991" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>wind4.wav</ShortName>
+					<CachePath>SFX/wind4_8E324C96.wem</CachePath>
+				</File>
+				<File Id="168436371" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>water_and_birds2.wav</ShortName>
+					<CachePath>SFX/water_and_birds2_8E324C96.wem</CachePath>
+				</File>
+				<File Id="193792344" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>night2.wav</ShortName>
+					<CachePath>SFX/night2_8E324C96.wem</CachePath>
+				</File>
+				<File Id="243808112" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>wind6.wav</ShortName>
+					<CachePath>SFX/wind6_8E324C96.wem</CachePath>
+				</File>
+				<File Id="300269281" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>wind2.wav</ShortName>
+					<CachePath>SFX/wind2_8E324C96.wem</CachePath>
+				</File>
+				<File Id="335476539" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>rain4.wav</ShortName>
+					<CachePath>SFX/rain4_8E324C96.wem</CachePath>
+				</File>
+				<File Id="369221727" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>rain_and_thunder2.wav</ShortName>
+					<CachePath>SFX/rain_and_thunder2_8E324C96.wem</CachePath>
+				</File>
+				<File Id="382651689" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>rain5.wav</ShortName>
+					<CachePath>SFX/rain5_8E324C96.wem</CachePath>
+				</File>
+				<File Id="444238832" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>water_and_birds1.wav</ShortName>
+					<CachePath>SFX/water_and_birds1_8E324C96.wem</CachePath>
+				</File>
+				<File Id="540370420" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>rain2.wav</ShortName>
+					<CachePath>SFX/rain2_8E324C96.wem</CachePath>
+				</File>
+				<File Id="543654357" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>rain_and_thunder1.wav</ShortName>
+					<CachePath>SFX/rain_and_thunder1_8E324C96.wem</CachePath>
+				</File>
+				<File Id="550118157" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>wind1.wav</ShortName>
+					<CachePath>SFX/wind1_8E324C96.wem</CachePath>
+				</File>
+				<File Id="564543925" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>birds1.wav</ShortName>
+					<CachePath>SFX/birds1_8E324C96.wem</CachePath>
+				</File>
+				<File Id="565687958" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>birds2.wav</ShortName>
+					<CachePath>SFX/birds2_8E324C96.wem</CachePath>
+				</File>
+				<File Id="570772389" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>night1.wav</ShortName>
+					<CachePath>SFX/night1_8E324C96.wem</CachePath>
+				</File>
+				<File Id="591588867" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>night3.wav</ShortName>
+					<CachePath>SFX/night3_8E324C96.wem</CachePath>
+				</File>
+				<File Id="771176943" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>wind5.wav</ShortName>
+					<CachePath>SFX/wind5_8E324C96.wem</CachePath>
+				</File>
+				<File Id="913729343" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>rain1.wav</ShortName>
+					<CachePath>SFX/rain1_8E324C96.wem</CachePath>
+				</File>
+				<File Id="966641449" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>wind3.wav</ShortName>
+					<CachePath>SFX/wind3_8E324C96.wem</CachePath>
+				</File>
+				<File Id="1002080390" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>night4.wav</ShortName>
+					<CachePath>SFX/night4_8E324C96.wem</CachePath>
+				</File>
+			</Media>
+			<Events>
+				<Event Id="1487451575" Name="Play_SA_birds">
+					<MediaRefs>
+						<MediaRef Id="564543925"/>
+						<MediaRef Id="565687958"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2146943997" Name="Play_SA_night">
+					<MediaRefs>
+						<MediaRef Id="193792344"/>
+						<MediaRef Id="570772389"/>
+						<MediaRef Id="591588867"/>
+						<MediaRef Id="1002080390"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="4087129951" Name="Play_SA_rain">
+					<MediaRefs>
+						<MediaRef Id="335476539"/>
+						<MediaRef Id="382651689"/>
+						<MediaRef Id="540370420"/>
+						<MediaRef Id="913729343"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3665780949" Name="Play_SA_thunder">
+					<MediaRefs>
+						<MediaRef Id="369221727"/>
+						<MediaRef Id="543654357"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3790069626" Name="Play_SA_water">
+					<MediaRefs>
+						<MediaRef Id="168436371"/>
+						<MediaRef Id="444238832"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3580787059" Name="Play_SA_wind">
+					<MediaRefs>
+						<MediaRef Id="76023991"/>
+						<MediaRef Id="243808112"/>
+						<MediaRef Id="300269281"/>
+						<MediaRef Id="550118157"/>
+						<MediaRef Id="771176943"/>
+						<MediaRef Id="966641449"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="847941113" Name="Stop_SA_birds">
+					<MediaRefs>
+						<MediaRef Id="564543925"/>
+						<MediaRef Id="565687958"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="1503490387" Name="Stop_SA_night">
+					<MediaRefs>
+						<MediaRef Id="193792344"/>
+						<MediaRef Id="570772389"/>
+						<MediaRef Id="591588867"/>
+						<MediaRef Id="1002080390"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="4031874425" Name="Stop_SA_rain">
+					<MediaRefs>
+						<MediaRef Id="335476539"/>
+						<MediaRef Id="382651689"/>
+						<MediaRef Id="540370420"/>
+						<MediaRef Id="913729343"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="4047644787" Name="Stop_SA_thunder">
+					<MediaRefs>
+						<MediaRef Id="369221727"/>
+						<MediaRef Id="543654357"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="2920506712" Name="Stop_SA_water">
+					<MediaRefs>
+						<MediaRef Id="168436371"/>
+						<MediaRef Id="444238832"/>
+					</MediaRefs>
+				</Event>
+				<Event Id="3458317781" Name="Stop_SA_wind">
+					<MediaRefs>
+						<MediaRef Id="76023991"/>
+						<MediaRef Id="243808112"/>
+						<MediaRef Id="300269281"/>
+						<MediaRef Id="550118157"/>
+						<MediaRef Id="771176943"/>
+						<MediaRef Id="966641449"/>
+					</MediaRefs>
+				</Event>
+			</Events>
+			<GameParameters>
+				<GameParameter Id="3673881719" Name="Volume_SFX"/>
+			</GameParameters>
+		</SoundBank>
+		<SoundBank Id="1355168291" Type="User" Language="SFX" Hash="{7F3A15DD-340D-EF22-59CE-AC32EA50B08A}">
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+			<Plugins>
+				<AudioDevices>
+					<Plugin Id="2317455096" Name="No_Output" LibName="No Output" LibId="11862023"/>
+					<Plugin Id="3859886410" Name="System" LibName="System" LibId="11403271"/>
+				</AudioDevices>
+			</Plugins>
+			<Busses>
+				<Bus Id="3803692087" Name="Master Audio Bus"/>
+			</Busses>
+			<GameParameters>
+				<GameParameter Id="3673881719" Name="Volume_SFX"/>
+			</GameParameters>
+		</SoundBank>
+	</SoundBanks>
+	<FileHash>{924C9D37-AB4D-AB93-D840-05A24C008C26}</FileHash>
+</SoundBanksInfo>
