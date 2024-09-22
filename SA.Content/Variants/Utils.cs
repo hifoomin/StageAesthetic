@@ -34,10 +34,11 @@ namespace StageAesthetic.Variants
         {
             DayNature,
             Rain,
-            Storm,
+            Thunder,
             NightNature,
             WaterStream,
-            Wind
+            Wind,
+            Void
         }
 
         public static GameObject rain = SwapVariants.rain;
@@ -370,6 +371,36 @@ namespace StageAesthetic.Variants
             UnityEngine.Object.Instantiate(sand, Vector3.zero, Quaternion.identity);
         }
 
+        public static void PlaySound(SoundType soundType)
+        {
+            if (!WeatherSounds.Value)
+            {
+                return;
+            }
+            var soundToPlay = soundType switch
+            {
+                SoundType.DayNature => "Play_SA_birds",
+                SoundType.Rain => "Play_SA_rain",
+                SoundType.Thunder => "Play_SA_thunder",
+                SoundType.NightNature => "Play_SA_night",
+                SoundType.WaterStream => "Play_SA_water",
+                SoundType.Wind => "Play_SA_wind",
+                SoundType.Void => "Play_SA_void",
+                _ => "Play_SA_wind"
+            };
+            Util.PlaySound(soundToPlay, RoR2Application.instance.gameObject);
+        }
+
+        public static void StopSounds()
+        {
+            Util.PlaySound("Stop_SA_birds", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_rain", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_thunder", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_night", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_water", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_wind", RoR2Application.instance.gameObject);
+            Util.PlaySound("Stop_SA_void", RoR2Application.instance.gameObject);
+        }
     }
 
     // for compat

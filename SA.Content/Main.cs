@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
-using R2API;
+using RoR2;
 
 namespace StageAesthetic
 {
@@ -489,10 +489,22 @@ namespace StageAesthetic
             if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("PlasmaCore.ForgottenRelics"))
                 ForgottenRelicsLoaded = true;
 
-
             SwapVariants.Initialize();
 
+            On.RoR2.RoR2Content.Init += RoR2Content_Init1;
+
             // SwapVariants.SALogger.LogError("Forgotten Relics Loaded:" + ForgottenRelicsLoaded);
+        }
+
+        private void RoR2Content_Init1(On.RoR2.RoR2Content.orig_Init orig)
+        {
+            orig();
+
+            var path = typeof(Main).Assembly.Location.Replace("StageAesthetic.dll", "");
+            AkSoundEngine.AddBasePath(path);
+
+            AkSoundEngine.LoadBank("InitSA", out _);
+            AkSoundEngine.LoadBank("StageAesthetic", out _);
         }
     }
 }

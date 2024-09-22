@@ -76,13 +76,14 @@ namespace StageAesthetic
                     var menuWind = GameObject.Find("HOLDER: Title Background").transform.Find("FX").Find("WindZone").gameObject.GetComponent<WindZone>();
                     menuWind.windMain = 0.5f;
                     menuWind.windTurbulence = 1;
+                    StopSounds();
+                    PlaySound(SoundType.Wind);
                 }
             }
         }
 
         private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
         {
-
             ChangeProfile(SceneManager.GetActiveScene().name);
             orig(self);
         }
@@ -175,6 +176,8 @@ namespace StageAesthetic
                             if (DistantRoostChanges.Value)
                                 DistantRoost.Vanilla();
                             DistantRoost.VanillaFoliage();
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -182,10 +185,14 @@ namespace StageAesthetic
                             {
                                 case "Sunny":
                                     DistantRoost.Sunny(rampFog, sceneName, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Overcast":
                                     DistantRoost.Overcast(rampFog, sceneName);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 case "Void":
@@ -196,10 +203,14 @@ namespace StageAesthetic
                                     if (cliff2)
                                         GameObject.Destroy(cliff2);
                                     DistantRoost.Void();
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         currentVariantName = selectedDistantRoostVariant;
@@ -225,6 +236,8 @@ namespace StageAesthetic
                             if (DistantRoostChanges.Value)
                                 DistantRoost.Vanilla();
                             DistantRoost.VanillaFoliage();
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -232,22 +245,32 @@ namespace StageAesthetic
                             {
                                 case "Sunny":
                                     DistantRoost.Sunny(rampFog, sceneName, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Overcast":
                                     DistantRoost.Overcast(rampFog, sceneName);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 case "Night":
                                     DistantRoost.Night(rampFog, sceneName, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
                                     break;
 
                                 case "Abyssal":
                                     DistantRoost.Abyssal(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.WaterStream);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         currentVariantName = selectedDistantRoostAltVariant;
@@ -271,6 +294,8 @@ namespace StageAesthetic
                         if (selectedSiphonedForestVariant == "Vanilla")
                         {
                             SiphonedForest.Vanilla();
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -278,26 +303,38 @@ namespace StageAesthetic
                             {
                                 case "Night":
                                     SiphonedForest.Night(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
                                     break;
 
                                 case "Morning":
                                     SiphonedForest.Morning(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Purple":
                                     SiphonedForest.Purple(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 case "Crimson":
                                     SiphonedForest.Crimson(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Rain);
                                     break;
 
                                 case "Desolate":
                                     SiphonedForest.Desolate(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         currentVariantName = selectedSiphonedForestVariant;
@@ -321,8 +358,8 @@ namespace StageAesthetic
                         if (selectedTitanicPlainsVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
-
-
+                            StopSounds();
+                            PlaySound(SoundType.DayNature);
                         }
                         else
                             switch (selectedTitanicPlainsVariant)
@@ -330,27 +367,39 @@ namespace StageAesthetic
                                 case "Nostalgic":
                                     volume.profile = ppNostalgia;
                                     TitanicPlains.Nostalgic(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Sunset":
                                     TitanicPlains.Sunset(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 case "Overcast":
                                     TitanicPlains.Overcast(rampFog, sceneName);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 case "Night":
                                     GameObject.Destroy(volume);
                                     TitanicPlains.Night(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
                                     break;
 
                                 case "Abandoned":
                                     TitanicPlains.Abandoned(rampFog, ppGoolake);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
                             }
                         currentVariantName = selectedTitanicPlainsVariant;
@@ -363,6 +412,7 @@ namespace StageAesthetic
                     case "habitat":
 
                         #region TreebornColony
+
                         int treebornColonyCounter = rng.RangeInt(0, treebornColonyList.Count);
 
                         if (treebornColonyList.Count > 1 && treebornColonyCounter == treebornColonyVariant)
@@ -374,6 +424,8 @@ namespace StageAesthetic
                         if (selectedtreebornColonyVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                         }
                         else
                             switch (selectedtreebornColonyVariant)
@@ -383,16 +435,30 @@ namespace StageAesthetic
                                     amb.ambientSkyColor = new Color(0.88078f, 0.8431f, 0.5373f, 1);
                                     amb.ApplyLighting();
                                     TreebornColony.Sunny(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
+
                                 case "Overcast":
                                     SetAmbientLight amb2 = volume.GetComponent<SetAmbientLight>();
                                     amb2.ambientSkyColor = new Color(0.5373f, 0.6354f, 0.6431f, 1);
                                     amb2.ambientIntensity = 0.61f;
                                     amb2.ApplyLighting();
                                     TreebornColony.Meridian(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
+
                                 case "Night":
                                     TreebornColony.Night();
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
+                                    break;
+
+                                default:
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
                             }
 
@@ -400,11 +466,13 @@ namespace StageAesthetic
                         reformedAltarVariant = treebornColonyCounter;
 
                         #endregion TreebornColony
+
                         break;
 
                     case "lemuriantemple":
 
                         #region ReformedAltar
+
                         int reformedAltarCounter = rng.RangeInt(0, reformedAltarList.Count);
 
                         if (reformedAltarList.Count > 1 && reformedAltarCounter == reformedAltarVariant)
@@ -416,15 +484,28 @@ namespace StageAesthetic
                         if (selectedReformedAltarVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                         }
                         else
                             switch (selectedReformedAltarVariant)
                             {
                                 case "Verdant":
                                     ReformedAltar.Verdant(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
+
                                 case "Helminth":
                                     ReformedAltar.Helminth(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
+                                    break;
+
+                                default:
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
 
@@ -432,10 +513,13 @@ namespace StageAesthetic
                         reformedAltarVariant = reformedAltarCounter;
 
                         #endregion ReformedAltar
+
                         break;
+
                     case "lakes":
 
                         #region VerdantFalls
+
                         int verdantFallsCounter = rng.RangeInt(0, verdantFallsList.Count);
 
                         if (verdantFallsList.Count > 1 && verdantFallsCounter == verdantFallsVariant)
@@ -447,15 +531,28 @@ namespace StageAesthetic
                         if (selectedverdantFallsVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.WaterStream);
                         }
                         else
                             switch (selectedverdantFallsVariant)
                             {
                                 case "Sunny":
                                     VerdantFalls.Sunny(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
+
                                 case "Purple":
                                     VerdantFalls.Purple(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.WaterStream);
+                                    break;
+
+                                default:
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.WaterStream);
                                     break;
                             }
 
@@ -463,10 +560,13 @@ namespace StageAesthetic
                         shatteredAbodesVariant = verdantFallsCounter;
 
                         #endregion VerdantFalls
+
                         break;
+
                     case "village":
 
                         #region ShatteredAbodes
+
                         int shatteredAbodesCounter = rng.RangeInt(0, shatteredAbodesList.Count);
 
                         if (shatteredAbodesList.Count > 1 && shatteredAbodesCounter == shatteredAbodesVariant)
@@ -478,15 +578,28 @@ namespace StageAesthetic
                         if (selectedShatteredAbodesVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                         }
                         else
                             switch (selectedShatteredAbodesVariant)
                             {
                                 case "Verdant":
                                     ShatteredAbodes.Verdant(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
+
                                 case "Abandoned":
                                     ShatteredAbodes.Abandoned(rampFog, ppGoolake);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
+                                    break;
+
+                                default:
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
 
@@ -494,7 +607,9 @@ namespace StageAesthetic
                         shatteredAbodesVariant = shatteredAbodesCounter;
 
                         #endregion ShatteredAbodes
+
                         break;
+
                     case "goolake":
 
                         #region AbandonedAqueduct
@@ -510,8 +625,8 @@ namespace StageAesthetic
                         {
                             if (AbandonedAqueductChanges.Value)
                                 AbandonedAqueduct.VanillaChanges();
-
-
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -519,22 +634,32 @@ namespace StageAesthetic
                             {
                                 case "Dawn":
                                     AbandonedAqueduct.Dawn(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Sunrise":
                                     AbandonedAqueduct.Sunrise(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Night":
                                     AbandonedAqueduct.Night(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
                                     break;
 
                                 case "Sundered":
                                     AbandonedAqueduct.Sundered(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Rain);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         currentVariantName = selectedAbandonedAqueductVariant;
@@ -566,7 +691,8 @@ namespace StageAesthetic
                                 newSun.transform.eulerAngles = new Vector3(275f, 90f, 90f);
                                 newSun.GetComponent<MeshRenderer>().sharedMaterial = Skybox.sunMat;
                             }
-
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -574,10 +700,14 @@ namespace StageAesthetic
                             {
                                 case "Singularity":
                                     AphelianSanctuary.Singularity(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 case "Twilight":
                                     AphelianSanctuary.Twilight(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Sunset":
@@ -590,16 +720,21 @@ namespace StageAesthetic
                                         newSun.transform.eulerAngles = new Vector3(275f, 90f, 90f);
                                         newSun.GetComponent<MeshRenderer>().sharedMaterial = Skybox.sunMat;
                                     }
-
                                     AphelianSanctuary.Sunset(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Abyssal":
                                     AphelianSanctuary.Abyssal(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         currentVariantName = selectedAphelianSanctuaryVariant;
@@ -633,28 +768,40 @@ namespace StageAesthetic
                         if (selectedWetlandAspectVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                         }
                         else
                             switch (selectedWetlandAspectVariant)
                             {
                                 case "Sunset":
                                     WetlandAspect.Sunset(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Morning":
                                     WetlandAspect.Morning(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Night":
                                     WetlandAspect.Night(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Rain);
                                     break;
 
                                 case "Void":
                                     WetlandAspect.Void(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         currentVariantName = selectedWetlandAspectVariant;
@@ -679,28 +826,40 @@ namespace StageAesthetic
                         {
                             RallypointDelta.VanillaChanges();
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                         }
                         else
                             switch (selectedRallypointDeltaVariant)
                             {
                                 case "Night":
                                     RallypointDelta.Night(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
                                     break;
 
                                 case "Overcast":
                                     RallypointDelta.Overcast(rampFog, volume);
+                                    StopSounds();
+                                    PlaySound(SoundType.Rain);
                                     break;
 
                                 case "Sunset":
                                     RallypointDelta.Sunset(rampFog, volume);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 case "Titanic":
                                     RallypointDelta.Titanic(rampFog, colorGrading, volume);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         currentVariantName = selectedRallypointDeltaVariant;
@@ -725,6 +884,8 @@ namespace StageAesthetic
                         {
                             if (ScorchedAcresChanges.Value)
                                 ScorchedAcres.VanillaChanges();
+                            StopSounds();
+                            PlaySound(SoundType.DayNature);
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -732,30 +893,44 @@ namespace StageAesthetic
                             {
                                 case "Sunset":
                                     ScorchedAcres.Sunset(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 case "Night":
                                     ScorchedAcres.Night(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 case "Jade":
                                     ScorchedAcres.Jade(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 case "Sunny Beta":
                                     ScorchedAcres.SunnyBeta(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Crimson Beta":
                                     ScorchedAcres.CrimsonBeta(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
 
                                 case "Twilight":
                                     ScorchedAcres.Twilight(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
                             }
                         currentVariantName = selectedScorchedAcresVariant;
@@ -779,26 +954,34 @@ namespace StageAesthetic
                         {
                             SulfurPools.Vanilla();
                             currentVariantName = "Vanilla";
-
-
+                            StopSounds();
+                            PlaySound(SoundType.WaterStream);
                         }
                         else
                             switch (selectedSulfurPoolsVariant)
                             {
                                 case "Coral":
                                     SulfurPools.Coral(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.WaterStream);
                                     break;
 
                                 case "Hell":
                                     SulfurPools.Hell(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 case "Void":
                                     SulfurPools.Void(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.WaterStream);
                                     break;
                             }
                         currentVariantName = selectedSulfurPoolsVariant;
@@ -822,24 +1005,36 @@ namespace StageAesthetic
                         if (selectedFogboundLagoonVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.WaterStream);
                         }
                         else
                             switch (selectedFogboundLagoonVariant)
                             {
                                 case "Clear":
                                     FogboundLagoon.Clear(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
+                                    PlaySound(SoundType.WaterStream);
                                     break;
 
                                 case "Twilight":
                                     FogboundLagoon.Twilight(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
+                                    PlaySound(SoundType.WaterStream);
                                     break;
 
                                 case "Overcast":
                                     FogboundLagoon.Overcast(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.WaterStream);
                                     break;
                             }
                         currentVariantName = selectedFogboundLagoonVariant;
@@ -864,6 +1059,8 @@ namespace StageAesthetic
                         {
                             if (AbyssalDepthsChanges.Value)
                                 AbyssalDepths.VanillaChanges();
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -876,22 +1073,32 @@ namespace StageAesthetic
                             {
                                 case "Blue":
                                     AbyssalDepths.Blue(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 case "Night":
                                     AbyssalDepths.Night(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
                                     break;
 
                                 case "Orange":
                                     AbyssalDepths.Orange(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
 
                                 case "Coral":
                                     AbyssalDepths.Coral(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         }
@@ -916,28 +1123,40 @@ namespace StageAesthetic
                         if (selectedSirensCallVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                         }
                         else
                             switch (selectedSirensCallVariant)
                             {
                                 case "Night":
                                     SirensCall.Night(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
                                     break;
 
                                 case "Sunny":
                                     SirensCall.Sunny(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Overcast":
                                     SirensCall.Overcast(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 case "Aphelian":
                                     SirensCall.Aphelian(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         currentVariantName = selectedSirensCallVariant;
@@ -962,28 +1181,40 @@ namespace StageAesthetic
                         {
                             SunderedGrove.Vanilla();
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.Wind);
                         }
                         else
                             switch (selectedSunderedGroveVariant)
                             {
                                 case "Jade":
                                     SunderedGrove.Jade(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 case "Sunny":
                                     SunderedGrove.Sunny(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Overcast":
                                     SunderedGrove.Overcast(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 case "Abandoned":
                                     SunderedGrove.Abandoned(rampFog, ppGoolake);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
                             }
                         currentVariantName = selectedSunderedGroveVariant;
@@ -1008,6 +1239,8 @@ namespace StageAesthetic
                         {
                             if (HelminthHatcheryVanillaChanges.Value)
                                 HelminthHatchery.VanillaChanges(rampFog);
+                            StopSounds();
+                            PlaySound(SoundType.Void);
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -1016,6 +1249,14 @@ namespace StageAesthetic
                             {
                                 case "Lunar":
                                     HelminthHatchery.Lunar(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
+                                    break;
+
+                                default:
+                                    SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
                             }
                         }
@@ -1025,6 +1266,7 @@ namespace StageAesthetic
                         #endregion HelminthHatchery
 
                         break;
+
                     case "skymeadow":
 
                         #region SkyMeadow
@@ -1040,6 +1282,8 @@ namespace StageAesthetic
                         {
                             if (SkyMeadowChanges.Value)
                                 SkyMeadow.VanillaChanges();
+                            StopSounds();
+                            PlaySound(SoundType.DayNature);
                             currentVariantName = "Vanilla";
                         }
                         else
@@ -1047,26 +1291,38 @@ namespace StageAesthetic
                             {
                                 case "Night":
                                     SkyMeadow.Night(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
                                     break;
 
                                 case "Overcast":
                                     SkyMeadow.Overcast(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 case "Abyssal":
                                     SkyMeadow.Abyssal(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Rain);
                                     break;
 
                                 case "Titanic":
                                     SkyMeadow.Titanic(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
 
                                 case "Abandoned":
                                     SkyMeadow.Abandoned(rampFog, ppGoolake);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
                                     break;
                             }
                         currentVariantName = selectedSkyMeadowVariant;
@@ -1100,28 +1356,40 @@ namespace StageAesthetic
                         if (selectedCommencementVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.Rain);
                         }
                         else
                             switch (selectedCommencementVariant)
                             {
                                 case "Night":
                                     Commencement.Night(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Thunder);
                                     break;
 
                                 case "Crimson":
                                     Commencement.Crimson(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Rain);
                                     break;
 
                                 case "Corruption":
                                     Commencement.Corruption(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Rain);
                                     break;
 
                                 case "Gray":
                                     Commencement.Gray(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Rain);
                                     break;
                             }
                         currentVariantName = selectedCommencementVariant;
@@ -1145,24 +1413,34 @@ namespace StageAesthetic
                         if (selectedVoidLocusVariant == "Vanilla")
                         {
                             currentVariantName = "Vanilla";
+                            StopSounds();
+                            PlaySound(SoundType.Void);
                         }
                         else
                             switch (selectedVoidLocusVariant)
                             {
                                 case "Twilight":
                                     VoidLocus.Twilight(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
 
                                 case "Pink":
                                     VoidLocus.Pink(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
 
                                 case "Blue":
                                     VoidLocus.Blue(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
                                     break;
                             }
                         currentVariantName = selectedVoidLocusVariant;
@@ -1259,6 +1537,7 @@ namespace StageAesthetic
 
         #endregion VariantContainers
     }
+
     /*
     public class ForgottenRelicsJ
     {
@@ -1283,8 +1562,7 @@ namespace StageAesthetic
                 {
                     if (DryBasinChanges.Value)
                         Variants.Stage2.DryBasin.VanillaChanges();
-                    
-                    
+
                     SwapVariants.currentVariantName = "Vanilla";
                 }
                 else
@@ -1292,26 +1570,22 @@ namespace StageAesthetic
                     {
                         case "Morning":
                             Variants.Stage2.DryBasin.Morning(garbage, rampFog2);
-                            
-                            
+
                             break;
 
                         case "Blue":
                             Variants.Stage2.DryBasin.Blue(garbage, colorGrading, rampFog2);
-                            
-                            
+
                             break;
 
                         case "Overcast":
                             Variants.Stage2.DryBasin.Overcast(garbage, colorGrading, rampFog2);
-                            
-                            
+
                             break;
 
                         default:
                             SwapVariants.SALogger.LogDebug("uwu I messed something up forgive me >w<");
-                            
-                            
+
                             break;
                     }
                 SwapVariants.currentVariantName = selectedDryBasinVariant;
@@ -1339,34 +1613,28 @@ namespace StageAesthetic
                 {
                     Variants.Stage5.SlumberingSatellite.Vanilla();
                     SwapVariants.currentVariantName = "Vanilla";
-                    
-                    
                 }
                 else
                     switch (selectedSlumberingSatelliteVariant)
                     {
                         case "Morning":
                             Variants.Stage5.SlumberingSatellite.Morning(garbage, rampFog2);
-                            
-                            
+
                             break;
 
                         case "Overcast":
                             Variants.Stage5.SlumberingSatellite.Overcast(garbage, rampFog2);
-                            
-                            
+
                             break;
 
                         case "Blue":
                             Variants.Stage5.SlumberingSatellite.Blue(garbage, rampFog2);
-                            
-                            
+
                             break;
 
                         default:
                             SwapVariants.SALogger.LogDebug("uwu I messed something up forgive me >w<");
-                            
-                            
+
                             break;
                     }
                 SwapVariants.currentVariantName = selectedSlumberingSatelliteVariant;
