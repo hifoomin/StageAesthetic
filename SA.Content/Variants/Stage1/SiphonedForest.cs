@@ -65,7 +65,7 @@ namespace StageAesthetic.Variants.Stage1
             var godrays = GameObject.Find("Godrays");
             godrays.SetActive(false);
 
-            DisableSiphonedSnow();
+            DisableSiphonedSnow(); //
             AddSnow(SnowType.Heavy);
             VanillaFoliage();
             */
