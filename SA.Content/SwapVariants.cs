@@ -50,7 +50,7 @@ namespace StageAesthetic
                     var graphicBase = GameObject.Find("HOLDER: Title Background").transform;
                     graphicBase.Find("Terrain").gameObject.SetActive(true);
                     graphicBase.Find("CamDust").gameObject.SetActive(true);
-                    graphicBase.Find("Misc Props").Find("DeadCommando").localPosition = new Vector3(16, -2f, 27);
+                    // graphicBase.Find("Misc Props").Find("DeadCommando").localPosition = new Vector3(16, -2f, 27);
 
                     var menuRain = menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject.GetComponent<ParticleSystem>();
 
@@ -444,7 +444,7 @@ namespace StageAesthetic
                                     amb2.ambientSkyColor = new Color(0.5373f, 0.6354f, 0.6431f, 1);
                                     amb2.ambientIntensity = 0.61f;
                                     amb2.ApplyLighting();
-                                    TreebornColony.Meridian(rampFog);
+                                    TreebornColony.Overcast(rampFog);
                                     StopSounds();
                                     PlaySound(SoundType.Thunder);
                                     break;

@@ -98,26 +98,19 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Morning(RampFog fog, ColorGrading cgrade)
         {
-            GameObject surroundingTrees = GameObject.Find("Treecards");
-            if (surroundingTrees)
-                surroundingTrees.SetActive(false);
-
-            Skybox.DaySky();
-            /*
             fog.fogColorStart.value = new Color32(117, 154, 255, 7);
             fog.fogColorMid.value = new Color32(111, 196, 248, 45);
-            fog.fogColorEnd.value = new Color32(117, 154, 255, 150);
-            fog.skyboxStrength.value = 0.26f;
-            */
+            fog.fogColorEnd.value = new Color32(117, 154, 255, 255);
+            fog.skyboxStrength.value = 0.1f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             var aurora = GameObject.Find("mdlSnowyForestAurora");
 
             aurora.SetActive(false);
-            sunLight.color = new Color32(90, 158, 205, 255);
-            sunLight.intensity = 4f;
+            sunLight.color = new Color32(205, 158, 90, 255);
+            sunLight.intensity = 6f;
             sunLight.shadowStrength = 0.88f;
-            // cgrade.colorFilter.value = new Color32(111, 196, 248, 17);
-            // cgrade.colorFilter.overrideState = true;
+            cgrade.colorFilter.value = new Color32(111, 196, 248, 17);
+            cgrade.colorFilter.overrideState = true;
             sunLight.transform.localEulerAngles = new Vector3(40, 153.0076f, 50f);
 
             DisableSiphonedSnow();

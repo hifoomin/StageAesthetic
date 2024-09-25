@@ -38,7 +38,8 @@ namespace StageAesthetic.Variants.Stage2
 
             Transform base1 = GameObject.Find("HOLDER: Misc Props").transform;
             GameObject.Find("HOLDER: Warning Flags").SetActive(false);
-            base1.Find("Warning Signs").gameObject.SetActive(true);
+            // base1.Find("Warning Signs").gameObject.SetActive(true);
+            // NRE above
             var sun = GameObject.Find("Directional Light (SUN)");
             var newSun = Object.Instantiate(sun).GetComponent<Light>();
             sun.SetActive(false);
@@ -119,6 +120,7 @@ namespace StageAesthetic.Variants.Stage2
             var waterfall = GameObject.Find("HOLDER: GameplaySpace").transform.GetChild(2);
             waterfall.gameObject.SetActive(true);
             waterfall.GetChild(0).gameObject.SetActive(false);
+            // NRE above
             waterfall.GetChild(1).gameObject.SetActive(false);
             waterfall.GetChild(2).gameObject.SetActive(false);
             waterfall.GetChild(3).gameObject.SetActive(false);
