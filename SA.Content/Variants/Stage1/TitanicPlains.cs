@@ -56,10 +56,24 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            Skybox.NightSky();
-            var weather = GameObject.Find("Weather, Golemplains");
-            weather.SetActive(false);
-            Object.Instantiate(rain, Vector3.zero, Quaternion.identity);
+            Skybox.NightSky(0);
+            fog.fogColorStart.value = new Color32(0, 0, 0, 0);
+            fog.fogColorMid.value = new Color32(52, 73, 85, 34);
+            fog.fogColorEnd.value = new Color32(12, 18, 54, 255);
+            fog.skyboxStrength.value = 0.08f;
+            fog.fogZero.value = 0f;
+            fog.fogOne.value = 1f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.06f;
+            cgrade.colorFilter.value = new Color32(180, 184, 255, 255);
+            var lightBase = GameObject.Find("Weather, Golemplains").transform;
+            var sunTransform = lightBase.Find("Directional Light (SUN)");
+            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
+            sunLight.color = new Color32(113, 132, 255, 255);
+            sunLight.intensity = 1.6f;
+            sunLight.shadowStrength = 0.7f;
+            sunTransform.localEulerAngles = new Vector3(38, 270, 97);
+            AddRain(RainType.Drizzle);
             VanillaFoliage();
         }
 
