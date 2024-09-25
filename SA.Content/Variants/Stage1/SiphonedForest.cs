@@ -81,9 +81,9 @@ namespace StageAesthetic.Variants.Stage1
             fog.fogColorMid.value = new Color32(120, 50, 40, 75);
             fog.fogColorEnd.value = new Color32(90, 35, 46, 150);
             */
-            fog.fogColorStart.value = new Color(0.7453f, 0.3527f, 0.2988f, 0);
-            fog.fogColorMid.value = new Color(0.6176f, 0.3338f, 0.2706f, 0.4471f);
-            fog.fogColorEnd.value = new Color(0.4208f, 0.1234f, 0.1044f, 0.75f);
+            fog.fogColorStart.value = new Color32(72, 18, 10, 46);
+            fog.fogColorMid.value = new Color32(134, 0, 1, 131);
+            fog.fogColorEnd.value = new Color32(107, 31, 27, 191);
             fog.SetAllOverridesTo(true);
             fog.skyboxStrength.value = 0.01f;
             fog.fogPower.value = 1f;
