@@ -33,7 +33,30 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            Skybox.NightSky();
+            Skybox.NightSky(0);
+
+            fog.fogColorStart.value = new Color32(112, 125, 166, 50);
+            fog.fogColorMid.value = new Color32(80, 80, 110, 64);
+            fog.fogColorEnd.value = new Color32(42, 42, 72, 249);
+            fog.skyboxStrength.value = 0.3f;
+            fog.fogPower.value = 0.35f;
+            fog.fogOne.value = 0.108f;
+            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            var aurora = GameObject.Find("mdlSnowyForestAurora");
+            aurora.SetActive(false);
+            var godrays = GameObject.Find("Godrays");
+            godrays.SetActive(false);
+            sunLight.color = new Color32(110, 110, 180, 255);
+            sunLight.intensity = 2.5f;
+            sunLight.shadowStrength = 0.5f;
+            cgrade.colorFilter.value = new Color32(110, 110, 140, 25);
+            cgrade.colorFilter.overrideState = true;
+
+            DisableSiphonedSnow();
+            AddSnow(SnowType.Heavy);
+            VanillaFoliage();
+
+            /*
             GameObject surroundingTrees = GameObject.Find("Treecards");
             if (surroundingTrees)
                 surroundingTrees.SetActive(false);
@@ -45,6 +68,7 @@ namespace StageAesthetic.Variants.Stage1
             DisableSiphonedSnow();
             AddSnow(SnowType.Heavy);
             VanillaFoliage();
+            */
         }
 
         public static void Crimson(RampFog fog, ColorGrading cgrade)
@@ -120,38 +144,35 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Desolate(RampFog fog, ColorGrading cgrade)
         {
-            Skybox.SunsetSky();
-            GameObject sunBase = GameObject.Find("Directional Light (SUN)");
-            sunBase.transform.rotation = Quaternion.Euler(40, 0, 211);
-            Light sunLight = sunBase.GetComponent<Light>();
-            sunLight.color = new Color(1f, 0.75f, 0.75f, 1f);
-            sunLight.intensity = 6f;
-            sunLight.shadowStrength = 0.75f;
-            // Quaternion.Euler(40, 0, 211)
-            GameObject surroundingTrees = GameObject.Find("Treecards");
-            if (surroundingTrees)
-                surroundingTrees.SetActive(false);
-            fog.fogColorStart.value = new Color32(66, 66, 66, 0);
-            fog.fogColorMid.value = new Color32(42, 18, 24, 50);
-            fog.fogColorEnd.value = new Color32(140, 74, 61, 120);
-            fog.skyboxStrength.value = 0.5f;
-            fog.fogOne.value = 0.12f;
-            fog.fogIntensity.overrideState = true;
-            fog.fogIntensity.value = 1f;
-            fog.fogPower.value = 0.8f;
+            fog.fogColorStart.value = new Color32(206, 117, 255, 5);
+            fog.fogColorMid.value = new Color32(228, 144, 255, 40);
+            fog.fogColorEnd.value = new Color32(178, 209, 255, 255);
+            fog.fogOne.value = 2.4f;
+            fog.skyboxStrength.value = 0.1f;
+            var shittyNotWorkingSun = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            var sunLight = GameObject.Instantiate(shittyNotWorkingSun.gameObject).GetComponent<Light>();
+            shittyNotWorkingSun.name = "Shitty Not Working Sun";
+            shittyNotWorkingSun.gameObject.SetActive(false);
+            var aurora = GameObject.Find("mdlSnowyForestAurora");
 
-            GameObject aurora = GameObject.Find("mdlSnowyForestAurora");
             aurora.SetActive(false);
-            GameObject foliage = SceneManager.GetActiveScene().GetRootGameObjects()[3];
+            sunLight.color = new Color32(255, 255, 255, 255);
+            sunLight.intensity = 5f;
+            sunLight.shadowStrength = 0.3f;
+            cgrade.colorFilter.value = new Color32(197, 233, 255, 255);
+            cgrade.colorFilter.overrideState = true;
+            sunLight.transform.localEulerAngles = new Vector3(48f, 333.0076f, 230f);
+
+            var foliage = SceneManager.GetActiveScene().GetRootGameObjects()[3];
             if (foliage)
             {
-                Transform icicles = foliage.transform.GetChild(5);
+                var icicles = foliage.transform.GetChild(5);
 
                 icicles.gameObject.SetActive(false);
             }
 
             DisableSiphonedSnow();
-            AddRain(RainType.Typhoon);
+            AddRain(RainType.Rainstorm);
             DesolateFoliage();
             DesolateMaterials();
         }

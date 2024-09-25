@@ -25,6 +25,25 @@ namespace StageAesthetic
         public static void Initialize()
         {
             SetConfig();
+
+            if (!rain)
+            {
+                rain = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Rain.prefab");
+                rain.transform.eulerAngles = new Vector3(90, 0, 0);
+            }
+
+            if (!snow)
+            {
+                snow = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Snow.prefab");
+                snow.transform.eulerAngles = new Vector3(90, 0, 0);
+            }
+
+            if (!sand)
+            {
+                sand = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Sand.prefab");
+                // sand.transform.eulerAngles = new Vector3(90, 0, 0);
+            }
+
             On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
             SceneManager.sceneLoaded += TitleScreen;
             Run.onRunStartGlobal += ApplyConfig;
@@ -90,23 +109,6 @@ namespace StageAesthetic
 
         private static void ChangeProfile(string sceneName)
         {
-            if (!rain)
-            {
-                rain = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Rain.prefab");
-                rain.transform.eulerAngles = new Vector3(90, 0, 0);
-            }
-
-            if (!snow)
-            {
-                snow = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Snow.prefab");
-                snow.transform.eulerAngles = new Vector3(90, 0, 0);
-            }
-
-            if (!sand)
-            {
-                sand = Main.stageaesthetic.LoadAsset<GameObject>("Stage Aesthetic Sand.prefab");
-                // sand.transform.eulerAngles = new Vector3(90, 0, 0);
-            }
             Debug.LogWarning("Past the prefab loading");
             ulong seed = Run.instance ? (ulong)(Run.instance.GetStartTimeUtc().Ticks ^ (Run.instance.stageClearCount << 16)) : 0;
             Xoroshiro128Plus rng = new(seed);

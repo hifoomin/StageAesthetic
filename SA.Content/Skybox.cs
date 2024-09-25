@@ -181,10 +181,15 @@ namespace StageAesthetic
             skybox.transform.GetChild(4).GetChild(0).GetChild(1).gameObject.SetActive(false);
         }
 
-        public static void NightSky()
+        public static void NightSky(float fuckOff = 99f)
         {
             var newWeather = Object.Instantiate(eclipseSkybox, Vector3.zero, Quaternion.identity);
             var moonLight = newWeather.transform.GetChild(1).GetComponent<Light>();
+            if (fuckOff < 1f)
+            {
+                newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().weight = fuckOff;
+            }
+
             moonLight.color = new Color(0.8f, 0.8f, 1f, 1f);
 
             var sceneName = SceneManager.GetActiveScene().name;
