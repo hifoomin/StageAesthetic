@@ -386,7 +386,6 @@ namespace StageAesthetic
                                     break;
 
                                 case "Night":
-                                    GameObject.Destroy(volume);
                                     TitanicPlains.Night(rampFog, colorGrading);
                                     StopSounds();
                                     PlaySound(SoundType.NightNature);

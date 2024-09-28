@@ -15,7 +15,15 @@ namespace StageAesthetic.Variants.Stage1
             Skybox.VoidSky();
             GameObject.Find("TLTerrainOuterDistant").SetActive(false);
 
-            AddSnow(SnowType.Moderate);
+            var sun = GameObject.Find("Directional Light (SUN)");
+            var probe = GameObject.Find("Reflection Probe");
+            sun.SetActive(true);
+            probe.SetActive(true);
+            var sunLight = sun.GetComponent<Light>();
+            sunLight.color = new Color32(222, 168, 255, 255);
+            sunLight.intensity = 1f;
+            sunLight.shadowStrength = 0.8f;
+            // AddSnow(SnowType.Moderate);
         }
 
         /*

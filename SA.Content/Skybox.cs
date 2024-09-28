@@ -19,6 +19,7 @@ namespace StageAesthetic
         private static readonly Material spaceSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSkyboxSP.mat").WaitForCompletion();
         private static readonly Material spaceStarsMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/eclipseworld/matEclipseStarsSpheres.mat").WaitForCompletion();
         private static readonly GameObject eclipseSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/eclipseworld/Weather, Eclipse.prefab").WaitForCompletion(), "SAEclipseSkybox", false);
+        private static readonly GameObject noBullshitSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/eclipseworld/Weather, Eclipse.prefab").WaitForCompletion(), "SAEclipseSkybox", false);
         private static readonly GameObject planetariumSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/voidraid/Weather, Void Raid Starry Night Variant.prefab").WaitForCompletion(), "SADaySkybox", false);
         private static readonly GameObject voidStageSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/voidstage/Weather, Void Stage.prefab").WaitForCompletion(), "SAVoidSkybox", false);
         public static readonly GameObject sun = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/ancientloft/mdlAncientLoft_Terrain.fbx").WaitForCompletion().transform.GetChild(5).GetChild(0).gameObject, "SASun", false);
@@ -179,6 +180,16 @@ namespace StageAesthetic
             skybox.transform.GetChild(4).GetChild(0).GetChild(1).GetChild(6).gameObject.SetActive(false);
             skybox.transform.GetChild(4).GetChild(0).GetChild(1).GetChild(11).gameObject.SetActive(false);
             skybox.transform.GetChild(4).GetChild(0).GetChild(1).gameObject.SetActive(false);
+        }
+
+        public static void NightSkyNoBullshit(bool moon = true)
+        {
+            var noBullshit = Object.Instantiate(noBullshitSkybox, Vector3.zero, Quaternion.identity);
+            var trans = noBullshit.transform;
+            trans.GetChild(0).gameObject.SetActive(false);
+            trans.GetChild(1).gameObject.SetActive(false);
+            trans.GetChild(2).gameObject.SetActive(false);
+            trans.GetChild(3).Find("Sphere, Moon").gameObject.SetActive(moon);
         }
 
         public static void NightSky(float fuckOff = 99f)

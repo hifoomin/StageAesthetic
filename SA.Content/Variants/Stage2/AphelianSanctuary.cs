@@ -55,6 +55,7 @@ namespace StageAesthetic.Variants.Stage2
             // var fog2 = GameObject.Find("DeepFog");
             // fog2.SetActive(false);
             VanillaFoliage();
+            GameObject.Find("Passing Cloud").SetActive(false);
         }
 
         public static void Abyssal(RampFog fog, ColorGrading cgrade)

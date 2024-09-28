@@ -47,7 +47,7 @@ namespace StageAesthetic.Variants.Stage1
             RampFog rampFog = ppProfile.GetSetting<RampFog>();
             fog.fogColorStart.value = new Color(0.49f, 0.363f, 0.374f, 0.1f);
             fog.fogColorMid.value = new Color(0.58f, 0.486f, 0.331f, 0.25f);
-            fog.fogColorEnd.value = new Color(0.77f, 0.839f, 0.482f, 0.5f);
+            fog.fogColorEnd.value = new Color32(214, 144, 123, 128);
             fog.fogZero.value = rampFog.fogZero.value;
             fog.fogIntensity.value = rampFog.fogIntensity.value;
             fog.fogPower.value = rampFog.fogPower.value;
@@ -59,7 +59,7 @@ namespace StageAesthetic.Variants.Stage1
             sunLight.intensity = 1.6f;
             sunLight.shadowStrength = 0.7f;
             // 30.512 64.27 209.701
-            AbodesMaterials(Main.plainsAbandonedTerrainMat, Main.plainsAbandonedDetailMat, Main.plainsAbandonedDetailMat2, Main.groveAbandonedDetailMat2);
+            AbodesMaterials(Main.shatteredAbodesAbandonedTerrainMat, Main.plainsAbandonedWaterMat, Main.plainsAbandonedDetailMat2, Main.groveAbandonedDetailMat2);
         }
 
         public static void AbodesMaterials(Material terrainMat, Material detailMat, Material detailMat2, Material detailMat3)

@@ -43,6 +43,9 @@ namespace StageAesthetic
         public static Material distantRoostAbyssalDetailMat2;
         public static Material distantRoostAbyssalWaterMat;
 
+        public static Material shatteredAbodesAbandonedTerrainMat;
+        public static Material shatteredAbodesAbandonedDetailMat;
+
         public static Material plainsAbandonedTerrainMat;
         public static Material plainsAbandonedDetailMat;
         public static Material plainsAbandonedDetailMat2;
@@ -254,10 +257,16 @@ namespace StageAesthetic
             overgrowthDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/itancientloft/matAncientLoft_TempleProjectedInfiniteTower.mat").WaitForCompletion();
             overgrowthDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/rootjungle/matRJTree.mat").WaitForCompletion();
             */
-            verdantTerrainMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLTerrainStone.mat").WaitForCompletion();
+            verdantTerrainMat = new(Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLTerrainStone.mat").WaitForCompletion());
+            verdantTerrainMat.SetFloat("_RedChannelBias", 0.4f);
+            verdantTerrainMat.SetFloat("_GreenChannelBias", -0.2f);
+            verdantTerrainMat.SetFloat("_BlueChannelBias", -0.03f);
             verdantDetailMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLRocks.mat").WaitForCompletion();
             verdantDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLShip.mat").WaitForCompletion();
-            verdantDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLGVine.mat").WaitForCompletion();
+            verdantDetailMat3 = new(Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLGVine.mat").WaitForCompletion())
+            {
+                color = Color.white
+            };
             verdantGrassMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/MatTLGrassSparseGreen.mat").WaitForCompletion();
             verdantBlueGrassMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC2/lakes/Assets/matTLGrassSparseBlue.mat").WaitForCompletion();
             // Distant Roost (Void)
@@ -286,6 +295,24 @@ namespace StageAesthetic
             distantRoostAbyssalWaterMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion());
             distantRoostAbyssalWaterMat.color = new Color32(107, 23, 23, 255);
             distantRoostAbyssalWaterMat.shaderKeywords = new string[] { "_BUMPLARGE_ON", "_DISPLACEMENTMODE_OFF", "_DISPLACEMENT_ON", "_DISTORTIONQUALITY_HIGH", "_EMISSION", "_FOAM_ON", "_NORMALMAP" };
+
+            //
+
+            shatteredAbodesAbandonedTerrainMat = new(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeTerrain.mat").WaitForCompletion())
+            {
+                color = new Color32(230, 223, 174, 125)
+            };
+            shatteredAbodesAbandonedTerrainMat.SetFloat("_NormalStrength", 0.05289926f);
+            shatteredAbodesAbandonedTerrainMat.SetFloat("_Depth", 0.2927182f);
+            shatteredAbodesAbandonedTerrainMat.SetTextureScale("_NormalTex", Vector2.one * 0.2f);
+            shatteredAbodesAbandonedTerrainMat.SetTextureScale("_RedChannelTopTex", Vector2.one);
+            shatteredAbodesAbandonedTerrainMat.SetTextureScale("_RedChannelSideTex", Vector2.one);
+            shatteredAbodesAbandonedTerrainMat.SetTextureScale("_GreenChannelTex", Vector2.one);
+
+            shatteredAbodesAbandonedDetailMat = new(Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrimSandy.mat").WaitForCompletion());
+            shatteredAbodesAbandonedDetailMat.SetTextureScale("_NormalTex", Vector2.one * 2f);
+            shatteredAbodesAbandonedDetailMat.SetTextureScale("_MainTex", Vector2.one * 2f);
+            shatteredAbodesAbandonedDetailMat.SetFloat("_TriplanarTextureFactor", 0.16f);
 
             // Titanic Plains (Abandoned)
 
