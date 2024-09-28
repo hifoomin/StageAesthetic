@@ -9,7 +9,7 @@ namespace StageAesthetic.Variants.Stage1
     {
         public static void Verdant(RampFog fog, ColorGrading cgrade)
         {
-            // Skybox.DaySky(); //
+            // Skybox.DaySky(); // //
 
             fog.fogColorStart.value = new Color32(53, 66, 82, 18);
             fog.fogColorMid.value = new Color32(103, 67, 64, 154);
