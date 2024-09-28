@@ -9,13 +9,16 @@ namespace StageAesthetic.Variants.Stage1
     {
         public static void Verdant(RampFog fog, ColorGrading cgrade)
         {
-            // Skybox.DaySky();
+            // Skybox.DaySky(); //
 
             fog.fogColorStart.value = new Color32(53, 66, 82, 18);
             fog.fogColorMid.value = new Color32(103, 67, 64, 154);
             fog.fogColorEnd.value = new Color32(146, 176, 255, 255);
             fog.fogOne.value = 0.2f;
             fog.fogZero.value = -0.05f;
+            fog.fogIntensity.value = 0.4f;
+            fog.fogPower.value = 0.5f;
+            fog.skyboxStrength.value = 0f;
 
             GameObject rainParticles = GameObject.Find("CAMERA PARTICLES: RainParticles (1)");
             rainParticles.SetActive(false);
