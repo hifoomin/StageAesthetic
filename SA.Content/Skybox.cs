@@ -192,13 +192,17 @@ namespace StageAesthetic
             trans.GetChild(3).Find("Sphere, Moon").gameObject.SetActive(moon);
         }
 
-        public static void NightSky(float fuckOff = 99f)
+        public static void NightSky(bool fuckOffPP = false, bool fuckOffLight = false, float sunLightIntensity = 100f)
         {
             var newWeather = Object.Instantiate(eclipseSkybox, Vector3.zero, Quaternion.identity);
             var moonLight = newWeather.transform.GetChild(1).GetComponent<Light>();
-            if (fuckOff < 1f)
+            if (fuckOffPP)
             {
-                newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().weight = fuckOff;
+                newWeather.transform.GetChild(2).GetComponent<PostProcessVolume>().weight = 0;
+            }
+            if (fuckOffLight)
+            {
+                newWeather.transform.GetChild(1).gameObject.SetActive(false);
             }
 
             moonLight.color = new Color(0.8f, 0.8f, 1f, 1f);
@@ -241,6 +245,11 @@ namespace StageAesthetic
             if (sceneName == "frozenwall" || sceneName == "snowyforest" || sceneName == "moon2")
             {
                 ambLight.ambientIntensity = 0.5f;
+            }
+
+            if (sunLightIntensity <= 5f)
+            {
+                moonLight.intensity = sunLightIntensity;
             }
 
             ambLight.ApplyLighting();

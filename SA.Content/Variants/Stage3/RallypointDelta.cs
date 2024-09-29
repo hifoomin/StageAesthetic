@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
 namespace StageAesthetic.Variants.Stage3
@@ -60,7 +61,9 @@ namespace StageAesthetic.Variants.Stage3
             var sun = GameObject.Find("Directional Light (SUN)");
             sun.name = "Shitty Not Working Sun";
             sun.SetActive(false);
-            Skybox.NightSky();
+            Skybox.NightSky(false, false, 0.4f);
+
+            var lightCurve = new AnimationCurve(new Keyframe(1f, 1f), new Keyframe(1f, 1f));
 
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (Light light in lightList)
@@ -71,16 +74,19 @@ namespace StageAesthetic.Variants.Stage3
                     light.type = LightType.Point;
                     light.shape = LightShape.Cone;
                     light.color = new Color32(233, 233, 190, 255);
-                    light.intensity = 0.25f;
-                    light.range = 65f;
                     if (lightBase.GetComponent<FlickerLight>() != null)
                     {
                         lightBase.GetComponent<FlickerLight>().enabled = false;
                     }
                     if (lightBase.GetComponent<LightIntensityCurve>() != null)
                     {
-                        lightBase.GetComponent<LightIntensityCurve>().enabled = false;
+                        var curve = lightBase.GetComponent<LightIntensityCurve>();
+                        curve.maxIntensity = 5f;
+                        curve.curve = lightCurve;
+                        curve.enabled = false;
                     }
+                    light.intensity = 5f;
+                    light.range = 65f;
                 }
             }
             DisableRallypointSnow();
@@ -139,10 +145,28 @@ namespace StageAesthetic.Variants.Stage3
             }
             GameObject.Find("CAMERA PARTICLES: SnowParticles").SetActive(false);
             GameObject.Find("STATIC PARTICLES: Cave Entrance System").SetActive(false);
-            GameObject.Find("HOLDER: ShippingCenter").transform.GetChild(3).gameObject.SetActive(false);
+            // GameObject.Find("HOLDER: ShippingCenter").transform.GetChild(3).gameObject.SetActive(false);
+            GameObject.Find("HOLDER: Stalactite").SetActive(false);
+            GameObject.Find("HOLDER: Stalagmites").SetActive(false);
 
             var bloom = volume.profile.GetSetting<Bloom>();
             bloom.intensity.value = 0f;
+
+            var yellow = new Color32(255, 185, 0, 255);
+
+            var lights = GameObject.FindObjectsOfType<Light>();
+            foreach (Light light in lights)
+            {
+                if (light.color == yellow)
+                {
+                    if (light.GetComponent<FlickerLight>())
+                    {
+                        light.GetComponent<FlickerLight>().enabled = false;
+                    }
+                    light.range = 100f;
+                    light.intensity = 3f;
+                }
+            }
 
             TitanicMaterials();
         }
@@ -163,28 +187,28 @@ namespace StageAesthetic.Variants.Stage3
                     var meshBase = mr.gameObject;
                     if (meshBase != null)
                     {
-                        if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Snow"))
+                        if (meshBase.name.Contains("Terrain") || meshBase.name.Contains("Snow") || meshBase.name.Contains("FW_FloatingIsland"))
                         {
                             if (mr.sharedMaterial)
                             {
                                 mr.sharedMaterial = terrainMat;
                             }
                         }
-                        if (meshBase.name.Contains("Glacier") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("CavePillar"))
+                        if (meshBase.name.Contains("Glacier") || meshBase.name.Contains("Stalagmite") || meshBase.name.Contains("Boulder") || meshBase.name.Contains("CavePillar") || meshBase.name.Contains("FW_Pillar"))
                         {
                             if (mr.sharedMaterial)
                             {
                                 mr.sharedMaterial = detailMat;
                             }
                         }
-                        if (meshBase.name.Contains("GroundMesh") || meshBase.name.Contains("GroundStairs") || meshBase.name.Contains("VerticalPillar") || meshBase.name.Contains("Human") || meshBase.name.Contains("Barrier"))
+                        if (meshBase.name.Contains("GroundMesh") || meshBase.name.Contains("GroundStairs") || meshBase.name.Contains("VerticalPillar") || meshBase.name.Contains("Human") || meshBase.name.Contains("Barrier") || meshBase.name.Contains("FW_Ground") || meshBase.name.Contains("FW_WaterContainer") || meshBase.name.Contains("FW_Canister") || meshBase.name.Contains("ShippingContainer") || (meshBase.name.Contains("Pillar") && meshBase.transform.parent.name.Contains("VerticalPillarParent")) || meshBase.name.Contains("ArtifactFormulaHolderMesh") || meshBase.name.Contains("FW_Crate"))
                         {
                             if (mr.sharedMaterial)
                             {
                                 mr.sharedMaterial = detailMat2;
                             }
                         }
-                        if (meshBase.name.Contains("HumanChainLink"))
+                        if (meshBase.name.Contains("HumanChainLink") || meshBase.name.Contains("Stalactite"))
                         {
                             meshBase.SetActive(false);
                         }

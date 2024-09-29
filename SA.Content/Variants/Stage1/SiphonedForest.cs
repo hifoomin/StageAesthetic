@@ -33,7 +33,7 @@ namespace StageAesthetic.Variants.Stage1
 
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            Skybox.NightSky(0);
+            Skybox.NightSky(true);
 
             fog.fogColorStart.value = new Color32(112, 125, 166, 50);
             fog.fogColorMid.value = new Color32(80, 80, 110, 64);

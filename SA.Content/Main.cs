@@ -397,16 +397,24 @@ namespace StageAesthetic
 
             // Rallypoint Delta (Titanic)
 
-            rpdTitanicTerrainMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPTerrain.mat").WaitForCompletion());
-            rpdTitanicTerrainMat.color = new Color32(95, 96, 132, 232);
+            rpdTitanicTerrainMat = new(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPTerrain.mat").WaitForCompletion())
+            {
+                color = new Color32(95, 96, 132, 232)
+            };
             rpdTitanicTerrainMat.SetFloat("_Depth", 0.1740239f);
             rpdTitanicTerrainMat.SetFloat("_BlueChannelBias", 0.9805416f);
-            rpdTitanicDetailMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPBoulderMossyProjected.mat").WaitForCompletion());
-            rpdTitanicDetailMat.color = new Color32(76, 90, 115, 78);
+
+            rpdTitanicDetailMat = new(Addressables.LoadAssetAsync<Material>("RoR2/Base/golemplains/matGPBoulderMossyProjected.mat").WaitForCompletion())
+            {
+                color = new Color32(76, 90, 115, 78)
+            };
             rpdTitanicDetailMat.SetFloat("_SpecularStrength", 0.009451796f);
             rpdTitanicDetailMat.SetFloat("_Depth", 0.135765f);
-            rpdTitanicDetailMat2 = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuinsProjectedHuge.mat").WaitForCompletion());
-            rpdTitanicDetailMat2.color = new Color32(209, 171, 29, 198);
+
+            rpdTitanicDetailMat2 = new(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetGoldRuinsProjectedHuge.mat").WaitForCompletion())
+            {
+                color = new Color32(209, 171, 29, 198)
+            };
             rpdTitanicDetailMat2.SetFloat("_NormalStrength", 0.1499685f);
             rpdTitanicDetailMat2.SetFloat("_SpecularStrength", 0.227f);
             rpdTitanicDetailMat2.SetFloat("_SpecularExponent", 5.497946f);
@@ -417,6 +425,7 @@ namespace StageAesthetic
             rpdTitanicDetailMat2.SetFloat("_SnowBias", -0.7378702f);
             rpdTitanicDetailMat2.SetFloat("_Depth", 0.07435415f);
             rpdTitanicDetailMat2.SetFloat("_TriplanarTextureFactor", 0.4f);
+
             rpdTitanicWaterMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/goldshores/matGSWater.mat").WaitForCompletion();
 
             // Sulfur Pools (Void)
