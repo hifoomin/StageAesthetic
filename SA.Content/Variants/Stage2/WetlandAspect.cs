@@ -72,19 +72,19 @@ namespace StageAesthetic.Variants.Stage2
 
             Skybox.NightSky(true, true);
 
-            fog.fogColorStart.value = new Color32(64, 76, 70, 15);
-            fog.fogColorMid.value = new Color32(48, 66, 58, 173);
-            fog.fogColorEnd.value = new Color32(47, 60, 48, 255);
-            fog.skyboxStrength.value = 0.001f;
+            fog.fogColorStart.value = new Color32(64, 65, 76, 15);
+            fog.fogColorMid.value = new Color32(48, 53, 66, 173);
+            fog.fogColorEnd.value = new Color32(30, 30, 58, 255);
+            fog.skyboxStrength.value = 0.1f;
             fog.fogOne.value = 0.25f;
             fog.fogZero.value = -0.02f;
             fog.fogPower.value = 0.9f;
             fog.fogIntensity.value = 0.937f;
             fog.fogOne.value = 0.355f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(109, 182, 185, 255);
-            sunLight.intensity = 0.4f;
-            sunLight.shadowStrength = 0.6f;
+            sunLight.color = new Color32(109, 126, 185, 255);
+            sunLight.intensity = 2f;
+            sunLight.shadowStrength = 0.7f;
             AddRain(RainType.Rainstorm);
 
             var caveOuter = GameObject.Find("HOLDER: Hidden Altar Stuff").transform.Find("Blended").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
