@@ -9,7 +9,7 @@
 	</RootPaths>
 	<DialogueEvents/>
 	<SoundBanks>
-		<SoundBank Id="374568165" Type="User" Language="SFX" Hash="{663AD995-13F9-FE3A-895B-FA69303A587D}">
+		<SoundBank Id="374568165" Type="User" Language="SFX" Hash="{5DC0AD3A-F76F-2FEF-0D32-FD4F254DE3AC}">
 			<ShortName>StageAesthetic</ShortName>
 			<Path>StageAesthetic.bnk</Path>
 			<Media>
@@ -205,5 +205,5 @@
 			</GameParameters>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{924C9D37-AB4D-AB93-D840-05A24C008C26}</FileHash>
+	<FileHash>{8D2F7F12-1D3D-F691-E81F-4CA538B6EAA2}</FileHash>
 </SoundBanksInfo>

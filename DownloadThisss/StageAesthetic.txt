@@ -1,0 +1,39 @@
+Event	ID	Name			Wwise Object Path	Notes
+	847941113	Stop_SA_birds			\StageAesthetic\Stop_SA_birds	
+	1487451575	Play_SA_birds			\StageAesthetic\Play_SA_birds	
+	1503490387	Stop_SA_night			\StageAesthetic\Stop_SA_night	
+	2146943997	Play_SA_night			\StageAesthetic\Play_SA_night	
+	2920506712	Stop_SA_water			\StageAesthetic\Stop_SA_water	
+	3458317781	Stop_SA_wind			\StageAesthetic\Stop_SA_wind	
+	3580787059	Play_SA_wind			\StageAesthetic\Play_SA_wind	
+	3665780949	Play_SA_thunder			\StageAesthetic\Play_SA_thunder	
+	3790069626	Play_SA_water			\StageAesthetic\Play_SA_water	
+	4031874425	Stop_SA_rain			\StageAesthetic\Stop_SA_rain	
+	4047644787	Stop_SA_thunder			\StageAesthetic\Stop_SA_thunder	
+	4087129951	Play_SA_rain			\StageAesthetic\Play_SA_rain	
+
+Game Parameter	ID	Name			Wwise Object Path	Notes
+	3673881719	Volume_SFX			\Default Work Unit\Volume_SFX	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	76023991	wind4	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\wind4_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Wind\wind4		1274319
+	168436371	water_and_birds2	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\water_and_birds2_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Water\water_and_birds2		1620146
+	193792344	night2	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\night2_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Night\night2		549339
+	243808112	wind6	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\wind6_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Wind\wind6		692213
+	300269281	wind2	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\wind2_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Wind\wind2		1275492
+	335476539	rain4	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\rain4_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Rain\rain4		15596658
+	369221727	rain_and_thunder2	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\rain_and_thunder2_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Thunder\rain_and_thunder2		1133661
+	382651689	rain5	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\rain5_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Rain\rain5		3279739
+	444238832	water_and_birds1	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\water_and_birds1_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Water\water_and_birds1		3465329
+	540370420	rain2	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\rain2_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Rain\rain2		1514290
+	543654357	rain_and_thunder1	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\rain_and_thunder1_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Thunder\rain_and_thunder1		12357848
+	550118157	wind1	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\wind1_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Wind\wind1		416459
+	564543925	birds1	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\birds1_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Birds\birds1		2951094
+	565687958	birds2	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\birds2_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Birds\birds2		1232902
+	570772389	night1	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\night1_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Night\night1		1395660
+	591588867	night3	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\night3_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Night\night3		606175
+	771176943	wind5	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\wind5_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Wind\wind5		785157
+	913729343	rain1	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\rain1_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Rain\rain1		1563968
+	966641449	wind3	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\wind3_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Wind\wind3		1297389
+	1002080390	night4	C:\users\pseudopulse\Documents\tmp\StageAesthetic\.cache\Windows\SFX\night4_8E324C96.wem		\Actor-Mixer Hierarchy\StageAesthetic\Night\night4		1204632
+
