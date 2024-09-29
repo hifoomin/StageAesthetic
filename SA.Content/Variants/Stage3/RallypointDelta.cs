@@ -18,28 +18,28 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void Overcast(RampFog fog, PostProcessVolume volume)
         {
-            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 0.95f);
-            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
-            fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
-            fog.fogPower.value = 2f;
-            fog.fogZero.value = -0.02f;
-            fog.fogOne.value = 0.025f;
-            fog.skyboxStrength.value = 0f;
-            fog.fogIntensity.value = 1f;
+            fog.fogColorStart.value = new Color32(47, 52, 62, 50);
+            fog.fogColorMid.value = new Color32(72, 80, 98, 165);
+            fog.fogColorEnd.value = new Color32(90, 101, 119, 255);
+            fog.skyboxStrength.value = 0.15f;
+            fog.fogZero.value = -0.05f;
+            fog.fogOne.value = 0.4f;
 
             var sun = GameObject.Find("Directional Light (SUN)");
             var sunLight = Object.Instantiate(GameObject.Find("Directional Light (SUN)")).GetComponent<Light>();
             sun.SetActive(false);
             sun.name = "Shitty Not Working Sun";
-            var water = Main.rpdTitanicWaterMat;
+            sunLight.color = new Color32(177, 205, 232, 255);
+            sunLight.intensity = 0.5f;
             GameObject.Find("HOLDER: Skybox").transform.Find("Water").localPosition = new Vector3(-1260, -66, 0);
-            GameObject.Find("HOLDER: Skybox").transform.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
-            sunLight.color = Color.gray;
+            sunLight.color = new Color32(155, 174, 200, 255);
             sunLight.intensity = 1.3f;
             sunLight.name = "Directional Light (SUN)";
 
+            AddRain(RainType.Monsoon);
             DisableRallypointSnow();
-            AddSnow(SnowType.Gigachad, 250f);
+            AddSnow(SnowType.Light, 250f);
+
             var wind = GameObject.Find("WindZone");
             wind.transform.eulerAngles = new Vector3(30, 20, 0);
             var windZone = wind.GetComponent<WindZone>();
