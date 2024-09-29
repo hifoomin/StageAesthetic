@@ -112,12 +112,10 @@ namespace StageAesthetic.Variants.Stage3
 
         public static void Titanic(RampFog fog, ColorGrading cgrade, PostProcessVolume volume)
         {
-            Skybox.DaySky();
             fog.fogColorStart.value = new Color32(116, 153, 173, 4);
             fog.fogColorMid.value = new Color32(88, 130, 153, 40);
             fog.fogColorEnd.value = new Color32(77, 127, 152, 255);
-            fog.skyboxStrength.value = 0.52f;
-            // 0.75 1 0.6 1
+            fog.skyboxStrength.value = 0f;
             // cgrade.colorFilter.value = new Color32(178, 255, 230, 255);
             // cgrade.colorFilter.overrideState = true;
             var sun = GameObject.Find("Directional Light (SUN)");
@@ -125,8 +123,8 @@ namespace StageAesthetic.Variants.Stage3
             sun.SetActive(false);
             sun.name = "Shitty Not Working Sun";
             sunLight.name = "Directional Light (SUN)";
-            sunLight.color = new Color32(191, 255, 153, 255);
-            sunLight.intensity = 1f;
+            sunLight.color = new Color32(255, 212, 153, 255);
+            sunLight.intensity = 1.4f;
             sunLight.shadowStrength = 0.7f;
             var lightList = Object.FindObjectsOfType(typeof(Light)) as Light[];
             foreach (Light light in lightList)
