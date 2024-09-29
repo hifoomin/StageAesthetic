@@ -16,6 +16,7 @@ namespace StageAesthetic.Variants.Stage2
             fog.fogZero.value = -0.058f;
             fog.fogPower.value = 1.2f;
             fog.fogIntensity.value = 0.937f;
+            fog.skyboxStrength.value = 0.1f;
             cgrade.colorFilter.value = new Color32(240, 213, 248, 255);
             cgrade.colorFilter.overrideState = true;
             fog.skyboxStrength.value = 0.52f;
