@@ -19,7 +19,6 @@ namespace StageAesthetic.Variants.Stage2
             fog.skyboxStrength.value = 0.1f;
             cgrade.colorFilter.value = new Color32(240, 213, 248, 255);
             cgrade.colorFilter.overrideState = true;
-            fog.skyboxStrength.value = 0.52f;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color(0.9f, 0.9f, 1, 1);
             sunLight.intensity = 1.1f;
