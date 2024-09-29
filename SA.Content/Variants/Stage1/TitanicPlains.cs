@@ -98,14 +98,14 @@ namespace StageAesthetic.Variants.Stage1
 
             RampFog rampFog = ppProfile.GetSetting<RampFog>();
 
-            fog.fogColorStart.value = new Color(0.59f, 0.363f, 0.374f, 0f);
-            fog.fogColorMid.value = new Color(0.68f, 0.486f, 0.331f, 0.25f);
-            fog.fogColorEnd.value = new Color(0.87f, 0.839f, 0.482f, 0.5f);
-            fog.fogZero.value = rampFog.fogZero.value;
-            fog.fogIntensity.value = rampFog.fogIntensity.value;
-            fog.fogPower.value = rampFog.fogPower.value;
-            fog.fogOne.value = rampFog.fogOne.value;
-            fog.skyboxStrength.value = 0.01f;
+            fog.fogColorStart.value = new Color32(150, 93, 118, 19);
+            fog.fogColorMid.value = new Color32(173, 126, 84, 199);
+            fog.fogColorEnd.value = new Color32(222, 153, 123, 255);
+            fog.fogZero.value = 0f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 1f;
+            fog.fogOne.value = 0.15f;
+            fog.skyboxStrength.value = 0.08f;
 
             var terrainMat = Main.plainsAbandonedTerrainMat;
             var detailMat = Main.plainsAbandonedDetailMat;
