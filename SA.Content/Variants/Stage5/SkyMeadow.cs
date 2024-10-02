@@ -22,7 +22,7 @@ namespace StageAesthetic.Variants.Stage5
         {
             fog.fogColorStart.value = new Color32(85, 67, 93, 0);
             fog.fogColorMid.value = new Color32(12, 15, 59, 131);
-            fog.fogColorEnd.value = new Color32(18, 3, 45, 200);
+            fog.fogColorEnd.value = new Color32(18, 3, 45, 255);
             fog.fogZero.value = -0.08f;
             fog.fogIntensity.value = 1f;
             fog.fogPower.value = 0.6f;
@@ -42,22 +42,23 @@ namespace StageAesthetic.Variants.Stage5
 
         public static void Overcast(RampFog fog)
         {
-            AddRain(RainType.Typhoon);
-            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 0.95f);
-            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
-            fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
-            fog.fogPower.value = 2f;
+
+            fog.fogColorStart.value = new Color32(98, 94, 76, 0);
+            fog.fogColorMid.value = new Color32(66, 65, 93, 139);
+            fog.fogColorEnd.value = new Color32(72, 79, 95, 255);
             fog.fogZero.value = -0.02f;
-            fog.fogOne.value = 0.025f;
-            fog.skyboxStrength.value = 0f;
             fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.5f;
+            fog.fogOne.value = 0.1f;
+            fog.skyboxStrength.value = 0.1f;
 
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             var sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(77, 188, 175, 255);
+            sunLight.color = new Color32(202, 183, 142, 255);
             sunLight.intensity = 1f;
             sunLight.shadowStrength = 0.6f;
+            AddRain(RainType.Typhoon);
             var wind = GameObject.Find("WindZone");
             wind.transform.eulerAngles = new Vector3(30, 20, 0);
             var windZone = wind.GetComponent<WindZone>();

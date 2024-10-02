@@ -14,9 +14,9 @@ namespace StageAesthetic.Variants.Stage1
         {
             Skybox.VoidSky();
             GameObject.Find("TLTerrainOuterDistant").SetActive(false);
-
-            var sun = GameObject.Find("Directional Light (SUN)");
-            var probe = GameObject.Find("Reflection Probe");
+            GameObject tmp = GameObject.Find("Weather, Lakes");
+            var sun = tmp.transform.Find("Directional Light (SUN)").gameObject;
+            var probe = tmp.transform.Find("Reflection Probe").gameObject;
             sun.SetActive(true);
             probe.SetActive(true);
             var sunLight = sun.GetComponent<Light>();

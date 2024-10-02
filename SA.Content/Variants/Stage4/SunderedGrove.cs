@@ -54,24 +54,24 @@ namespace StageAesthetic.Variants.Stage4
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(77, 188, 175, 255);
-            sunLight.intensity = 1.5f;
-            AddRain(RainType.Typhoon);
-            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 0.95f);
-            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
-            fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
-            fog.fogPower.value = 2f;
-            fog.fogZero.value = -0.02f;
-            fog.fogOne.value = 0.025f;
-            fog.skyboxStrength.value = 0f;
-            fog.fogIntensity.value = 1f;
+            sunLight.color = new Color32(203, 221, 243, 255);
+            sunLight.intensity = 3f;
+
+            fog.fogColorStart.value = new Color32(44, 45, 58, 17);
+            fog.fogColorMid.value = new Color32(46, 50, 60, 132);
+            fog.fogColorEnd.value = new Color32(76, 81, 84, 255);
+            fog.fogZero.value = -0.04f;
+            fog.fogOne.value = 0.095f;
+            fog.skyboxStrength.value = 0.126f;
+            cgrade.colorFilter.value = new Color32(148, 206, 183, 255);
+            cgrade.colorFilter.overrideState = true;
 
             // cgrade.colorFilter.value = new Color32(148, 206, 183, 255);
             //cgrade.colorFilter.overrideState = true;
 
             var rain = lightBase.Find("CameraRelative").gameObject;
             rain.SetActive(false);
-
+            AddRain(RainType.Typhoon);
             VanillaFoliage();
         }
 

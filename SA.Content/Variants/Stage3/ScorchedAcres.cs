@@ -9,15 +9,15 @@ namespace StageAesthetic.Variants.Stage3
     {
         public static void Sunset(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(86, 66, 66, 50);
-            fog.fogColorMid.value = new Color32(82, 18, 44, 120);
-            fog.fogColorEnd.value = new Color32(143, 74, 91, 255);
-            fog.skyboxStrength.value = 0.1f;
-            fog.fogOne.value = 0.12f;
-            fog.fogIntensity.overrideState = true;
-            fog.fogIntensity.value = 0.8f;
-            fog.fogPower.value = 0.4f;
-
+            fog.fogColorStart.value = new Color32(30, 16, 52, 40);
+            fog.fogColorMid.value = new Color32(123, 58, 40, 48);
+            fog.fogColorEnd.value = new Color32(84, 32, 3, 222);
+            fog.skyboxStrength.value = 0.076f;
+            fog.fogZero.value = -0.019f;
+            fog.fogOne.value = 0.211f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.6f;
+            cgrade.colorFilter.value = new Color(1f, 1f, 1f, 0.08f);
             var lightBase = GameObject.Find("Weather, Wispgraveyard").transform;
             if (WeatherEffects.Value)
             {
@@ -25,8 +25,8 @@ namespace StageAesthetic.Variants.Stage3
             }
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color(1f, 0.5f, 0.5f);
-            sunLight.intensity = 1.8f;
+            sunLight.color =  new Color32(255, 149, 128, 255);
+            sunLight.intensity = 2.1f;
             sunLight.shadowStrength = 0.7f;
             sunTransform.localEulerAngles = new Vector3(35f, 198.5f, 218.841f);
             var sunBase = lightBase.Find("CameraRelative").Find("SunHolder").Find("Sphere");
