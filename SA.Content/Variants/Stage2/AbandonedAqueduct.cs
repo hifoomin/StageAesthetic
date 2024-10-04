@@ -29,7 +29,7 @@ namespace StageAesthetic.Variants.Stage2
         {
             fog.fogColorStart.value = new Color32(66, 66, 66, 50);
             fog.fogColorMid.value = new Color32(62, 18, 44, 126);
-            fog.fogColorEnd.value = new Color32(123, 74, 61, 200);
+            fog.fogColorEnd.value = new Color32(123, 74, 61, 255);
             fog.skyboxStrength.value = 0.02f;
             fog.fogOne.value = 0.12f;
             fog.fogIntensity.overrideState = true;
@@ -44,12 +44,11 @@ namespace StageAesthetic.Variants.Stage2
             var newSun = Object.Instantiate(sun).GetComponent<Light>();
             sun.SetActive(false);
             newSun.intensity = 3f;
-            newSun.shadowStrength = 0.5f;
-            newSun.color = new Color32(102, 102, 166, 255);
+            newSun.color = new Color32(113, 45, 21, 255);
             var CaveFog = GameObject.Find("GLUndergroundPPVolume").GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
             CaveFog.fogColorStart.value = new Color32(67, 35, 76, 65);
-            CaveFog.fogColorMid.value = new Color32(41, 17, 51, 125);
-            CaveFog.fogColorEnd.value = new Color32(84, 31, 20, 200);
+            CaveFog.fogColorMid.value = new Color32(41, 17, 51, 165);
+            CaveFog.fogColorEnd.value = new Color32(84, 31, 20, 255);
             LightChanges("dark");
             VanillaFoliage();
             AddSand(SandType.Light);
@@ -113,21 +112,28 @@ namespace StageAesthetic.Variants.Stage2
 
         public static void Sundered(RampFog fog, ColorGrading cgrade)
         {
-            Skybox.VoidSky();
+            fog.fogColorStart.value = new Color32(83, 53, 95, 35);
+            fog.fogColorMid.value = new Color32(91, 61, 117, 75);
+            fog.fogColorEnd.value = new Color32(107, 66, 111, 255);
+            fog.skyboxStrength.value = 0.055f;
+            fog.fogOne.value = 0.082f;
             AddRain(RainType.Drizzle);
-            var weather = GameObject.Find("Weather, Goolake");
-            weather.SetActive(false);
-            var waterfall = GameObject.Find("HOLDER: GameplaySpace").transform.GetChild(2);
+            var sun = GameObject.Find("Directional Light (SUN)");
+            var newSun = Object.Instantiate(sun).GetComponent<Light>();
+            sun.SetActive(false);
+            newSun.intensity = 1.6f;
+            newSun.color = new Color32(134, 193, 216, 255);
+            var waterfall = GameObject.Find("HOLDER: GameplaySpace").transform.Find("mdlGlDam/GL_AqueductPartial/GL_Waterfall").transform;
             waterfall.gameObject.SetActive(true);
-            waterfall.GetChild(0).gameObject.SetActive(false);
-            // NRE above
-            waterfall.GetChild(1).gameObject.SetActive(false);
-            waterfall.GetChild(2).gameObject.SetActive(false);
-            waterfall.GetChild(3).gameObject.SetActive(false);
+            waterfall.GetComponent<MeshRenderer>().enabled = false;
+            waterfall.Find("FoamOverParticles").gameObject.SetActive(false);
+            //waterfall.Find(1).gameObject.SetActive(false);
+            //waterfall.GetChild(2).gameObject.SetActive(false);
+            waterfall.Find("DEBUFF ZONE: Waterfall/PP Goo").gameObject.SetActive(false);
             GameObject.Find("GLUndergroundPPVolume").SetActive(false);
             var caveLight = GameObject.Find("AmbientLight").GetComponent<Light>();
             caveLight.color = new Color32(150, 29, 119, 255);
-            //cgrade.saturation.value = -2f;
+            cgrade.saturation.value = -2f;
             SunderedFoliage();
             SunderedMaterials();
         }

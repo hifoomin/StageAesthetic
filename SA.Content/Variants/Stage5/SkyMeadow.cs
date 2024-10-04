@@ -198,7 +198,7 @@ namespace StageAesthetic.Variants.Stage5
                 GameObject.Find("HOLDER: Terrain").transform.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
                 btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
                 GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                GameObject.Find("Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+                GameObject.Find("SM_Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
                 try { GameObject.Find("Plateau 13 (1)").GetComponent<MeshRenderer>().sharedMaterial = terrainMat; } catch { }
                 // Plateau Tall
 
@@ -375,7 +375,7 @@ namespace StageAesthetic.Variants.Stage5
                 GameObject.Find("HOLDER: Terrain").transform.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
                 btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
                 GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                GameObject.Find("Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+                GameObject.Find("SM_Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
                 try { GameObject.Find("Plateau 13 (1)").GetComponent<MeshRenderer>().sharedMaterial = terrainMat; } catch { }
                 // Plateau Tall
 
@@ -574,7 +574,7 @@ namespace StageAesthetic.Variants.Stage5
                 c.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
                 btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
                 GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                GameObject.Find("Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
+                GameObject.Find("SM_Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
                 try { GameObject.Find("Plateau 13 (1)").GetComponent<MeshRenderer>().sharedMaterial = terrainMat; } catch { }
                 // Plateau Tall
 
