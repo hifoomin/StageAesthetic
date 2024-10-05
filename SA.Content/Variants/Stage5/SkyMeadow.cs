@@ -74,28 +74,28 @@ namespace StageAesthetic.Variants.Stage5
 
         public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
-            // cgrade.SetAllOverridesTo(true);
-            //Scgrade.colorFilter.value = new Color32(181, 178, 219, 255);
-            fog.fogColorStart.value = new Color32(99, 27, 63, 72);
-            fog.fogColorMid.value = new Color32(26, 61, 91, 150);
-            fog.fogColorEnd.value = new Color32(68, 27, 27, 200);
-            fog.SetAllOverridesTo(true);
-            fog.skyboxStrength.value = 0.05f;
-            fog.fogPower.value = 0.75f;
+            cgrade.SetAllOverridesTo(true);
+            cgrade.colorFilter.value = new Color32(79, 79, 103, 255);
+            cgrade.saturation.value = -8f;
+            fog.fogColorStart.value = new Color32(106, 22, 107, 50);
+            fog.fogColorMid.value = new Color32(39, 85, 97, 44);
+            fog.fogColorEnd.value = new Color32(35, 76, 73, 255);
+            fog.fogZero.value = -0.1f;
+            fog.fogOne.value = 0.2f;
             fog.fogIntensity.value = 1f;
-            fog.fogZero.value = -0.05f;
-            fog.fogOne.value = 0.1f;
+            fog.fogPower.value = 0.6f;
+            fog.skyboxStrength.value = 0f;
 
-            AddRain(RainType.Typhoon, true);
+            //AddRain(RainType.Typhoon, true);
 
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var hardFloor = lightBase.GetChild(6);
             hardFloor.gameObject.SetActive(false);
             GameObject.Find("HOLDER: Terrain").transform.GetChild(1).gameObject.SetActive(false);
             var sun = lightBase.GetChild(0).GetComponent<Light>();
-            sun.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            sun.color = new Color32(118, 222, 225, 255);
             sun.intensity = 2f;
-            sun.shadowStrength = 0.6f;
+            sun.shadowStrength = 0.75f;
             lightBase.Find("CameraRelative").Find("SmallStars").gameObject.SetActive(true);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("ShatteredMoonMesh").gameObject.SetActive(false);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("MoonMesh").gameObject.SetActive(true);
@@ -109,7 +109,7 @@ namespace StageAesthetic.Variants.Stage5
             var water = Main.skyMeadowAbyssalWaterMat;
 
             var r = GameObject.Find("HOLDER: Randomization").transform;
-            var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0);
+            var btp = GameObject.Find("PortalDialerEvent").transform.GetChild(0); //Final Zone
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && detailMat4 && detailMat5 && water)
             {
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
@@ -196,7 +196,7 @@ namespace StageAesthetic.Variants.Stage5
                     }
                 }
                 GameObject.Find("HOLDER: Terrain").transform.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
-                btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Terrain
                 GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
                 GameObject.Find("SM_Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
                 try { GameObject.Find("Plateau 13 (1)").GetComponent<MeshRenderer>().sharedMaterial = terrainMat; } catch { }
@@ -209,51 +209,51 @@ namespace StageAesthetic.Variants.Stage5
 
                 // Plateau 6
 
-                r.GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(1).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(1).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(1).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.Find("GROUP: Plateau 6/P6 Option 2/SM_Plateau 6 Option 2").gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 6 Option 2 (1)
+                r.Find("GROUP: Plateau 6/P6 Option 2").GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (6)
+                r.Find("GROUP: Plateau 6/P6 Option 2").GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (7)
+                r.Find("GROUP: Plateau 6/P6 Option 3").GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 6 Option 3 (1)
+                r.Find("GROUP: Plateau 6/P6 Option 3").GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (8)
+                r.Find("GROUP: Plateau 6/P6 Option 3").GetChild(13).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (9)
 
                 // Plateau 9
 
-                r.GetChild(2).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(2).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(2).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(2).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 9 Option 1 (1)
+                r.GetChild(2).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (16)
+                r.GetChild(2).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (15)
+                r.GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (17)
 
                 // Plateau 11
 
-                r.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 11 Bridge (1)
 
                 // Plateau 13
 
-                r.GetChild(4).GetChild(1).GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(4).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Rock Connect (1)
 
                 // Plateau 15
 
-                r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(5).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 15 (1)
+                r.GetChild(5).GetChild(0).GetChild(10).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (14)
+                r.GetChild(5).GetChild(0).GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge
+                r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 15 Option 1 (1)
+                r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge
+                r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (13)
+                r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (3)
                 var floor = lightBase.GetChild(6);
                 floor.localScale = new Vector3(4000f, 4000f, 4000f);
                 floor.gameObject.GetComponent<MeshRenderer>().sharedMaterial = water;
             }
 
-            btp.GetChild(3).gameObject.SetActive(false);
-            btp.GetChild(4).gameObject.SetActive(false);
-            btp.GetChild(5).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(1).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(2).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(3).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(4).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(5).gameObject.SetActive(false);
-            btp.GetChild(1).GetChild(9).gameObject.SetActive(false);
+            btp.GetChild(4).gameObject.SetActive(false); //MiscProps
+            btp.GetChild(5).gameObject.SetActive(false); //LShapeScaffolding
+            btp.GetChild(6).gameObject.SetActive(false); //StaircaseScaffolding
+            btp.GetChild(3).GetChild(1).gameObject.SetActive(false); //ChainlinkSet
+            btp.GetChild(3).GetChild(2).gameObject.SetActive(false); //ChainlinkSet (1)
+            btp.GetChild(3).GetChild(3).gameObject.SetActive(false); //ChainlinkSet (2)
+            btp.GetChild(3).GetChild(4).gameObject.SetActive(false); //ChainlinkSet (3)
+            btp.GetChild(3).GetChild(5).gameObject.SetActive(false); //MiscProps
+            btp.GetChild(2).GetChild(9).gameObject.SetActive(false); //Barriers
 
             GameObject.Find("GROUP: Large Flowers").SetActive(false);
             GameObject.Find("FORMATION (5)").transform.localPosition = new Vector3(-140f, -6.08f, 491.99f);
@@ -265,11 +265,11 @@ namespace StageAesthetic.Variants.Stage5
 
         public static void Titanic(RampFog fog)
         {
-            Skybox.DaySky();
+            //Skybox.DaySky();
 
-            var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
-            var sun = lightBase.GetChild(0).GetComponent<Light>();
-            sun.intensity = 2f;
+            //var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
+            //var sun = lightBase.GetChild(0).GetComponent<Light>();
+            //sun.intensity = 2f;
 
             fog.fogColorStart.value = new Color32(125, 141, 160, 0);
             fog.fogColorMid.value = new Color32(119, 144, 175, 60);
@@ -386,12 +386,12 @@ namespace StageAesthetic.Variants.Stage5
 
                 // Plateau 6
 
-                r.GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(1).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(1).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(1).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.Find("GROUP: Plateau 6/P6 Option 2/SM_Plateau 6 Option 2").gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 6 Option 2 (1)
+                r.Find("GROUP: Plateau 6/P6 Option 2").GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (6)
+                r.Find("GROUP: Plateau 6/P6 Option 2").GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (7)
+                r.Find("GROUP: Plateau 6/P6 Option 3").GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 6 Option 3 (1)
+                r.Find("GROUP: Plateau 6/P6 Option 3").GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (8)
+                r.Find("GROUP: Plateau 6/P6 Option 3").GetChild(13).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (9)
 
                 // Plateau 9
 
@@ -406,28 +406,28 @@ namespace StageAesthetic.Variants.Stage5
 
                 // Plateau 13
 
-                r.GetChild(4).GetChild(1).GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(4).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Rock Connect (1)
 
                 // Plateau 15
 
-                r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(5).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 15 (1)
+                r.GetChild(5).GetChild(0).GetChild(10).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (14)
+                r.GetChild(5).GetChild(0).GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge
+                r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 15 Option 1 (1)
+                r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge
+                r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (13)
+                r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (3)
             }
 
-            btp.GetChild(3).gameObject.SetActive(false);
-            btp.GetChild(4).gameObject.SetActive(false);
-            btp.GetChild(5).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(1).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(2).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(3).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(4).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(5).gameObject.SetActive(false);
-            btp.GetChild(1).GetChild(9).gameObject.SetActive(false);
+            btp.GetChild(4).gameObject.SetActive(false); //MiscProps
+            btp.GetChild(5).gameObject.SetActive(false); //LShapeScaffolding
+            btp.GetChild(6).gameObject.SetActive(false); //StaircaseScaffolding
+            btp.GetChild(3).GetChild(1).gameObject.SetActive(false); //ChainlinkSet
+            btp.GetChild(3).GetChild(2).gameObject.SetActive(false); //ChainlinkSet (1)
+            btp.GetChild(3).GetChild(3).gameObject.SetActive(false); //ChainlinkSet (2)
+            btp.GetChild(3).GetChild(4).gameObject.SetActive(false); //ChainlinkSet (3)
+            btp.GetChild(3).GetChild(5).gameObject.SetActive(false); //MiscProps
+            btp.GetChild(2).GetChild(9).gameObject.SetActive(false); //Barriers
 
             GameObject.Find("GROUP: Large Flowers").SetActive(false);
             GameObject.Find("FORMATION (5)").transform.localPosition = new Vector3(-140f, -6.08f, 491.99f);
@@ -440,22 +440,22 @@ namespace StageAesthetic.Variants.Stage5
         public static void Abandoned(RampFog fog, PostProcessProfile ppProfile)
         {
             AddSand(SandType.Gigachad);
-            RampFog rampFog = ppProfile.GetSetting<RampFog>();
+           // RampFog rampFog = ppProfile.GetSetting<RampFog>();
 
-            fog.fogColorStart.value = new Color(0.59f, 0.363f, 0.374f, 0f);
-            fog.fogColorMid.value = new Color(0.68f, 0.486f, 0.331f, 0.25f);
-            fog.fogColorEnd.value = new Color(0.87f, 0.839f, 0.482f, 0.5f);
-            fog.fogZero.value = rampFog.fogZero.value;
-            fog.fogIntensity.value = rampFog.fogIntensity.value;
-            fog.fogPower.value = rampFog.fogPower.value;
-            fog.fogOne.value = rampFog.fogOne.value;
-            fog.skyboxStrength.value = 0.01f;
+            fog.fogColorStart.value = new Color32(113, 42, 109, 97);
+            fog.fogColorMid.value = new Color32(174, 135, 66, 60);
+            fog.fogColorEnd.value = new Color32(128, 101, 59, 255);
+            fog.fogZero.value = -0.05f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.7f;
+            fog.fogOne.value = 0.25f;
+            fog.skyboxStrength.value = 0f;
 
-            var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
-            var sun = lightBase.GetChild(0).GetComponent<Light>();
-            sun.color = new Color(1f, 0.65f, 0.5f, 1f);
-            sun.intensity = 1f;
-            sun.shadowStrength = 0.75f;
+            //var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
+            //var sun = lightBase.GetChild(0).GetComponent<Light>();
+            //sun.color = new Color(1f, 0.65f, 0.5f, 1f);
+            //sun.intensity = 1f;
+            //sun.shadowStrength = 0.75f;
 
             // var detail3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/goolake/matGoolakeStoneTrim.mat").WaitForCompletion();
             var terrainMat = Main.skyMeadowAbandonedTerrainMat;
@@ -571,7 +571,7 @@ namespace StageAesthetic.Variants.Stage5
                         }
                     }
                 }
-                c.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
+                c.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water; //Cloud1
                 btp.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
                 GameObject.Find("ArtifactFormulaHolderMesh").GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
                 GameObject.Find("SM_Stairway").GetComponent<MeshRenderer>().sharedMaterial = terrainMat;
@@ -584,13 +584,12 @@ namespace StageAesthetic.Variants.Stage5
                 r.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
 
                 // Plateau 6
-
-                r.GetChild(1).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(1).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(1).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(1).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(1).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.Find("GROUP: Plateau 6/P6 Option 2/SM_Plateau 6 Option 2").gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 6 Option 2 (1)
+                r.Find("GROUP: Plateau 6/P6 Option 2").GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (6)
+                r.Find("GROUP: Plateau 6/P6 Option 2").GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (7)
+                r.Find("GROUP: Plateau 6/P6 Option 3").GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 6 Option 3 (1)
+                r.Find("GROUP: Plateau 6/P6 Option 3").GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (8)
+                r.Find("GROUP: Plateau 6/P6 Option 3").GetChild(13).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (9)
 
                 // Plateau 9
 
@@ -605,34 +604,33 @@ namespace StageAesthetic.Variants.Stage5
 
                 // Plateau 13
 
-                r.GetChild(4).GetChild(1).GetChild(3).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                r.GetChild(4).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Rock Connect (1)
 
                 // Plateau 15
 
-                r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(5).GetChild(0).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
-                r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2;
+                r.GetChild(5).GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 15 (1)
+                r.GetChild(5).GetChild(0).GetChild(10).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (14)
+                r.GetChild(5).GetChild(0).GetChild(11).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge
+                r.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = terrainMat2; //Plateau 15 Option 1 (1)
+                r.GetChild(5).GetChild(1).GetChild(1).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge
+                r.GetChild(5).GetChild(1).GetChild(2).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (13)
+                r.GetChild(5).GetChild(2).GetChild(0).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat2; //SMSpikeBridge (3)
             }
             GameObject.Find("Hard Floor").SetActive(false);
             c.GetChild(0).localPosition = new Vector3(0, 30, 0);
             c.GetChild(0).localScale = new Vector3(600, 600, 600);
-            c.GetChild(1).gameObject.SetActive(false);
-            c.GetChild(2).gameObject.SetActive(false);
-            c.GetChild(3).gameObject.SetActive(false);
-            btp.GetChild(3).gameObject.SetActive(false);
-            btp.GetChild(4).gameObject.SetActive(false);
-            btp.GetChild(5).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(1).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(2).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(3).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(4).gameObject.SetActive(false);
-            btp.GetChild(2).GetChild(5).gameObject.SetActive(false);
-            btp.GetChild(1).GetChild(9).gameObject.SetActive(false);
-
+            c.GetChild(1).gameObject.SetActive(false); //Cloud2
+            c.GetChild(2).gameObject.SetActive(false); //Cloud3
+            c.GetChild(3).gameObject.SetActive(false); //Cloud4
+            btp.GetChild(4).gameObject.SetActive(false); //MiscProps
+            btp.GetChild(5).gameObject.SetActive(false); //LShapeScaffolding
+            btp.GetChild(6).gameObject.SetActive(false); //StaircaseScaffolding
+            btp.GetChild(3).GetChild(1).gameObject.SetActive(false); //ChainlinkSet
+            btp.GetChild(3).GetChild(2).gameObject.SetActive(false); //ChainlinkSet (1)
+            btp.GetChild(3).GetChild(3).gameObject.SetActive(false); //ChainlinkSet (2)
+            btp.GetChild(3).GetChild(4).gameObject.SetActive(false); //ChainlinkSet (3)
+            btp.GetChild(3).GetChild(5).gameObject.SetActive(false); //MiscProps
+            btp.GetChild(2).GetChild(9).gameObject.SetActive(false); //Barriers
             GameObject.Find("GROUP: Large Flowers").SetActive(false);
             GameObject.Find("FORMATION (5)").transform.localPosition = new Vector3(-140f, -6.08f, 491.99f);
 
