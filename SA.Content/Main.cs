@@ -17,7 +17,7 @@ namespace StageAesthetic
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "StageAesthetic";
 
-        public const string PluginVersion = "1.2.0";
+        public const string PluginVersion = "1.2.1";
 
         public static AssetBundle stageaesthetic;
         public static Shader cloudRemap = Addressables.LoadAssetAsync<Shader>("RoR2/Base/Shaders/HGCloudRemap.shader").WaitForCompletion();

@@ -662,6 +662,23 @@ namespace StageAesthetic
                                     StopSounds();
                                     PlaySound(SoundType.Rain);
                                     break;
+                                case "New Dawn":
+                                    AbandonedAqueduct.newDawn(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
+                                    break;
+                                case "New Sunrise":
+                                    AbandonedAqueduct.newSunrise(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
+                                    break;
+                                case "New Night":
+                                    AbandonedAqueduct.newNight(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
+                                    break;
+
+
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
