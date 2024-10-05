@@ -113,7 +113,8 @@ namespace StageAesthetic.Variants.Stage2
         public static void VoidMaterials()
         {
             var s = GameObject.Find("HOLDER: Skybox").transform;
-            var terrain = GameObject.Find("HOLDER: Hero Assets").transform;
+            var terHold = GameObject.Find("HOLDER: Hero Assets").transform;
+            var terrain = terHold.Find("Terrain");
             var terrainMat = Main.wetlandVoidTerrainMat;
             var terrainMat2 = Main.wetlandVoidTerrainMat2;
             var detailMat = Main.wetlandVoidDetailMat;
@@ -123,13 +124,14 @@ namespace StageAesthetic.Variants.Stage2
 
             if (terrainMat && terrainMat2 && detailMat && detailMat2 && detailMat3 && water)
             {
-                terrain.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+
                 terrain.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
                 terrain.GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                terrain.GetChild(3).GetChild(2).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
-                terrain.GetChild(4).GetComponent<MeshRenderer>().sharedMaterial = water;
-                terrain.GetChild(5).GetComponent<MeshRenderer>().sharedMaterial = water;
-                terrain.GetChild(6).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                terrain.GetChild(3).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                terrain.GetChild(0).GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
+                terHold.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
+                terHold.GetChild(1).GetComponent<MeshRenderer>().sharedMaterial = water;
+                terrain.GetChild(4).GetComponent<MeshRenderer>().sharedMaterial = terrainMat2;
                 s.GetChild(0).GetComponent<MeshRenderer>().sharedMaterial = water;
                 GameObject.Find("HOLDER: Ruin Pieces").transform.GetChild(6).gameObject.GetComponent<MeshRenderer>().sharedMaterial = detailMat3;
                 var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];

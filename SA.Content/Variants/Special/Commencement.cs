@@ -17,9 +17,9 @@ namespace StageAesthetic.Variants.Special
             es.GetChild(6).GetComponent<PostProcessVolume>().weight = 0.47f;
             es.GetChild(6).GetComponent<PostProcessVolume>().sharedProfile.settings[0].active = false;
 
-            var bruh = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).GetChild(0).Find("FX").GetChild(0).GetComponent<PostProcessVolume>();
+            var bruh = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).Find("FX").GetChild(0).GetComponent<PostProcessVolume>();
             bruh.weight = 0.28f;
-            HookLightingIntoPostProcessVolume bruh2 = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).GetChild(0).Find("FX").GetChild(0).GetComponent<HookLightingIntoPostProcessVolume>();
+            HookLightingIntoPostProcessVolume bruh2 = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).Find("FX").GetChild(0).GetComponent<HookLightingIntoPostProcessVolume>();
             // 0.1138 0.1086 0.15 1
             // 0.1012 0.1091 0.1226 1
             bruh2.overrideAmbientColor = new Color(0.0138f, 0.086f, 0.015f, 1);
@@ -47,9 +47,9 @@ namespace StageAesthetic.Variants.Special
             es.GetChild(6).GetComponent<PostProcessVolume>().weight = 0.47f;
             es.GetChild(6).GetComponent<PostProcessVolume>().sharedProfile.settings[0].active = false;
 
-            var bruh = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).GetChild(0).Find("FX").GetChild(0).GetComponent<PostProcessVolume>();
+            var bruh = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).Find("FX").GetChild(0).GetComponent<PostProcessVolume>();
             bruh.weight = 0.79f;
-            HookLightingIntoPostProcessVolume bruh2 = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).GetChild(0).Find("FX").GetChild(0).GetComponent<HookLightingIntoPostProcessVolume>();
+            HookLightingIntoPostProcessVolume bruh2 = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).Find("FX").GetChild(0).GetComponent<HookLightingIntoPostProcessVolume>();
             bruh2.overrideAmbientColor = new Color(0.2138f, 0.1086f, 0.15f, 1);
             bruh2.overrideDirectionalColor = new Color(0.2012f, 0.1091f, 0.1226f, 1);
             AddRain(RainType.Monsoon);
@@ -79,9 +79,9 @@ namespace StageAesthetic.Variants.Special
             es.GetChild(6).GetComponent<PostProcessVolume>().weight = 0.47f;
             es.GetChild(6).GetComponent<PostProcessVolume>().sharedProfile.settings[0].active = false;
 
-            var bruh = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).GetChild(0).Find("FX").GetChild(0).GetComponent<PostProcessVolume>();
+            var bruh = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).Find("FX").GetChild(0).GetComponent<PostProcessVolume>();
             bruh.weight = 0.5f;
-            HookLightingIntoPostProcessVolume bruh2 = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).GetChild(0).Find("FX").GetChild(0).GetComponent<HookLightingIntoPostProcessVolume>();
+            HookLightingIntoPostProcessVolume bruh2 = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).Find("FX").GetChild(0).GetComponent<HookLightingIntoPostProcessVolume>();
             bruh2.overrideAmbientColor = new Color(0.2138f, 0.1086f, 0.2138f, 1);
             bruh2.overrideDirectionalColor = new Color(0.2012f, 0.1091f, 0.2012f, 1);
             AddRain(RainType.Typhoon);
@@ -114,9 +114,9 @@ namespace StageAesthetic.Variants.Special
             es.GetChild(6).GetComponent<PostProcessVolume>().weight = 0.47f;
             es.GetChild(6).GetComponent<PostProcessVolume>().sharedProfile.settings[0].active = false;
 
-            var bruh = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).GetChild(0).Find("FX").GetChild(0).GetComponent<PostProcessVolume>();
+            var bruh = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).Find("FX").GetChild(0).GetComponent<PostProcessVolume>();
             bruh.weight = 0.28f;
-            HookLightingIntoPostProcessVolume bruh2 = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).GetChild(0).Find("FX").GetChild(0).GetComponent<HookLightingIntoPostProcessVolume>();
+            HookLightingIntoPostProcessVolume bruh2 = GameObject.Find("HOLDER: Gameplay Space").transform.GetChild(0).Find("Quadrant 4: Starting Temple").GetChild(0).Find("FX").GetChild(0).GetComponent<HookLightingIntoPostProcessVolume>();
             // 0.1138 0.1086 0.15 1
             // 0.1012 0.1091 0.1226 1
             bruh2.overrideAmbientColor = new Color(0.2138f, 0.2086f, 0.25f, 1);

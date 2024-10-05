@@ -103,11 +103,17 @@ namespace StageAesthetic
 
         private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
         {
-            ChangeProfile(SceneManager.GetActiveScene().name);
+            ChangeProfile(SceneManager.GetActiveScene().name,self);
             orig(self);
+            if (!self.teleporterInstance)
+            {
+
+                currentVariantName = "";
+
+            }
         }
 
-        private static void ChangeProfile(string sceneName)
+        private static void ChangeProfile(string sceneName, SceneDirector sceneDirector)
         {
             Debug.LogWarning("Past the prefab loading");
             ulong seed = Run.instance ? (ulong)(Run.instance.GetStartTimeUtc().Ticks ^ (Run.instance.stageClearCount << 16)) : 0;
@@ -656,6 +662,23 @@ namespace StageAesthetic
                                     StopSounds();
                                     PlaySound(SoundType.Rain);
                                     break;
+                                case "New Dawn":
+                                    AbandonedAqueduct.newDawn(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
+                                    break;
+                                case "New Sunrise":
+                                    AbandonedAqueduct.newSunrise(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.DayNature);
+                                    break;
+                                case "New Night":
+                                    AbandonedAqueduct.newNight(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.NightNature);
+                                    break;
+
+
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
@@ -1451,7 +1474,7 @@ namespace StageAesthetic
 
                         break;
                 }
-
+                
                 volume.profile.name = "SA Profile" + " (" + currentVariantName + ")";
             }
         }

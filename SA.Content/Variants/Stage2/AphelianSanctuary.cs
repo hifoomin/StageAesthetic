@@ -10,19 +10,22 @@ namespace StageAesthetic.Variants.Stage2
     {
         public static void Twilight(RampFog fog, ColorGrading cgrade)
         {
-            GameObject.Find("Directional Light (SUN)").gameObject.SetActive(false);
-            Skybox.NightSky();
-            var terrain = GameObject.Find("HOLDER: Terrain").transform;
-            var terrain2 = terrain.Find("mdlAncientLoft_Terrain");
-            var sun = terrain2.Find("AL_Sun").gameObject;
-            sun.SetActive(false);
+            fog.fogColorStart.value = new Color32(94, 144, 178, 20);
+            fog.fogColorMid.value = new Color32(94, 113, 140, 97);
+            fog.fogColorEnd.value = new Color32(149, 92, 179, 170);
+            cgrade.colorFilter.value = new Color32(133, 148, 178, 40);
+            cgrade.colorFilter.overrideState = true;
+            fog.skyboxStrength.value = 0.2f;
+            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            sunLight.color = new Color32(178, 142, 151, 255);
+            sunLight.intensity = 1.3f;
             var fog1 = GameObject.Find("HOLDER: Cards");
             fog1.SetActive(false);
-            var fog2 = GameObject.Find("DeepFog");
-            fog2.SetActive(false);
+            //var fog2 = GameObject.Find("DeepFog");
+            //fog2.SetActive(false);
             VanillaFoliage();
         }
-
+                                
         public static void Sunset(RampFog fog, ColorGrading cgrade)
         {
             GameObject.Find("Directional Light (SUN)").gameObject.SetActive(false);

@@ -95,6 +95,9 @@ namespace StageAesthetic.Config
         public static ConfigEntry<bool> AbandonedAqueductSunrise { get; set; }
         public static ConfigEntry<bool> AbandonedAqueductNight { get; set; }
         public static ConfigEntry<bool> AbandonedAqueductSundered { get; set; }
+        public static ConfigEntry<bool> AbandonedAqueductNewDawn { get; set; }
+        public static ConfigEntry<bool> AbandonedAqueductNewSunrise { get; set; }
+        public static ConfigEntry<bool> AbandonedAqueductNewNight { get; set; }
 
         // Aphelian
 
@@ -279,10 +282,13 @@ namespace StageAesthetic.Config
             TitanicPlainsAbandoned = SAConfig.Bind("Stages : Titanic Plains", "Enable Titanic Plains (Abandoned)?", true, "Texture swap to Yellow Abandoned Aqueduct.");
 
             AbandonedAqueductVanilla = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (Vanilla)?", true, "Disabling removes vanilla from getting picked");
-            AbandonedAqueductDawn = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (Dawn)?", true, "Dark orange.");
-            AbandonedAqueductSunrise = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (Sunrise)?", true, "Rainy blue sky with more fog.");
-            AbandonedAqueductNight = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (Night)?", true, "Dark blue.");
+            AbandonedAqueductDawn = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (Dawn)?", true,"V1.0 version");
+            AbandonedAqueductSunrise = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (Sunrise)?", true, "V1.0 version");
+            AbandonedAqueductNight = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (Night)?", true, "V1.0 version");
             AbandonedAqueductSundered = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (Sundered)?", true, "Texture swap to Pink Sundered Grove.");
+            AbandonedAqueductNewDawn = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (New Dawn)?", true, "Dark orange.");
+            AbandonedAqueductNewNight = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (New Night)?", true, "Dark blue.");
+            AbandonedAqueductNewSunrise = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Enable Abandoned Aqueduct (New Sunrise)?", true, "Rainy blue sky with more fog.");
 
             AbandonedAqueductChanges = SAConfig.Bind("Stages :: Abandoned Aqueduct", "Alter Abandoned Aqueduct (Vanilla)?", true, "Makes the sun a slightly more intense yellow-orange, and changes its angle.");
 
@@ -540,6 +546,7 @@ namespace StageAesthetic.Config
             if (TitanicPlainsOvercast.Value) titanicPlainsList.Add("Overcast");
             if (TitanicPlainsNight.Value) titanicPlainsList.Add("Night");
             if (TitanicPlainsAbandoned.Value) titanicPlainsList.Add("Abandoned");
+
             if (titanicPlainsList.Count == 0)
             {
                 SALogger.LogWarning("Titanic Plains list empty - adding vanilla...");
@@ -551,6 +558,9 @@ namespace StageAesthetic.Config
             if (AbandonedAqueductSunrise.Value) abandonedAqueductList.Add("Sunrise");
             if (AbandonedAqueductNight.Value) abandonedAqueductList.Add("Night");
             if (AbandonedAqueductSundered.Value) abandonedAqueductList.Add("Sundered");
+            if (AbandonedAqueductNewDawn.Value) abandonedAqueductList.Add("New Dawn");
+            if (AbandonedAqueductNewSunrise.Value) abandonedAqueductList.Add("New Sunrise");
+            if (AbandonedAqueductNewNight.Value) abandonedAqueductList.Add("New Night");
             if (abandonedAqueductList.Count == 0)
             {
                 SALogger.LogWarning("Abandoned Aqueduct list empty - adding vanilla...");
