@@ -18,10 +18,12 @@ namespace StageAesthetic
         private static readonly Material sunsetSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/bazaar/matSkybox4.mat").WaitForCompletion();
         private static readonly Material spaceSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/sulfurpools/matSkyboxSP.mat").WaitForCompletion();
         private static readonly Material spaceStarsMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/eclipseworld/matEclipseStarsSpheres.mat").WaitForCompletion();
+        private static readonly Material voidArenaWaterSkyboxMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaSky.mat").WaitForCompletion();
         private static readonly GameObject eclipseSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/eclipseworld/Weather, Eclipse.prefab").WaitForCompletion(), "SAEclipseSkybox", false);
         private static readonly GameObject noBullshitSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/eclipseworld/Weather, Eclipse.prefab").WaitForCompletion(), "SAEclipseSkybox", false);
         private static readonly GameObject planetariumSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/voidraid/Weather, Void Raid Starry Night Variant.prefab").WaitForCompletion(), "SADaySkybox", false);
         private static readonly GameObject voidStageSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/voidstage/Weather, Void Stage.prefab").WaitForCompletion(), "SAVoidSkybox", false);
+        private static readonly GameObject voidArenaSkybox = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/arena/Arena_Skybox.prefab").WaitForCompletion(), "SAArenaSkybox", false);
         public static readonly GameObject sun = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/ancientloft/mdlAncientLoft_Terrain.fbx").WaitForCompletion().transform.GetChild(5).GetChild(0).gameObject, "SASun", false);
 
         public static void SunnyDistantRoostSky()
@@ -301,6 +303,16 @@ namespace StageAesthetic
             else
                 ambLight.ambientIntensity = 1f;
             ambLight.ApplyLighting();
+        }
+		
+		public static void ArenaSky()
+        {
+            GameObject skybox = Object.Instantiate(voidStageSkybox, Vector3.zero, Quaternion.identity);
+            skybox.transform.GetChild(0).gameObject.SetActive(false);
+            skybox.transform.GetChild(1).gameObject.SetActive(true); // Enable the kelp :3
+            skybox.transform.GetChild(7).gameObject.SetActive(true); // Enable the background stuff
+            skybox.transform.GetChild(6).GetChild(2).gameObject.SetActive(false); // Disable Black Hole
+            skybox.transform.GetChild(6).GetChild(0).GetComponent<MeshRenderer>().sharedMaterials = [voidArenaWaterSkyboxMat]; // Set skybox to water shader
         }
 
         public static void SingularitySky()

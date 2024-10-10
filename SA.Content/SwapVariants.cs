@@ -54,8 +54,9 @@ namespace StageAesthetic
         private static void AssignStageToken_Start(On.RoR2.UI.AssignStageToken.orig_Start orig, AssignStageToken self)
         {
             orig(self);
-            if (DisplayVariantName.Value && currentVariantName != "")
+            if (DisplayVariantName.Value && currentVariantName != ""){
                 self.titleText.text += " (" + currentVariantName + ")";
+			}
         }
 
         private static void TitleScreen(Scene scene, LoadSceneMode mode)
@@ -109,6 +110,7 @@ namespace StageAesthetic
 
         private static void ChangeProfile(string sceneName)
         {
+            currentVariantName = "";
             Debug.LogWarning("Past the prefab loading");
             ulong seed = Run.instance ? (ulong)(Run.instance.GetStartTimeUtc().Ticks ^ (Run.instance.stageClearCount << 16)) : 0;
             Xoroshiro128Plus rng = new(seed);
@@ -1095,6 +1097,12 @@ namespace StageAesthetic
                                     StopSounds();
                                     PlaySound(SoundType.Wind);
                                     break;
+									
+								case "Snow":
+                                    AbyssalDepths.Snow(rampFog, colorGrading);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
+                                    break;
 
                                 default:
                                     SALogger.LogDebug("uwu I messed something up forgive me >w<");
@@ -1308,6 +1316,18 @@ namespace StageAesthetic
                                     PlaySound(SoundType.Rain);
                                     break;
 
+                                case "Snow":
+                                    SkyMeadow.Snow(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
+                                    break;
+
+                                case "Sunken":
+                                    SkyMeadow.Sunken(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Void);
+                                    break;
+
                                 case "Titanic":
                                     SkyMeadow.Titanic(rampFog);
                                     StopSounds();
@@ -1383,6 +1403,12 @@ namespace StageAesthetic
 
                                 case "Gray":
                                     Commencement.Gray(rampFog);
+                                    StopSounds();
+                                    PlaySound(SoundType.Wind);
+                                    break;
+								
+								case "Snow":
+                                    Commencement.Snow(rampFog);
                                     StopSounds();
                                     PlaySound(SoundType.Wind);
                                     break;

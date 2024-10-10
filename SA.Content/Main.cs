@@ -179,6 +179,16 @@ namespace StageAesthetic
         public static Material moonDetailMat2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/moon/matMoonBridge.mat").WaitForCompletion();
         public static Material moonDetailMat3 = Addressables.LoadAssetAsync<Material>("RoR2/Base/moon/matMoonBaseStandTriplanar.mat").WaitForCompletion();
         public static Material blueFireMat = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matFireStaticBlueLarge.mat").WaitForCompletion();
+		
+		public static Material abyssalDanTerrain = Addressables.LoadAssetAsync<Material>("RoR2/Base/arena/matArenaTerrainVerySnowy.mat").WaitForCompletion();
+		public static Material abyssalDanDetail = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidstage/matVoidFoam.mat").WaitForCompletion();
+		public static Material abyssalDanDetail2 = Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/TrimSheets/matTrimSheetAlien1BossEmission.mat").WaitForCompletion();
+		public static Material abyssalDanDetail3 = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/voidstage/matVoidTrim.mat").WaitForCompletion();
+		
+		
+		public static Material moon2snowDetail = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/snowyforest/matSFAqueduct.mat").WaitForCompletion();
+		public static Material moon2snowTerrain = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/snowyforest/matSFGround.mat").WaitForCompletion();
+		public static Material moon2snowIce = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/snowyforest/matSFIce.mat").WaitForCompletion();
 
         public static bool ForgottenRelicsLoaded = false;
 

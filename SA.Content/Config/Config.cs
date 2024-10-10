@@ -158,6 +158,7 @@ namespace StageAesthetic.Config
 
         public static ConfigEntry<bool> AbyssalDepthsChanges { get; set; }
         public static ConfigEntry<bool> AbyssalDepthsNight { get; set; }
+        public static ConfigEntry<bool> AbyssalDepthsSnow { get; set; }
         public static ConfigEntry<bool> AbyssalDepthsOrange { get; set; }
         public static ConfigEntry<bool> AbyssalDepthsBlue { get; set; }
         public static ConfigEntry<bool> AbyssalDepthsCoral { get; set; }
@@ -187,6 +188,8 @@ namespace StageAesthetic.Config
         public static ConfigEntry<bool> SkyMeadowAbyssal { get; set; }
         public static ConfigEntry<bool> SkyMeadowTitanic { get; set; }
         public static ConfigEntry<bool> SkyMeadowAbandoned { get; set; }
+        public static ConfigEntry<bool> SkyMeadowSnow { get; set; }
+        public static ConfigEntry<bool> SkyMeadowSunken { get; set; }
 
         // Helminth Hatchery
         public static ConfigEntry<bool> HelminthHatcheryVanilla { get; set; }
@@ -208,6 +211,7 @@ namespace StageAesthetic.Config
         public static ConfigEntry<bool> CommencementCrimson { get; set; }
         public static ConfigEntry<bool> CommencementCorruption { get; set; }
         public static ConfigEntry<bool> CommencementGray { get; set; }
+        public static ConfigEntry<bool> CommencementSnow { get; set; }
 
         // Void Locus
         public static ConfigEntry<bool> VoidLocusVanilla { get; set; }
@@ -336,6 +340,7 @@ namespace StageAesthetic.Config
             AbyssalDepthsBlue = SAConfig.Bind("Stages :::: Abyssal Depths", "Enable Abyssal Depths (Blue)?", true, "Orange-ish and pink-ish");
             AbyssalDepthsOrange = SAConfig.Bind("Stages :::: Abyssal Depths", "Enable Abyssal Depths (Orange)?", true, "Pink with some orange and blue.");
             AbyssalDepthsCoral = SAConfig.Bind("Stages :::: Abyssal Depths", "Enable Abyssal Depths (Coral)?", true, "Texture swap to Blue/Purple/Pink Sundered Grove.");
+            AbyssalDepthsSnow = SAConfig.Bind("Stages :::: Abyssal Depths", "Enable Abyssal Depths (Snow)?", true, "Snow!");
 
             AbyssalDepthsChanges = SAConfig.Bind("Stages :::: Abyssal Depths", "Alter Abyssal Depths (Vanilla)?", true, "Greatly increases the sunlight intensity, and alters the light angle.");
 
@@ -357,6 +362,8 @@ namespace StageAesthetic.Config
             SkyMeadowAbyssal = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Abyssal)?", true, "Texture swap to Red Abyssal Depths.");
             SkyMeadowTitanic = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Titanic)?", true, "Texture swap to Titanic Plains.");
             SkyMeadowAbandoned = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Abandoned)?", true, "Texture swap to Yellow Abandoned Aqueduct.");
+            SkyMeadowSnow = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Snow)?", true, "Snow!");
+            SkyMeadowSunken = SAConfig.Bind("Stages ::::: Sky Meadow", "Enable Sky Meadow (Sunken)?", true, "Sunken!");
 
             SkyMeadowChanges = SAConfig.Bind("Stages ::::: Sky Meadow", "Alter Sky Meadow (Vanilla)?", true, "Makes the sun a slightly more intense yellow-orange.");
 
@@ -374,6 +381,7 @@ namespace StageAesthetic.Config
             CommencementCrimson = SAConfig.Bind("Stages :::::: Commencement", "Enable Commencement (Crimson)?", true, "Bloody and threatening.");
             CommencementCorruption = SAConfig.Bind("Stages :::::: Commencement", "Enable Commencement (Corruption)?", true, "Purple.");
             CommencementGray = SAConfig.Bind("Stages :::::: Commencement", "Enable Commencement (Gray)?", true, "Gr*y!");
+            CommencementSnow = SAConfig.Bind("Stages :::::: Commencement", "Enable Commencement (Snow)?", true, "Snow!");
 
             VoidLocusVanilla = SAConfig.Bind("Stages ::::::: Void Locus", "Enable Void Locus (Vanilla)?", true, "Disabling removes vanilla from getting picked");
             VoidLocusTwilight = SAConfig.Bind("Stages ::::::: Void Locus", "Enable Void Locus (Twilight)?", true, "Red, blue and cyan gradient with an amazing void.");
@@ -642,6 +650,7 @@ namespace StageAesthetic.Config
             if (AbyssalDepthsBlue.Value) abyssalDepthsList.Add("Blue");
             if (AbyssalDepthsOrange.Value) abyssalDepthsList.Add("Orange");
             if (AbyssalDepthsCoral.Value) abyssalDepthsList.Add("Coral");
+            if (AbyssalDepthsSnow.Value) abyssalDepthsList.Add("Snow");
             if (abyssalDepthsList.Count == 0)
             {
                 SALogger.LogWarning("Abyssal Depths list empty - adding vanilla...");
@@ -674,6 +683,11 @@ namespace StageAesthetic.Config
 
             if (HelminthHatcheryVanilla.Value) helminthHatcheryList.Add("Vanilla");
             if (HelminthHatcheryLunar.Value) helminthHatcheryList.Add("Lunar");
+            if (helminthHatcheryList.Count == 0)
+            {
+                SALogger.LogWarning("Helminth Hatchery list empty - adding vanilla...");
+                helminthHatcheryList.Add("Vanilla");
+            }
 
             if (SkyMeadowVanilla.Value) skyMeadowList.Add("Vanilla");
             if (SkyMeadowNight.Value) skyMeadowList.Add("Night");
@@ -681,6 +695,8 @@ namespace StageAesthetic.Config
             if (SkyMeadowAbyssal.Value) skyMeadowList.Add("Abyssal");
             if (SkyMeadowTitanic.Value) skyMeadowList.Add("Titanic");
             if (SkyMeadowAbandoned.Value) skyMeadowList.Add("Abandoned");
+            if (SkyMeadowSnow.Value) skyMeadowList.Add("Snow");
+            if (SkyMeadowSunken.Value) skyMeadowList.Add("Sunken");
             if (skyMeadowList.Count == 0)
             {
                 SALogger.LogWarning("Sky Meadow list empty - adding vanilla...");
@@ -706,6 +722,7 @@ namespace StageAesthetic.Config
             if (CommencementCrimson.Value) commencementList.Add("Crimson");
             if (CommencementCorruption.Value) commencementList.Add("Corruption");
             if (CommencementGray.Value) commencementList.Add("Gray");
+            if (CommencementSnow.Value) commencementList.Add("Snow");
             if (commencementList.Count == 0)
             {
                 SALogger.LogWarning("Commencement list empty - adding vanilla...");

@@ -17,6 +17,38 @@ namespace StageAesthetic.Variants.Stage4
             sunLight.color = new Color(0.5f, 0.5f, 0.5f, 1f);
             sunLight.shadowStrength = 0.6f;
         }
+		
+		public static void Snow(RampFog fog, ColorGrading cgrade)
+        {
+			fog.fogColorStart.value = new Color32(225, 225, 225, 10);
+			fog.fogColorMid.value = new Color32(160, 207, 255, 90);
+			fog.fogColorEnd.value = new Color32(135, 150, 200, 255);
+			fog.fogHeightStart.value = 0;
+			fog.fogHeightEnd.value = 100;
+			fog.fogHeightIntensity.value = 0;
+			fog.fogIntensity.value = 0.75f;
+			fog.fogOne.value = 0.15f;
+			fog.fogPower.value = 1.5f;
+			fog.fogZero.value = -0.01f;
+			fog.skyboxStrength.value = 0f;
+			
+			var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            sunLight.intensity = 3f;
+            sunLight.transform.localEulerAngles = new Vector3(35, 15, 351);
+            sunLight.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            sunLight.shadowStrength = 0.6f;
+			
+			RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
+            caveFog.fogColorStart.value = new Color32(78, 55, 80, 60);
+            caveFog.fogColorMid.value = new Color32(64, 75, 94, 144);
+            caveFog.fogColorEnd.value = new Color32(60, 73, 88, 205);
+			
+			AddSnow(SnowType.Moderate);
+			
+			SimMaterials(Main.moon2snowTerrain, Main.moon2snowDetail, Main.abyssalDanDetail3, Main.abyssalDanDetail2, Main.abyssalDanDetail3);
+			
+			LightChange("snow");
+        }
 
         public static void Blue(RampFog fog, ColorGrading cgrade)
         {
@@ -113,6 +145,12 @@ namespace StageAesthetic.Variants.Stage4
                     coral = new Color32(30, 209, 27, 255);
                     chain = new Color(0.981f, 0.521f, 0.065f);
                     crystal = new Color(0.718f, 0, 0.515f);
+                    break;
+				
+				case "snow":
+                    coral = new Color32(160, 207, 255, 255);
+                    chain = new Color(0.981f, 0.981f, 0.981f);
+                    crystal = new Color(0.981f, 0.981f, 0.981f);
                     break;
 
                 default:

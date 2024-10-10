@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using RoR2;
+using System;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
@@ -9,6 +11,7 @@ namespace StageAesthetic.Variants.Stage5
     {
         public static void VanillaChanges()
         {
+            /*
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
@@ -16,10 +19,60 @@ namespace StageAesthetic.Variants.Stage5
             sunLight.intensity = 2f;
             sunLight.shadowStrength = 1f;
             VanillaFoliage();
+            */
+        }
+        public static void Snow(RampFog fog)
+        {
+            fog.fogColorStart.value = new Color32(225, 225, 225, 10);
+            fog.fogColorMid.value = new Color32(160, 207, 255, 90);
+            fog.fogColorEnd.value = new Color32(135, 150, 200, 255);
+            fog.fogHeightStart.value = 0;
+            fog.fogHeightEnd.value = 100;
+            fog.fogHeightIntensity.value = 0;
+            fog.fogIntensity.value = 0.75f;
+            fog.fogOne.value = 0.15f;
+            fog.fogPower.value = 1.5f;
+            fog.fogZero.value = -0.01f;
+            fog.skyboxStrength.value = 0f;
+
+            try {
+                var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
+                var sunTransform = lightBase.Find("Directional Light (SUN)");
+                Light sunLight = sunTransform.gameObject.GetComponent<Light>();
+                sunLight.color = new Color32(239, 231, 211, 255);
+                sunLight.intensity = 2f;
+                sunLight.shadowStrength = 1f;
+            } catch {
+                Debug.Log("Error 001");
+            }
+
+            GameObject.Find("GROUP: Large Flowers").SetActive(false);
+
+            SkyMaterialSwap(Main.moon2snowTerrain, Main.moon2snowDetail, Main.moon2snowIce);
+
+            AbyssalFoliage();
+            AddSnow(SnowType.Moderate);
+        }
+
+        public static void Sunken(RampFog fog)
+        {
+            GameObject.Find("SMSkyboxPrefab").SetActive(false);
+            Skybox.ArenaSky();
+            VanillaFoliage();
+
+            fog.fogColorStart.value = new Color32(10, 61, 99, 100);
+            fog.fogColorMid.value = new Color32(5, 42, 79, 150);
+            fog.fogColorEnd.value = new Color32(1, 20, 45, 255);
+            fog.fogOne.value = 0.3f;
+            fog.fogIntensity.value = 0.65f;
+            fog.fogZero.value = -0.02f;
+
+            fog.skyboxStrength.value = 0f;
         }
 
         public static void Night(RampFog fog)
         {
+            /*
             fog.fogColorStart.value = new Color32(85, 67, 93, 0);
             fog.fogColorMid.value = new Color32(12, 15, 59, 131);
             fog.fogColorEnd.value = new Color32(18, 3, 45, 200);
@@ -38,10 +91,12 @@ namespace StageAesthetic.Variants.Stage5
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("ShatteredMoonMesh").gameObject.SetActive(false);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("MoonMesh").gameObject.SetActive(true);
             VanillaFoliage();
+            */
         }
 
         public static void Overcast(RampFog fog)
         {
+            /*
             AddRain(RainType.Typhoon);
             fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 0.95f);
             fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
@@ -69,10 +124,12 @@ namespace StageAesthetic.Variants.Stage5
             windZone.radius = 100;
             GameObject.Find("SMSkyboxPrefab").transform.Find("SmallStars").gameObject.SetActive(false);
             VanillaFoliage();
+            */
         }
 
         public static void Abyssal(RampFog fog, ColorGrading cgrade)
         {
+            /*
             // cgrade.SetAllOverridesTo(true);
             //Scgrade.colorFilter.value = new Color32(181, 178, 219, 255);
             fog.fogColorStart.value = new Color32(99, 27, 63, 72);
@@ -260,10 +317,12 @@ namespace StageAesthetic.Variants.Stage5
             // can i even do a for loop here? seems really complicated lol
 
             AbyssalFoliage();
+            */
         }
 
         public static void Titanic(RampFog fog)
         {
+            /*
             Skybox.DaySky();
 
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
@@ -434,10 +493,12 @@ namespace StageAesthetic.Variants.Stage5
             // can i even do a for loop here? seems really complicated lol
 
             TitanicFoliage();
+            */
         }
 
         public static void Abandoned(RampFog fog, PostProcessProfile ppProfile)
         {
+            /*
             AddSand(SandType.Gigachad);
             RampFog rampFog = ppProfile.GetSetting<RampFog>();
 
@@ -638,6 +699,32 @@ namespace StageAesthetic.Variants.Stage5
             // can i even do a for loop here? seems really complicated lol
 
             SandyFoliage();
+            */
+        }
+
+        public static void SkyMaterialSwap(Material terrainMat, Material detailMat, Material detailMat2)
+        {
+            if (terrainMat && detailMat && detailMat2)
+            {
+                MeshRenderer[] meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
+                foreach (MeshRenderer renderer in meshList)
+                {
+                    GameObject meshBase = renderer.gameObject;
+                    if (meshBase != null)
+                    {
+                        if (meshBase.name.Contains("Grass") && renderer.sharedMaterial)
+                        {
+                            GameObject.Destroy(meshBase);
+                        }
+                        if ((meshBase.name.Contains("Terrain") || meshBase.name.Contains("Plateau") || meshBase.name.Contains("terrain")) && renderer.sharedMaterial)
+                            renderer.sharedMaterial = terrainMat;
+                        if (meshBase.name.Contains("Rock") || meshBase.name.Contains("Pebble") && renderer.sharedMaterial)
+                            renderer.sharedMaterial = detailMat;
+                        if (meshBase.name.Contains("Spike") && renderer.sharedMaterial)
+                            renderer.sharedMaterial = detailMat2;
+                    }
+                }
+            }
         }
 
         public static void VanillaFoliage()
