@@ -10,13 +10,26 @@ namespace StageAesthetic.Variants.Stage4
     {
         public static void Night(RampFog fog, ColorGrading cgrade)
         {
-            Skybox.NightSky();
+            Skybox.NightSkyNoBullshit();
 
-            var lightBase = GameObject.Find("Weather, Shipgraveyard");
-            if (lightBase)
-            {
-                lightBase.SetActive(false);
-            }
+
+            fog.fogColorStart.value = new Color32(39, 81, 107, 0);
+            fog.fogColorMid.value = new Color32(15, 62, 50, 99);
+            fog.fogColorEnd.value = new Color32(10, 40, 36, 255);
+            cgrade.colorFilter.value = new Color32(171, 223, 227, 255);
+            cgrade.colorFilter.overrideState = true;
+            fog.skyboxStrength.value = 0.8f;
+
+            fog.fogOne.value = 0.085f;
+
+
+            var lightBase = GameObject.Find("Weather, Shipgraveyard").transform;
+            var sunTransform = lightBase.Find("Directional Light (SUN)");
+            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
+            sunLight.color = new Color32(155, 163, 227, 255);
+            sunLight.intensity = 2f;
+            sunLight.shadowStrength = 0.5f;
+
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
             {
@@ -85,20 +98,17 @@ namespace StageAesthetic.Variants.Stage4
 
         public static void Overcast(RampFog fog)
         {
-            AddRain(RainType.Typhoon);
-            fog.fogColorEnd.value = new Color(0.3272f, 0.3711f, 0.4057f, 0.95f);
-            fog.fogColorMid.value = new Color(0.2864f, 0.2667f, 0.3216f, 0.55f);
-            fog.fogColorStart.value = new Color(0.2471f, 0.2471f, 0.2471f, 0.05f);
-            fog.fogPower.value = 2f;
-            fog.fogZero.value = -0.02f;
-            fog.fogOne.value = 0.025f;
-            fog.skyboxStrength.value = 0f;
-            fog.fogIntensity.value = 1f;
 
-            var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
-            sunLight.color = new Color32(191, 191, 191, 255);
-            sunLight.intensity = 1.25f;
-            sunLight.shadowStrength = 0.5f;
+            fog.fogColorStart.value = new Color32(58, 62, 68, 0);
+            fog.fogColorMid.value = new Color32(46, 67, 76, 130);
+            fog.fogColorEnd.value = new Color32(78, 94, 87, 255);
+            fog.fogZero.value = -0.02f;
+            fog.fogOne.value = 0.057f;
+            AddRain(RainType.Typhoon);
+            //var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
+            //sunLight.color = new Color32(191, 191, 191, 255);
+            //sunLight.intensity = 1.25f;
+            //sunLight.shadowStrength = 0.5f;
 
             var meshList = Object.FindObjectsOfType(typeof(MeshRenderer)) as MeshRenderer[];
             foreach (MeshRenderer mr in meshList)
